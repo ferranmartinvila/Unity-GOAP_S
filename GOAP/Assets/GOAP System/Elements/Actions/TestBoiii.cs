@@ -5,6 +5,12 @@ public class TestBoiii : Action_GS
     {
         public GameObject target_obj = null;
 
+
+    public TestBoiii()
+    {
+        Debug.Log("CALLED");
+    }
+
         //Called on the first action loop
         public override ACTION_RESULT ActionStart()
         {
@@ -37,8 +43,7 @@ public class TestBoiii : Action_GS
 
         public override void BlitUI()
         {
-
-
+            GUILayout.Label("TEST ADDED!");
             //EditorGUI.ObjectField(new Rect(10, 20, 100, 20), target_obj,typeof(GameObject));
         }
     }

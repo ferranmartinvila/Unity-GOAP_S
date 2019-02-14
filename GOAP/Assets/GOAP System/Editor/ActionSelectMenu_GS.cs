@@ -67,10 +67,10 @@ namespace GOAP_S.UI
             {
                 if (GUILayout.Button(script.Value.name, GUILayout.Width(150), GUILayout.Height(30)))
                 {
-                    System.Type class_ty = ((MonoScript)script.Value).GetClass();
-                    Action_GS new_script = (Action_GS)MonoScript.Instantiate(script.Value);
-                    target.SetAction((Action_GS)new_script);
-                    System.Activator.CreateInstance(class_ty, false);
+                    //Allocate a class with the same type of script value
+                    Action_GS new_script = GOAP_S.PRO_TOOLS.ProTools.AllocateClass<Action_GS>(script.Value);
+                    //Set the allocated class to the action node
+                    target.SetAction(new_script);
                 }
                 GUILayout.Space(2);
             }
@@ -84,61 +84,13 @@ namespace GOAP_S.UI
         }
 
         //Functionality Methods =======
-        /*public static T Cast<T>(this UnityEngine.Object myobj)
-        {
-            System.Type objectType = myobj.GetType();
-            System.Type target = typeof(T);
-            var x = System.Activator.CreateInstance(target, false);
-            List<MemberInfo> list = new List<MemberInfo>(objectType.GetMembers());
-            var z = from source in list
-                    where source.MemberType == MemberTypes.Property
-                    select source;
-            
-            var d = from source in target.GetMembers().//.ToList()
-                    where source.MemberType == MemberTypes.Property
-                    select source;
-            List<MemberInfo> members = d.Where(memberInfo => d.Select(c => c.Name)
-               .ToList().Contains(memberInfo.Name)).ToList();
-            PropertyInfo propertyInfo;
-            object value;
-            foreach (var memberInfo in members)
-            {
-                propertyInfo = typeof(T).GetProperty(memberInfo.Name);
-                value = myobj.GetType().GetProperty(memberInfo.Name).GetValue(myobj, null);
-
-                propertyInfo.SetValue(x, value, null);
-            }
-            return (T)x;
-        }*/
-
-        public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
-        {
-            List<T> assets = new List<T>();
-            //Get all the assets GUID
-            string[] guids = AssetDatabase.FindAssets(null, new[] { "Assets" });
-            for (int i = 0; i < guids.Length; i++)
-            {
-                //Transform GUIDs to paths
-                string assetPath = AssetDatabase.GUIDToAssetPath(guids[i]);
-                //Get type T assets using the paths
-                T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
-
-                if (asset != null)
-                {
-                    //Add the asset to the list of type T
-                    assets.Add(asset);
-                }
-            }
-            return assets;
-        }
-
         public static void ListActionScripts()
         {
             //Clear the action scripts dic to place the current action scripts
             all_action_scripts.Clear();
 
             //A list of all the object assets imported to the project
-            List<UnityEngine.Object> object_assets = FindAssetsByType<UnityEngine.Object>();
+            List<UnityEngine.Object> object_assets = PRO_TOOLS.ProTools.FindAssetsByType<UnityEngine.Object>();
 
             //The action attribute that we use to identify if a class inherit from action class       
             object action_attribute = typeof(Action_GS).GetCustomAttributes(false)[0];

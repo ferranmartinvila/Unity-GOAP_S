@@ -11,7 +11,7 @@ public class Action_Attribute_GS : System.Attribute
 
 [Action_Attribute_GS]
 //Actions inherit from this class and can manage all kind of scene data
-public abstract class Action_GS : Object {
+public abstract class Action_GS {
 
     /*
     Action update return the state of the action process
@@ -46,5 +46,4 @@ public abstract class Action_GS : Object {
      */
 
     public abstract void BlitUI();
-
 }

@@ -3,13 +3,15 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
 
-//[System.Serializable]
 public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
 {
+    //State fields
     [SerializeField] private bool initialized = false; //Check if the class is initialized and everithing is allocated correctly
+    //Content fields
     [SerializeField] private string agent_name = "unnamed"; //Agent name(usefull for the user to recognize the behaviours)
     [SerializeField] internal string agent_id = "null"; //Agent UUID
     [System.NonSerialized] public List<ActionNode_GS> action_nodes; //Action ndoes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
+    //Serialization fields
     [SerializeField] private string serialized_data; //String where the serialized data is stored
     [SerializeField] private List<Object> obj_refs; //List that contains the references to the objects serialized
 

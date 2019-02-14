@@ -1,14 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-[System.Serializable]
-public class ActionNode_GS { //Object?
+public class ActionNode_GS : ISerializationCallbackReceiver {
 
-    [SerializeField] private Rect canvas_pos;
-    [SerializeField] private bool editable_pos = true;
-    [SerializeField] private string node_id = "null_id";
-    [SerializeField] private Action_GS action = null;
+    //UI fields
+    [SerializeField] private Rect canvas_pos; //Position of the node window in the editor
+    [SerializeField] private bool editable_pos = true; //True means that the user can move the window
+    [SerializeField] private string node_id = "null_id"; //Node ID used to set window id
+    //Content fields
+    [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
+    //Serialization fields
+    [SerializeField] private string serialized_data; //String where the serialized data is stored
 
     //Loop Methods ====================
     void Start ()
@@ -60,5 +61,16 @@ public class ActionNode_GS { //Object?
     public void CalculateUUID()
     {
         node_id = System.Guid.NewGuid().ToString();
+    }
+
+    //Serialization Methods ===========
+    public void OnBeforeSerialize()
+    {
+        serialized_data = GOAP_T.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
+    }
+
+    public void OnAfterDeserialize()
+    {
+        action = (Action_GS)GOAP_T.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_data, null);
     }
 }
