@@ -63,7 +63,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button(script.Value.name, GUILayout.Width(150), GUILayout.Height(30)))
                 {
                     //Allocate a class with the same type of script value
-                    Action_GS new_script = GOAP_S.PRO_TOOLS.ProTools.AllocateClass<Action_GS>(script.Value);
+                    Action_GS new_script = GOAP_S.PT.ProTools.AllocateClass<Action_GS>(script.Value);
                     //Set the allocated class to the action node
                     target.SetAction(new_script);
                     //Close the pop window when the action is selected & set
@@ -87,7 +87,7 @@ namespace GOAP_S.UI
             all_action_scripts.Clear();
 
             //A list of all the object assets imported to the project
-            List<UnityEngine.Object> object_assets = PRO_TOOLS.ProTools.FindAssetsByType<UnityEngine.Object>();
+            List<UnityEngine.Object> object_assets = PT.ProTools.FindAssetsByType<UnityEngine.Object>();
 
             //The action attribute that we use to identify if a class inherit from action class       
             object action_attribute = typeof(Action_GS).GetCustomAttributes(false)[0];

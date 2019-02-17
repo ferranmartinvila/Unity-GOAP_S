@@ -93,12 +93,12 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     public void OnBeforeSerialize() //Serialize
     {
         obj_refs = new List<Object>();
-        serialized_data = GOAP_T.Serialization.SerializationManager.Serialize(action_nodes, typeof(List<ActionNode_GS>), obj_refs);
+        serialized_data = GOAP_S.Serialization.SerializationManager.Serialize(action_nodes, typeof(List<ActionNode_GS>), obj_refs);
     }
 
     public void OnAfterDeserialize() //Deserialize
     {
-        action_nodes = (List<ActionNode_GS>)GOAP_T.Serialization.SerializationManager.Deserialize(typeof(List<ActionNode_GS>),serialized_data, obj_refs);
+        action_nodes = (List<ActionNode_GS>)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(List<ActionNode_GS>),serialized_data, obj_refs);
         if (action_nodes == null) action_nodes = new List<ActionNode_GS>();
     }
 }

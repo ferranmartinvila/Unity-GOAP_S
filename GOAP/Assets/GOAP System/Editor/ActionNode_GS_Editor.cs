@@ -6,6 +6,7 @@ using UnityEditor;
 //Class used to draw action nodes in the node editor and handle input
 public class ActionNode_GS_Editor {
 
+    //Content fields
     private ActionNode_GS target;
 
     //Constructor =====================
@@ -30,10 +31,15 @@ public class ActionNode_GS_Editor {
         //Action set case
         else
         {
-            action.BlitUI();
+            //GUILayout.
             if(GUI.Button(new Rect(10,20,80,20),"Remove Action"))
             {
                 target.SetAction(null);
+            }
+
+            if (GUI.Button(new Rect(10, 50, 80, 20), "Edit Action"))
+            {
+                action.BlitUI();
             }
         }
 

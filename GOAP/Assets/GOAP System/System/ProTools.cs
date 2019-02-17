@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-namespace GOAP_S.PRO_TOOLS
+namespace GOAP_S.PT
 {
     public static class ProTools
     {

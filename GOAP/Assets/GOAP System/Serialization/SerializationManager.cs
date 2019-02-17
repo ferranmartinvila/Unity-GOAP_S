@@ -24,7 +24,7 @@ using FullSerializer.Internal;
 }
 */
 
-namespace GOAP_T.Serialization
+namespace GOAP_S.Serialization
 {
     public static class SerializationManager //Static because this don't save anything, only serialize/deserialize the data in an external JSON file.
     {
