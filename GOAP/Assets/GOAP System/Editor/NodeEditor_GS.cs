@@ -7,8 +7,8 @@ public class NodeEditor_GS : EditorWindow
 {
     static NodeEditor_GS window;
     private GameObject selected_object = null;
-    public Agent_GS selected_agent = null;
-    public Vector2 mouse_pos;
+    private Agent_GS selected_agent = null;
+    private Vector2 mouse_pos;
     
     Rect start_node;
     Rect window1;
@@ -60,16 +60,16 @@ public class NodeEditor_GS : EditorWindow
     {
         if (Selection.activeGameObject != selected_object)
         {
-            selected_agent = Selection.activeGameObject.gameObject.GetComponent<Agent_GS>();
+            SetSelectedAgent(Selection.activeGameObject.gameObject.GetComponent<Agent_GS>());
         }
 
         if (selected_agent == null || selected_agent.action_nodes == null) return;
 
         mouse_pos = Event.current.mousePosition;
 
-        DrawNodeCurve(window1, window2); //curve is drawn under the windows
+        /*DrawNodeCurve(window1, window2); //curve is drawn under the windows
         DrawNodeCurve(start_node, window2); 
-        DrawNodeCurve(window2_, window1); 
+        DrawNodeCurve(window2_, window1); */
         BeginWindows();
 
         //Window inputs
@@ -78,8 +78,10 @@ public class NodeEditor_GS : EditorWindow
             //Right click
             if (Event.current.button == 1)
             {
-                Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y - 100, 50, 100), new GOAP_S.UI.NodeEditorPopMenu_GS());
+                //Update mouse pos
+                mouse_pos = Event.current.mousePosition;
+                //Show node editor popup menu
+                PopupWindow.Show(new Rect(mouse_pos.x, mouse_pos.y, 0,0), new GOAP_S.UI.NodeEditorPopMenu_GS(this));
             }
         }
 
@@ -125,5 +127,37 @@ public class NodeEditor_GS : EditorWindow
         Vector3 endTan = endPos + Vector3.left * 50;
 
         Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 4);
+    }
+
+    //Get Methods =====================
+    public Agent_GS GetSelectedAgent()
+    {
+        return selected_agent;
+    }
+
+    public Vector2 GetMousePos()
+    {
+        return mouse_pos;
+    }
+
+    //Set Methods =====================
+    public void SetSelectedAgent(Agent_GS new_agent)
+    {
+        selected_agent = new_agent;
+        if (selected_agent == null) return;
+        
+        //Iterate all the agent action nodes to initialize them
+        int num = selected_agent.action_nodes.Count;
+        for (int k = 0; k < num; k++)
+        {
+            //Get the current action node
+            ActionNode_GS node = ((ActionNode_GS)selected_agent.action_nodes[k]);
+            //Check if the current action node is initialized
+            if (!node.GetInitialized())
+            {
+                node.Initialize();
+            }
+        }
+        
     }
 }

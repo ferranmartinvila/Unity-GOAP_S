@@ -5,7 +5,12 @@ public class ActionNodeUIConfig_GS
     //TODO: Check notes
     //UI fields
     [SerializeField] public string node_title; //Node title string
-    [SerializeField] public GUIStyle node_title_style; //Node title style
+    //UI Config
+    [System.NonSerialized] public GUIStyle node_title_style = null; //Node title style
+    //UI Config fields
+    [SerializeField] private TextAnchor title_text_anchor; //Title text alignment
+    [SerializeField] private int title_font_size; //Title font size
+    [SerializeField] private FontStyle title_font_style;//Title font style
 
     //Initialize method ===============
     public void InitializeConfig()

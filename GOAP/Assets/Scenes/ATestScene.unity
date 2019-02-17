@@ -291,8 +291,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialized: 1
   agent_name: unnamed
-  agent_id: 7e24f995-5078-4884-ade2-caf167193699
-  serialized_data: '[{"canvas_pos":{"xMin":25.0,"yMin":25.0,"xMax":125.0,"yMax":125.0},"editable_pos":false,"node_id":"a737f500-3fd8-4067-b5f0-9b21b58a6002","serialized_data":"{\"target_obj\":null,\"$type\":\"TestBoiii\"}"}]'
+  agent_id: 0b83ed08-bf53-4dd5-a775-8760186dcc72
+  serialized_action_nodes: '[]'
   obj_refs: []
 --- !u!65 &2136115429
 BoxCollider:

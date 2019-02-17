@@ -14,8 +14,8 @@ namespace GOAP_S.UI
         [System.NonSerialized] static GUIStyle header_style; //Header style
         [System.NonSerialized] static Rect main_rect; //Menu window rect
         //Content fields
-        ActionNode_GS target = null; //Focused Node Action
-        [System.NonSerialized] private static Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
+        [System.NonSerialized] static private ActionNode_GS target = null; //Focused Node Action
+        [System.NonSerialized] static private Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
 
         //Constructors ================
         public ActionSelectMenu_GS(ActionNode_GS _target)

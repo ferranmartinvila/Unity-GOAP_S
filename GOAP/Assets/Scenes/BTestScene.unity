@@ -259,7 +259,6 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 847560212}
-  - component: {fileID: 847560213}
   m_Layer: 0
   m_Name: Test
   m_TagString: Untagged
@@ -280,19 +279,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &847560213
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 847560211}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28eb8b0fa61d0ae4f8e21fcb95433f45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialized: 1
-  agent_name: unnamed
-  agent_id: 47f8efa7-18ac-42a9-8f26-4f74ef63ddfd
-  serialized_data: '[{"canvas_pos":{"xMin":25.0,"yMin":25.0,"xMax":125.0,"yMax":125.0},"editable_pos":false,"node_id":"670b0f65-d7f6-47fd-b647-916598b8f4b5","serialized_data":"null"}]'
-  obj_refs: []

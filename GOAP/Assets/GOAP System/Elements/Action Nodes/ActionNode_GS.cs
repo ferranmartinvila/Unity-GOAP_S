@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class ActionNode_GS : ISerializationCallbackReceiver {
 
@@ -11,7 +13,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
     //State fields
     [System.NonSerialized] private bool modified = false;
-    [SerializeField] private bool initialized = false;
+    [System.NonSerialized] private bool initialized = false;
     //Serialization fields
     [SerializeField] private string serialized_action; //String where the serialized data is stored
     [SerializeField] private string serialized_UIconfig; //String where the serialized data is stored
@@ -19,22 +21,24 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     //Constructor =====================
     public ActionNode_GS()
     {
-        if (initialized == false)
-        {
-            nodeUI_configuration.InitializeConfig();
-            initialized = true;
-        }
+
     }
 
-    
-
     //Loop Methods ====================
-    void Start()
+    public void Initialize()
+    {
+        //Initialize the node UI configuration
+        nodeUI_configuration.InitializeConfig();
+
+        initialized = true;
+    }
+
+    public void Start()
     {
 
     }
 
-    void Update()
+    public void Update()
     {
         //In editor update
         if (Application.isEditor)
@@ -67,6 +71,11 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
         return modified;
     }
 
+    public bool GetInitialized()
+    {
+        return initialized;
+    }
+
     public Action_GS GetAction()
     {
         return action;
@@ -85,7 +94,10 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     
     public void SetAction(Action_GS new_action)
     {
+        //Set the new action
         action = new_action;
+        //Mark scene dirty
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
 
         modified = true; //Now node is detected as modified
     }
