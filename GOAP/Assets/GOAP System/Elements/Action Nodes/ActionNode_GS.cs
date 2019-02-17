@@ -5,14 +5,13 @@ using UnityEngine.SceneManagement;
 public class ActionNode_GS : ISerializationCallbackReceiver {
 
     //UI fields
-    [System.NonSerialized] public ActionNodeUIConfig_GS nodeUI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
+    [System.NonSerialized] public ActionNodeUIConfig_GS UI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
     [SerializeField] private Rect canvas_pos; //Position of the node window in the editor
     [SerializeField] private bool editable_pos = true; //True means that the user can move the window
     [SerializeField] private string node_id = "null_id"; //Node ID used to set window id
     //Content fields
     [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
     //State fields
-    [System.NonSerialized] private bool modified = false;
     [System.NonSerialized] private bool initialized = false;
     //Serialization fields
     [SerializeField] private string serialized_action; //String where the serialized data is stored
@@ -28,7 +27,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public void Initialize()
     {
         //Initialize the node UI configuration
-        nodeUI_configuration.InitializeConfig();
+        UI_configuration.InitializeConfig();
 
         initialized = true;
     }
@@ -40,14 +39,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     public void Update()
     {
-        //In editor update
-        if (Application.isEditor)
-        {
-            if (modified)
-            {
-                modified = false;
-            }
-        }
+
     }
 
     //Get methods =====================
@@ -58,17 +50,13 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     public Rect GetCanvasPos()
     {
+        canvas_pos = new Rect(canvas_pos.x, canvas_pos.y, 125, 150);
         return canvas_pos;
     }
 
     public int GetNodeID()
     {
         return node_id.GetHashCode();
-    }
-
-    public bool GetModified()
-    {
-        return modified;
     }
 
     public bool GetInitialized()
@@ -98,8 +86,6 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
         action = new_action;
         //Mark scene dirty
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-
-        modified = true; //Now node is detected as modified
     }
 
     public void CalculateUUID()
@@ -111,7 +97,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public void OnBeforeSerialize()
     {
         //Serialize the node UI configuration
-        serialized_UIconfig = GOAP_S.Serialization.SerializationManager.Serialize(nodeUI_configuration, typeof(ActionNodeUIConfig_GS), null);
+        serialized_UIconfig = GOAP_S.Serialization.SerializationManager.Serialize(UI_configuration, typeof(ActionNodeUIConfig_GS), null);
         //Serialize the action set
         serialized_action = GOAP_S.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
 
@@ -120,7 +106,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public void OnAfterDeserialize()
     {
         //Deserialize the node UI configuration
-        nodeUI_configuration = (ActionNodeUIConfig_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(ActionNodeUIConfig_GS), serialized_UIconfig, null);
+        UI_configuration = (ActionNodeUIConfig_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(ActionNodeUIConfig_GS), serialized_UIconfig, null);
         //Deserialize the action
         action = (Action_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, null);
     }

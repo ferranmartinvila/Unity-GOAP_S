@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Info about GUIStyle
+/// https://gist.github.com/MadLittleMods/ea3e7076f0f59a702ecb
+/// </summary>
 public class ActionNodeUIConfig_GS
 {
     //TODO: Check notes
@@ -18,9 +22,21 @@ public class ActionNodeUIConfig_GS
         //Set header string
         node_title = "Action Node";
         //Configure the header style
-        node_title_style = new GUIStyle("label");
+        node_title_style = new GUIStyle(GUI.skin.window);
         node_title_style.alignment = TextAnchor.UpperCenter;
-        node_title_style.fontSize = 15;
-        node_title_style.fontStyle = FontStyle.Bold;
+        node_title_style.fontSize = 12;
+        
+        //("HelpBox");
+
+        /*node_title_style.alignment = TextAnchor.UpperCenter;
+        node_title_style.fontSize = 10;
+        node_title_style.margin = new RectOffset(10, 10, 10, 10);*/
+        //node_title_style.fontStyle = FontStyle.Bold;
+    }
+
+    //Get methods =====================
+    public GUIStyle GetNodeTitleStyle()
+    {
+        return node_title_style;
     }
 }

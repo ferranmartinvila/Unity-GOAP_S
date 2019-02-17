@@ -7,31 +7,56 @@ using UnityEditor;
 public class ActionNode_GS_Editor {
 
     //Content fields
-    private ActionNode_GS target;
+    [System.NonSerialized] private ActionNode_GS target_action_node;
+    [System.NonSerialized] private NodeEditor_GS target_editor;
 
     //Constructor =====================
-    public ActionNode_GS_Editor(ActionNode_GS new_target)
+    public ActionNode_GS_Editor(ActionNode_GS new_target, NodeEditor_GS new_editor)
     {
-        target = new_target;
+        target_action_node = new_target;
+        target_editor = new_editor;
     }
 
     //Loop Methods ====================
     public void DrawNodeWindow(int id)
     {
-        Action_GS action = target.GetAction();
+        Action_GS action = target_action_node.GetAction();
         //Action null case
         if (action == null)
         {
-            if (GUI.Button(new Rect(10, 20, 100, 20), "Add Action"))
+            GUIStyle node_title_style = new GUIStyle(GUI.skin.button);
+
+            if (GUI.Button(new Rect(10, 20, 100, 20), "Select Condition", node_title_style))
+            {
+
+            }
+
+            
+            GUILayout.Space(20);
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            Rect last_rect = GUILayoutUtility.GetLastRect();
+
+            if (GUI.Button(new Rect(10, last_rect.y + 15, 100, 20), "Select Action", node_title_style))
             {
                 Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y - 100,0,0), new GOAP_S.UI.ActionSelectMenu_GS(target));
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y - 100,0,0), new GOAP_S.UI.ActionSelectMenu_GS(this));
             }
+            last_rect = GUILayoutUtility.GetLastRect();
+
+            GUILayout.Space(20);
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            if (GUI.Button(new Rect(10, last_rect.y + 15, 100, 20), "Select Reward", node_title_style))
+            {
+
+            }
+
         }
         //Action set case
         else
         {
-            GUILayout.Label(target.nodeUI_configuration.node_title, target.nodeUI_configuration.node_title_style);
+            GUILayout.Label(target_action_node.UI_configuration.node_title, target_action_node.UI_configuration.node_title_style);
 
             /*if(GUI.Button(new Rect(10,20,80,20),"Remove Action"))
             {
@@ -53,10 +78,12 @@ public class ActionNode_GS_Editor {
         GUI.DragWindow();
     }
 
-
-    //Set Methods =====================
-    public void SetTarget(ActionNode_GS new_target)
+    //Get Methods =====================
+    public void SetAction(Action_GS new_action)
     {
-        target = new_target;
+        //Set the new action in the target action node
+        target_action_node.SetAction(new_action);
+        //Repaint the node editor to update the UI
+        target_editor.Repaint();
     }
 }

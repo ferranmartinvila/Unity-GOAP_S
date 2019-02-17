@@ -97,14 +97,12 @@ public class NodeEditor_GS : EditorWindow
             //Get the current action node
             ActionNode_GS node = ((ActionNode_GS)selected_agent.action_nodes[k]);
             //Generate a node editor for the current node
-            ActionNode_GS_Editor node_window = new ActionNode_GS_Editor(node);
+            ActionNode_GS_Editor node_window = new ActionNode_GS_Editor(node, this);
             //Generate the window
-            Rect node_rect = GUI.Window(node.GetNodeID(), node.GetCanvasPos(), node_window.DrawNodeWindow, "");
+            Rect node_rect = GUI.Window(node.GetNodeID(), node.GetCanvasPos(), node_window.DrawNodeWindow, "Action Node",node.UI_configuration.GetNodeTitleStyle());
             
             //Move the node if it's position is editable
             if (node.GetEditablePos()) node.SetCanvasPos(node_rect);
-            //Update node editor window if the cur node has been modified
-            if (node.GetModified()) Repaint();
         }
        
         /*

@@ -24,7 +24,7 @@ namespace GOAP_S.UI
         {
             editorWindow.BeginWindows();
 
-            if (GUILayout.Button("Add Node Action", GUILayout.Width(150), GUILayout.Height(30)))
+            if (GUILayout.Button("Add Action Node", GUILayout.Width(150), GUILayout.Height(30)))
             {
                 //Get the mouse pos inside the target canvas
                 Vector2 mousePos = target.GetMousePos();
@@ -32,6 +32,8 @@ namespace GOAP_S.UI
                 target.GetSelectedAgent().AddActionNode(mousePos.x, mousePos.y);
                 //Repaint the target window
                 target.Repaint();
+                //Close this window
+                editorWindow.Close();
             }
 
             editorWindow.EndWindows();
