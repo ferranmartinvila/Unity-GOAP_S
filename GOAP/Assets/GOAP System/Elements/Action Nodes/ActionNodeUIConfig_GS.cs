@@ -1,16 +1,14 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
 public class ActionNodeUIConfig_GS
 {
     //TODO: Check notes
     //UI fields
-    public string node_title; //Node title string
-    public GUIStyle node_title_style; //Node title style
+    [SerializeField] public string node_title; //Node title string
+    [SerializeField] public GUIStyle node_title_style; //Node title style
 
-
-    //Constructor =====================
-    public ActionNodeUIConfig_GS()
+    //Initialize method ===============
+    public void InitializeConfig()
     {
         //Set header string
         node_title = "Action Node";

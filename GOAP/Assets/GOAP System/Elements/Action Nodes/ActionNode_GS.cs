@@ -11,10 +11,22 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
     //State fields
     [System.NonSerialized] private bool modified = false;
+    [SerializeField] private bool initialized = false;
     //Serialization fields
     [SerializeField] private string serialized_action; //String where the serialized data is stored
     [SerializeField] private string serialized_UIconfig; //String where the serialized data is stored
 
+    //Constructor =====================
+    public ActionNode_GS()
+    {
+        if (initialized == false)
+        {
+            nodeUI_configuration.InitializeConfig();
+            initialized = true;
+        }
+    }
+
+    
 
     //Loop Methods ====================
     void Start()
