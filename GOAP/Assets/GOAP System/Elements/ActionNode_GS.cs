@@ -8,18 +8,29 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     [SerializeField] private string node_id = "null_id"; //Node ID used to set window id
     //Content fields
     [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
+    //State fields
+    [System.NonSerialized] private bool modified = false;
     //Serialization fields
     [SerializeField] private string serialized_data; //String where the serialized data is stored
 
-    //Loop Methods ====================
-    void Start ()
-    {
-      
-	}
-	
-	void Update () {
 
-	}
+    //Loop Methods ====================
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        //In editor update
+        if (Application.isEditor)
+        {
+            if (modified)
+            {
+                modified = false;
+            }
+        }
+    }
 
     //Get methods =====================
     public bool GetEditablePos()
@@ -35,6 +46,11 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public int GetNodeID()
     {
         return node_id.GetHashCode();
+    }
+
+    public bool GetModified()
+    {
+        return modified;
     }
 
     public Action_GS GetAction()
@@ -56,6 +72,8 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public void SetAction(Action_GS new_action)
     {
         action = new_action;
+
+        modified = true; //Now node is detected as modified
     }
 
     public void CalculateUUID()

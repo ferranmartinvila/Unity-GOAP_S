@@ -9,18 +9,13 @@ namespace GOAP_S.UI
     
     public class ActionSelectMenu_GS : PopupWindowContent
     {
-        //Header string
-        [System.NonSerialized] static string header;
-        //Header style
-        [System.NonSerialized] static GUIStyle header_style;
-        //Menu window rect
-        [System.NonSerialized] static Rect main_rect;
-
-
-        //Focused Node Action
-        ActionNode_GS target = null;
-        //Action scripts dic
-        [System.NonSerialized] private static Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>();
+        //UI fields
+        [System.NonSerialized] static string header; //Header string
+        [System.NonSerialized] static GUIStyle header_style; //Header style
+        [System.NonSerialized] static Rect main_rect; //Menu window rect
+        //Content fields
+        ActionNode_GS target = null; //Focused Node Action
+        [System.NonSerialized] private static Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
 
         //Constructors ================
         public ActionSelectMenu_GS(ActionNode_GS _target)

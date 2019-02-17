@@ -101,6 +101,8 @@ public class NodeEditor_GS : EditorWindow
             
             //Move the node if it's position is editable
             if (node.GetEditablePos()) node.SetCanvasPos(node_rect);
+            //Update node editor window if the cur node has been modified
+            if (node.GetModified()) Repaint();
         }
        
         /*
