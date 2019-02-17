@@ -13,6 +13,7 @@ public class Action_Attribute_GS : System.Attribute
 //Actions inherit from this class and can manage all kind of scene data
 public abstract class Action_GS {
 
+    [SerializeField] private string name = "no_name";
     /*
     Action update return the state of the action process
     ActionStart also uses this enum, 
@@ -44,6 +45,17 @@ public abstract class Action_GS {
     /*
     Blit action UI inside the action node
      */
-
     public abstract void BlitUI();
+
+    //Get Methods =====================
+    public string GetName()
+    {
+        return name;
+    }
+
+    //Set Methods =====================
+    public void SetName(string new_name)
+    {
+        name = new_name;
+    }
 }

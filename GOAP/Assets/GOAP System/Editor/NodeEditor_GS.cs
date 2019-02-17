@@ -1,19 +1,21 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 public class NodeEditor_GS : EditorWindow
 {
-    static NodeEditor_GS window;
-    private GameObject selected_object = null;
-    private Agent_GS selected_agent = null;
-    private Vector2 mouse_pos;
+    //State fields
+    [System.NonSerialized] static NodeEditor_GS window;
+    [System.NonSerialized] private Vector2 mouse_pos;
+    //UI fields
+    [System.NonSerialized] public ActionNodeUIConfig_GS nodes_UI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
+    //Target fields
+    [System.NonSerialized] private GameObject selected_object = null;
+    [System.NonSerialized] private Agent_GS selected_agent = null;
     
-    Rect start_node;
+    /*Rect start_node;
     Rect window1;
     Rect window2;
-    Rect window2_;
+    Rect window2_;*/
 
     //Window Menu Item ================
     [MenuItem("Tools / GOAP / Node Editor")]
@@ -45,24 +47,50 @@ public class NodeEditor_GS : EditorWindow
         //if (!selected_agent.GetAgentInit()) selected_agent.Initialize();
 
         //Iterate all the nodes and place them in the canvas
-        start_node = new Rect(210, 10, 100, 100);
+        /*start_node = new Rect(210, 10, 100, 100);
         window1 = new Rect(10, 10, 100, 100);
         window2 = new Rect(210, 210, 100, 100);
-        window2_ = new Rect(210, 210, 100, 100);
+        window2_ = new Rect(210, 210, 100, 100);*/
     }
 
+    /*private void OnProjectChange()
+    {
+        //Node editor UI configuration is initialized on project change
+        if(!nodes_UI_configuration.GetInitialized()) nodes_UI_configuration.InitializeConfig();
+    }
     private void OnEnable()
     {
-        Repaint();
-    }
+        //Node editor UI configuration is initialized on window enable
+        if (!nodes_UI_configuration.GetInitialized()) nodes_UI_configuration.InitializeConfig();
+    }*/
 
     void OnGUI()
     {
-        if (Selection.activeGameObject != selected_object)
+        //Check if the nodes UI configuration is initialized
+        if (!nodes_UI_configuration.GetInitialized())
         {
-            SetSelectedAgent(Selection.activeGameObject.gameObject.GetComponent<Agent_GS>());
+            nodes_UI_configuration.InitializeConfig();
         }
 
+        //Check if the current selected object is the same that the windows is focusing
+        if (Selection.activeGameObject != selected_object)
+        {
+            //Set agent to null in case of no object selected
+            if (Selection.activeGameObject == null)
+            {
+                selected_agent = null;
+            }
+            //Set selected agent from the agent comp of the selected obj, if is null data is not shown
+            else
+            {
+                selected_agent = Selection.activeGameObject.gameObject.GetComponent<Agent_GS>();
+            }
+            //Change the selected object and repaint the window content
+            selected_object = Selection.activeGameObject;
+            Repaint();
+        }
+        
+        //If agent is null or there's no actions blit is avoided
         if (selected_agent == null || selected_agent.action_nodes == null) return;
 
         mouse_pos = Event.current.mousePosition;
@@ -99,10 +127,12 @@ public class NodeEditor_GS : EditorWindow
             //Generate a node editor for the current node
             ActionNode_GS_Editor node_window = new ActionNode_GS_Editor(node, this);
             //Generate the window
-            Rect node_rect = GUI.Window(node.GetNodeID(), node.GetCanvasPos(), node_window.DrawNodeWindow, "Action Node",node.UI_configuration.GetNodeTitleStyle());
-            
+            Rect node_rect = GUILayout.Window(node.GetNodeID(), node.GetCanvasWindow(), node_window.DrawNodeWindow, "Action Node", nodes_UI_configuration.GetNodeWindowStyle(), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             //Move the node if it's position is editable
-            if (node.GetEditablePos()) node.SetCanvasPos(node_rect);
+            if (node.GetEditablePos())
+            {
+                node.SetCanvasPos(new Vector2(node_rect.x, node_rect.y));
+            }
         }
        
         /*
@@ -142,20 +172,5 @@ public class NodeEditor_GS : EditorWindow
     public void SetSelectedAgent(Agent_GS new_agent)
     {
         selected_agent = new_agent;
-        if (selected_agent == null) return;
-        
-        //Iterate all the agent action nodes to initialize them
-        int num = selected_agent.action_nodes.Count;
-        for (int k = 0; k < num; k++)
-        {
-            //Get the current action node
-            ActionNode_GS node = ((ActionNode_GS)selected_agent.action_nodes[k]);
-            //Check if the current action node is initialized
-            if (!node.GetInitialized())
-            {
-                node.Initialize();
-            }
-        }
-        
     }
 }

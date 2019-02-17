@@ -6,37 +6,73 @@
 /// </summary>
 public class ActionNodeUIConfig_GS
 {
-    //TODO: Check notes
+    //UI Configurations fields
+    static private GUIStyle node_window_style = null; //Node title style
+    static private GUIStyle selection_buttons_style = null; //Buttons used to select node elements style
+    static private GUIStyle modify_button_style = null; //Button used to delete or edit the node data
+    static private GUIStyle elements_style = null; //Used in the condition,action,reward names
+    static private GUIStyle pop_windows_style = null; //Used to set the pop windows in node editor style
+    //State fields
+    private bool initialized = false;
     //UI fields
-    [SerializeField] public string node_title; //Node title string
-    //UI Config
-    [System.NonSerialized] public GUIStyle node_title_style = null; //Node title style
-    //UI Config fields
-    [SerializeField] private TextAnchor title_text_anchor; //Title text alignment
-    [SerializeField] private int title_font_size; //Title font size
-    [SerializeField] private FontStyle title_font_style;//Title font style
 
     //Initialize method ===============
     public void InitializeConfig()
     {
-        //Set header string
-        node_title = "Action Node";
-        //Configure the header style
-        node_title_style = new GUIStyle(GUI.skin.window);
-        node_title_style.alignment = TextAnchor.UpperCenter;
-        node_title_style.fontSize = 12;
-        
-        //("HelpBox");
+        //GUIStyles -------------------
+        //Configure the node window style
+        node_window_style = new GUIStyle(GUI.skin.window);
+        node_window_style.alignment = TextAnchor.UpperCenter;
+        node_window_style.fontSize = 12;
 
-        /*node_title_style.alignment = TextAnchor.UpperCenter;
-        node_title_style.fontSize = 10;
-        node_title_style.margin = new RectOffset(10, 10, 10, 10);*/
-        //node_title_style.fontStyle = FontStyle.Bold;
+        //Configure the selection buttons style
+        selection_buttons_style = new GUIStyle(GUI.skin.button);
+        selection_buttons_style.alignment = TextAnchor.UpperCenter;
+
+        //Configure the modify button style
+        modify_button_style = new GUIStyle("AssetLabel");
+
+        //Configure the elements style
+        elements_style = new GUIStyle("label");
+        elements_style.fontStyle = FontStyle.Bold;
+        elements_style.fontSize = 12;
+
+        //Configure the popup windows style
+        pop_windows_style = new GUIStyle("label");
+        pop_windows_style.fontStyle = FontStyle.Bold;
+        pop_windows_style.fontSize = 15;
+
+        //Set initialized bool
+        initialized = false;
     }
 
     //Get methods =====================
-    public GUIStyle GetNodeTitleStyle()
+    public bool GetInitialized()
     {
-        return node_title_style;
+        return initialized;
+    }
+
+    public GUIStyle GetNodeWindowStyle()
+    {
+        return node_window_style;
+    }
+
+    public GUIStyle GetSelectionButtonsStyle()
+    {
+        return selection_buttons_style;
+    }
+
+    public GUIStyle GetModifyButtonStyle()
+    {
+        return modify_button_style;
+    }
+    public GUIStyle GetElementsStyle()
+    {
+        return elements_style;
+    }
+
+    public GUIStyle GetPopWindowsStyle()
+    {
+        return pop_windows_style;
     }
 }

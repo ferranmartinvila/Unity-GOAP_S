@@ -72,15 +72,18 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     {
         ActionNode_GS new_node = new ActionNode_GS();
         //Set a position in the node editor canvas
-        new_node.SetCanvasPos(new Rect(x_pos, y_pos, 100, 100));
+        new_node.SetCanvasWindow(new Rect(x_pos, y_pos, 100, 100));
         //Calculate the UUID
         new_node.CalculateUUID();
-        //Initialize the new node
-        new_node.Initialize();
         //Add the new node to the action nodes list
         action_nodes.Add(new_node);
         //Mark scene dirty
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+    }
+
+    public void DeleteActionNode(ActionNode_GS target)
+    {
+        action_nodes.Remove(target);
     }
 
     //Get Methods =====================

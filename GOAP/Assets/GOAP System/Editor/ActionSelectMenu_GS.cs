@@ -1,8 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
-using System;
-using System.Reflection;
 
 namespace GOAP_S.UI
 {
@@ -64,6 +62,8 @@ namespace GOAP_S.UI
                 {
                     //Allocate a class with the same type of script value
                     Action_GS new_script = GOAP_S.PT.ProTools.AllocateClass<Action_GS>(script.Value);
+                    //Set the class name to the new allocated action
+                    new_script.SetName(script.Key);
                     //Set the allocated class to the action node
                     target.SetAction(new_script);
                     //Close the pop window when the action is selected & set

@@ -17,14 +17,26 @@ namespace GOAP_S.UI
 
         public override Vector2 GetWindowSize()
         {
-            return new Vector2(300,300);
+            return new Vector2(160,100);
         }
 
         public override void OnGUI(Rect rect)
         {
-            editorWindow.BeginWindows();
+            //Menu title
+            GUILayout.BeginHorizontal("Box");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.GetPopWindowsStyle(), GUILayout.ExpandWidth(true));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
 
-            if (GUILayout.Button("Add Action Node", GUILayout.Width(150), GUILayout.Height(30)))
+            //Separator
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
+
+            //Add action button
+            if (GUILayout.Button(
+                "Add Action Node",
+                GUILayout.ExpandWidth(true),
+                GUILayout.Height(30)))
             {
                 //Get the mouse pos inside the target canvas
                 Vector2 mousePos = target.GetMousePos();
@@ -36,7 +48,14 @@ namespace GOAP_S.UI
                 editorWindow.Close();
             }
 
-            editorWindow.EndWindows();
+            //Clear planning button
+            if (GUILayout.Button(
+                "Clear Plannig",
+                GUILayout.ExpandWidth(true),
+                GUILayout.Height(30)))
+            {
+                target.GetSelectedAgent().ClearPlanning();
+            }
         }
     }
 }
