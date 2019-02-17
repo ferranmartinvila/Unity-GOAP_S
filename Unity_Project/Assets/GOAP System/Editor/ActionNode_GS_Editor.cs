@@ -55,8 +55,8 @@ public class ActionNode_GS_Editor {
 
         //Node name text field
         GUILayout.BeginHorizontal();
-        GUILayout.TextField(name_str, GUILayout.ExpandWidth(true));
-        if(GUILayout.Button("Set", target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(), GUILayout.ExpandWidth(true)))
+        target_node.SetName(GUILayout.TextField(target_node.GetName(), GUILayout.Width(40), GUILayout.ExpandWidth(true)));
+        if(GUILayout.Button("Set", target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(), GUILayout.Width(30), GUILayout.ExpandWidth(true)))
         {
             target_node.SetName(name_str);
         }
@@ -69,12 +69,14 @@ public class ActionNode_GS_Editor {
         if (GUILayout.Button(
             "Close",
             target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
-            GUILayout.Width(90), GUILayout.ExpandWidth(true)))
+            GUILayout.Width(120), GUILayout.ExpandWidth(true)))
         {
             target_node.SetUIMode(ActionNode_GS.NodeUIMode.SET_STATE);
         }
 
         GUILayout.EndVertical();
+
+        GUI.DragWindow();
     }
 
     private void DrawNodeWindowSetState()
@@ -88,9 +90,6 @@ public class ActionNode_GS_Editor {
         {
             //Set edit state
             target_node.SetUIMode(ActionNode_GS.NodeUIMode.EDIT_STATE);
-            //Prepare for edit menu
-            name_str = target_node.GetName();
-            description_str = target_node.GetDescription();
         }
         //Delete
         if (GUILayout.Button(

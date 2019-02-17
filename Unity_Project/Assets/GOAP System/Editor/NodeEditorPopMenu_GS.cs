@@ -50,7 +50,12 @@ namespace GOAP_S.UI
                 GUILayout.ExpandWidth(true),
                 GUILayout.Height(30)))
             {
+                //Clear agent planning
                 target.GetSelectedAgent().ClearPlanning();
+                //Repaint target window
+                target.Repaint();
+                //Close this window
+                editorWindow.Close();
             }
         }
 
