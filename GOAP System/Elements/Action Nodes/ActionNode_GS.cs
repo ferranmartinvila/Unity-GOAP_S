@@ -4,11 +4,20 @@ using UnityEngine.SceneManagement;
 
 public class ActionNode_GS : ISerializationCallbackReceiver {
 
+    public enum NodeUIMode
+    {
+        SET_STATE, //State in which the user can set action node attributes
+        EDIT_STATE //State in which the user can set node description/name
+    }
+
     //UI fields
     [SerializeField] private Rect canvas_window; //Position of the node window in the editor
     [SerializeField] private bool editable_pos = true; //True means that the user can move the window
-    [SerializeField] private string node_id = "null_id"; //Node ID used to set window id
+    [SerializeField] private string node_id = "null_id"; //Node ID used to set window 
+    [System.NonSerialized] private NodeUIMode nodeUI_mode = NodeUIMode.SET_STATE;
     //Content fields
+    [SerializeField] private string name = "Action Node"; //Node name
+    [SerializeField] private string description = ""; //Node description
     [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
     //Serialization fields
     [SerializeField] private string serialized_action; //String where the serialized data is stored
@@ -36,6 +45,11 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
         return editable_pos;
     }
 
+    public NodeUIMode GetUIMode()
+    {
+        return nodeUI_mode;
+    }
+
     public Rect GetCanvasWindow()
     {
         //canvas_window = new Rect(canvas_window.x, canvas_window.y, 50, 160);
@@ -50,6 +64,16 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     public Action_GS GetAction()
     {
         return action;
+    }
+
+    public string GetName()
+    {
+        return name;
+    }
+
+    public string GetDescription()
+    {
+        return description;
     }
 
     //Set methods =====================
@@ -83,9 +107,24 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
         EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
     }
 
+    public void SetUIMode(NodeUIMode new_mode)
+    {
+        nodeUI_mode = new_mode;
+    }
+
     public void CalculateUUID()
     {
         node_id = System.Guid.NewGuid().ToString();
+    }
+
+    public void SetName(string new_name)
+    {
+        name = new_name;
+    }
+
+    public void SetDescription(string new_description)
+    {
+        description = new_description;
     }
 
     //Serialization Methods ===========

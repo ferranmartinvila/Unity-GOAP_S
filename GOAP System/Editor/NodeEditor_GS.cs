@@ -4,8 +4,9 @@ using UnityEditor;
 public class NodeEditor_GS : EditorWindow
 {
     //State fields
-    [System.NonSerialized] static NodeEditor_GS window;
-    [System.NonSerialized] private Vector2 mouse_pos;
+    [System.NonSerialized] static string window_id = "null_id"; //Node ID used to set pop window id
+    [System.NonSerialized] static NodeEditor_GS window; //Reference to this node editor window
+    [System.NonSerialized] private Vector2 mouse_pos; //World mouse pos used for other windows
     //UI fields
     [System.NonSerialized] public ActionNodeUIConfig_GS nodes_UI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
     //Target fields
@@ -35,6 +36,7 @@ public class NodeEditor_GS : EditorWindow
     static void ConfigureWindow()
     {
         window.titleContent.text = "Node Editor"; //Set a window title
+        window_id = System.Guid.NewGuid().ToString(); //Generate window UUID
     }
 
     //Loop Methods ====================

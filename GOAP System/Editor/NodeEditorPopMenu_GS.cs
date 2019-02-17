@@ -8,16 +8,12 @@ namespace GOAP_S.UI
     public sealed class NodeEditorPopMenu_GS : PopupWindowContent
     {
         [System.NonSerialized] static private NodeEditor_GS target = null; //Focused node editor menu
+        [System.NonSerialized] static private Vector2 window_size = new Vector2(150,120); //Used to modify window size
 
         //Constructors ================
         public NodeEditorPopMenu_GS(NodeEditor_GS _target)
         {
             target = _target;
-        }
-
-        public override Vector2 GetWindowSize()
-        {
-            return new Vector2(160,100);
         }
 
         public override void OnGUI(Rect rect)
@@ -56,6 +52,12 @@ namespace GOAP_S.UI
             {
                 target.GetSelectedAgent().ClearPlanning();
             }
+        }
+
+        //Set Methods =================
+        public override Vector2 GetWindowSize()
+        {
+            return new Vector2(window_size.x, window_size.y);
         }
     }
 }

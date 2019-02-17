@@ -12,6 +12,8 @@ public class ActionNode_GS_Editor {
     [System.NonSerialized] static private int initial_separation = 0; //Used to define the separation between the first ui element and the window title
     [System.NonSerialized] static private int parts_separation = 0; //Used to define the separation between the diferent action node main elements (condition,action,reward)
     [System.NonSerialized] static private int mark_separation = 0; //Used to define the separation between the elements and the window lateral sides
+    [System.NonSerialized] private string name_str = ""; //Used in edit state to allocate the new name
+    [System.NonSerialized] private string description_str = ""; //Used in edit state to allocate the new description
 
     //Constructor =====================
     public ActionNode_GS_Editor(ActionNode_GS new_target, NodeEditor_GS new_editor)
@@ -33,6 +35,50 @@ public class ActionNode_GS_Editor {
     //Loop Methods ====================
     public void DrawNodeWindow(int id)
     {
+        switch (target_node.GetUIMode())
+        {
+            case ActionNode_GS.NodeUIMode.EDIT_STATE:
+                //Draw window in edit state
+                DrawNodeWindowEditState();
+                break;
+
+            case ActionNode_GS.NodeUIMode.SET_STATE:
+                //Draw window in set state
+                DrawNodeWindowSetState();
+                break;
+        }
+    }
+
+    private void DrawNodeWindowEditState()
+    {
+        GUILayout.BeginVertical();
+
+        //Node name text field
+        GUILayout.BeginHorizontal();
+        GUILayout.TextField(name_str, GUILayout.ExpandWidth(true));
+        if(GUILayout.Button("Set", target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(), GUILayout.ExpandWidth(true)))
+        {
+            target_node.SetName(name_str);
+        }
+        GUILayout.EndHorizontal();
+
+        //Node description text field
+
+
+        //Close edit mode
+        if (GUILayout.Button(
+            "Close",
+            target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+            GUILayout.Width(90), GUILayout.ExpandWidth(true)))
+        {
+            target_node.SetUIMode(ActionNode_GS.NodeUIMode.SET_STATE);
+        }
+
+        GUILayout.EndVertical();
+    }
+
+    private void DrawNodeWindowSetState()
+    { 
         GUILayout.BeginHorizontal();
         //Edit
         if (GUILayout.Button(
@@ -40,7 +86,11 @@ public class ActionNode_GS_Editor {
             target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
             GUILayout.Width(30),GUILayout.ExpandWidth(true)))
         {
-            //IDK what to put here but this can be deleted with no problem :v
+            //Set edit state
+            target_node.SetUIMode(ActionNode_GS.NodeUIMode.EDIT_STATE);
+            //Prepare for edit menu
+            name_str = target_node.GetName();
+            description_str = target_node.GetDescription();
         }
         //Delete
         if (GUILayout.Button(
@@ -138,10 +188,6 @@ public class ActionNode_GS_Editor {
 
         }
         //-----------------------------
-
-        Rect last_rect = GUILayoutUtility.GetLastRect();
-
-        target_node.SetCanvasSize(new Vector2(last_rect.width,target_node.GetCanvasWindow().height));
 
         GUI.DragWindow();
     }
