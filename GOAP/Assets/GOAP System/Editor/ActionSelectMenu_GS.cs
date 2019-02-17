@@ -71,6 +71,8 @@ namespace GOAP_S.UI
                     Action_GS new_script = GOAP_S.PRO_TOOLS.ProTools.AllocateClass<Action_GS>(script.Value);
                     //Set the allocated class to the action node
                     target.SetAction(new_script);
+                    //Close the pop window when the action is selected & set
+                    editorWindow.Close();
                 }
                 GUILayout.Space(2);
             }
