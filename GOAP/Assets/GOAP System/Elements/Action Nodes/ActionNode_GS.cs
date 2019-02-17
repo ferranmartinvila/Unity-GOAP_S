@@ -3,6 +3,7 @@
 public class ActionNode_GS : ISerializationCallbackReceiver {
 
     //UI fields
+    [System.NonSerialized] public ActionNodeUIConfig_GS nodeUI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
     [SerializeField] private Rect canvas_pos; //Position of the node window in the editor
     [SerializeField] private bool editable_pos = true; //True means that the user can move the window
     [SerializeField] private string node_id = "null_id"; //Node ID used to set window id
@@ -11,7 +12,8 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     //State fields
     [System.NonSerialized] private bool modified = false;
     //Serialization fields
-    [SerializeField] private string serialized_data; //String where the serialized data is stored
+    [SerializeField] private string serialized_action; //String where the serialized data is stored
+    [SerializeField] private string serialized_UIconfig; //String where the serialized data is stored
 
 
     //Loop Methods ====================
@@ -84,11 +86,18 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
     //Serialization Methods ===========
     public void OnBeforeSerialize()
     {
-        serialized_data = GOAP_S.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
+        //Serialize the node UI configuration
+        serialized_UIconfig = GOAP_S.Serialization.SerializationManager.Serialize(nodeUI_configuration, typeof(ActionNodeUIConfig_GS), null);
+        //Serialize the action set
+        serialized_action = GOAP_S.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
+
     }
 
     public void OnAfterDeserialize()
     {
-        action = (Action_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_data, null);
+        //Deserialize the node UI configuration
+        nodeUI_configuration = (ActionNodeUIConfig_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(ActionNodeUIConfig_GS), serialized_UIconfig, null);
+        //Deserialize the action
+        action = (Action_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, null);
     }
 }

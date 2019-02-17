@@ -31,8 +31,9 @@ public class ActionNode_GS_Editor {
         //Action set case
         else
         {
-            //GUILayout.
-            if(GUI.Button(new Rect(10,20,80,20),"Remove Action"))
+            GUILayout.Label(target.nodeUI_configuration.node_title, target.nodeUI_configuration.node_title_style);
+
+            /*if(GUI.Button(new Rect(10,20,80,20),"Remove Action"))
             {
                 target.SetAction(null);
             }
@@ -40,7 +41,7 @@ public class ActionNode_GS_Editor {
             if (GUI.Button(new Rect(10, 50, 80, 20), "Edit Action"))
             {
                 action.BlitUI();
-            }
+            }*/
         }
 
         if (Event.current.commandName == "ObjectSelectorClosed")
