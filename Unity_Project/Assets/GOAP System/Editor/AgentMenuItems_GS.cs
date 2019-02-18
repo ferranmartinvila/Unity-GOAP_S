@@ -43,7 +43,8 @@ public class AgentMenuItems_GS {
     [MenuItem("Tools / GOAP / Selected Agent / Clear", true)]
     static bool CheckSelectedObjectToClear()
     {
-        return (Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null) 
-                && Selection.activeGameObject.GetComponent<Agent_GS>().action_nodes.Count > 0;
+        return Selection.activeGameObject != null 
+            && Selection.activeGameObject.GetComponent<Agent_GS>() != null
+            && Selection.activeGameObject.GetComponent<Agent_GS>().list_action_nodes.Count > 0;
     }
 }

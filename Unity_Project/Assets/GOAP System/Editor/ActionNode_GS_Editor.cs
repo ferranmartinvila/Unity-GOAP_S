@@ -56,7 +56,7 @@ public class ActionNode_GS_Editor {
         //Node name text field
         GUILayout.BeginHorizontal();
         target_node.SetName(GUILayout.TextField(target_node.GetName(), GUILayout.Width(40), GUILayout.ExpandWidth(true)));
-        if(GUILayout.Button("Set", target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(), GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+        if(GUILayout.Button("Set", target_editor.nodes_UI_configuration.style_selection_button, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
         {
             target_node.SetName(name_str);
         }
@@ -68,7 +68,7 @@ public class ActionNode_GS_Editor {
         //Close edit mode
         if (GUILayout.Button(
             "Close",
-            target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+            target_editor.nodes_UI_configuration.style_modify_button,
             GUILayout.Width(120), GUILayout.ExpandWidth(true)))
         {
             target_node.SetUIMode(ActionNode_GS.NodeUIMode.SET_STATE);
@@ -85,7 +85,7 @@ public class ActionNode_GS_Editor {
         //Edit
         if (GUILayout.Button(
             "Edit",
-            target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+            target_editor.nodes_UI_configuration.style_modify_button,
             GUILayout.Width(30),GUILayout.ExpandWidth(true)))
         {
             //Set edit state
@@ -94,7 +94,7 @@ public class ActionNode_GS_Editor {
         //Delete
         if (GUILayout.Button(
             "Delete",
-            target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+            target_editor.nodes_UI_configuration.style_modify_button,
             GUILayout.Width(30),GUILayout.ExpandWidth(true)))
         {
             target_editor.GetSelectedAgent().DeleteActionNode(target_node);
@@ -111,7 +111,7 @@ public class ActionNode_GS_Editor {
         //Condition null case
         if (GUILayout.Button(
             "Select Condition",
-            target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(),
+            target_editor.nodes_UI_configuration.style_selection_button,
             GUILayout.Width(150), GUILayout.Height(20),GUILayout.ExpandWidth(true)))
         {
 
@@ -128,7 +128,7 @@ public class ActionNode_GS_Editor {
 
             if (GUILayout.Button(
                 "Select Action",
-                target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(),
+                target_editor.nodes_UI_configuration.style_selection_button,
                 GUILayout.Width(150), GUILayout.Height(20),
                 GUILayout.ExpandWidth(true)))
             {
@@ -147,7 +147,7 @@ public class ActionNode_GS_Editor {
             //Action area
             GUILayout.BeginHorizontal("HelpBox");
             GUILayout.FlexibleSpace();
-            GUILayout.Label(target_node.GetAction().GetName(), target_editor.nodes_UI_configuration.GetElementsStyle(), GUILayout.ExpandWidth(true));
+            GUILayout.Label(target_node.GetAction().GetName(), target_editor.nodes_UI_configuration.style_elements, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -156,7 +156,7 @@ public class ActionNode_GS_Editor {
             //Edit
             if (GUILayout.Button(
                 "Edit",
-                target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+                target_editor.nodes_UI_configuration.style_modify_button,
                 GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //IDK what to put here but this can be deleted with no problem :v
@@ -164,7 +164,7 @@ public class ActionNode_GS_Editor {
             //Delete
             if (GUILayout.Button(
                 "Delete",
-                target_editor.nodes_UI_configuration.GetModifyButtonStyle(),
+                target_editor.nodes_UI_configuration.style_modify_button,
                 GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 target_node.SetAction(null);
@@ -180,7 +180,7 @@ public class ActionNode_GS_Editor {
         //Reward null case
         if (GUILayout.Button(
             "Select Reward",
-            target_editor.nodes_UI_configuration.GetSelectionButtonsStyle(),
+            target_editor.nodes_UI_configuration.style_selection_button,
             GUILayout.Width(150), GUILayout.Height(20),
             GUILayout.ExpandWidth(true)))
         {

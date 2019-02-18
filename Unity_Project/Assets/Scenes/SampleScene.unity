@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -275,9 +275,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 1
   name: unnamed
-  agent_id: 21bf3517-6fb3-4763-8d88-c1d06fc65702
+  id: null
   serialized_action_nodes: '[]'
   obj_refs: []
 --- !u!1 &282840810
@@ -383,9 +382,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialized: 1
   name: unnamed
-  agent_id: f87af61c-a978-4653-97c2-4e5800ffe687
+  id: null
   serialized_action_nodes: '[]'
   obj_refs: []
 --- !u!65 &1645938993

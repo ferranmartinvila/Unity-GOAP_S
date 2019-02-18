@@ -68,12 +68,6 @@ public class NodeEditor_GS : EditorWindow
 
     void OnGUI()
     {
-        //Check if the nodes UI configuration is initialized
-        if (!nodes_UI_configuration.GetInitialized())
-        {
-            nodes_UI_configuration.InitializeConfig();
-        }
-
         //Check if the current selected object is the same that the windows is focusing
         if (Selection.activeGameObject != selected_object)
         {
@@ -93,7 +87,7 @@ public class NodeEditor_GS : EditorWindow
         }
         
         //If agent is null or there's no actions blit is avoided
-        if (selected_agent == null || selected_agent.action_nodes == null) return;
+        if (selected_agent == null || selected_agent.list_action_nodes == null) return;
 
         mouse_pos = Event.current.mousePosition;
 
@@ -121,15 +115,15 @@ public class NodeEditor_GS : EditorWindow
 
 
         //GUI.backgroundColor = new Color(114f/255f, 202f/255f, 237f/255f); //Change node window color
-        int num = selected_agent.action_nodes.Count;
+        int num = selected_agent.list_action_nodes.Count;
         for (int k = 0; k < num; k++)
         {
             //Get the current action node
-            ActionNode_GS node = ((ActionNode_GS)selected_agent.action_nodes[k]);
+            ActionNode_GS node = ((ActionNode_GS)selected_agent.list_action_nodes[k]);
             //Generate a node editor for the current node
             ActionNode_GS_Editor node_window = new ActionNode_GS_Editor(node, this);
             //Generate the window
-            Rect node_rect = GUILayout.Window(node.GetNodeID(), node.GetCanvasWindow(), node_window.DrawNodeWindow, "Action Node", nodes_UI_configuration.GetNodeWindowStyle(), GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            Rect node_rect = GUILayout.Window(node.GetNodeID(), node.GetCanvasWindow(), node_window.DrawNodeWindow, "Action Node", nodes_UI_configuration.style_node_window, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             //Move the node if it's position is editable
             if (node.GetEditablePos())
             {

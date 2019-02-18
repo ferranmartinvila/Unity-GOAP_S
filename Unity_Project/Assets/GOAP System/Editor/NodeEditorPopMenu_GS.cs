@@ -16,12 +16,13 @@ namespace GOAP_S.UI
             target = _target;
         }
 
+        //Loop Methods ================
         public override void OnGUI(Rect rect)
         {
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.GetPopWindowsStyle(), GUILayout.ExpandWidth(true));
+            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.style_pop_windows, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -59,7 +60,14 @@ namespace GOAP_S.UI
             }
         }
 
-        //Set Methods =================
+        //Get/Set Methods =============
+        public Vector2 vec2_window_size
+        {
+            get
+            {
+                return window_size;
+            }
+        }
         public override Vector2 GetWindowSize()
         {
             return new Vector2(window_size.x, window_size.y);

@@ -6,15 +6,13 @@ using System;
 
 public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
 {
-    //State fields
-    [SerializeField] private bool initialized = false; //Check if the class is initialized and everithing is allocated correctly
     //Content fields
     [SerializeField] new private string name = "unnamed"; //Agent name(usefull for the user to recognize the behaviours)
     [SerializeField] internal string id = "null"; //Agent UUID
     [System.NonSerialized] private List<ActionNode_GS> action_nodes; //Action nodes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
     //Serialization fields
     [SerializeField] private string serialized_action_nodes; //String where the serialized data is stored
-    [SerializeField] private List<Object> obj_refs; //List that contains the references to the objects serialized
+    [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
 
     //Loop Methods ====================
     private void Start()
@@ -87,20 +85,23 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
         }
 
     }
-    public string GetAgentId()
-    {
-        return agent_id;
-    }
 
-    public bool GetAgentInit()
+    public List<ActionNode_GS> list_action_nodes
     {
-        return initialized;
+        get
+        {
+            if(action_nodes == null)
+            {
+                action_nodes = new List<ActionNode_GS>();
+            }
+            return action_nodes;
+        }
     }
 
     //Serialization Methods ===========
     public void OnBeforeSerialize() //Serialize
     {
-        obj_refs = new List<Object>();
+        obj_refs = new List<UnityEngine.Object>();
         serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(action_nodes, typeof(List<ActionNode_GS>), obj_refs);
     }
 
