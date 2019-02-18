@@ -12,6 +12,8 @@ public class ActionNodeUIConfig_GS
     static private GUIStyle _modify_button_style = null; //Button used to delete or edit the node data
     static private GUIStyle _elements_style = null; //Used in the condition,action,reward names
     static private GUIStyle _pop_windows_style = null; //Used to set the pop windows in node editor style
+    static private GUIStyle _blackboard_window_style = null; //Used in the bb base window
+    static private GUIStyle _blackboard_variable_style = null; //Used in bb variables
 
     //Get/Set methods =================
     public GUIStyle node_window_style
@@ -83,6 +85,35 @@ public class ActionNodeUIConfig_GS
                 _pop_windows_style.fontSize = 15;
             }
             return _pop_windows_style;
+        }
+    }
+
+    public GUIStyle blackboard_window_style
+    {
+        get
+        {
+            if(_blackboard_window_style == null)
+            {
+                //Configure the bb window style
+                _blackboard_window_style = new GUIStyle("HelpBox");
+                _blackboard_window_style.alignment = TextAnchor.UpperCenter;
+                _blackboard_window_style.fontStyle = FontStyle.Bold;
+                _blackboard_window_style.fontSize = 15;
+            }
+            return _blackboard_window_style;
+        }
+    }
+
+    public GUIStyle blackboard_variable_style
+    {
+        get
+        {
+            if(_blackboard_variable_style == null)
+            {
+                //Config the bb variable style
+                _blackboard_variable_style = new GUIStyle("Label");
+            }
+            return _blackboard_variable_style;
         }
     }
 }

@@ -277,7 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   _id: null
-  serialized_action_nodes: '[{"_window_rect":{"xMin":104.0,"yMin":188.0,"xMax":204.0,"yMax":288.0},"_editable_pos":true,"_id":"null_id","_name":"Test
+  serialized_action_nodes: '[{"_window_rect":{"xMin":106.0,"yMin":117.0,"xMax":206.0,"yMax":217.0},"_editable_pos":true,"_id":"null_id","_name":"Test
     Node","_description":"pues jo k se loko","serialized_action":"null"}]'
   obj_refs: []
 --- !u!1 &282840810

@@ -11,6 +11,14 @@ public class Variable_GS {
     [SerializeField] private object _value;
     [SerializeField] private bool _protect;
 
+    //Loop Methods ====================
+    public void DrawUI()
+    {
+        GUILayout.BeginHorizontal();
+        GUILayout.Label(_name);
+        GUILayout.EndHorizontal();
+    }
+
     //Get/Set Methods =================
     public string name
     {

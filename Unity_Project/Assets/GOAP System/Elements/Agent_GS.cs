@@ -96,6 +96,18 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
         }
     }
 
+    public Blackboard_GS blackboard
+    {
+        get
+        {
+            if(_blackboard == null)
+            {
+                _blackboard = new Blackboard_GS();
+            }
+            return _blackboard;
+        }
+    }
+
     //Serialization Methods ===========
     public void OnBeforeSerialize() //Serialize
     {
