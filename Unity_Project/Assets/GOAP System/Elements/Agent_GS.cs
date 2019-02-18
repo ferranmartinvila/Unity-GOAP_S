@@ -2,47 +2,21 @@
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using System;
 
 public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
 {
     //State fields
     [SerializeField] private bool initialized = false; //Check if the class is initialized and everithing is allocated correctly
     //Content fields
-    [SerializeField] private string agent_name = "unnamed"; //Agent name(usefull for the user to recognize the behaviours)
-    [SerializeField] internal string agent_id = "null"; //Agent UUID
-    [System.NonSerialized] public List<ActionNode_GS> action_nodes; //Action nodes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
+    [SerializeField] new private string name = "unnamed"; //Agent name(usefull for the user to recognize the behaviours)
+    [SerializeField] internal string id = "null"; //Agent UUID
+    [System.NonSerialized] private List<ActionNode_GS> action_nodes; //Action nodes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
     //Serialization fields
     [SerializeField] private string serialized_action_nodes; //String where the serialized data is stored
     [SerializeField] private List<Object> obj_refs; //List that contains the references to the objects serialized
 
     //Loop Methods ====================
-    private void Awake()
-    {
-        //Allocate the action nodes array
-        if (action_nodes == null) action_nodes = new List<ActionNode_GS>();
-
-    }
-
-    public bool Initialize()
-    {
-        //Allocate the action nodes array
-        if (action_nodes == null) action_nodes = new List<ActionNode_GS>();
-
-        //Generate the agent UUID
-        agent_id = System.Guid.NewGuid().ToString();
-
-        //Set agent as initialized
-        return initialized = true;
-    }
-
-    //Reset is called when the user hits the Reset button in the Inspector's context menu
-    //or when adding the component the first time.
-    private void Reset()
-    {
-        //Initialize the GOAP agent
-        if(!initialized) Initialize();
-    }
-
     private void Start()
     {
         foreach (ActionNode_GS node in action_nodes)
@@ -86,12 +60,33 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
         action_nodes.Remove(target);
     }
 
-    //Get Methods =====================
-    public string GetAgentName()
+    //Get/Set Methods =================
+    public string s_name
     {
-        return agent_name;
+        get
+        {
+            return name;
+        }
+        set
+        {
+            name = value;
+            //Mark scene dirty
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
     }
 
+    public string s_id
+    {
+        get
+        {
+            if(string.IsNullOrEmpty(id))
+            {
+                id = Guid.NewGuid().ToString();
+            }
+            return id;
+        }
+
+    }
     public string GetAgentId()
     {
         return agent_id;
@@ -100,15 +95,6 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     public bool GetAgentInit()
     {
         return initialized;
-    }
-    
-    //Set Methods =====================
-    public void SetAgentName(string name)
-    {
-        //Set new agent name
-        agent_name = name;
-        //Mark scene dirty
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
     }
 
     //Serialization Methods ===========

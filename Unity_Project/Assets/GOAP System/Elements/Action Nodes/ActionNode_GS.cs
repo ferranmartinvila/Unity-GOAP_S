@@ -52,7 +52,6 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     public Rect GetCanvasWindow()
     {
-        //canvas_window = new Rect(canvas_window.x, canvas_window.y, 50, 160);
         return canvas_window;
     }
 

@@ -9,7 +9,7 @@ public class Agent_GS_Editor : Editor
     public override void OnInspectorGUI()
     {
         //Fields
-        EditorGUILayout.TextField("Name", ((Agent_GS)target).GetAgentName());
+       ((Agent_GS)target).s_name = EditorGUILayout.TextField("Name", ((Agent_GS)target).s_name);
 
         //Editor Button
         if (GUILayout.Button("Open Editor"))
@@ -21,7 +21,7 @@ public class Agent_GS_Editor : Editor
 
         //Remove button
         GUI.backgroundColor = new Color(1.0f, 0.2f, 0.2f, 1.0f);
-        if (GUILayout.Button(/*new Rect(position.width * 0.1f, 130, position.width * 0.8f, 20),*/ "Remove Agent"))
+        if (GUILayout.Button("Remove Agent",GUILayout.ExpandWidth(true)))
         {
             DestroyImmediate((Agent_GS)target);
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
