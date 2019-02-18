@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -275,9 +275,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: unnamed
-  id: null
-  serialized_action_nodes: '[]'
+  _name: un_named
+  _id: null
+  serialized_action_nodes: '[{"_window_rect":{"xMin":104.0,"yMin":188.0,"xMax":204.0,"yMax":288.0},"_editable_pos":true,"_id":"null_id","_name":"Test
+    Node","_description":"pues jo k se loko","serialized_action":"null"}]'
   obj_refs: []
 --- !u!1 &282840810
 GameObject:
@@ -382,8 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: unnamed
-  id: null
+  _name: un_named
+  _id: null
   serialized_action_nodes: '[]'
   obj_refs: []
 --- !u!65 &1645938993

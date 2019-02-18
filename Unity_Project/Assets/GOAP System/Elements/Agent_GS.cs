@@ -2,14 +2,14 @@
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
-using System;
 
 public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
 {
     //Content fields
-    [SerializeField] new private string name = "unnamed"; //Agent name(usefull for the user to recognize the behaviours)
-    [SerializeField] internal string id = "null"; //Agent UUID
-    [System.NonSerialized] private List<ActionNode_GS> action_nodes; //Action nodes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
+    [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
+    [SerializeField] internal string _id = "null"; //Agent UUID
+    [System.NonSerialized] private List<ActionNode_GS> _action_nodes; //Action nodes list, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
+    [System.NonSerialized] private Blackboard_GS _blackboard;
     //Serialization fields
     [SerializeField] private string serialized_action_nodes; //String where the serialized data is stored
     [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
@@ -44,9 +44,7 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     {
         ActionNode_GS new_node = new ActionNode_GS();
         //Set a position in the node editor canvas
-        new_node.SetCanvasWindow(new Rect(x_pos, y_pos, 100, 100));
-        //Calculate the UUID
-        new_node.CalculateUUID();
+        new_node.window_rect = new Rect(x_pos, y_pos, 100, 100);
         //Add the new node to the action nodes list
         action_nodes.Add(new_node);
         //Mark scene dirty
@@ -59,42 +57,42 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     }
 
     //Get/Set Methods =================
-    public string s_name
+    new public string name
     {
         get
         {
-            return name;
+            return _name;
         }
         set
         {
-            name = value;
+            _name = value;
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
     }
 
-    public string s_id
+    public string id
     {
         get
         {
-            if(string.IsNullOrEmpty(id))
+            if(string.IsNullOrEmpty(_id))
             {
-                id = Guid.NewGuid().ToString();
+                _id = System.Guid.NewGuid().ToString();
             }
-            return id;
+            return _id;
         }
 
     }
 
-    public List<ActionNode_GS> list_action_nodes
+    public List<ActionNode_GS> action_nodes
     {
         get
         {
-            if(action_nodes == null)
+            if(_action_nodes == null)
             {
-                action_nodes = new List<ActionNode_GS>();
+                _action_nodes = new List<ActionNode_GS>();
             }
-            return action_nodes;
+            return _action_nodes;
         }
     }
 
@@ -102,12 +100,15 @@ public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     public void OnBeforeSerialize() //Serialize
     {
         obj_refs = new List<UnityEngine.Object>();
-        serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(action_nodes, typeof(List<ActionNode_GS>), obj_refs);
+        serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(_action_nodes, typeof(List<ActionNode_GS>), obj_refs);
     }
 
     public void OnAfterDeserialize() //Deserialize
     {
-        action_nodes = (List<ActionNode_GS>)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(List<ActionNode_GS>),serialized_action_nodes, obj_refs);
-        if (action_nodes == null) action_nodes = new List<ActionNode_GS>();
+        _action_nodes = (List<ActionNode_GS>)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(List<ActionNode_GS>),serialized_action_nodes, obj_refs);
+        if (_action_nodes == null)
+        {
+            _action_nodes = new List<ActionNode_GS>();
+        }
     }
 }

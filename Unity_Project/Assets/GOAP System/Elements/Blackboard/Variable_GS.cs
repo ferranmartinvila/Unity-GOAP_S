@@ -6,61 +6,61 @@ using System;
 public class Variable_GS {
 
     //Content fields
-    [SerializeField] private string name;
-    [SerializeField] private string id;
-    [SerializeField] private object content;
-    [SerializeField] private bool protect;
+    [SerializeField] private string _name;
+    [SerializeField] private string _id;
+    [SerializeField] private object _value;
+    [SerializeField] private bool _protect;
 
-    //Fields Methods =====================
-    public string s_name
+    //Get/Set Methods =================
+    public string name
     {
         get
         {
-            return name;
+            return _name;
         }
         set
         {
-            name = value;
+            _name = value;
         }
     }
 
-    public string s_id
+    public string id
     {
         get
         {
-            if(string.IsNullOrEmpty(id))
+            if(string.IsNullOrEmpty(_id))
             {
-                id = Guid.NewGuid().ToString();
+                _id = Guid.NewGuid().ToString();
             }
-            return id;
+            return _id;
         }
         set
         {
-            id = value;
+            _id = value;
         }
     }
 
-    public object obj_value
+    public object value
     {
         get
         {
-            return content;
+            return _value;
         }
         set
         {
-            content = value;
+            _value = value;
         }
     }
 
-    public bool b_protected
+    public bool protect
     {
         get
         {
-            return protect;
+            return _protect;
         }
         set
         {
-            protect = value;
+            _protect = value;
         }
     }
 }

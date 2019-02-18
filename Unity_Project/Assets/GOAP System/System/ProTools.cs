@@ -1,11 +1,14 @@
-﻿using System;
-using System.Reflection;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEditor;
 
 namespace GOAP_S.PT
 {
+    public enum NodeUIMode
+    {
+        SET_STATE, //State in which the user can set action node attributes
+        EDIT_STATE //State in which the user can set node description/name
+    }
+
     public static class ProTools
     {
         //Universal allocate class method =======

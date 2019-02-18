@@ -1,24 +1,19 @@
 ﻿using UnityEngine;
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
+using GOAP_S.PT;
 
 public class ActionNode_GS : ISerializationCallbackReceiver {
 
-    public enum NodeUIMode
-    {
-        SET_STATE, //State in which the user can set action node attributes
-        EDIT_STATE //State in which the user can set node description/name
-    }
+
 
     //UI fields
-    [SerializeField] private Rect canvas_window; //Position of the node window in the editor
-    [SerializeField] private bool editable_pos = true; //True means that the user can move the window
-    [SerializeField] private string node_id = "null_id"; //Node ID used to set window 
-    [System.NonSerialized] private NodeUIMode nodeUI_mode = NodeUIMode.SET_STATE;
+    [SerializeField] private Rect _window_rect; //Position of the node window in the editor
+    [SerializeField] private bool _editable_pos = true; //True means that the user can move the window
+    [SerializeField] private string _id = "null_id"; //Node ID used to set window 
+    [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
     //Content fields
-    [SerializeField] private string name = "Action Node"; //Node name
-    [SerializeField] private string description = ""; //Node description
-    [System.NonSerialized] private Action_GS action = null; //Action linked to the action node
+    [SerializeField] private string _name = "Action Node"; //Node name
+    [SerializeField] private string _description = ""; //Node description
+    [System.NonSerialized] private Action_GS _action = null; //Action linked to the action node
     //Serialization fields
     [SerializeField] private string serialized_action; //String where the serialized data is stored
 
@@ -39,91 +34,115 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     }
 
-    //Get methods =====================
-    public bool GetEditablePos()
+    //Get/Set methods =====================
+    public bool editable_position
     {
-        return editable_pos;
+        get
+        {
+            return _editable_pos;
+        }
+        set
+        {
+            _editable_pos = value;
+        }
+    }
+    
+    public NodeUIMode UImode
+    {
+        get
+        {
+            return _UImode;
+        }
+        set
+        {
+            _UImode = value;
+        }
     }
 
-    public NodeUIMode GetUIMode()
+    public Rect window_rect
     {
-        return nodeUI_mode;
+        get
+        {
+            return _window_rect;
+        }
+        set
+        {
+            _window_rect = value;
+        }
     }
 
-    public Rect GetCanvasWindow()
+    public Vector2 window_position
     {
-        return canvas_window;
+        get
+        {
+            return new Vector2(_window_rect.x, _window_rect.y);
+        }
+        set
+        {
+            _window_rect.x = value.x;
+            _window_rect.y = value.y;
+        }
     }
 
-    public int GetNodeID()
+    public Vector2 window_size
     {
-        return node_id.GetHashCode();
+        get
+        {
+            return new Vector2(_window_rect.width, _window_rect.height);
+        }
+        set
+        {
+            _window_rect.width = value.x;
+            _window_rect.height = value.y;
+        }
     }
 
-    public Action_GS GetAction()
+    public int id
     {
-        return action;
+        get
+        {
+            if(string.IsNullOrEmpty(_id))
+            {
+                _id = System.Guid.NewGuid().ToString();
+            }
+            return _id.GetHashCode();
+        }
     }
 
-    public string GetName()
+    public Action_GS action
     {
-        return name;
+        get
+        {
+            return _action;
+        }
+        set
+        {
+            _action = value;
+        }
     }
 
-    public string GetDescription()
+    public string name
     {
-        return description;
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+        }
     }
 
-    //Set methods =====================
-    public void SetEditablePos(bool val)
+    public string description
     {
-        editable_pos = val;
-    }
-
-    public void SetCanvasWindow(Rect new_canvas)
-    {
-        canvas_window = new_canvas;
-    }
-
-    public void SetCanvasPos(Vector2 new_pos)
-    {
-        canvas_window.x = new_pos.x;
-        canvas_window.y = new_pos.y;
-    }
-
-    public void SetCanvasSize(Vector2 new_size)
-    {
-        canvas_window.width = new_size.x;
-        canvas_window.height = new_size.y;
-    }
-
-    public void SetAction(Action_GS new_action)
-    {
-        //Set the new action
-        action = new_action;
-        //Mark scene dirty
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-    }
-
-    public void SetUIMode(NodeUIMode new_mode)
-    {
-        nodeUI_mode = new_mode;
-    }
-
-    public void CalculateUUID()
-    {
-        node_id = System.Guid.NewGuid().ToString();
-    }
-
-    public void SetName(string new_name)
-    {
-        name = new_name;
-    }
-
-    public void SetDescription(string new_description)
-    {
-        description = new_description;
+        get
+        {
+            return _description;
+        }
+        set
+        {
+            _description = value;
+        }
     }
 
     //Serialization Methods ===========

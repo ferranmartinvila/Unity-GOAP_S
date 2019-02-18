@@ -9,7 +9,7 @@ public class Agent_GS_Editor : Editor
     public override void OnInspectorGUI()
     {
         //Fields
-       ((Agent_GS)target).s_name = EditorGUILayout.TextField("Name", ((Agent_GS)target).s_name);
+       ((Agent_GS)target).name = EditorGUILayout.TextField("Name", ((Agent_GS)target).name);
 
         //Editor Button
         if (GUILayout.Button("Open Editor"))

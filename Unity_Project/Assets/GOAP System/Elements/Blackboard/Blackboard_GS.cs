@@ -4,13 +4,18 @@ using UnityEngine;
 
 public class Blackboard_GS {
 
-    [SerializeField] private Dictionary<string, Variable_GS> variables = new Dictionary<string, Variable_GS>();
+    [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
 
-    public Dictionary<string, Variable_GS> dic_variables
+    public Dictionary<string, Variable_GS> variables
     {
        get
         {
-            return variables;
+            return _variables;
         }
+    }
+
+    public void DrawUI(int id)
+    {
+
     }
 }

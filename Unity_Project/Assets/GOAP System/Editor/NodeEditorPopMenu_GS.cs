@@ -22,7 +22,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.style_pop_windows, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.pop_windows_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -36,9 +36,9 @@ namespace GOAP_S.UI
                 GUILayout.Height(30)))
             {
                 //Get the mouse pos inside the target canvas
-                Vector2 mousePos = target.GetMousePos();
+                Vector2 mousePos = target.mouse_pos;
                 //Focus the target selected agent and add an action in the target canvas pos
-                target.GetSelectedAgent().AddActionNode(mousePos.x, mousePos.y);
+                target.selected_agent.AddActionNode(mousePos.x, mousePos.y);
                 //Repaint the target window
                 target.Repaint();
                 //Close this window
@@ -52,7 +52,7 @@ namespace GOAP_S.UI
                 GUILayout.Height(30)))
             {
                 //Clear agent planning
-                target.GetSelectedAgent().ClearPlanning();
+                target.selected_agent.ClearPlanning();
                 //Repaint target window
                 target.Repaint();
                 //Close this window
@@ -67,10 +67,6 @@ namespace GOAP_S.UI
             {
                 return window_size;
             }
-        }
-        public override Vector2 GetWindowSize()
-        {
-            return new Vector2(window_size.x, window_size.y);
         }
     }
 }

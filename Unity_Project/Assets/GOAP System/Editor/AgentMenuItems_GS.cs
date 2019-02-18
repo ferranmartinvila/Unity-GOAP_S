@@ -3,22 +3,6 @@
 
 public class AgentMenuItems_GS {
 
-    //EditorGUIUtility.ShowObjectPicker<MonoScript>(action, false, "", EditorGUIUtility.GetControlID(FocusType.Passive) + 100);
-    //EditorGUILayout.ObjectField(action, typeof(Action_GS), true);
-
-
-    /*[MenuItem("Tools / GOAP / Selected Agent /")]
-    static void test()
-    {
-        //return (Selection.activeGameObject.GetComponent<Agent_GS>() != null);
-    }
-
-    [MenuItem("Tools / GOAP / Selected Agent /",true)]
-    static bool CheckSelectedAgentToEnableItems()
-    {
-        return (Selection.activeGameObject.GetComponent<Agent_GS>() != null);
-    }*/
-
     //Show Planning Item ==============
     [MenuItem ("Tools / GOAP / Selected Agent / Show Planning")]
     static void ShowPlanning()
@@ -45,6 +29,6 @@ public class AgentMenuItems_GS {
     {
         return Selection.activeGameObject != null 
             && Selection.activeGameObject.GetComponent<Agent_GS>() != null
-            && Selection.activeGameObject.GetComponent<Agent_GS>().list_action_nodes.Count > 0;
+            && Selection.activeGameObject.GetComponent<Agent_GS>().action_nodes.Count > 0;
     }
 }

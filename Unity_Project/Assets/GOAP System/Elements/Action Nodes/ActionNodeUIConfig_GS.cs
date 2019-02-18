@@ -7,109 +7,82 @@
 public class ActionNodeUIConfig_GS
 {
     //UI Configurations fields
-    static private GUIStyle node_window_style = null; //Node title style
-    static private GUIStyle selection_buttons_style = null; //Buttons used to select node elements style
-    static private GUIStyle modify_button_style = null; //Button used to delete or edit the node data
-    static private GUIStyle elements_style = null; //Used in the condition,action,reward names
-    static private GUIStyle pop_windows_style = null; //Used to set the pop windows in node editor style
-
-    //Initialize method ===============
-    public void InitializeConfig()
-    {
-        //GUIStyles -------------------
-        //Configure the node window style
-        node_window_style = new GUIStyle(GUI.skin.window);
-        node_window_style.alignment = TextAnchor.UpperCenter;
-        node_window_style.fontSize = 12;
-
-        //Configure the selection buttons style
-        selection_buttons_style = new GUIStyle(GUI.skin.button);
-        selection_buttons_style.alignment = TextAnchor.UpperCenter;
-
-        //Configure the modify button style
-        modify_button_style = new GUIStyle("AssetLabel");
-
-        //Configure the elements style
-        elements_style = new GUIStyle("label");
-        elements_style.fontStyle = FontStyle.Bold;
-        elements_style.fontSize = 12;
-
-        //Configure the popup windows style
-        pop_windows_style = new GUIStyle("label");
-        pop_windows_style.fontStyle = FontStyle.Bold;
-        pop_windows_style.fontSize = 15;
-    }
+    static private GUIStyle _node_window_style = null; //Node title style
+    static private GUIStyle _selection_buttons_style = null; //Buttons used to select node elements style
+    static private GUIStyle _modify_button_style = null; //Button used to delete or edit the node data
+    static private GUIStyle _elements_style = null; //Used in the condition,action,reward names
+    static private GUIStyle _pop_windows_style = null; //Used to set the pop windows in node editor style
 
     //Get/Set methods =================
-    public GUIStyle style_node_window
+    public GUIStyle node_window_style
     {
         get
         {
-            if(node_window_style == null)
+            if(_node_window_style == null)
             {
                 //Configure the node window style
-                node_window_style = new GUIStyle(GUI.skin.window);
-                node_window_style.alignment = TextAnchor.UpperCenter;
-                node_window_style.fontSize = 12;
+                _node_window_style = new GUIStyle(GUI.skin.window);
+                _node_window_style.alignment = TextAnchor.UpperCenter;
+                _node_window_style.fontSize = 12;
             }
-            return node_window_style;
+            return _node_window_style;
         }
     }
     
-    public GUIStyle style_selection_button
+    public GUIStyle selection_button_style
     {
         get
         {
-            if (selection_buttons_style == null)
+            if (_selection_buttons_style == null)
             {
                 //Configure the selection buttons style
-                selection_buttons_style = new GUIStyle(GUI.skin.button);
-                selection_buttons_style.alignment = TextAnchor.UpperCenter;
+                _selection_buttons_style = new GUIStyle(GUI.skin.button);
+                _selection_buttons_style.alignment = TextAnchor.UpperCenter;
             }
-            return selection_buttons_style;
+            return _selection_buttons_style;
         }
     }
 
-    public GUIStyle style_modify_button
+    public GUIStyle modify_button_style
     {
         get
         {
-            if (modify_button_style == null)
+            if (_modify_button_style == null)
             {
                 //Configure the modify button style
-                modify_button_style = new GUIStyle("AssetLabel");
+                _modify_button_style = new GUIStyle("AssetLabel");
             }
-            return modify_button_style;
+            return _modify_button_style;
         }
     }
 
-    public GUIStyle style_elements
+    public GUIStyle elements_style
     {
         get
         {
-            if (elements_style == null)
+            if (_elements_style == null)
             {
                 //Configure the elements style
-                elements_style = new GUIStyle("label");
-                elements_style.fontStyle = FontStyle.Bold;
-                elements_style.fontSize = 12;
+                _elements_style = new GUIStyle("label");
+                _elements_style.fontStyle = FontStyle.Bold;
+                _elements_style.fontSize = 12;
             }
-            return elements_style;
+            return _elements_style;
         }
     }
 
-    public GUIStyle style_pop_windows
+    public GUIStyle pop_windows_style
     {
         get
         {
-            if (pop_windows_style == null)
+            if (_pop_windows_style == null)
             {
                 //Configure the popup windows style
-                pop_windows_style = new GUIStyle("label");
-                pop_windows_style.fontStyle = FontStyle.Bold;
-                pop_windows_style.fontSize = 15;
+                _pop_windows_style = new GUIStyle("label");
+                _pop_windows_style.fontStyle = FontStyle.Bold;
+                _pop_windows_style.fontSize = 15;
             }
-            return pop_windows_style;
+            return _pop_windows_style;
         }
     }
 }

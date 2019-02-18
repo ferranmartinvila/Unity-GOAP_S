@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using GOAP_S.PT;
 
-//
 [System.AttributeUsage(System.AttributeTargets.Class, Inherited = true)]
 public class Action_Attribute_GS : System.Attribute
 {
@@ -11,9 +9,12 @@ public class Action_Attribute_GS : System.Attribute
 
 [Action_Attribute_GS]
 //Actions inherit from this class and can manage all kind of scene data
-public abstract class Action_GS {
+public abstract class Action_GS
+{
 
-    [SerializeField] private string name = "no_name";
+    [SerializeField] private string _name = "no_name";
+    [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
+
     /*
     Action update return the state of the action process
     ActionStart also uses this enum, 
@@ -28,7 +29,7 @@ public abstract class Action_GS {
 
     //Called on the first action loop
     public abstract ACTION_RESULT ActionStart();
-    
+
     //Called on the action update
     public abstract ACTION_RESULT ActionUpdate();
 
@@ -47,15 +48,16 @@ public abstract class Action_GS {
      */
     public abstract void BlitUI();
 
-    //Get Methods =====================
-    public string GetName()
+    //Get/Set Methods =================
+    public string name
     {
-        return name;
-    }
-
-    //Set Methods =====================
-    public void SetName(string new_name)
-    {
-        name = new_name;
+        get
+        {
+            return _name;
+        }
+        set
+        {
+            _name = value;
+        }
     }
 }
