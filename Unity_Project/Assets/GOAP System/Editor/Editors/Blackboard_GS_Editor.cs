@@ -23,11 +23,9 @@ public class Blackboard_GS_Editor
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
         GUILayout.Label("Variables");
-        int var_count = _target_bb.variables.Count;
-        for (int k = 0; k < var_count; k++)
+        foreach(Variable_GS variable in target_bb.variables.Values)
         {
-            Dictionary<string,Variable_GS>.ValueCollection[
-            ((Variable_GS)target_bb.variables.Values.k[k].value).DrawUI();
+            variable.DrawUI();
         }
         GUILayout.EndVertical();
     }
