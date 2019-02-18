@@ -7,13 +7,13 @@ namespace GOAP_S.UI
 {
     public sealed class NodeEditorPopMenu_GS : PopupWindowContent
     {
-        [System.NonSerialized] static private NodeEditor_GS target = null; //Focused node editor menu
-        [System.NonSerialized] static private Vector2 window_size = new Vector2(150,120); //Used to modify window size
+        //Content Fields ==============
+        static private NodeEditor_GS _target_editor = null; //Focused node editor menu
 
         //Constructors ================
-        public NodeEditorPopMenu_GS(NodeEditor_GS _target)
+        public NodeEditorPopMenu_GS(NodeEditor_GS target)
         {
-            target = _target;
+            _target_editor = target;
         }
 
         //Loop Methods ================
@@ -22,7 +22,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu",target.nodes_UI_configuration.pop_windows_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Planning Menu", _target_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -33,14 +33,14 @@ namespace GOAP_S.UI
             if (GUILayout.Button(
                 "Add Action Node",
                 GUILayout.ExpandWidth(true),
-                GUILayout.Height(30)))
+                GUILayout.Height(25)))
             {
                 //Get the mouse pos inside the target canvas
-                Vector2 mousePos = target.mouse_pos;
+                Vector2 mousePos = _target_editor.mouse_pos;
                 //Focus the target selected agent and add an action in the target canvas pos
-                target.selected_agent.AddActionNode(mousePos.x, mousePos.y);
+                _target_editor.selected_agent.AddActionNode(mousePos.x, mousePos.y);
                 //Repaint the target window
-                target.Repaint();
+                _target_editor.Repaint();
                 //Close this window
                 editorWindow.Close();
             }
@@ -49,23 +49,14 @@ namespace GOAP_S.UI
             if (GUILayout.Button(
                 "Clear Plannig",
                 GUILayout.ExpandWidth(true),
-                GUILayout.Height(30)))
+                GUILayout.Height(25)))
             {
                 //Clear agent planning
-                target.selected_agent.ClearPlanning();
+                _target_editor.selected_agent.ClearPlanning();
                 //Repaint target window
-                target.Repaint();
+                _target_editor.Repaint();
                 //Close this window
                 editorWindow.Close();
-            }
-        }
-
-        //Get/Set Methods =============
-        public Vector2 vec2_window_size
-        {
-            get
-            {
-                return window_size;
             }
         }
     }

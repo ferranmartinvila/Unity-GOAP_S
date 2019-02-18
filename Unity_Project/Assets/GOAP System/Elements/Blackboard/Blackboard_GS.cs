@@ -7,6 +7,13 @@ public class Blackboard_GS
     [SerializeField] private string _id;
     [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
 
+    //Varibles methods ================
+    public Variable_GS AddVariable(string name, object value)
+    {
+        return 
+    }
+
+    //Get/Set methods =================
     public Dictionary<string, Variable_GS> variables
     {
        get

@@ -9,7 +9,20 @@ public class Variable_GS {
     [SerializeField] private string _name;
     [SerializeField] private string _id;
     [SerializeField] private object _value;
+    [SerializeField] private System.Type _type;
     [SerializeField] private bool _protect;
+
+    //Contructors =====================
+
+    public Variable_GS(string name, object value)
+    {
+        //Set variable value
+        _value = value;
+        //Set variable name
+        _name = name;
+        //Set variable type
+        _type = _value.GetType();
+    }
 
     //Loop Methods ====================
     public void DrawUI()
@@ -57,6 +70,18 @@ public class Variable_GS {
         set
         {
             _value = value;
+        }
+    }
+
+    public System.Type type
+    {
+        get
+        {
+            return _type;
+        }
+        set
+        {
+            _type = type;
         }
     }
 

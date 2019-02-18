@@ -66,7 +66,7 @@ public class ActionNode_GS_Editor {
         //Close edit mode
         if (GUILayout.Button(
             "Close",
-            _target_editor.nodes_UI_configuration.modify_button_style,
+            _target_editor.UI_configuration.node_modify_button_style,
             GUILayout.Width(120), GUILayout.ExpandWidth(true)))
         {
             _target_node.UImode = NodeUIMode.SET_STATE;
@@ -83,7 +83,7 @@ public class ActionNode_GS_Editor {
         //Edit
         if (GUILayout.Button(
             "Edit",
-            _target_editor.nodes_UI_configuration.modify_button_style,
+            _target_editor.UI_configuration.node_modify_button_style,
             GUILayout.Width(30),GUILayout.ExpandWidth(true)))
         {
             //Set edit state
@@ -92,7 +92,7 @@ public class ActionNode_GS_Editor {
         //Delete
         if (GUILayout.Button(
             "Delete",
-            _target_editor.nodes_UI_configuration.modify_button_style,
+            _target_editor.UI_configuration.node_modify_button_style,
             GUILayout.Width(30),GUILayout.ExpandWidth(true)))
         {
             _target_editor.selected_agent.DeleteActionNode(_target_node);
@@ -109,7 +109,7 @@ public class ActionNode_GS_Editor {
         //Condition null case
         if (GUILayout.Button(
             "Select Condition",
-            _target_editor.nodes_UI_configuration.selection_button_style,
+            _target_editor.UI_configuration.node_selection_buttons_style,
             GUILayout.Width(150), GUILayout.Height(20),GUILayout.ExpandWidth(true)))
         {
 
@@ -126,12 +126,12 @@ public class ActionNode_GS_Editor {
 
             if (GUILayout.Button(
                 "Select Action",
-                _target_editor.nodes_UI_configuration.selection_button_style,
+                _target_editor.UI_configuration.node_selection_buttons_style,
                 GUILayout.Width(150), GUILayout.Height(20),
                 GUILayout.ExpandWidth(true)))
             {
                 Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y - 100,0,0), new GOAP_S.UI.ActionSelectMenu_GS(this));
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y - 100, 0, 0), new GOAP_S.UI.ActionSelectMenu_GS(this, _target_editor));
             }
         }
         //Action set case
@@ -140,7 +140,7 @@ public class ActionNode_GS_Editor {
             //Action area
             GUILayout.BeginHorizontal("HelpBox");
             GUILayout.FlexibleSpace();
-            GUILayout.Label(_target_node.action.name, _target_editor.nodes_UI_configuration.elements_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label(_target_node.action.name, _target_editor.UI_configuration.node_elements_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -149,7 +149,7 @@ public class ActionNode_GS_Editor {
             //Edit
             if (GUILayout.Button(
                 "Edit",
-                _target_editor.nodes_UI_configuration.modify_button_style,
+                _target_editor.UI_configuration.node_modify_button_style,
                 GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //IDK what to put here but this can be deleted with no problem :v
@@ -157,7 +157,7 @@ public class ActionNode_GS_Editor {
             //Delete
             if (GUILayout.Button(
                 "Delete",
-                _target_editor.nodes_UI_configuration.modify_button_style,
+                _target_editor.UI_configuration.node_modify_button_style,
                 GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 _target_node.action = null;
@@ -173,7 +173,7 @@ public class ActionNode_GS_Editor {
         //Reward null case
         if (GUILayout.Button(
             "Select Reward",
-            _target_editor.nodes_UI_configuration.selection_button_style,
+            _target_editor.UI_configuration.node_selection_buttons_style,
             GUILayout.Width(150), GUILayout.Height(20),
             GUILayout.ExpandWidth(true)))
         {

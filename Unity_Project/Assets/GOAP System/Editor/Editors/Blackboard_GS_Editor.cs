@@ -9,25 +9,43 @@ public class Blackboard_GS_Editor
     private Rect _window; //Rect used to place bb window
     //Content fileds
     private Blackboard_GS _target_bb; //Bb is this editor showing
-    
+    private NodeEditor_GS _target_editor; //NodeEditor is this editor in
+
     //Construtors =====================
-    public Blackboard_GS_Editor(Blackboard_GS target_bb)
+    public Blackboard_GS_Editor(Blackboard_GS target_bb, NodeEditor_GS target_editor)
     {
+        //Set the target bb
         _target_bb = target_bb;
+        //Set the target node editor
+        _target_editor = target_editor;
     }
 
     //Loop methods ====================
     public void DrawUI(int id)
     {
+        //Separaion between title and variables
         GUILayout.BeginVertical();
-        EditorGUILayout.Space();
+        GUILayout.Space(15);
         EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
-        GUILayout.Label("Variables");
+        GUILayout.EndVertical();
+
+        //Blit all the variables
+        GUILayout.BeginVertical();
+        GUILayout.Label("Variables", _target_editor.UI_configuration.blackboard_title_style);
         foreach(Variable_GS variable in target_bb.variables.Values)
         {
             variable.DrawUI();
         }
         GUILayout.EndVertical();
+
+        //Button to add new variables
+        if(GUILayout.Button("Add",GUILayout.Width(50)))
+        {
+            float new_var = 1.0f;
+            Variable_GS var = new Variable_GS("new_var",new_var);
+
+            _target_bb.variables.Add(var.id, var);
+        }
     }
 
     //Get/Set methods =================
@@ -78,6 +96,18 @@ public class Blackboard_GS_Editor
         set
         {
             _target_bb = value;
+        }
+    }
+
+    public NodeEditor_GS target_editor
+    {
+        get
+        {
+            return _target_editor;
+        }
+        set
+        {
+            _target_editor = value;
         }
     }
 }

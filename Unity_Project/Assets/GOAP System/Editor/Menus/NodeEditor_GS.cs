@@ -4,11 +4,11 @@ using UnityEditor;
 public class NodeEditor_GS : EditorWindow
 {
     //State fields
-    private static string _id = "null_id"; //Node ID used to set pop window id
+    private static string _id = ""; //Node ID used to set pop window id
     private static NodeEditor_GS _window; //Reference to this node editor window
     private Vector2 _mouse_pos; //World mouse pos used for other windows
     //UI fields
-    public ActionNodeUIConfig_GS nodes_UI_configuration = new ActionNodeUIConfig_GS(); //The UI configuration of the action node
+    public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
     //Target fields
     private GameObject _selected_object = null;
     private Agent_GS _selected_agent = null;
@@ -58,12 +58,12 @@ public class NodeEditor_GS : EditorWindow
     /*private void OnProjectChange()
     {
         //Node editor UI configuration is initialized on project change
-        if(!nodes_UI_configuration.GetInitialized()) nodes_UI_configuration.InitializeConfig();
+        if(!UI_configuration.GetInitialized()) UI_configuration.InitializeConfig();
     }
     private void OnEnable()
     {
         //Node editor UI configuration is initialized on window enable
-        if (!nodes_UI_configuration.GetInitialized()) nodes_UI_configuration.InitializeConfig();
+        if (!UI_configuration.GetInitialized()) UI_configuration.InitializeConfig();
     }*/
 
     void OnGUI()
@@ -129,7 +129,7 @@ public class NodeEditor_GS : EditorWindow
             //Generate a node editor for the current node
             ActionNode_GS_Editor node_editor = new ActionNode_GS_Editor(node, this);
             //Generate the window
-            Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, nodes_UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             //Move the node if it's position is editable
             if (node.editable_position)
             {
@@ -138,9 +138,9 @@ public class NodeEditor_GS : EditorWindow
         }
 
         //Draw agent blackboard
-        Blackboard_GS_Editor bb_editor = new Blackboard_GS_Editor(selected_agent.blackboard);
+        Blackboard_GS_Editor bb_editor = new Blackboard_GS_Editor(selected_agent.blackboard, this);
         bb_editor.window_position = new Vector2(_window.position.width - 230, 0);
-        GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", nodes_UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+        GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
         EndWindows();
     }

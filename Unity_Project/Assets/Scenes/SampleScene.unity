@@ -277,8 +277,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   _id: null
-  serialized_action_nodes: '[{"_window_rect":{"xMin":106.0,"yMin":117.0,"xMax":206.0,"yMax":217.0},"_editable_pos":true,"_id":"null_id","_name":"Test
-    Node","_description":"pues jo k se loko","serialized_action":"null"}]'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":92.0,"yMin":44.0,"xMax":192.0,"yMax":144.0},"_editable_pos":true,"_id":"5a1c0a0d-692a-4095-9a62-11daca75ccf3","_name":"Action
+    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":430.0,"yMin":207.0,"xMax":530.0,"yMax":307.0},"_editable_pos":true,"_id":"f1029bfb-dd46-4823-a13a-721ebe43ad8b","_name":"Action
+    Node","_description":"","serialized_action":"null"}]'
   obj_refs: []
 --- !u!1 &282840810
 GameObject:

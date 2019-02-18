@@ -4,80 +4,55 @@ using System.Collections.Generic;
 
 namespace GOAP_S.UI
 {
-    
     public class ActionSelectMenu_GS : PopupWindowContent
     {
-        //UI fields
-        [System.NonSerialized] static string header; //Header string
-        [System.NonSerialized] static GUIStyle header_style; //Header style
-        [System.NonSerialized] static Rect main_rect; //Menu window rect
         //Content fields
-        [System.NonSerialized] static private ActionNode_GS_Editor target = null; //Focused Node Action
-        [System.NonSerialized] static private Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
+        static private ActionNode_GS_Editor _target_action_node = null; //Focused node action
+        static private NodeEditor_GS _target_node_editor = null; //Focused node editor
+        static private Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
 
         //Constructors ================
-        public ActionSelectMenu_GS(ActionNode_GS_Editor _target)
+        public ActionSelectMenu_GS(ActionNode_GS_Editor target_action_node, NodeEditor_GS target_node_editor)
         {
-           //Set header string
-            header = "Action Select";
-            //Configure the header style
-            header_style = new GUIStyle("label");
-            header_style.alignment = TextAnchor.UpperCenter;
-            header_style.fontSize = 15;
-            header_style.fontStyle = FontStyle.Bold;
             //Focus the action node
-            target = _target;
+            _target_action_node = target_action_node;
+            //Focus the node editor
+            _target_node_editor = target_node_editor;
             //List all action scripts
             ListActionScripts();
-        }
-
-        //This is the correct way to change a window size(I dont like it :v)
-        public override Vector2 GetWindowSize()
-        {
-            return new Vector2(300,300);
         }
 
         //Loop Methods ================
         public override void OnGUI(Rect rect)
         {
-            //Beginning are
-            editorWindow.BeginWindows();
-            
-            //Create the main 
-            main_rect = new Rect(rect);
+            //Menu title
+            GUILayout.BeginHorizontal("Box");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Action Select",_target_node_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
 
-            //Begin de menu area
-            GUILayout.BeginArea(main_rect);
-            //Mark - header space
-            GUILayout.Space(5);
+            //Separator
+            EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Header
-            GUILayout.Label(header, header_style);
-
-            GUILayout.BeginArea(new Rect(main_rect.x + 25, main_rect.y + 50, main_rect.width, main_rect.height));
             //Show all the action scripts listed
+            GUILayout.BeginVertical();
             foreach (KeyValuePair<string, UnityEngine.Object> script in all_action_scripts)
             {
-                if (GUILayout.Button(script.Value.name, GUILayout.Width(150), GUILayout.Height(30)))
+                if (GUILayout.Button(script.Value.name, GUILayout.Height(25), GUILayout.ExpandWidth(true))) 
                 {
                     //Allocate a class with the same type of script value
                     Action_GS new_script = GOAP_S.PT.ProTools.AllocateClass<Action_GS>(script.Value);
                     //Set the class name to the new allocated action
                     new_script.name = script.Key;
                     //Set the allocated class to the action node
-                    target.SetAction(new_script);
+                    _target_action_node.SetAction(new_script);
                     //Close the pop window when the action is selected & set
                     editorWindow.Close();
                 }
                 GUILayout.Space(2);
             }
-
-            GUILayout.EndArea();
-
-            GUILayout.EndArea();
-
-            //Ending areas
-            editorWindow.EndWindows();
+            GUILayout.EndHorizontal();
         }
 
         //Functionality Methods =======
