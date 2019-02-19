@@ -278,7 +278,7 @@ MonoBehaviour:
   _name: d
   _id: null
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":295.0,"yMin":167.0,"xMax":395.0,"yMax":267.0},"_editable_pos":true,"_id":"aee891d0-44df-4891-862b-11c5fd401806","_name":"Action
+  serialized_action_nodes: '[{"_window_rect":{"xMin":331.0,"yMin":116.0,"xMax":431.0,"yMax":216.0},"_editable_pos":true,"_id":"aee891d0-44df-4891-862b-11c5fd401806","_name":"Action
     Node","_description":"","serialized_action":"null"}]'
   serialized_blackboard: '{"_id":"978e6b06-3fb8-4064-aa43-20d7a588c9fb","_variables":{}}'
 --- !u!1 &282840810

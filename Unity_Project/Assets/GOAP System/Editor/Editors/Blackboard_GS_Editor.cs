@@ -47,17 +47,21 @@ namespace GOAP_S.UI
                 Vector2 mousePos = Event.current.mousePosition;
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS(_target_node_editor));
 
-                /*
-                int i_var = 1;
+                
+                /*int i_var = 1;
                 Variable_GS var = new Variable_GS("new_var", i_var);
                 float f_var = 1.0f;
                 Variable_GS fvar = new Variable_GS("new_var", f_var);
-                ActionNode_GS _action = new ActionNode_GS();
+                ActionNode_GS_Editor _action = new ActionNode_GS_Editor(null,null);
                 Variable_GS a_var = new Variable_GS("a_var", _action);
-                */
-                //_target_bb.variables.Add(a_var.id, a_var);
-                // _target_bb.variables.Add(var.id, var);
-                // _target_bb.variables.Add(fvar.id, fvar);
+
+                Rigidbody rig = new Rigidbody();
+                Variable_GS r_var = new Variable_GS("r_var", rig);
+
+                _target_bb.variables.Add(r_var.id, r_var);
+                _target_bb.variables.Add(a_var.id, a_var);
+                _target_bb.variables.Add(var.id, var);
+                _target_bb.variables.Add(fvar.id, fvar);*/
             }
         }
 

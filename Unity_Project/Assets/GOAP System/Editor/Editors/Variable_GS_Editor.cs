@@ -31,7 +31,10 @@ public class Variable_GS_Editor
 
         //Show/Edit variable value
         string type_string = _target_variable.type.ToString();
-        switch (type_string)
+        GUILayout.Label(type_string);
+        GUILayout.Label(_target_variable.type.IsClass.ToString());
+
+        /*switch (type_string)
         {
             case "System.Single":
                 _target_variable.value = EditorGUILayout.FloatField(ProTools.BasicTypeFromSystemType(_target_variable.type.ToString()) + " " + _target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
@@ -44,7 +47,7 @@ public class Variable_GS_Editor
             default:
                 //EditorGUILayout.ObjectField(_target_variable.value, _target_variable.type);
                 break;
-        }
+        }*/
 
         GUILayout.EndHorizontal();
     }
