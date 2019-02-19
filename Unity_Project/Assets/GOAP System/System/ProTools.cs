@@ -44,6 +44,27 @@ namespace GOAP_S.PT
             return assets;
         }
 
+
+        //Basic Type from System.Type ===========
+        public static string BasicTypeFromSystemType(string system_type)
+        {
+            string ret;
+
+            //Split string 
+            string[] parts = system_type.Split('.');
+            //Get last part
+            ret = parts[parts.Length - 1];
+
+            //Change System.Type to Base Type
+            switch(ret)
+            {
+                case "Single":
+                    ret = "Float";
+                    break;
+            }
+
+            return ret;
+        }
         /*public static T Cast<T>(this object myobj)
 {
     System.Type ty = myobj.GetType();

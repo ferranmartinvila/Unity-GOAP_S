@@ -8,12 +8,12 @@ namespace GOAP_S.UI
     public sealed class NodeEditorPopMenu_GS : PopupWindowContent
     {
         //Content Fields ==============
-        static private NodeEditor_GS _target_editor = null; //Focused node editor menu
+        static private NodeEditor_GS _target_node_editor = null; //Focused node editor menu
 
         //Constructors ================
         public NodeEditorPopMenu_GS(NodeEditor_GS target)
         {
-            _target_editor = target;
+            _target_node_editor = target;
         }
 
         //Loop Methods ================
@@ -22,7 +22,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu", _target_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Planning Menu", _target_node_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -36,11 +36,11 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Get the mouse pos inside the target canvas
-                Vector2 mousePos = _target_editor.mouse_pos;
+                Vector2 mousePos = Event.current.mousePosition;
                 //Focus the target selected agent and add an action in the target canvas pos
-                _target_editor.selected_agent.AddActionNode(mousePos.x, mousePos.y);
+                _target_node_editor.selected_agent.AddActionNode(mousePos.x, mousePos.y);
                 //Repaint the target window
-                _target_editor.Repaint();
+                _target_node_editor.Repaint();
                 //Close this window
                 editorWindow.Close();
             }
@@ -52,9 +52,9 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Clear agent planning
-                _target_editor.selected_agent.ClearPlanning();
+                _target_node_editor.selected_agent.ClearPlanning();
                 //Repaint target window
-                _target_editor.Repaint();
+                _target_node_editor.Repaint();
                 //Close this window
                 editorWindow.Close();
             }

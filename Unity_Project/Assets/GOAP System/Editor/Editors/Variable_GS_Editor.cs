@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using GOAP_S.PT;
 
 public class Variable_GS_Editor
 {
@@ -20,27 +21,29 @@ public class Variable_GS_Editor
     public void DrawUI()
     {
         GUILayout.BeginHorizontal();
-        //Show variable type
-        GUILayout.Label(_target_variable.type.ToString());
-        //Show variable name
-        GUILayout.Label(_target_variable.name);
-        //Show/Edit variable value
-        switch (_target_variable.type.ToString())
-        {
-            case "System.Single":
-                _target_variable.value = EditorGUILayout.FloatField(_target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
-                break;
-
-            case "System.Int32":
-                _target_variable.value = EditorGUILayout.IntField(_target_variable.name, (int)_target_variable.value, GUILayout.ExpandWidth(true));
-                break;
-        }
-        //EditorGUILayout.IntField()
+        
         //Remove button
-        if (GUILayout.Button("X", GUILayout.Width(25)))
+        if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
         {
             //Remove the current var
             _target_bb.RemoveVariable(_target_variable.id);
+        }
+
+        //Show/Edit variable value
+        string type_string = _target_variable.type.ToString();
+        switch (type_string)
+        {
+            case "System.Single":
+                _target_variable.value = EditorGUILayout.FloatField(ProTools.BasicTypeFromSystemType(_target_variable.type.ToString()) + " " + _target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
+                break;
+
+            case "System.Int32":
+                _target_variable.value = EditorGUILayout.IntField(ProTools.BasicTypeFromSystemType(_target_variable.type.ToString()) + " " + _target_variable.name, (int)_target_variable.value, GUILayout.Width(50), GUILayout.ExpandWidth(true));
+                break;
+
+            default:
+                //EditorGUILayout.ObjectField(_target_variable.value, _target_variable.type);
+                break;
         }
 
         GUILayout.EndHorizontal();
