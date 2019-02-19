@@ -10,7 +10,34 @@ public class Blackboard_GS
     //Varibles methods ================
     public Variable_GS AddVariable(string name, object value)
     {
-        return 
+        //Generate the new variable
+        Variable_GS new_variable = new Variable_GS(name, value);
+        //Add the new var to the bb list
+        _variables.Add(new_variable.id, new_variable);
+
+        return new_variable;
+    }
+
+    public bool RemoveVariable(string key)
+    {
+        Variable_GS find_var = null;
+        //Variable found case
+        if (_variables.TryGetValue(key, out find_var))
+        {
+            Debug.Log(find_var.name + "||" + find_var.type.ToString() + "|| Correctly Removed");
+            return _variables.Remove(key);
+        }
+        //Variable not found case
+        else
+        {
+            return false;
+        }
+    }
+
+    public void ClearBlackboard()
+    {
+        //Clear all the variables in the blackboard
+        _variables.Clear();
     }
 
     //Get/Set methods =================

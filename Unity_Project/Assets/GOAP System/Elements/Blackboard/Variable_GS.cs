@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Variable_GS {
+public class Variable_GS
+{
 
     //Content fields
     [SerializeField] private string _name;
@@ -22,14 +23,6 @@ public class Variable_GS {
         _name = name;
         //Set variable type
         _type = _value.GetType();
-    }
-
-    //Loop Methods ====================
-    public void DrawUI()
-    {
-        GUILayout.BeginHorizontal();
-        GUILayout.Label(_name);
-        GUILayout.EndHorizontal();
     }
 
     //Get/Set Methods =================

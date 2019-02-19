@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 
 public class Blackboard_GS_Editor
@@ -34,7 +32,10 @@ public class Blackboard_GS_Editor
         GUILayout.Label("Variables", _target_editor.UI_configuration.blackboard_title_style);
         foreach(Variable_GS variable in target_bb.variables.Values)
         {
-            variable.DrawUI();
+            //Create a variable editor
+            Variable_GS_Editor variable_editor = new Variable_GS_Editor(variable, _target_bb);
+            //Draw var editor UI
+            variable_editor.DrawUI();
         }
         GUILayout.EndVertical();
 
