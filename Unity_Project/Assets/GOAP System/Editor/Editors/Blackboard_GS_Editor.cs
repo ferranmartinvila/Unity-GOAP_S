@@ -42,7 +42,7 @@ public class Blackboard_GS_Editor
         //Button to add new variables
         if(GUILayout.Button("Add",GUILayout.Width(50)))
         {
-            float new_var = 1.0f;
+            int new_var = 1;
             Variable_GS var = new Variable_GS("new_var",new_var);
 
             _target_bb.variables.Add(var.id, var);

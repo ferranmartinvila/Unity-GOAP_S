@@ -20,16 +20,19 @@ public class Variable_GS_Editor
     public void DrawUI()
     {
         GUILayout.BeginHorizontal();
-
-        //Show variable name
-        GUILayout.Label(_target_variable.name);
         //Show variable type
         GUILayout.Label(_target_variable.type.ToString());
+        //Show variable name
+        GUILayout.Label(_target_variable.name);
         //Show/Edit variable value
-        switch(_target_variable.type.ToString())
+        switch (_target_variable.type.ToString())
         {
             case "System.Single":
-                EditorGUILayout.FloatField(_target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
+                _target_variable.value = EditorGUILayout.FloatField(_target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
+                break;
+
+            case "System.Int32":
+                _target_variable.value = EditorGUILayout.IntField(_target_variable.name, (int)_target_variable.value, GUILayout.ExpandWidth(true));
                 break;
         }
         //EditorGUILayout.IntField()
