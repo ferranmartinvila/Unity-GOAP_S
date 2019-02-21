@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using GOAP_S.Blackboard;
 
 namespace GOAP_S.UI
 {

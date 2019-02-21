@@ -2,62 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Blackboard_GS
+namespace GOAP_S.Blackboard
 {
-    [SerializeField] private string _id;
-    [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
-
-    //Varibles methods ================
-    public Variable_GS AddVariable(string name, object value)
+    public class Blackboard_GS
     {
-        //Generate the new variable
-        Variable_GS new_variable = new Variable_GS(name, value);
-        //Add the new var to the bb list
-        _variables.Add(new_variable.id, new_variable);
+        [SerializeField] private string _id;
+        [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
 
-        return new_variable;
-    }
-
-    public bool RemoveVariable(string key)
-    {
-        Variable_GS find_var = null;
-        //Variable found case
-        if (_variables.TryGetValue(key, out find_var))
+        //Varibles methods ================
+        public Variable_GS AddVariable(string name, object value)
         {
-            Debug.Log(find_var.name + "||" + find_var.type.ToString() + "|| Correctly Removed");
-            return _variables.Remove(key);
+            //Generate the new variable
+            Variable_GS new_variable = new Variable_GS(name, value);
+            //Add the new var to the bb list
+            _variables.Add(new_variable.id, new_variable);
+
+            return new_variable;
         }
-        //Variable not found case
-        else
-        {
-            return false;
-        }
-    }
 
-    public void ClearBlackboard()
-    {
-        //Clear all the variables in the blackboard
-        _variables.Clear();
-    }
-
-    //Get/Set methods =================
-    public Dictionary<string, Variable_GS> variables
-    {
-       get
+        public bool RemoveVariable(string key)
         {
-            return _variables;
-        }
-    }
-
-    public int id
-    {
-        get
-        {
-            if(string.IsNullOrEmpty(_id))
+            Variable_GS find_var = null;
+            //Variable found case
+            if (_variables.TryGetValue(key, out find_var))
             {
-                _id = System.Guid.NewGuid().ToString();
+                Debug.Log(find_var.name + "||" + find_var.type.ToString() + "|| Correctly Removed");
+                return _variables.Remove(key);
             }
-            return _id.GetHashCode();
+            //Variable not found case
+            else
+            {
+                return false;
+            }
+        }
+
+        public void ClearBlackboard()
+        {
+            //Clear all the variables in the blackboard
+            _variables.Clear();
+        }
+
+        //Get/Set methods =================
+        public Dictionary<string, Variable_GS> variables
+        {
+            get
+            {
+                return _variables;
+            }
+        }
+
+        public int id
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_id))
+                {
+                    _id = System.Guid.NewGuid().ToString();
+                }
+                return _id.GetHashCode();
+            }
         }
     }
 }

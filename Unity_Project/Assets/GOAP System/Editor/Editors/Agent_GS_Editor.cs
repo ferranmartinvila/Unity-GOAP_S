@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using GOAP_S.AI;
 
 [CustomEditor(typeof(Agent_GS))]
 public class Agent_GS_Editor : Editor

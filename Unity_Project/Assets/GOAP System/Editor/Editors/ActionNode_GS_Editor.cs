@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.PT;
+using GOAP_S.AI;
 
 namespace GOAP_S.UI
 {

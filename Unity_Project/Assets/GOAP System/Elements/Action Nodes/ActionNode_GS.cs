@@ -1,148 +1,152 @@
 ﻿using UnityEngine;
 using GOAP_S.PT;
 
-public class ActionNode_GS : ISerializationCallbackReceiver {
-
-
-
-    //UI fields
-    [SerializeField] private Rect _window_rect; //Position of the node window in the editor
-    [SerializeField] private string _id = ""; //Node ID used to set window 
-    [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
-    //Content fields
-    [SerializeField] private string _name = "Action Node"; //Node name
-    [SerializeField] private string _description = ""; //Node description
-    [System.NonSerialized] private Action_GS _action = null; //Action linked to the action node
-    //Serialization fields
-    [SerializeField] private string serialized_action; //String where the serialized data is stored
-
-    //Constructor =====================
-    public ActionNode_GS()
+namespace GOAP_S.AI
+{
+    public class ActionNode_GS : ISerializationCallbackReceiver
     {
 
-    }
 
-    //Loop Methods ====================
-    public void Start()
-    {
 
-    }
+        //UI fields
+        [SerializeField] private Rect _window_rect; //Position of the node window in the editor
+        [SerializeField] private string _id = ""; //Node ID used to set window 
+        [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
+        //Content fields
+        [SerializeField] private string _name = "Action Node"; //Node name
+        [SerializeField] private string _description = ""; //Node description
+        [System.NonSerialized] private Action_GS _action = null; //Action linked to the action node
+                                                                 //Serialization fields
+        [SerializeField] private string serialized_action; //String where the serialized data is stored
 
-    public void Update()
-    {
-
-    }
-
-    //Get/Set methods ===================== 
-    public NodeUIMode UImode
-    {
-        get
+        //Constructor =====================
+        public ActionNode_GS()
         {
-            return _UImode;
+
         }
-        set
-        {
-            _UImode = value;
-        }
-    }
 
-    public Rect window_rect
-    {
-        get
+        //Loop Methods ====================
+        public void Start()
         {
-            return _window_rect;
-        }
-        set
-        {
-            _window_rect = value;
-        }
-    }
 
-    public Vector2 window_position
-    {
-        get
-        {
-            return new Vector2(_window_rect.x, _window_rect.y);
         }
-        set
-        {
-            _window_rect.x = value.x;
-            _window_rect.y = value.y;
-        }
-    }
 
-    public Vector2 window_size
-    {
-        get
+        public void Update()
         {
-            return new Vector2(_window_rect.width, _window_rect.height);
-        }
-        set
-        {
-            _window_rect.width = value.x;
-            _window_rect.height = value.y;
-        }
-    }
 
-    public int id
-    {
-        get
+        }
+
+        //Get/Set methods ===================== 
+        public NodeUIMode UImode
         {
-            if(string.IsNullOrEmpty(_id))
+            get
             {
-                _id = System.Guid.NewGuid().ToString();
+                return _UImode;
             }
-            return _id.GetHashCode();
+            set
+            {
+                _UImode = value;
+            }
         }
-    }
 
-    public Action_GS action
-    {
-        get
+        public Rect window_rect
         {
-            return _action;
+            get
+            {
+                return _window_rect;
+            }
+            set
+            {
+                _window_rect = value;
+            }
         }
-        set
-        {
-            _action = value;
-        }
-    }
 
-    public string name
-    {
-        get
+        public Vector2 window_position
         {
-            return _name;
+            get
+            {
+                return new Vector2(_window_rect.x, _window_rect.y);
+            }
+            set
+            {
+                _window_rect.x = value.x;
+                _window_rect.y = value.y;
+            }
         }
-        set
+
+        public Vector2 window_size
         {
-            _name = value;
+            get
+            {
+                return new Vector2(_window_rect.width, _window_rect.height);
+            }
+            set
+            {
+                _window_rect.width = value.x;
+                _window_rect.height = value.y;
+            }
         }
-    }
 
-    public string description
-    {
-        get
+        public int id
         {
-            return _description;
+            get
+            {
+                if (string.IsNullOrEmpty(_id))
+                {
+                    _id = System.Guid.NewGuid().ToString();
+                }
+                return _id.GetHashCode();
+            }
         }
-        set
+
+        public Action_GS action
         {
-            _description = value;
+            get
+            {
+                return _action;
+            }
+            set
+            {
+                _action = value;
+            }
         }
-    }
 
-    //Serialization Methods ===========
-    public void OnBeforeSerialize()
-    {
-        //Serialize the action set
-        serialized_action = GOAP_S.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
 
-    }
+        public string description
+        {
+            get
+            {
+                return _description;
+            }
+            set
+            {
+                _description = value;
+            }
+        }
 
-    public void OnAfterDeserialize()
-    {
-        //Deserialize the action
-        action = (Action_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, null);
+        //Serialization Methods ===========
+        public void OnBeforeSerialize()
+        {
+            //Serialize the action set
+            serialized_action = GOAP_S.Serialization.SerializationManager.Serialize(action, typeof(Action_GS), null);
+
+        }
+
+        public void OnAfterDeserialize()
+        {
+            //Deserialize the action
+            action = (Action_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, null);
+        }
     }
 }

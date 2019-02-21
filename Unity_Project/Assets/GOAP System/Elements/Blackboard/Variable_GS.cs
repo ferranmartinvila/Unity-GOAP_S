@@ -1,92 +1,110 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using System;
+using GOAP_S.PT;
 
-public class Variable_GS
+namespace GOAP_S.Blackboard
 {
-
-    //Content fields
-    [SerializeField] private string _name;
-    [SerializeField] private string _id;
-    [SerializeField] private object _value;
-    [SerializeField] private System.Type _type;
-    [SerializeField] private bool _protect;
-
-    //Contructors =====================
-
-    public Variable_GS(string name, object value)
+    public class Variable_GS
     {
-        //Set variable value
-        _value = value;
-        //Set variable name
-        _name = name;
-        //Set variable type
-        _type = _value.GetType();
-    }
+        //Content fields
+        [SerializeField] private string _name = null;
+        [SerializeField] private string _id = null;
+        [SerializeField] private object _value = null;
+        [SerializeField] private System.Type _system_type = null;
+        [SerializeField] private VariableType _type = VariableType._undefined;
+        [SerializeField] private bool _protect = false;
 
-    //Get/Set Methods =================
-    public string name
-    {
-        get
+        //Contructors =====================
+        public Variable_GS()
         {
-            return _name;
-        }
-        set
-        {
-            _name = value;
-        }
-    }
 
-    public string id
-    {
-        get
-        {
-            if(string.IsNullOrEmpty(_id))
-            {
-                _id = Guid.NewGuid().ToString();
-            }
-            return _id;
         }
-        set
-        {
-            _id = value;
-        }
-    }
 
-    public object value
-    {
-        get
+        public Variable_GS(string name, object value)
         {
-            return _value;
-        }
-        set
-        {
+            //Set variable value
             _value = value;
+            //Set variable name
+            _name = name;
+            //Set variable type
+            if(value != null)_system_type = _value.GetType();
         }
-    }
 
-    public System.Type type
-    {
-        get
+        //Get/Set Methods =================
+        public string name
         {
-            return _type;
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
         }
-        set
-        {
-            _type = type;
-        }
-    }
 
-    public bool protect
-    {
-        get
+        public string id
         {
-            return _protect;
+            get
+            {
+                if (string.IsNullOrEmpty(_id))
+                {
+                    _id = Guid.NewGuid().ToString();
+                }
+                return _id;
+            }
+            set
+            {
+                _id = value;
+            }
         }
-        set
+
+        public object value
         {
-            _protect = value;
+            get
+            {
+                return _value;
+            }
+            set
+            {
+                _value = value;
+            }
+        }
+
+        public System.Type system_type
+        {
+            get
+            {
+                return _system_type;
+            }
+            set
+            {
+                _system_type = value;
+            }
+        }
+
+        public VariableType type
+        {
+            get
+            {
+                return _type;
+            }
+            set
+            {
+                _type = value;
+            }
+        }
+
+        public bool protect
+        {
+            get
+            {
+                return _protect;
+            }
+            set
+            {
+                _protect = value;
+            }
         }
     }
 }

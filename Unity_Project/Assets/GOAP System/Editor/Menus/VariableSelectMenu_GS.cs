@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Reflection;
+using GOAP_S.Blackboard;
+using GOAP_S.PT;
 
 namespace GOAP_S.UI
 {
@@ -10,16 +12,11 @@ namespace GOAP_S.UI
     {
         //Content fields
         static private NodeEditor_GS _target_node_editor = null; //Node editor where this window is shown
-        static private string _variable_name;
-        PT.VariableType _variable_type = PT.VariableType._undefined;
-
-        //static private System.Enum _variable_type = GOAP_S.PT.NodeUIMode;
-        //Content fields 
-        private ArrayList listed_elements = new ArrayList();
-
-        Vector2 scrollPos = new Vector2(0, 0);
-        string t = "This is a string inside a Scroll view!";
-        int selected_item = 0;
+        static private string _variable_name = null;
+        VariableType _variable_type = VariableType._undefined;
+        Variable_GS _variable = new Variable_GS("",null);
+        //State fields
+        static private bool on_type_change = false;
 
         //Contructors =================
         public VariableSelectMenu_GS(NodeEditor_GS target_node_editor)
@@ -50,32 +47,41 @@ namespace GOAP_S.UI
             //Variable type field
             GUILayout.BeginHorizontal();
             GUILayout.Label("Type", GUILayout.ExpandWidth(true));
-            _variable_type = (PT.VariableType)EditorGUILayout.EnumPopup(_variable_type,GUILayout.Width(150), GUILayout.ExpandWidth(true));
+            VariableType current_type = _variable_type;
+            _variable_type = (VariableType)EditorGUILayout.EnumPopup(_variable_type,GUILayout.Width(150), GUILayout.ExpandWidth(true));
+            //Check if var type is changed
+            on_type_change = current_type != _variable_type;
             GUILayout.EndHorizontal();
-
+            
             //Custom field value
             GUILayout.BeginVertical();
             switch(_variable_type)
             {
-                case PT.VariableType._short:
+                case VariableType._short:
                     {
+                        if(on_type_change)
+                        {
+                            int k = 0;
+                            _variable.value = k;
+                        }
+
+                        _variable.value = EditorGUILayout.IntField("Value", (int)_variable.value);
+
                         GUILayout.BeginHorizontal();
-                        short short_var = 0;
-                        //short_var = EditorGUILayout.IntField(short_var)
                         GUILayout.EndHorizontal();
                     }
                     break;
-                case PT.VariableType._int:
+                case VariableType._int:
                     {
 
                     }
                     break;
-                case PT.VariableType._long:
+                case VariableType._long:
                     {
 
                     }
                     break;
-                case PT.VariableType._float:
+                case VariableType._float:
                     {
 
                     }
@@ -83,65 +89,15 @@ namespace GOAP_S.UI
             }
             GUILayout.EndVertical();
 
-            //Test scroll
-            GUILayout.BeginVertical();
-            /*scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true));
-            foreach(string str in listed_elements)
-            {
-                GUILayout.Label(str, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            }
-            GUILayout.EndScrollView();*/
-
-            //Test
-            if (listed_elements.Count > 0)
-            {
-                string[] stockArr = new string[listed_elements.Count - 1];
-                stockArr = (string[])listed_elements.ToArray(typeof(string));
-                selected_item = EditorGUILayout.Popup(selected_item, stockArr);
-            }
-            
-            GUILayout.EndVertical();
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Asm test", GUILayout.Width(100), GUILayout.Height(10), GUILayout.ExpandHeight(true)))
-            {
-                Assembly[] all_asm = System.AppDomain.CurrentDomain.GetAssemblies();
-                foreach (Assembly asm in all_asm)
-                {
-                    System.Type[] asm_types = asm.GetTypes();
-                    foreach (System.Type type in asm_types)
-                    {
-                        if (type.IsClass && type.IsPublic)
-                        {
-                            listed_elements.Add(typeof(Vector2).BaseType.ToString());
-                            if (type.BaseType == typeof(Vector2).BaseType)
-                            {
-                                string[] result = type.ToString().Split('.');
-                                //if(result.Length > 3 && result[2] == "Component")
-                                listed_elements.Add(result[1]);
-                            }
-                        }
-                    }
-                }
-                Debug.Log(listed_elements.Count);
-            }
-            
-
-            if (GUILayout.Button("Clear",GUILayout.ExpandHeight(true)))
-            {
-                t = "";
-            }
-            GUILayout.EndHorizontal();
-
-            
-           GUILayout.FlexibleSpace(); 
+            //Separation
+            GUILayout.FlexibleSpace(); 
 
             GUILayout.BeginHorizontal();
             //Add button
             if (GUILayout.Button("Add", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true)))
             {
                 //Add the new variable if the data is correct
-
+                //_target_node_editor.selected_agent.blackboard.AddVariable()
             }
             //Close button
             if (GUILayout.Button("Close", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
@@ -157,14 +113,10 @@ namespace GOAP_S.UI
         }
 
         //Functionality Methods =======
-        /*public override Vector2 GetWindowSize()
-        {
-
-        }*/
-
         public Variable_GS GenerateVariable()
         {
-            return null;
+            //TODO set var name,type,etc
+            return _variable;
         }
 
         public int GetAllClassInstances(System.Type type, out ArrayList elements)

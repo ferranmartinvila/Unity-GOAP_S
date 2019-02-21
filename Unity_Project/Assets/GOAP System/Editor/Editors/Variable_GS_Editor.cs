@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using UnityEditor;
-using GOAP_S.PT;
+using GOAP_S.Blackboard;
 
 public class Variable_GS_Editor
 {
@@ -32,7 +32,7 @@ public class Variable_GS_Editor
         //Show/Edit variable value
         string type_string = _target_variable.type.ToString();
         GUILayout.Label(type_string);
-        GUILayout.Label(_target_variable.type.IsClass.ToString());
+        GUILayout.Label(_target_variable.system_type.IsClass.ToString());
 
         /*switch (type_string)
         {
