@@ -10,10 +10,10 @@ namespace GOAP_S.Blackboard
         [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
 
         //Varibles methods ================
-        public Variable_GS AddVariable(string name, object value)
+        public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
             //Generate the new variable
-            Variable_GS new_variable = new Variable_GS(name, value);
+            Variable_GS new_variable = new Variable_GS(name, type, value);
             //Add the new var to the bb list
             _variables.Add(new_variable.id, new_variable);
 

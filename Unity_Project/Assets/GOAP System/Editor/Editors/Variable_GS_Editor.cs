@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.Blackboard;
+using GOAP_S.PT;
 
 public class Variable_GS_Editor
 {
     //Conten fields
     private Variable_GS _target_variable;
     private Blackboard_GS _target_bb;
+    //State fields
+    private bool on_edit_state = false;
 
     //Constructors ====================
     public Variable_GS_Editor(Variable_GS target_variable, Blackboard_GS target_bb)
@@ -21,33 +24,41 @@ public class Variable_GS_Editor
     public void DrawUI()
     {
         GUILayout.BeginHorizontal();
+
+        //Edit button, swap between edit and show state
+        if (GUILayout.Button("", GUILayout.Width(20), GUILayout.Height(20)))
+        {
+            on_edit_state = !on_edit_state;
+        }
+
+        //Show variable type
+        GUILayout.Label(_target_variable.type.ToString());
+
+        //Show variable name
+        if (!on_edit_state)
+        {
+            GUILayout.Label(_target_variable.name);
+        }
+        //Edit variable name
+        else
+        {
+            _target_variable.name = EditorGUILayout.TextField(_target_variable.name);
+        }
         
+        //Show variable value
+        switch(_target_variable.type)
+        {
+            case VariableType._int:
+                _target_variable.value = EditorGUILayout.IntField((int)_target_variable.value);
+                break;
+        }
+
         //Remove button
         if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
         {
             //Remove the current var
             _target_bb.RemoveVariable(_target_variable.id);
         }
-
-        //Show/Edit variable value
-        string type_string = _target_variable.type.ToString();
-        GUILayout.Label(type_string);
-        GUILayout.Label(_target_variable.system_type.IsClass.ToString());
-
-        /*switch (type_string)
-        {
-            case "System.Single":
-                _target_variable.value = EditorGUILayout.FloatField(ProTools.BasicTypeFromSystemType(_target_variable.type.ToString()) + " " + _target_variable.name,(float)_target_variable.value,GUILayout.ExpandWidth(true));
-                break;
-
-            case "System.Int32":
-                _target_variable.value = EditorGUILayout.IntField(ProTools.BasicTypeFromSystemType(_target_variable.type.ToString()) + " " + _target_variable.name, (int)_target_variable.value, GUILayout.Width(50), GUILayout.ExpandWidth(true));
-                break;
-
-            default:
-                //EditorGUILayout.ObjectField(_target_variable.value, _target_variable.type);
-                break;
-        }*/
 
         GUILayout.EndHorizontal();
     }

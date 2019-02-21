@@ -70,8 +70,6 @@ namespace GOAP_S.AI
             set
             {
                 _name = value;
-                //Mark scene dirty
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
             }
         }
 

@@ -1,9 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor;
-using System.Reflection;
-using GOAP_S.Blackboard;
 using GOAP_S.PT;
 
 namespace GOAP_S.UI
@@ -12,11 +11,9 @@ namespace GOAP_S.UI
     {
         //Content fields
         static private NodeEditor_GS _target_node_editor = null; //Node editor where this window is shown
-        static private string _variable_name = null;
-        VariableType _variable_type = VariableType._undefined;
-        Variable_GS _variable = new Variable_GS("",null);
-        //State fields
-        static private bool on_type_change = false;
+        static private string _variable_name = null; //New variable name
+        VariableType _variable_type = VariableType._undefined; //New variable type
+        static private object _variable_value = null; //New variable value
 
         //Contructors =================
         public VariableSelectMenu_GS(NodeEditor_GS target_node_editor)
@@ -50,35 +47,19 @@ namespace GOAP_S.UI
             VariableType current_type = _variable_type;
             _variable_type = (VariableType)EditorGUILayout.EnumPopup(_variable_type,GUILayout.Width(150), GUILayout.ExpandWidth(true));
             //Check if var type is changed
-            on_type_change = current_type != _variable_type;
+            if(current_type != _variable_type)
+            {
+                AllocateValue();
+            }
             GUILayout.EndHorizontal();
             
             //Custom field value
             GUILayout.BeginVertical();
             switch(_variable_type)
             {
-                case VariableType._short:
-                    {
-                        if(on_type_change)
-                        {
-                            int k = 0;
-                            _variable.value = k;
-                        }
-
-                        _variable.value = EditorGUILayout.IntField("Value", (int)_variable.value);
-
-                        GUILayout.BeginHorizontal();
-                        GUILayout.EndHorizontal();
-                    }
-                    break;
                 case VariableType._int:
                     {
-
-                    }
-                    break;
-                case VariableType._long:
-                    {
-
+                        _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
                     }
                     break;
                 case VariableType._float:
@@ -97,7 +78,16 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Add", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true)))
             {
                 //Add the new variable if the data is correct
-                //_target_node_editor.selected_agent.blackboard.AddVariable()
+                if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined && _variable_value != null)
+                {
+                    //Send info to the bb to generate the variable
+                    _target_node_editor.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Close this popup and updat bb window
+                    editorWindow.Close();
+                    _target_node_editor.Repaint();
+                }
             }
             //Close button
             if (GUILayout.Button("Close", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
@@ -113,10 +103,18 @@ namespace GOAP_S.UI
         }
 
         //Functionality Methods =======
-        public Variable_GS GenerateVariable()
+        private void AllocateValue()
         {
-            //TODO set var name,type,etc
-            return _variable;
+            switch(_variable_type)
+            {
+                case VariableType._undefined:
+                    _variable_value = null;
+                    break;
+                case VariableType._int:
+                    int new_int = 0;
+                    _variable_value = new_int;
+                    break;
+            }
         }
 
         public int GetAllClassInstances(System.Type type, out ArrayList elements)

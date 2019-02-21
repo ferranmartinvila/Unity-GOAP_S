@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.AI;
+using System.Collections;
 
 namespace GOAP_S.UI
 {
@@ -19,7 +20,8 @@ namespace GOAP_S.UI
         //Target fields
         private GameObject _selected_object = null;
         private Agent_GS _selected_agent = null;
-        
+        private ArrayList _action_node_editors = null; //List where all the action nodes ui are stored
+
         /*Rect start_node;
         Rect window1;
         Rect window2;
@@ -37,17 +39,6 @@ namespace GOAP_S.UI
         static bool CheckAgentToShowNodeEditor()
         {
             return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
-        }
-
-        //Window Configuration ============
-        static void ConfigureWindow()
-        {
-            _window.titleContent.text = "Node Editor"; //Set a window title
-            _id = System.Guid.NewGuid().ToString(); //Generate window UUID
-            _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
-            _back_texture.Apply();
-            _mouse_position = Event.current.mousePosition;
         }
 
         //Loop Methods ====================
@@ -198,6 +189,26 @@ namespace GOAP_S.UI
 
             Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 4);
         }*/
+
+        //Functionality Methods =======
+        private static void ConfigureWindow()
+        {
+            _window.titleContent.text = "Node Editor"; //Set a window title
+            _id = System.Guid.NewGuid().ToString(); //Generate window UUID
+            _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
+            _back_texture.Apply();
+            _mouse_position = Event.current.mousePosition;
+        }
+
+        private void GenerateTargetAgentUI(Agent_GS new_agent)
+        {
+            //Set new target agent 
+            _selected_agent = new_agent;
+            
+            //TODO
+            //selected_agent.action_nodes
+        }
 
         //Get/Set Methods =================
         public Agent_GS selected_agent
