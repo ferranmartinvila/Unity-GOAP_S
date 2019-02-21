@@ -10,6 +10,7 @@ namespace GOAP_S.UI
         private static NodeEditor_GS _window; //Reference to this node editor window
         //UI fields
         public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
+        private static Texture2D _back_texture = null; //Texture in the background of the window
         //Target fields
         private GameObject _selected_object = null;
         private Agent_GS _selected_agent = null;
@@ -38,6 +39,9 @@ namespace GOAP_S.UI
         {
             _window.titleContent.text = "Node Editor"; //Set a window title
             _id = System.Guid.NewGuid().ToString(); //Generate window UUID
+            _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+            _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
+            _back_texture.Apply();
         }
 
         //Loop Methods ====================
@@ -70,7 +74,7 @@ namespace GOAP_S.UI
         void OnGUI()
         {
             //Draw background texture 
-            //GUI.DrawTexture(EditorWindow.GetWindow()) TODO
+            GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), _back_texture, ScaleMode.StretchToFill);
 
             //Check if the current selected object is the same that the windows is focusing
             if (Selection.activeGameObject != _selected_object)
@@ -93,6 +97,8 @@ namespace GOAP_S.UI
             //If agent is null or there's no actions blit is avoided
             if (_selected_agent == null || _selected_agent.action_nodes == null) return;
 
+            //Initialize necessary variables
+            int num = _selected_agent.action_nodes.Count;
 
             /*DrawNodeCurve(window1, window2); //curve is drawn under the windows
             DrawNodeCurve(start_node, window2); 
@@ -118,12 +124,31 @@ namespace GOAP_S.UI
                     //Show node editor popup menu
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new GOAP_S.UI.NodeEditorPopMenu_GS(this));
                 }
+
+                //Midle click
+                if(Event.current.button == 2)
+                {
+                    //Get mouse motion
+                    float mouse_x_motion = Input.GetAxis("Mouse X");
+                    float mouse_y_motion = Input.GetAxis("Mouse Y");
+                    //Check if motion is not null
+                    if (mouse_y_motion != 0.0f|| mouse_x_motion != 0.0f)
+                    {
+                        //Iterate all the nodes 
+                        for (int k = 0; k < num; k++)
+                        {
+                            //Get the current action node
+                            ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
+                            //Modify node position
+                            node.window_position = new Vector2(node.window_position.x + mouse_x_motion, node.window_position.y + mouse_y_motion);
+                        }
+                    }
+                }
             }
 
             //Draw action nodes
             //Here iterate all the nodes, now just draw them
             //Generate an output to know the node state is the next step
-            int num = _selected_agent.action_nodes.Count;
             for (int k = 0; k < num; k++)
             {
                 //Get the current action node
@@ -144,7 +169,7 @@ namespace GOAP_S.UI
             bb_editor.window_position = new Vector2(_window.position.width - 250, 0);
             bb_editor.window_size = new Vector2(250, 100);
             GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-
+            
             EndWindows();
         }
 
