@@ -20,12 +20,14 @@ namespace GOAP_S.UI
         //Target fields
         private GameObject _selected_object = null;
         private Agent_GS _selected_agent = null;
-        private ArrayList _action_node_editors = null; //List where all the action nodes ui are stored
+        private ActionNode_GS[] _action_node_editors = null; //List where all the action nodes ui are stored
 
         /*Rect start_node;
         Rect window1;
         Rect window2;
         Rect window2_;*/
+
+
 
         //Window Menu Item ================
         [MenuItem("Tools / GOAP / Node Editor")]
@@ -82,10 +84,15 @@ namespace GOAP_S.UI
             }
 
             //If agent is null or there's no actions blit is avoided
-            if (_selected_agent == null || _selected_agent.action_nodes == null) return;
+            if (_selected_agent == null || _selected_agent.action_nodes == null)
+            {
+                //Get agent and return, so if is null is check in the next loop
+                _selected_agent = _selected_object.GetComponent<Agent_GS>();
+                return;
+            }
 
             //Initialize necessary variables
-            int num = _selected_agent.action_nodes.Count;
+            int num = _selected_agent.action_nodes.Length;
             //Track mouse position and mouse motion
             if (_last_event_type == EventType.MouseUp ||_last_event_type == EventType.MouseDown)
             {
@@ -207,6 +214,7 @@ namespace GOAP_S.UI
             _selected_agent = new_agent;
             
             //TODO
+            //_action_node_editors
             //selected_agent.action_nodes
         }
 

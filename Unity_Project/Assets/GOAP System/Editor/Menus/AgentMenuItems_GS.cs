@@ -32,7 +32,7 @@ namespace GOAP_S.UI
         {
             return Selection.activeGameObject != null
                 && Selection.activeGameObject.GetComponent<Agent_GS>() != null
-                && Selection.activeGameObject.GetComponent<Agent_GS>().action_nodes.Count > 0;
+                && Selection.activeGameObject.GetComponent<Agent_GS>().action_nodes.Length > 0;
         }
     }
 }
