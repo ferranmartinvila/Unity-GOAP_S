@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,8 +278,9 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '{"$content":[null,null,null,null,null,null,null,null,null,null],"$type":"GOAP_S.AI.ActionNode_GS[]"}'
-  serialized_blackboard: null
+  serialized_action_nodes: '{"$content":[{"_window_rect":{"xMin":43.0,"yMin":58.0,"xMax":143.0,"yMax":158.0},"_id":"4d5e27c4-a6ae-4aa8-a346-ea1b9d11fedb","_name":"Action
+    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null,null,null,null],"$type":"GOAP_S.AI.ActionNode_GS[]"}'
+  serialized_blackboard: '{"_id":"106be5e1-e119-404d-8321-e169ace97412","_variables":{}}'
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,7 +365,6 @@ GameObject:
   - component: {fileID: 1645938995}
   - component: {fileID: 1645938994}
   - component: {fileID: 1645938993}
-  - component: {fileID: 1645938992}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -372,22 +372,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1645938992
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: un_named
-  _id: null
-  obj_refs: []
-  serialized_action_nodes: '{"$content":[],"$type":"GOAP_S.AI.ActionNode_GS[]"}'
-  serialized_blackboard: '{"_id":"56263f0a-0f3d-4d73-a8f1-6c8ea81a937b","_variables":{}}'
 --- !u!65 &1645938993
 BoxCollider:
   m_ObjectHideFlags: 0

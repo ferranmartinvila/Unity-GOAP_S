@@ -13,7 +13,7 @@ namespace GOAP_S.AI
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
         [SerializeField] internal string _id = "null"; //Agent UUID
         [System.NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
-        [System.NonSerialized] private int _action_node_num = 0; //The number of nodes placed in the array
+        [System.NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
         [System.NonSerialized] private Blackboard_GS _blackboard = null;
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
@@ -49,7 +49,7 @@ namespace GOAP_S.AI
         {
             //Clear action nodes
             int len = action_nodes.Length;
-            for(int k = 0; k < len; k++)
+            for (int k = 0; k < len; k++)
             {
                 action_nodes[k] = null;
             }
@@ -63,7 +63,9 @@ namespace GOAP_S.AI
             //Set a position in the node editor canvas
             new_node.window_rect = new Rect(x_pos, y_pos, 100, 100);
             //Add the new node to the action nodes list
-            action_nodes[action_nodes.Length] = new_node;
+            _action_nodes[_action_nodes_num] = new_node;
+            //Add node count
+            _action_nodes_num += 1;
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
@@ -71,15 +73,17 @@ namespace GOAP_S.AI
         public void DeleteActionNode(ActionNode_GS target)
         {
             int len = action_nodes.Length;
-            for(int k = 0; k < len; k++)
+            for (int k = 0; k < len; k++)
             {
-                if(action_nodes[k] == target)
+                if (action_nodes[k] == target)
                 {
                     if (k == len - 1) action_nodes[k] = null;
-                    for(int i = k; i < len; i++)
+                    for (int i = k; i < len; i++)
                     {
                         action_nodes[i] = action_nodes[i + 1];
                     }
+                    //Update node count
+                    _action_nodes_num -= 1;
                 }
             }
         }
@@ -118,6 +122,14 @@ namespace GOAP_S.AI
             }
         }
 
+        public int action_nodes_num
+        {
+            get
+            {
+                return _action_nodes_num;
+            }
+        }
+
         public Blackboard_GS blackboard
         {
             get
@@ -146,18 +158,19 @@ namespace GOAP_S.AI
             //Deserialize action nodes
             _action_nodes = (ActionNode_GS[])GOAP_S.Serialization.SerializationManager.Deserialize(typeof(ActionNode_GS[]), serialized_action_nodes, obj_refs);
             //Count nodes
-            for(int k = 0; k < _action_nodes.Length; k++)
+            for (int k = 0; k < _action_nodes.Length; k++)
             {
                 if (_action_nodes[k] != null)
                 {
-                    _action_node_num++;
+                    _action_nodes_num++;
                 }
 
-            //Deserialize blackboard
-            _blackboard = (Blackboard_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
-            if (_blackboard == null)
-            {
-                _blackboard = new Blackboard_GS();
+                //Deserialize blackboard
+                _blackboard = (Blackboard_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+                if (_blackboard == null)
+                {
+                    _blackboard = new Blackboard_GS();
+                }
             }
         }
     }
