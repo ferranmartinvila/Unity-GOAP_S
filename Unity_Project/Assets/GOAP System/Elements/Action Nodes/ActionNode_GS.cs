@@ -7,7 +7,6 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     //UI fields
     [SerializeField] private Rect _window_rect; //Position of the node window in the editor
-    [SerializeField] private bool _editable_pos = true; //True means that the user can move the window
     [SerializeField] private string _id = ""; //Node ID used to set window 
     [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
     //Content fields
@@ -34,19 +33,7 @@ public class ActionNode_GS : ISerializationCallbackReceiver {
 
     }
 
-    //Get/Set methods =====================
-    public bool editable_position
-    {
-        get
-        {
-            return _editable_pos;
-        }
-        set
-        {
-            _editable_pos = value;
-        }
-    }
-    
+    //Get/Set methods ===================== 
     public NodeUIMode UImode
     {
         get

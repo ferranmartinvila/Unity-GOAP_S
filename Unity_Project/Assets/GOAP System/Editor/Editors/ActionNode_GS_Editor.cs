@@ -48,14 +48,26 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
             GUILayout.Label("Name");
             _target_node.name = GUILayout.TextField(_target_node.name, GUILayout.Width(90), GUILayout.ExpandWidth(true));
+            if(GUILayout.Button("X",GUILayout.Width(20),GUILayout.ExpandWidth(false)))
+            {
+                _target_node.name = "";
+            }
             GUILayout.EndHorizontal();
 
             //Node description text field
-            GUILayout.BeginVertical();
+            GUILayout.BeginHorizontal();
             GUILayout.Label("Description");
-            _target_node.description = GUILayout.TextArea(_target_node.description, GUILayout.Width(40), GUILayout.Height(100), GUILayout.ExpandWidth(true));
+            _target_node.description = GUILayout.TextArea(_target_node.description, GUILayout.Width(250), GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.ExpandWidth(true)))
+            {
+                _target_node.description = "";
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.FlexibleSpace();
 
             //Close edit mode
+            GUILayout.BeginHorizontal();
             if (GUILayout.Button(
                 "Close",
                 _target_node_editor.UI_configuration.node_modify_button_style,
@@ -63,8 +75,7 @@ namespace GOAP_S.UI
             {
                 _target_node.UImode = NodeUIMode.SET_STATE;
             }
-
-            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
 
             GUI.DragWindow();
         }

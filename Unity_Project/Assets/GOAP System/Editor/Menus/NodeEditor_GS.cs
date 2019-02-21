@@ -12,7 +12,7 @@ namespace GOAP_S.UI
         //UI fields
         public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
         private static Texture2D _back_texture = null; //Texture in the background of the window
-        private Vector2 _mouse_position = Vector2.zero; //Used to track the mouse position in this window
+        private static Vector2 _mouse_position = Vector2.zero; //Used to track the mouse position in this window
         private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
         private float _mouse_motion_relation = 1.2f; //Mouse motion is multiplied for this value to accurate the drag speed
         //Target fields
@@ -46,6 +46,7 @@ namespace GOAP_S.UI
             _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
             _back_texture.Apply();
+            _mouse_position = Event.current.mousePosition;
         }
 
         //Loop Methods ====================
@@ -63,18 +64,7 @@ namespace GOAP_S.UI
             window2 = new Rect(210, 210, 100, 100);
             window2_ = new Rect(210, 210, 100, 100);*/
         }
-
-        /*private void OnProjectChange()
-        {
-            //Node editor UI configuration is initialized on project change
-            if(!UI_configuration.GetInitialized()) UI_configuration.InitializeConfig();
-        }
-        private void OnEnable()
-        {
-            //Node editor UI configuration is initialized on window enable
-            if (!UI_configuration.GetInitialized()) UI_configuration.InitializeConfig();
-        }*/
-
+        
         void OnGUI()
         {
             //Draw background texture 
@@ -105,7 +95,7 @@ namespace GOAP_S.UI
             //Initialize necessary variables
             int num = _selected_agent.action_nodes.Count;
             //Track mouse position and mouse motion
-            if (_last_event_type == EventType.MouseUp)
+            if (_last_event_type == EventType.MouseUp ||_last_event_type == EventType.MouseDown)
             {
                 _mouse_motion = Vector2.zero;
                 _mouse_position = Event.current.mousePosition;
@@ -173,8 +163,16 @@ namespace GOAP_S.UI
                 ActionNode_GS_Editor node_editor = new ActionNode_GS_Editor(node, this);
                 //Generate the window
                 Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                //Generate the node description label
+                //First generate content to calculate the size
+                GUIContent content = new GUIContent(node.description);
+                //Get content size
+                Vector2 label_size = UI_configuration.node_description_style.CalcSize(content);
+                //Show the description in a position 
+                GUI.Label(new Rect(node.window_position.x - label_size.x, node.window_position.y, label_size.x, label_size.y), node.description, UI_configuration.node_description_style);
+
                 //Move the node if it's position is editable
-                if (node.editable_position)
+                if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
                 {
                     node.window_position = new Vector2(node_rect.x, node_rect.y);
                 }

@@ -11,6 +11,7 @@ public class UIConfig_GS
     static private GUIStyle _node_selection_buttons_style = null; //Buttons used to select node elements style
     static private GUIStyle _node_modify_button_style = null; //Button used to delete or edit the node data
     static private GUIStyle _node_elements_style = null; //Used in the condition,action,reward names
+    static private GUIStyle _node_description_style = null; //Used in the description label of action nodes
     static private GUIStyle _select_menu_title_style = null; //Used to set the pop windows in node editor style
     static private GUIStyle _select_menu_button_style = null; //Used to set the buttons in the selection menus
     static private GUIStyle _blackboard_window_style = null; //Used in the bb base window
@@ -74,6 +75,21 @@ public class UIConfig_GS
             return _node_elements_style;
         }
     }
+
+    public GUIStyle node_description_style
+    {
+        get
+        {
+            if(_node_description_style == null)
+            {
+                //Configure node description style
+                _node_description_style = new GUIStyle("label");
+                _node_description_style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+            return _node_description_style;
+        }
+    }
+
 
     public GUIStyle select_menu_title_style
     {
