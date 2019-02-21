@@ -17,7 +17,7 @@ namespace GOAP_S.UI
 
         Vector2 scrollPos = new Vector2(0, 0);
         string t = "This is a string inside a Scroll view!";
-
+        int selected_item = 0;
 
         //Contructors =================
         public VariableSelectMenu_GS(NodeEditor_GS target_node_editor)
@@ -44,21 +44,21 @@ namespace GOAP_S.UI
 
             //Test scroll
             GUILayout.BeginVertical();
-            scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true));
+            /*scrollPos = GUILayout.BeginScrollView(scrollPos, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true));
             foreach(string str in listed_elements)
             {
                 GUILayout.Label(str, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             }
+            GUILayout.EndScrollView();*/
 
             //Test
             if (listed_elements.Count > 0)
             {
                 string[] stockArr = new string[listed_elements.Count - 1];
                 stockArr = (string[])listed_elements.ToArray(typeof(string));
-                EditorGUILayout.Popup(0, stockArr);
+                selected_item = EditorGUILayout.Popup(selected_item, stockArr);
             }
-
-            GUILayout.EndScrollView();
+            
             GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();

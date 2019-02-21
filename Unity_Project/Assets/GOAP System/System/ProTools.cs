@@ -9,6 +9,15 @@ namespace GOAP_S.PT
         EDIT_STATE //State in which the user can set node description/name
     }
 
+    public enum VariableType
+    {
+        _undefined = 0,
+        _int8,
+        _int16,
+        _int32,
+        _int64
+    }
+
     public static class ProTools
     {
         //Universal allocate class method =======
