@@ -35,10 +35,8 @@ namespace GOAP_S.UI
                 GUILayout.ExpandWidth(true),
                 GUILayout.Height(25)))
             {
-                //Get the mouse pos inside the target canvas
-                Vector2 mousePos = Event.current.mousePosition;
                 //Focus the target selected agent and add an action in the target canvas pos
-                _target_node_editor.selected_agent.AddActionNode(mousePos.x, mousePos.y);
+                _target_node_editor.selected_agent.AddActionNode(_target_node_editor.mouse_position.x, _target_node_editor.mouse_position.y);
                 //Repaint the target window
                 _target_node_editor.Repaint();
                 //Close this window

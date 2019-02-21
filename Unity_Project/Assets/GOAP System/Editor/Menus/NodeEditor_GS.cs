@@ -8,13 +8,17 @@ namespace GOAP_S.UI
         //State fields
         private static string _id = ""; //Node ID used to set pop window id
         private static NodeEditor_GS _window; //Reference to this node editor window
+        private EventType _last_event_type; //Last event type
         //UI fields
         public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
         private static Texture2D _back_texture = null; //Texture in the background of the window
+        private Vector2 _mouse_position = Vector2.zero; //Used to track the mouse position in this window
+        private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
+        private float _mouse_motion_relation = 1.2f; //Mouse motion is multiplied for this value to accurate the drag speed
         //Target fields
         private GameObject _selected_object = null;
         private Agent_GS _selected_agent = null;
-
+        
         /*Rect start_node;
         Rect window1;
         Rect window2;
@@ -91,6 +95,7 @@ namespace GOAP_S.UI
                 }
                 //Change the selected object and repaint the window content
                 _selected_object = Selection.activeGameObject;
+                //Repaint the window when the target object is changed
                 Repaint();
             }
 
@@ -99,7 +104,18 @@ namespace GOAP_S.UI
 
             //Initialize necessary variables
             int num = _selected_agent.action_nodes.Count;
-
+            //Track mouse position and mouse motion
+            if (_last_event_type == EventType.MouseUp)
+            {
+                _mouse_motion = Vector2.zero;
+                _mouse_position = Event.current.mousePosition;
+            }
+            else
+            {
+                _mouse_motion = (Event.current.mousePosition - _mouse_position) * _mouse_motion_relation;
+                _mouse_position = Event.current.mousePosition;
+            }
+        
             /*DrawNodeCurve(window1, window2); //curve is drawn under the windows
             DrawNodeCurve(start_node, window2); 
             DrawNodeCurve(window2_, window1); */
@@ -110,8 +126,6 @@ namespace GOAP_S.UI
             window2 = GUI.Window(2, window2, DrawNodeWindow, "Window 2");
             window2_ = GUI.Window(4, window2_, DrawNodeWindow, "Window 7");
             */
-
-            BeginWindows();
 
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
@@ -125,14 +139,11 @@ namespace GOAP_S.UI
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new GOAP_S.UI.NodeEditorPopMenu_GS(this));
                 }
 
-                //Midle click
-                if(Event.current.button == 2)
+                //Middle click
+                if (Event.current.button == 2)
                 {
-                    //Get mouse motion
-                    float mouse_x_motion = Input.GetAxis("Mouse X");
-                    float mouse_y_motion = Input.GetAxis("Mouse Y");
                     //Check if motion is not null
-                    if (mouse_y_motion != 0.0f|| mouse_x_motion != 0.0f)
+                    if (_mouse_motion.x != 0.0f || _mouse_motion.y != 0.0f)
                     {
                         //Iterate all the nodes 
                         for (int k = 0; k < num; k++)
@@ -140,15 +151,20 @@ namespace GOAP_S.UI
                             //Get the current action node
                             ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
                             //Modify node position
-                            node.window_position = new Vector2(node.window_position.x + mouse_x_motion, node.window_position.y + mouse_y_motion);
+                            node.window_position = new Vector2(node.window_position.x + (int)_mouse_motion.x, node.window_position.y + (int)_mouse_motion.y);
                         }
                     }
+                    //Save the last event related with the mouse input(MouseUp is always the last)
+                    _last_event_type = Event.current.type;
+                    //On drag input you need to update UI constantly
+                    Repaint();
                 }
             }
 
+            //Mark the beginning area of the popup windows
+            BeginWindows();
+
             //Draw action nodes
-            //Here iterate all the nodes, now just draw them
-            //Generate an output to know the node state is the next step
             for (int k = 0; k < num; k++)
             {
                 //Get the current action node
@@ -169,11 +185,12 @@ namespace GOAP_S.UI
             bb_editor.window_position = new Vector2(_window.position.width - 250, 0);
             bb_editor.window_size = new Vector2(250, 100);
             GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            
+
+            //End area of popup windows
             EndWindows();
         }
 
-        void DrawNodeCurve(Rect start, Rect end)
+        /*void DrawNodeCurve(Rect start, Rect end)
         {
             Vector3 startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
             Vector3 endPos = new Vector3(end.x, end.y + end.height / 2, 0);
@@ -181,7 +198,7 @@ namespace GOAP_S.UI
             Vector3 endTan = endPos + Vector3.left * 50;
 
             Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 4);
-        }
+        }*/
 
         //Get/Set Methods =================
         public Agent_GS selected_agent
@@ -193,6 +210,14 @@ namespace GOAP_S.UI
             set
             {
                 _selected_agent = value;
+            }
+        }
+
+        public Vector2 mouse_position
+        {
+            get
+            {
+                return _mouse_position;
             }
         }
     }
