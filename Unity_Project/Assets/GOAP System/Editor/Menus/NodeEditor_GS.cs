@@ -9,7 +9,6 @@ namespace GOAP_S.UI
     {
         //State fields
         private static string _id = ""; //Node ID used to set pop window id
-        private static NodeEditor_GS _window; //Reference to this node editor window
         private EventType _last_event_type; //Last event type
         //UI fields
         public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
@@ -30,13 +29,12 @@ namespace GOAP_S.UI
 
 
 
+
         //Window Menu Item ================
         [MenuItem("Tools / GOAP / Node Editor")]
         static void ShowNodeEditor()
         {
-            _window = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
-            ConfigureWindow();
-            
+            EditorWindow.GetWindow(typeof(NodeEditor_GS));
         }
 
         [MenuItem("Tools / GOAP / Node Editor", true)]
@@ -45,23 +43,14 @@ namespace GOAP_S.UI
             return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
         }
 
-        //Loop Methods ====================
-        public void Awake()
+        //Loop Methods ====================     
+        private void OnEnable()
         {
-            //Set the selected agent to draw its canvas
-            //selected_agent = EditorWindow.GetWindow<Manager_GS>().target_obj.GetComponent<Agent_GS>();
-
-            //Check if the selected agent is initialized
-            //if (!selected_agent.GetAgentInit()) selected_agent.Initialize();
-
-            //Iterate all the nodes and place them in the canvas
-            /*start_node = new Rect(210, 10, 100, 100);
-            window1 = new Rect(10, 10, 100, 100);
-            window2 = new Rect(210, 210, 100, 100);
-            window2_ = new Rect(210, 210, 100, 100);*/
+            //Configure window on enable(title, back texture, id content, ...)
+            ConfigureWindow();
         }
-        
-        void OnGUI()
+
+        private void OnGUI()
         {
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), _back_texture, ScaleMode.StretchToFill);
@@ -89,16 +78,21 @@ namespace GOAP_S.UI
                 Repaint();
             }
 
-            //If agent is null or there's no actions blit is avoided
+            //Check if the current selected object have agent if selected agent is null
             if (_selected_agent == null || _selected_agent.action_nodes == null)
             {
                 //Get agent and return, so if is null is check in the next loop
-                _selected_agent = _selected_object.GetComponent<Agent_GS>();
-                return;
+                if (_selected_object != null)
+                {
+                    _selected_agent = _selected_object.GetComponent<Agent_GS>();
+                    if(_selected_agent != null)
+                    {
+                        GenerateTargetAgentUI();
+                    }
+
+                }
             }
 
-            //Initialize necessary variables
-            int num = _selected_agent.action_nodes_num;
             //Track mouse position and mouse motion
             if (_last_event_type == EventType.MouseUp ||_last_event_type == EventType.MouseDown)
             {
@@ -111,17 +105,6 @@ namespace GOAP_S.UI
                 _mouse_position = Event.current.mousePosition;
             }
         
-            /*DrawNodeCurve(window1, window2); //curve is drawn under the windows
-            DrawNodeCurve(start_node, window2); 
-            DrawNodeCurve(window2_, window1); */
-            /*
-            //Planning
-            GUI.backgroundColor = Color.white;
-            window1 = GUI.Window(1, window1, DrawNodeWindow, "Window 1");   // Updates the Rect's when these are dragged
-            window2 = GUI.Window(2, window2, DrawNodeWindow, "Window 2");
-            window2_ = GUI.Window(4, window2_, DrawNodeWindow, "Window 7");
-            */
-
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
             {
@@ -141,7 +124,7 @@ namespace GOAP_S.UI
                     if (_mouse_motion.x != 0.0f || _mouse_motion.y != 0.0f)
                     {
                         //Iterate all the nodes 
-                        for (int k = 0; k < num; k++)
+                        for (int k = 0; k < _selected_agent.action_nodes_num; k++)
                         {
                             //Get the current action node
                             ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
@@ -160,7 +143,7 @@ namespace GOAP_S.UI
             BeginWindows();
 
             //Draw action nodes
-            for (int k = 0; k < num; k++)
+            for (int k = 0; k < _selected_agent.action_nodes_num; k++)
             {
                 //Get the current action node
                 ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
@@ -184,11 +167,11 @@ namespace GOAP_S.UI
             }
 
             //Draw agent blackboard
-            /*Blackboard_GS_Editor bb_editor = new Blackboard_GS_Editor(selected_agent.blackboard, this);
-            bb_editor.window_position = new Vector2(_window.position.width - 250, 0);
+            Blackboard_GS_Editor bb_editor = new Blackboard_GS_Editor(selected_agent.blackboard, this);
+            bb_editor.window_position = new Vector2(this.position.width - 250, 0);
             bb_editor.window_size = new Vector2(250, 100);
             GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            */
+            
             //End area of popup windows
             EndWindows();
         }
@@ -204,18 +187,20 @@ namespace GOAP_S.UI
         }*/
 
         //Functionality Methods =======
-        private static void ConfigureWindow()
+        private void ConfigureWindow()
         {
-            _window.titleContent.text = "Node Editor"; //Set a window title
+            this.titleContent.text = "Node Editor"; //Set a window title
             _id = System.Guid.NewGuid().ToString(); //Generate window UUID
             _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
             _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
             _back_texture.Apply();
-            _mouse_position = Event.current.mousePosition;
         }
 
         private void GenerateTargetAgentUI()
         {
+            //Alloc node editors array
+            _action_node_editors = new ActionNode_GS_Editor[10];
+
             //Generate action nodes editors
             for (int k = 0; k < _selected_agent.action_nodes_num; k++)
             {
@@ -230,12 +215,52 @@ namespace GOAP_S.UI
 
         public void AddTargetAgentNodeUI(ActionNode_GS new_node)
         {
-            //TODO
+            //Check if we need to allocate more items in the array
+            if (_action_node_editors_num == _action_node_editors.Length)
+            {
+                //Double array capacity
+                ActionNode_GS_Editor[] new_array = new ActionNode_GS_Editor[_action_node_editors_num * 2];
+                //Copy values
+                for(int k = 0; k < _action_node_editors_num; k++)
+                {
+                    new_array[k] = _action_node_editors[k];
+                }
+            }
+
+            //Generate the new action node editor
+            ActionNode_GS_Editor new_node_editor = new ActionNode_GS_Editor(new_node, this);
+            //Add it to the array
+            _action_node_editors[_action_node_editors_num] = new_node_editor;
+            //Update editors num
+            _action_node_editors_num += 1;
         }
 
-        public void RemoveTargetAgentNodeUI(ActionNode_GS_Editor target_node_editor)
+        public void DeleteTargetAgentNodeUI(ActionNode_GS_Editor target_node_editor)
         {
-            //TODO
+            int len = _action_node_editors.Length;
+            for (int k = 0; k < len; k++)
+            {
+                if (_action_node_editors[k] == target_node_editor)
+                {
+                    if (k == len - 1) _action_node_editors[k] = null;
+                    for (int i = k; i < len; i++)
+                    {
+                        _action_node_editors[i] = _action_node_editors[i + 1];
+                    }
+                    //Update node count
+                    _action_node_editors_num -= 1;
+                }
+            }
+        }
+
+        public void ClearPlanning()
+        {
+            //Clear action nodes
+            for (int k = 0; k < _action_node_editors_num; k++)
+            {
+                _action_node_editors[k] = null;
+            }
+            _action_node_editors_num = 0;
         }
 
         //Get/Set Methods =================

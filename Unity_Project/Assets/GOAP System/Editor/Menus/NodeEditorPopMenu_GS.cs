@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using GOAP_S.AI;
 
 namespace GOAP_S.UI
 {
@@ -36,7 +37,9 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Focus the target selected agent and add an action in the target canvas pos
-                _target_node_editor.selected_agent.AddActionNode(_target_node_editor.mouse_position.x, _target_node_editor.mouse_position.y);
+                ActionNode_GS new_action_node = _target_node_editor.selected_agent.AddActionNode(_target_node_editor.mouse_position.x, _target_node_editor.mouse_position.y);
+                //Add the new node editor
+                _target_node_editor.AddTargetAgentNodeUI(new_action_node);
                 //Repaint the target window
                 _target_node_editor.Repaint();
                 //Close this window
@@ -51,6 +54,8 @@ namespace GOAP_S.UI
             {
                 //Clear agent planning
                 _target_node_editor.selected_agent.ClearPlanning();
+                //Clear editor planning
+                _target_node_editor.ClearPlanning();
                 //Repaint target window
                 _target_node_editor.Repaint();
                 //Close this window

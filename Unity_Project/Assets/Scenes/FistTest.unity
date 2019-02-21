@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,9 +278,12 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '{"$content":[{"_window_rect":{"xMin":43.0,"yMin":58.0,"xMax":143.0,"yMax":158.0},"_id":"4d5e27c4-a6ae-4aa8-a346-ea1b9d11fedb","_name":"Action
-    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null,null,null,null],"$type":"GOAP_S.AI.ActionNode_GS[]"}'
-  serialized_blackboard: '{"_id":"106be5e1-e119-404d-8321-e169ace97412","_variables":{}}'
+  serialized_action_nodes: '{"$content":[{"_window_rect":{"xMin":68.0,"yMin":61.0,"xMax":168.0,"yMax":161.0},"_id":"fec2d177-fd5d-49c5-9852-fedf1cc948a2","_name":"Action
+    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":371.0,"yMin":128.0,"xMax":471.0,"yMax":228.0},"_id":"ef3972d5-c195-4c39-bc5b-a14202f414fe","_name":"Action
+    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":284.0,"yMin":397.0,"xMax":384.0,"yMax":497.0},"_id":"1c84cd72-50ef-44c5-90fc-0ba86af695aa","_name":"Action
+    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":339.0,"yMin":373.0,"xMax":439.0,"yMax":473.0},"_id":"e220f450-8b48-4b8c-8409-5ab017cee896","_name":"Action
+    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null],"$type":"GOAP_S.AI.ActionNode_GS[]"}'
+  serialized_blackboard: '{"_id":"ab9f6bf3-64a7-401b-ab5f-774d7003895e","_variables":{}}'
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0

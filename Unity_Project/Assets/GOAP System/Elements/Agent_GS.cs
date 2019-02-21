@@ -48,17 +48,29 @@ namespace GOAP_S.AI
         public void ClearPlanning()
         {
             //Clear action nodes
-            int len = action_nodes.Length;
-            for (int k = 0; k < len; k++)
+            for (int k = 0; k < _action_nodes_num; k++)
             {
-                action_nodes[k] = null;
+                _action_nodes[k] = null;
             }
+            _action_nodes_num = 0;
             //Mark scene drity
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
 
-        public void AddActionNode(float x_pos, float y_pos)
+        public ActionNode_GS AddActionNode(float x_pos, float y_pos)
         {
+            //Check if we need to allocate more items in the array
+            if (_action_nodes_num == _action_nodes.Length)
+            {
+                //Double array capacity
+                ActionNode_GS[] new_array = new ActionNode_GS[_action_nodes_num * 2];
+                //Copy values
+                for (int k = 0; k < _action_nodes_num; k++)
+                {
+                    new_array[k] = _action_nodes[k];
+                }
+            }
+
             ActionNode_GS new_node = new ActionNode_GS();
             //Set a position in the node editor canvas
             new_node.window_rect = new Rect(x_pos, y_pos, 100, 100);
@@ -68,6 +80,8 @@ namespace GOAP_S.AI
             _action_nodes_num += 1;
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
+            return new_node;
         }
 
         public void DeleteActionNode(ActionNode_GS target)
