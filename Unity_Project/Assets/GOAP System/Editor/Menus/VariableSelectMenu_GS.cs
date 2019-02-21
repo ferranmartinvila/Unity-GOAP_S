@@ -11,6 +11,8 @@ namespace GOAP_S.UI
         //Content fields
         static private NodeEditor_GS _target_node_editor = null; //Node editor where this window is shown
         static private string _variable_name;
+        PT.VariableType _variable_type = PT.VariableType._undefined;
+
         //static private System.Enum _variable_type = GOAP_S.PT.NodeUIMode;
         //Content fields 
         private ArrayList listed_elements = new ArrayList();
@@ -40,7 +42,46 @@ namespace GOAP_S.UI
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
             //Variable name field
-            _variable_name = EditorGUILayout.TextField("Name",_variable_name,GUILayout.Width(120), GUILayout.ExpandWidth(true));
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Name", GUILayout.ExpandWidth(true));
+            _variable_name = EditorGUILayout.TextField(_variable_name, GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            //Variable type field
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Type", GUILayout.ExpandWidth(true));
+            _variable_type = (PT.VariableType)EditorGUILayout.EnumPopup(_variable_type,GUILayout.Width(150), GUILayout.ExpandWidth(true));
+            GUILayout.EndHorizontal();
+
+            //Custom field value
+            GUILayout.BeginVertical();
+            switch(_variable_type)
+            {
+                case PT.VariableType._short:
+                    {
+                        GUILayout.BeginHorizontal();
+                        short short_var = 0;
+                        //short_var = EditorGUILayout.IntField(short_var)
+                        GUILayout.EndHorizontal();
+                    }
+                    break;
+                case PT.VariableType._int:
+                    {
+
+                    }
+                    break;
+                case PT.VariableType._long:
+                    {
+
+                    }
+                    break;
+                case PT.VariableType._float:
+                    {
+
+                    }
+                    break;
+            }
+            GUILayout.EndVertical();
 
             //Test scroll
             GUILayout.BeginVertical();
@@ -62,14 +103,24 @@ namespace GOAP_S.UI
             GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Get asm classes", GUILayout.Width(100), GUILayout.Height(10), GUILayout.ExpandHeight(true)))
+            if (GUILayout.Button("Asm test", GUILayout.Width(100), GUILayout.Height(10), GUILayout.ExpandHeight(true)))
             {
-                Assembly executing_asm = Assembly.GetAssembly(typeof(Component));
-                foreach(System.Type type in executing_asm.GetTypes())
+                Assembly[] all_asm = System.AppDomain.CurrentDomain.GetAssemblies();
+                foreach (Assembly asm in all_asm)
                 {
-                    if (type.IsClass && type.IsPublic)
+                    System.Type[] asm_types = asm.GetTypes();
+                    foreach (System.Type type in asm_types)
                     {
-                        listed_elements.Add(type.ToString());
+                        if (type.IsClass && type.IsPublic)
+                        {
+                            listed_elements.Add(typeof(Vector2).BaseType.ToString());
+                            if (type.BaseType == typeof(Vector2).BaseType)
+                            {
+                                string[] result = type.ToString().Split('.');
+                                //if(result.Length > 3 && result[2] == "Component")
+                                listed_elements.Add(result[1]);
+                            }
+                        }
                     }
                 }
                 Debug.Log(listed_elements.Count);

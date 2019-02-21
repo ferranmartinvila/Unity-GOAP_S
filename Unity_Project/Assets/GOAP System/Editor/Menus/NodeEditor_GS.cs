@@ -69,6 +69,9 @@ namespace GOAP_S.UI
 
         void OnGUI()
         {
+            //Draw background texture 
+            //GUI.DrawTexture(EditorWindow.GetWindow()) TODO
+
             //Check if the current selected object is the same that the windows is focusing
             if (Selection.activeGameObject != _selected_object)
             {

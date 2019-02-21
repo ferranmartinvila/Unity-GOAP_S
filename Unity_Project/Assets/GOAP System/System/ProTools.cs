@@ -12,10 +12,19 @@ namespace GOAP_S.PT
     public enum VariableType
     {
         _undefined = 0,
-        _int8,
-        _int16,
-        _int32,
-        _int64
+        _short,
+        _int,
+        _long,
+        _float,
+        _double,
+        _char,
+        _string,
+        _vector2,
+        _vector3,
+        _vector4,
+        _array,
+        _enum,
+        _class
     }
 
     public static class ProTools
