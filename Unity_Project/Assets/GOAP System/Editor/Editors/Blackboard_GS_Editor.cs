@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.Blackboard;
+using GOAP_S.PT;
 
 namespace GOAP_S.UI
 {
     public class Blackboard_GS_Editor
     {
         //UI fields
-        private Rect _window; //Rect used to place bb window
-                              //Content fileds
-        private Blackboard_GS _target_bb; //Bb is this editor showing
-        private NodeEditor_GS _target_node_editor; //NodeEditor is this editor in
+        private Rect _window = Rect.zero; //Rect used to place bb window
+        //Target fileds
+        private NodeEditor_GS _target_node_editor = null; //NodeEditor is this editor in
+        private Blackboard_GS _target_bb = null; //Bb is this editor showing
+        private Variable_GS_Editor[] _variable_editors = null;
+        private int _variable_editors_num = 0;
 
         //Construtors =====================
         public Blackboard_GS_Editor(Blackboard_GS target_bb, NodeEditor_GS target_editor)
@@ -19,11 +22,26 @@ namespace GOAP_S.UI
             _target_bb = target_bb;
             //Set the target node editor
             _target_node_editor = target_editor;
+            //Allocate variable editors array
+            _variable_editors = new Variable_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
+            //Generate variable editors with the existing variables
+            _variable_editors_num = 0;
+            foreach (Variable_GS variable in target_bb.variables.Values)
+            {
+                //Generate a variable editor
+                AddVariableEditor(variable);
+            }
         }
 
         //Loop methods ====================
         public void DrawUI(int id)
         {
+            //Update position
+            if (window_position.x != _target_node_editor.position.width - ProTools.BLACKBOARD_MARGIN)
+            {
+                window_position = new Vector2(_target_node_editor.position.width - ProTools.BLACKBOARD_MARGIN, 0);
+            }
+
             //Separaion between title and variables
             GUILayout.BeginVertical();
             GUILayout.Space(15);
@@ -47,23 +65,35 @@ namespace GOAP_S.UI
             {
                 Vector2 mousePos = Event.current.mousePosition;
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS(_target_node_editor));
-
-                
-                /*int i_var = 1;
-                Variable_GS var = new Variable_GS("new_var", i_var);
-                float f_var = 1.0f;
-                Variable_GS fvar = new Variable_GS("new_var", f_var);
-                ActionNode_GS_Editor _action = new ActionNode_GS_Editor(null,null);
-                Variable_GS a_var = new Variable_GS("a_var", _action);
-
-                Rigidbody rig = new Rigidbody();
-                Variable_GS r_var = new Variable_GS("r_var", rig);
-
-                _target_bb.variables.Add(r_var.id, r_var);
-                _target_bb.variables.Add(a_var.id, a_var);
-                _target_bb.variables.Add(var.id, var);
-                _target_bb.variables.Add(fvar.id, fvar);*/
             }
+        }
+
+        //Functionality methods ===========
+        public void AddVariableEditor(Variable_GS new_variable)
+        {
+            //Check if we need to allocate more items in the array
+            if(_variable_editors_num == _variable_editors.Length)
+            {
+                //Double array capacity
+                Variable_GS_Editor[] new_array = new Variable_GS_Editor[_variable_editors_num * 2];
+                //Copy values
+                for(int k = 0; k < _variable_editors_num; k++)
+                {
+                    new_array[k] = _variable_editors[k];
+                }
+            }
+
+            //Generate new variable editor
+            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb);
+            //Add it to the array
+            _variable_editors[_variable_editors_num] = new_variable_editor;
+            //Update variable editors num
+            _variable_editors_num += 1;
+        }
+
+        public void DeleteVariableEditor(Variable_GS_Editor target_variable_editor)
+        {
+
         }
 
         //Get/Set methods =================

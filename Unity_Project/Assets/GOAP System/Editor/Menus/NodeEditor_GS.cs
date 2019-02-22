@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.AI;
-using System.Collections;
+using GOAP_S.PT;
 
 namespace GOAP_S.UI
 {
@@ -20,15 +20,8 @@ namespace GOAP_S.UI
         private GameObject _selected_object = null;
         private Agent_GS _selected_agent = null;
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
-        private int _action_node_editors_num = 0;
-
-        /*Rect start_node;
-        Rect window1;
-        Rect window2;
-        Rect window2_;*/
-
-
-
+        private int _action_node_editors_num = 0; //Number node editors allocated in the array
+        private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
 
         //Window Menu Item ================
         [MenuItem("Tools / GOAP / Node Editor")]
@@ -89,7 +82,10 @@ namespace GOAP_S.UI
                     {
                         GenerateTargetAgentUI();
                     }
-
+                    else
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -143,14 +139,12 @@ namespace GOAP_S.UI
             BeginWindows();
 
             //Draw action nodes
-            for (int k = 0; k < _selected_agent.action_nodes_num; k++)
+            for (int k = 0; k < _action_node_editors_num; k++)
             {
-                //Get the current action node
-                ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
-                //Generate a node editor for the current node
-                ActionNode_GS_Editor node_editor = new ActionNode_GS_Editor(node, this);
+                //Focus target action node
+                ActionNode_GS node = _selected_agent.action_nodes[k];
                 //Generate the window
-                Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                Rect node_rect = GUILayout.Window(node.id, node.window_rect, _action_node_editors[k].DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 //Generate the node description label
                 //First generate content to calculate the size
                 GUIContent content = new GUIContent(node.description);
@@ -165,12 +159,9 @@ namespace GOAP_S.UI
                     node.window_position = new Vector2(node_rect.x, node_rect.y);
                 }
             }
-
+            
             //Draw agent blackboard
-            Blackboard_GS_Editor bb_editor = new Blackboard_GS_Editor(selected_agent.blackboard, this);
-            bb_editor.window_position = new Vector2(this.position.width - 250, 0);
-            bb_editor.window_size = new Vector2(250, 100);
-            GUILayout.Window(_selected_agent.blackboard.id, bb_editor.window, bb_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            GUILayout.Window(_selected_agent.blackboard.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             
             //End area of popup windows
             EndWindows();
@@ -191,15 +182,20 @@ namespace GOAP_S.UI
         {
             this.titleContent.text = "Node Editor"; //Set a window title
             _id = System.Guid.NewGuid().ToString(); //Generate window UUID
-            _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-            _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
-            _back_texture.Apply();
+            //Generate back texture
+            if (_back_texture == null)
+            {
+                _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+                _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
+                _back_texture.Apply();
+            }
         }
 
         private void GenerateTargetAgentUI()
         {
             //Alloc node editors array
-            _action_node_editors = new ActionNode_GS_Editor[10];
+            _action_node_editors_num = 0;
+            _action_node_editors = new ActionNode_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
 
             //Generate action nodes editors
             for (int k = 0; k < _selected_agent.action_nodes_num; k++)
@@ -211,6 +207,10 @@ namespace GOAP_S.UI
                 //Update nodes count
                 _action_node_editors_num += 1;
             }
+
+            //Generate blackboard editor
+            _blackboard_editor = new Blackboard_GS_Editor(_selected_agent.blackboard, this);
+            _blackboard_editor.window_size = new Vector2(250, 100);
         }
 
         public void AddTargetAgentNodeUI(ActionNode_GS new_node)
@@ -243,7 +243,7 @@ namespace GOAP_S.UI
                 if (_action_node_editors[k] == target_node_editor)
                 {
                     if (k == len - 1) _action_node_editors[k] = null;
-                    for (int i = k; i < len; i++)
+                    for (int i = k; i < len - 1; i++)
                     {
                         _action_node_editors[i] = _action_node_editors[i + 1];
                     }
@@ -273,6 +273,18 @@ namespace GOAP_S.UI
             set
             {
                 _selected_agent = value;
+            }
+        }
+
+        public Blackboard_GS_Editor blackboard_editor
+        {
+            get
+            {
+                return _blackboard_editor;
+            }
+            set
+            {
+                _blackboard_editor = value;
             }
         }
 

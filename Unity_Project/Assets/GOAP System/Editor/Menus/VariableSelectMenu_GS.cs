@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor;
 using GOAP_S.PT;
+using GOAP_S.Blackboard;
 
 namespace GOAP_S.UI
 {
@@ -81,7 +82,9 @@ namespace GOAP_S.UI
                 if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined && _variable_value != null)
                 {
                     //Send info to the bb to generate the variable
-                    _target_node_editor.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    Variable_GS new_variable =_target_node_editor.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    //Send the new variable to the blackboard editor to generate the variable editor
+                    _target_node_editor.blackboard_editor.AddVariableEditor(new_variable);
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Close this popup and updat bb window

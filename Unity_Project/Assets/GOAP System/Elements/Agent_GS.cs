@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-using System.Collections;
 using System.Collections.Generic;
 using GOAP_S.Blackboard;
+using GOAP_S.PT;
 
 namespace GOAP_S.AI
 {
@@ -24,7 +24,7 @@ namespace GOAP_S.AI
         public Agent_GS()
         {
             //Allocate nodes array
-            _action_nodes = new ActionNode_GS[10];
+            _action_nodes = new ActionNode_GS[ProTools.INITIAL_ARRAY_SIZE];
         }
 
         //Loop Methods ====================
@@ -92,7 +92,7 @@ namespace GOAP_S.AI
                 if (action_nodes[k] == target)
                 {
                     if (k == len - 1) action_nodes[k] = null;
-                    for (int i = k; i < len; i++)
+                    for (int i = k; i < len - 1; i++)
                     {
                         action_nodes[i] = action_nodes[i + 1];
                     }
@@ -178,13 +178,13 @@ namespace GOAP_S.AI
                 {
                     _action_nodes_num++;
                 }
+            }
 
-                //Deserialize blackboard
-                _blackboard = (Blackboard_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
-                if (_blackboard == null)
-                {
-                    _blackboard = new Blackboard_GS();
-                }
+            //Deserialize blackboard
+            _blackboard = (Blackboard_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+            if (_blackboard == null)
+            {
+                _blackboard = new Blackboard_GS();
             }
         }
     }

@@ -85,21 +85,20 @@ namespace GOAP_S.UI
         {
             GUILayout.BeginHorizontal();
             //Edit
-            if (GUILayout.Button(
-                "Edit",
-                _target_node_editor.UI_configuration.node_modify_button_style,
-                GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Edit", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Set edit state
                 _target_node.UImode = NodeUIMode.EDIT_STATE;
             }
             //Delete
-            if (GUILayout.Button(
-                "Delete",
-                _target_node_editor.UI_configuration.node_modify_button_style,
-                GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Delete", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
+                //Delete node in the target agent
                 _target_node_editor.selected_agent.DeleteActionNode(_target_node);
+                //Delete node editor in the target editor
+                _target_node_editor.DeleteTargetAgentNodeUI(this);
+
+                return;
             }
             GUILayout.EndHorizontal();
 
@@ -111,10 +110,7 @@ namespace GOAP_S.UI
 
             //Condition -------------------
             //Condition null case
-            if (GUILayout.Button(
-                "Select Condition",
-                _target_node_editor.UI_configuration.node_selection_buttons_style,
-                GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Select Condition", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
 
             }
@@ -128,11 +124,7 @@ namespace GOAP_S.UI
             if (_target_action == null)
             {
 
-                if (GUILayout.Button(
-                    "Select Action",
-                    _target_node_editor.UI_configuration.node_selection_buttons_style,
-                    GUILayout.Width(150), GUILayout.Height(20),
-                    GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Select Action", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new GOAP_S.UI.ActionSelectMenu_GS(this, _target_node_editor));
@@ -151,18 +143,12 @@ namespace GOAP_S.UI
                 //Edit / Delete area
                 GUILayout.BeginHorizontal();
                 //Edit
-                if (GUILayout.Button(
-                    "Edit",
-                    _target_node_editor.UI_configuration.node_modify_button_style,
-                    GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Edit", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
                     //IDK what to put here but this can be deleted with no problem :v
                 }
                 //Delete
-                if (GUILayout.Button(
-                    "Delete",
-                    _target_node_editor.UI_configuration.node_modify_button_style,
-                    GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Delete", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
                     _target_node.action = null;
                 }
@@ -175,11 +161,7 @@ namespace GOAP_S.UI
 
             //Reward ----------------------
             //Reward null case
-            if (GUILayout.Button(
-                "Select Reward",
-                _target_node_editor.UI_configuration.node_selection_buttons_style,
-                GUILayout.Width(150), GUILayout.Height(20),
-                GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Select Reward", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
 
             }
