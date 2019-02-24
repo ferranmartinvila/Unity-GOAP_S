@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.5748171, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -278,10 +278,9 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":221.0,"yMin":85.0,"xMax":321.0,"yMax":185.0},"_id":"4360b4a7-1708-4052-80d6-182a25b2d390","_name":"Action
-    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":471.0,"yMin":166.0,"xMax":571.0,"yMax":266.0},"_id":"5c65047f-c3c6-4bfc-b8a1-1d4dcd46571d","_name":"Action
-    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"05f96fed-068c-42be-a222-c321e058fd7c","_variables":{}}'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":154.0,"yMin":170.0,"xMax":254.0,"yMax":270.0},"_id":"b5292e2f-76e6-4cd1-b7d8-3789fdc150dd","_name":"Action
+    Node","_description":"hola","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":"4ed0b0b1-83b3-4561-a1e4-b3df9c5658cf","_variables":{"f93f508c-7ca2-4e30-8e06-2f6328da9981":{"_name":"int","_id":"f93f508c-7ca2-4e30-8e06-2f6328da9981","_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_protect":false},"7f2c1716-b403-4c98-8500-6e983556960d":{"_name":"hola","_id":"7f2c1716-b403-4c98-8500-6e983556960d","_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_protect":false}}}'
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0

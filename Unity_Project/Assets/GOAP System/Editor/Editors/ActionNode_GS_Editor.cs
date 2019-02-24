@@ -9,10 +9,12 @@ namespace GOAP_S.UI
     public class ActionNode_GS_Editor
     {
 
-        //Content fields
+        //Target fields
         private NodeEditor_GS _target_node_editor = null;
         private ActionNode_GS _target_node = null;
-        private Action_GS _target_action = null;
+        //Content fields
+        private GUIContent _description_label = null;
+        private Vector2 _label_size = Vector2.zero;
 
         //Constructor =====================
         public ActionNode_GS_Editor(ActionNode_GS new_target, NodeEditor_GS new_editor)
@@ -20,10 +22,10 @@ namespace GOAP_S.UI
             //Set targets
             _target_node_editor = new_editor;
             _target_node = new_target;
-            if (_target_node != null)
-            {
-                _target_action = _target_node.action;
-            }
+            //Generate new description ui content
+            _description_label = new GUIContent(_target_node.description);
+            //Calculate new ui content size
+            _label_size = _target_node_editor.UI_configuration.node_description_style.CalcSize(_description_label);
         }
 
         //Loop Methods ====================
@@ -58,10 +60,19 @@ namespace GOAP_S.UI
             //Node description text field
             GUILayout.BeginHorizontal();
             GUILayout.Label("Description");
+            string prev_description = _target_node.description;
             _target_node.description = GUILayout.TextArea(_target_node.description, GUILayout.Width(250), GUILayout.ExpandWidth(true));
             if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.ExpandWidth(true)))
             {
                 _target_node.description = "";
+            }
+            //Check if description has been modified
+            if(_target_node.description != prev_description)
+            {
+                //Generate new description ui content
+                _description_label = new GUIContent(_target_node.description);
+                //Calculate new ui content size
+                _label_size = _target_node_editor.UI_configuration.node_description_style.CalcSize(_description_label);
             }
             GUILayout.EndHorizontal();
 
@@ -69,10 +80,7 @@ namespace GOAP_S.UI
 
             //Close edit mode
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button(
-                "Close",
-                _target_node_editor.UI_configuration.node_modify_button_style,
-                GUILayout.Width(120), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Close", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(120), GUILayout.ExpandWidth(true)))
             {
                 _target_node.UImode = NodeUIMode.SET_STATE;
             }
@@ -105,9 +113,6 @@ namespace GOAP_S.UI
             //Separation
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Separation
-            //GUILayout.Space(parts_separation);
-
             //Condition -------------------
             //Condition null case
             if (GUILayout.Button("Select Condition", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
@@ -121,13 +126,13 @@ namespace GOAP_S.UI
 
             //Action ----------------------
             //Action null case
-            if (_target_action == null)
+            if (_target_node.action == null)
             {
 
                 if (GUILayout.Button("Select Action", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
-                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new GOAP_S.UI.ActionSelectMenu_GS(this, _target_node_editor));
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this, _target_node_editor));
                 }
             }
             //Action set case
@@ -177,6 +182,22 @@ namespace GOAP_S.UI
             _target_node.action = new_action;
             //Repaint the node editor to update the UI
             _target_node_editor.Repaint();
+        }
+
+        public GUIContent description_label
+        {
+            get
+            {
+                return _description_label;
+            }
+        }
+
+        public Vector2 label_size
+        {
+            get
+            {
+                return _label_size;
+            }
         }
     }
 }

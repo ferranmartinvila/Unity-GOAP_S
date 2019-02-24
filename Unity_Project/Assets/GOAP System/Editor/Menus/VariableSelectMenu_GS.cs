@@ -65,7 +65,7 @@ namespace GOAP_S.UI
                     break;
                 case VariableType._float:
                     {
-
+                        _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
                     }
                     break;
             }
@@ -111,11 +111,21 @@ namespace GOAP_S.UI
             switch(_variable_type)
             {
                 case VariableType._undefined:
-                    _variable_value = null;
+                    {
+                        _variable_value = null;
+                    }
                     break;
                 case VariableType._int:
-                    int new_int = 0;
-                    _variable_value = new_int;
+                    {
+                        int new_int = 0;
+                        _variable_value = new_int;
+                    }
+                    break;
+                case VariableType._float:
+                    {
+                        float new_float = 0.0f;
+                        _variable_value = new_float;
+                    }
                     break;
             }
         }

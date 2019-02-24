@@ -12,6 +12,7 @@ namespace GOAP_S.UI
         private Blackboard_GS _target_bb = null;
         private NodeEditor_GS _target_node_editor = null;
         //State fields
+        private string edit_button_str = "O";
         private bool on_edit_state = false;
 
         //Constructors ====================
@@ -31,9 +32,19 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("", GUILayout.Width(20), GUILayout.Height(20)))
+            if (GUILayout.Button(edit_button_str, GUILayout.Width(20), GUILayout.Height(20)))
             {
+                //Change state
                 on_edit_state = !on_edit_state;
+                //Change edit button str
+                if (on_edit_state)
+                {
+                    edit_button_str = "-";
+                }
+                else
+                {
+                    edit_button_str = "O";
+                }
             }
 
             //Show variable type
@@ -53,9 +64,22 @@ namespace GOAP_S.UI
             //Show variable value
             switch (_target_variable.type)
             {
-                case VariableType._int:
-                    _target_variable.value = EditorGUILayout.IntField((int)_target_variable.value);
+                case VariableType._undefined:
+                    {
+                        GUILayout.Label("Type Error");
+                    }
                     break;
+                case VariableType._int:
+                    {
+                        _target_variable.value = EditorGUILayout.IntField((int)_target_variable.value);
+                    }
+                    break;
+                case VariableType._float:
+                    {
+                        _target_variable.value = EditorGUILayout.FloatField((float)_target_variable.value);
+                    }
+                    break;
+
             }
 
             //Remove button

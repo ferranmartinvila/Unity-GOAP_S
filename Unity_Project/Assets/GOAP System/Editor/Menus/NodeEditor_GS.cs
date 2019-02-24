@@ -141,17 +141,14 @@ namespace GOAP_S.UI
             //Draw action nodes
             for (int k = 0; k < _action_node_editors_num; k++)
             {
-                //Focus target action node
+                //Focus action node
                 ActionNode_GS node = _selected_agent.action_nodes[k];
-                //Generate the window
-                Rect node_rect = GUILayout.Window(node.id, node.window_rect, _action_node_editors[k].DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-                //Generate the node description label
-                //First generate content to calculate the size
-                GUIContent content = new GUIContent(node.description);
-                //Get content size
-                Vector2 label_size = UI_configuration.node_description_style.CalcSize(content);
-                //Show the description in a position 
-                GUI.Label(new Rect(node.window_position.x - label_size.x, node.window_position.y, label_size.x, label_size.y), node.description, UI_configuration.node_description_style);
+                //Focus action node editor
+                ActionNode_GS_Editor node_editor = _action_node_editors[k];
+                //Show node window
+                Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                //Show description label
+                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UI_configuration.node_description_style);
 
                 //Move the node if it's position is editable
                 if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)

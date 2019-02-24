@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
+using GOAP_S.PT;
 
 namespace GOAP_S.UI
 {
@@ -42,7 +43,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button(script.Value.name, GUILayout.Height(25), GUILayout.ExpandWidth(true))) 
                 {
                     //Allocate a class with the same type of script value
-                    Action_GS new_script = GOAP_S.PT.ProTools.AllocateClass<Action_GS>(script.Value);
+                    Action_GS new_script = ProTools.AllocateClass<Action_GS>(script.Value);
                     //Set the class name to the new allocated action
                     new_script.name = script.Key;
                     //Set the allocated class to the action node
@@ -62,33 +63,29 @@ namespace GOAP_S.UI
             all_action_scripts.Clear();
 
             //A list of all the object assets imported to the project
-            List<UnityEngine.Object> object_assets = PT.ProTools.FindAssetsByType<UnityEngine.Object>();
+            List<MonoScript> object_assets = ProTools.FindAssetsByType<MonoScript>();
 
             //The action attribute that we use to identify if a class inherit from action class       
             object action_attribute = typeof(Action_GS).GetCustomAttributes(false)[0];
 
             //Iterate the assets list
-            foreach (UnityEngine.Object script in object_assets)
+            foreach (MonoScript script in object_assets)
             {
-                //Check if the object is a script
-                if (script.GetType() == typeof(MonoScript))
+                //Get class type
+                System.Type class_ty = ((MonoScript)script).GetClass();
+                if (class_ty == null) continue;
+
+                //Array with the class custom attributes
+                object[] script_attributes = class_ty.GetCustomAttributes(true);
+
+                //Iterate the script attributes
+                foreach (object script_attribute in script_attributes)
                 {
-                    //Get class type
-                    System.Type class_ty = ((MonoScript)script).GetClass();
-                    if (class_ty == null) continue;
-
-                    //Array with the class custom attributes
-                    object[] script_attributes = class_ty.GetCustomAttributes(true);
-
-                    //Iterate the script attributes
-                    foreach (object script_attribute in script_attributes)
+                    //If there's the action attribute the script inherit from action script
+                    if (script_attribute.Equals(action_attribute) && class_ty != typeof(Action_GS))
                     {
-                        //If there's the action attribute the script inherit from action script
-                        if (script_attribute.Equals(action_attribute) && class_ty != typeof(Action_GS))
-                        {
-                            //Add the script to the action scripts dic
-                            all_action_scripts.Add(script.name, script);
-                        }
+                        //Add the script to the action scripts dic
+                        all_action_scripts.Add(script.name, script);
                     }
                 }
             }

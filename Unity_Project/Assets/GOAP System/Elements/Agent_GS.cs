@@ -162,15 +162,15 @@ namespace GOAP_S.AI
 
             obj_refs = new List<UnityEngine.Object>();
             //Serialize action nodes
-            serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
+            serialized_action_nodes = Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
             //Serialize blackboard
-            serialized_blackboard = GOAP_S.Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
+            serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
         }
 
         public void OnAfterDeserialize() //Deserialize
         {
             //Deserialize action nodes
-            _action_nodes = (ActionNode_GS[])GOAP_S.Serialization.SerializationManager.Deserialize(typeof(ActionNode_GS[]), serialized_action_nodes, obj_refs);
+            _action_nodes = (ActionNode_GS[])Serialization.SerializationManager.Deserialize(typeof(ActionNode_GS[]), serialized_action_nodes, obj_refs);
             //Count nodes
             for (int k = 0; k < _action_nodes.Length; k++)
             {
@@ -181,7 +181,7 @@ namespace GOAP_S.AI
             }
 
             //Deserialize blackboard
-            _blackboard = (Blackboard_GS)GOAP_S.Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+            _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
             if (_blackboard == null)
             {
                 _blackboard = new Blackboard_GS();
