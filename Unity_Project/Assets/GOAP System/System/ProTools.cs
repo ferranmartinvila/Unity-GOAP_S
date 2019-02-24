@@ -12,11 +12,8 @@ namespace GOAP_S.PT
     public enum VariableType
     {
         _undefined = 0,
-        _short,
         _int,
-        _long,
         _float,
-        _double,
         _char,
         _string,
         _vector2,
@@ -29,6 +26,10 @@ namespace GOAP_S.PT
 
     public static class ProTools
     {
+        //Defines ===============================
+        public const int BLACKBOARD_MARGIN = 250;
+        public const int INITIAL_ARRAY_SIZE = 10;
+
         //Universal allocate class method =======
         public static T AllocateClass<T>(this object myobj)
         {

@@ -72,7 +72,7 @@ namespace GOAP_S.UI
             }
 
             //Check if the current selected object have agent if selected agent is null
-            if (_selected_agent == null || _selected_agent.action_nodes == null)
+            if (_selected_agent == null || _action_node_editors == null)
             {
                 //Get agent and return, so if is null is check in the next loop
                 if (_selected_object != null)
@@ -193,6 +193,9 @@ namespace GOAP_S.UI
 
         private void GenerateTargetAgentUI()
         {
+            //Check if window has been configured
+            ConfigureWindow();
+
             //Alloc node editors array
             _action_node_editors_num = 0;
             _action_node_editors = new ActionNode_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
@@ -237,15 +240,20 @@ namespace GOAP_S.UI
 
         public void DeleteTargetAgentNodeUI(ActionNode_GS_Editor target_node_editor)
         {
-            int len = _action_node_editors.Length;
-            for (int k = 0; k < len; k++)
+            for (int k = 0; k < _action_node_editors_num; k++)
             {
                 if (_action_node_editors[k] == target_node_editor)
                 {
-                    if (k == len - 1) _action_node_editors[k] = null;
-                    for (int i = k; i < len - 1; i++)
+                    if (k == _action_node_editors.Length - 1)
                     {
-                        _action_node_editors[i] = _action_node_editors[i + 1];
+                        _action_node_editors[k] = null;
+                    }
+                    else
+                    {
+                        for (int i = k; i < _action_node_editors_num - 1; i++)
+                        {
+                            _action_node_editors[i] = _action_node_editors[i + 1];
+                        }
                     }
                     //Update node count
                     _action_node_editors_num -= 1;

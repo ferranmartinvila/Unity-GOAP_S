@@ -63,7 +63,8 @@ namespace GOAP_S.UI
             {
                 //Remove the current var
                 _target_bb.RemoveVariable(_target_variable.id);
-
+                //Remove current var editor from blackboard editor
+                _target_node_editor.blackboard_editor.DeleteVariableEditor(this);
             }
 
             GUILayout.EndHorizontal();

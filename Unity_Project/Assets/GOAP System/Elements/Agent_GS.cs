@@ -162,7 +162,7 @@ namespace GOAP_S.AI
 
             obj_refs = new List<UnityEngine.Object>();
             //Serialize action nodes
-            serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(_action_nodes, typeof(List<ActionNode_GS>), obj_refs);
+            serialized_action_nodes = GOAP_S.Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
             //Serialize blackboard
             serialized_blackboard = GOAP_S.Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
         }

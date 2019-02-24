@@ -51,12 +51,9 @@ namespace GOAP_S.UI
             //Blit all the variables
             GUILayout.BeginVertical();
             GUILayout.Label("Variables", _target_node_editor.UI_configuration.blackboard_title_style);
-            foreach (Variable_GS variable in target_bb.variables.Values)
-            {
-                //Create a variable editor
-                Variable_GS_Editor variable_editor = new Variable_GS_Editor(variable, _target_bb);
-                //Draw var editor UI
-                variable_editor.DrawUI();
+            for(int k = 0; k <_variable_editors_num; k++)
+            { 
+                _variable_editors[k].DrawUI();
             }
             GUILayout.EndVertical();
 
@@ -84,7 +81,7 @@ namespace GOAP_S.UI
             }
 
             //Generate new variable editor
-            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb);
+            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb,_target_node_editor);
             //Add it to the array
             _variable_editors[_variable_editors_num] = new_variable_editor;
             //Update variable editors num
@@ -93,7 +90,25 @@ namespace GOAP_S.UI
 
         public void DeleteVariableEditor(Variable_GS_Editor target_variable_editor)
         {
-
+            for (int k = 0; k < _variable_editors_num; k++)
+            {
+                if (_variable_editors[k] == target_variable_editor)
+                {
+                    if (k == _variable_editors.Length - 1)
+                    {
+                        _variable_editors[k] = null;
+                    }
+                    else
+                    {
+                        for (int i = k; i < _variable_editors_num - 1; i++)
+                        {
+                            _variable_editors[i] = _variable_editors[i + 1];
+                        }
+                    }
+                    //Update variable editors count
+                    _variable_editors_num -= 1;
+                }
+            }
         }
 
         //Get/Set methods =================

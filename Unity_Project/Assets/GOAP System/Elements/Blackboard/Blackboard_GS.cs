@@ -26,7 +26,6 @@ namespace GOAP_S.Blackboard
             //Variable found case
             if (_variables.TryGetValue(key, out find_var))
             {
-                Debug.Log(find_var.name + "||" + find_var.type.ToString() + "|| Correctly Removed");
                 return _variables.Remove(key);
             }
             //Variable not found case
