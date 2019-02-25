@@ -9,7 +9,7 @@ namespace GOAP_S.Blackboard
         //Content fields
         [SerializeField] private string _name = null;
         [SerializeField] private string _id = null;
-        [SerializeField] private object _value = null;
+        [SerializeField] private object _object_value = null;
         [SerializeField] private VariableType _type = VariableType._undefined;
         [SerializeField] private bool _protect = false;
 
@@ -26,7 +26,7 @@ namespace GOAP_S.Blackboard
             //Set variable type
             _type = type;
             //Set variable value
-            _value = value;
+            _object_value = value;
         }
 
         //Get/Set Methods =================
@@ -58,15 +58,15 @@ namespace GOAP_S.Blackboard
             }
         }
 
-        public object value
+        virtual public object object_value
         {
             get
             {
-                return _value;
+                return _object_value;
             }
             set
             {
-                _value = value;
+                _object_value = value;
             }
         }
 

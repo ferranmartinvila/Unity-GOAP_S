@@ -285,7 +285,8 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":119.0,"yMin":78.0,"xMax":219.0,"yMax":178.0},"_id":"65e6609a-1470-4f6e-8f78-b2fec19fe512","_name":"Action
+    Node","_description":"d","serialized_action":"{\"target_obj\":null,\"_name\":\"TestBoiii\",\"$type\":\"TestBoiii\"}"},null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_id":"aa280a3e-09c8-4945-9c0e-a9b526ff344c","_variables":{}}'
 --- !u!65 &1645938993
 BoxCollider:

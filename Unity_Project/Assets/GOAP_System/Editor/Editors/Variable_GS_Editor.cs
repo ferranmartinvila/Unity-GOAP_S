@@ -71,12 +71,12 @@ namespace GOAP_S.UI
                     break;
                 case VariableType._int:
                     {
-                        _target_variable.value = EditorGUILayout.IntField((int)_target_variable.value);
+                        _target_variable.object_value = EditorGUILayout.IntField((int)_target_variable.object_value);
                     }
                     break;
                 case VariableType._float:
                     {
-                        _target_variable.value = EditorGUILayout.FloatField((float)_target_variable.value);
+                        _target_variable.object_value = EditorGUILayout.FloatField((float)_target_variable.object_value);
                     }
                     break;
 
