@@ -100,9 +100,12 @@ namespace GOAP_S.UI
                     GenericMenu dropdown = new GenericMenu();
                     for (int k = 0; k < _properties_paths.Length; k++)
                     {
+                        //First adapt path to the dropdown format
+                        string ui_adapted_path = _properties_paths[k].Replace('.', '/');
+
                         dropdown.AddItem(
                             //Generate gui content from property path strin
-                            new GUIContent(_properties_paths[k]),
+                            new GUIContent(ui_adapted_path),
                             //show the currently selected item as selected
                             k == _selected_property_index,
                             //lambda to set the selected item to the one being clicked
@@ -213,7 +216,7 @@ namespace GOAP_S.UI
                 }
                 else
                 {
-                    string[] parts = bind_selected_property_path.Split(new char[] { '.' });
+                    string[] parts = bind_selected_property_path.Split('.');
                     return (parts[parts.Length - 2] + "/" + parts.Last());
                 }
             }

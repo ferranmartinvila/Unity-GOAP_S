@@ -9,7 +9,7 @@ public class Action_Attribute_GS : System.Attribute
 
 [Action_Attribute_GS]
 //Actions inherit from this class and can manage all kind of scene data
-public abstract class Action_GS
+public abstract class Action_GS : ScriptableObject
 {
 
     [SerializeField] private string _name = "no_name";

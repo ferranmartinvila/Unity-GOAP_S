@@ -23,19 +23,6 @@ namespace GOAP_S.UI
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
         private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
 
-        //Window Menu Item ================
-        [MenuItem("Tools / GOAP / Node Editor")]
-        static void ShowNodeEditor()
-        {
-            EditorWindow.GetWindow(typeof(NodeEditor_GS));
-        }
-
-        [MenuItem("Tools / GOAP / Node Editor", true)]
-        static bool CheckAgentToShowNodeEditor()
-        {
-            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
-        }
-
         //Loop Methods ====================     
         private void OnEnable()
         {
@@ -78,14 +65,15 @@ namespace GOAP_S.UI
                 if (_selected_object != null)
                 {
                     _selected_agent = _selected_object.GetComponent<Agent_GS>();
-                    if(_selected_agent != null)
-                    {
-                        GenerateTargetAgentUI();
-                    }
-                    else
-                    {
-                        return;
-                    }
+                }
+                //Check if the selected agent is null, in null case return, else generate agent UI
+                if (_selected_agent != null)
+                {
+                    GenerateTargetAgentUI();
+                }
+                else
+                {
+                    return;
                 }
             }
 

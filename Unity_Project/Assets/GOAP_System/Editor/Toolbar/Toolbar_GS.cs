@@ -1,11 +1,34 @@
 ﻿using UnityEditor;
 using GOAP_S.AI;
+using UnityEngine;
 
 namespace GOAP_S.UI
 {
-    public class AgentMenuItems_GS
+    public class Toolbar_GS
     {
+        ///Node Editor --------------------------
+        //Node Editor Menu Item ================
+        [MenuItem("Tools / GOAP / Node Editor")]
+        static void ShowNodeEditor()
+        {
+            EditorWindow.GetWindow(typeof(NodeEditor_GS));
+        }
 
+        [MenuItem("Tools / GOAP / Node Editor", true)]
+        static bool CheckAgentToShowNodeEditor()
+        {
+            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
+        }
+
+        ///Info ---------------------------------
+        //Github Link =====================
+        [MenuItem("Tools / GOAP / Github")]
+        static void LinkGithub()
+        {
+            Application.OpenURL("https://github.com/ferranmartinvila/PRE_TFG_");
+        }
+
+        ///Selected Agent -----------------------
         //Show Planning Item ==============
         [MenuItem("Tools / GOAP / Selected Agent / Show Planning")]
         static void ShowPlanning()

@@ -2,6 +2,8 @@
 using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.AI;
+using System.IO;
+using System.Collections.Generic;
 
 namespace GOAP_S.UI
 {
@@ -150,7 +152,21 @@ namespace GOAP_S.UI
                 //Edit
                 if (GUILayout.Button("Edit", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
-                    //IDK what to put here but this can be deleted with no problem :v
+                    //Get asset path by adding folder and type
+                    string[] file_names = Directory.GetFiles(Application.dataPath, _target_node.action.GetType().ToString() + ".cs", SearchOption.AllDirectories);
+                    //Check if there's more than one asset or no asset, in both cases the result is negative
+                    if (file_names.Length == 0 || file_names.Length > 1)
+                    {
+                        Debug.LogError("Asset not found!");
+                    }
+                    //Asset found case
+                    else
+                    {
+                        //Get asset full path
+                        string final_file_name = Path.GetFullPath(file_names[0]);
+                        //Open asset in the correct file editor
+                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(final_file_name, 1);
+                    }
                 }
                 //Delete
                 if (GUILayout.Button("Delete", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))

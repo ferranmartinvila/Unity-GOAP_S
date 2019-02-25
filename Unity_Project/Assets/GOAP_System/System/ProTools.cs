@@ -66,6 +66,23 @@ namespace GOAP_S.PT
             return assets;
         }
 
+        //Find asset by path ====================
+        public static T FindAssetByPath<T>(string path) where T : UnityEngine.Object
+        {
+            string[] guids = AssetDatabase.FindAssets(null, path.Split('\\'));
+
+            if (guids.Length == 0 || guids.Length > 1)
+            {
+                return null;
+            }
+
+            string assetPath = AssetDatabase.GUIDToAssetPath(guids[0]);
+            //Get type T assets using the paths
+            T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+
+            return asset;
+        }
+
         //Find properties methods ===============
         public static PropertyInfo[] FindAllPropertiesInGameObject(GameObject target)
         {
