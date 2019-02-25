@@ -92,7 +92,8 @@ namespace GOAP_S.UI
                     foreach (PropertyInfo field_info in _properties_info)
                     {
                         //_properties_paths[index] = _properties_info[index].DeclaringType + "/" + _properties_info[index].PropertyType + "/" +  _properties_info[index].Name;// _properties_info[index].Name;
-                        _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName + "/", field_info.Name);
+                        _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
+                       // _properties_paths[index] = _properties_paths[index].Replace('.', '/');
                         index += 1;
                     }
 
@@ -112,18 +113,15 @@ namespace GOAP_S.UI
                     }
                     dropdown.ShowAsContext(); //finally show the dropdown
                 }
+                //UnBind button
+                if(GUILayout.Button("UnBind"))
+                {
+                    _selected_property_index = -1;
+                }
+                GUILayout.EndHorizontal();
 
                 //Show selected bind path
-                if (_selected_property_index != -1)
-                {
-                    GUILayout.Label(_properties_paths[_selected_property_index],GUILayout.ExpandWidth(true));
-                }
-                else
-                {
-                    GUILayout.Label("Property bind not set", GUILayout.ExpandWidth(true));
-                }
-
-                GUILayout.EndHorizontal();
+                GUILayout.Label(bind_selected_property_display_path);
 
                 GUILayout.EndVertical();
             }
@@ -190,37 +188,33 @@ namespace GOAP_S.UI
         }
 
         //Get/Set methods =============
-
-
-
-
-
-        /*public string bind_selected_field_path
+        private string bind_selected_property_path
         {
             get
             {
-                if (_selected_field_index == 0 || _selected_field_index > _fields_paths.Length - 1)
+                if (_selected_property_index == -1 || _selected_property_index > _properties_paths.Length - 1)
                 {
-                    return "NO_FIELD_PATH";
+                    return "Property bind not set";
                 }
                 else
                 {
-                    return _fields_paths[_selected_field_index];
+                    return _properties_paths[_selected_property_index];
                 }
             }
         }
 
-        private string bind_selected_short_path
+        private string bind_selected_property_display_path
         {
             get
             {
-                if (_selected_field_index < 0 || _selected_field_index > _fields_paths.Length - 1)
+                if (_selected_property_index == -1 || _selected_property_index > _properties_paths.Length - 1)
                 {
-                    return string.Empty;
+                    return "Property bind not set";
                 }
                 else
                 {
-                    return bind_selected_field_path.Split(new char[] { '/', '\\' }).Last();
+                    string[] parts = bind_selected_property_path.Split(new char[] { '.' });
+                    return (parts[parts.Length - 2] + "/" + parts.Last());
                 }
             }
         }
@@ -245,6 +239,6 @@ namespace GOAP_S.UI
             }
 
             return elements.Count;
-        }*/
+        }
     }
 }

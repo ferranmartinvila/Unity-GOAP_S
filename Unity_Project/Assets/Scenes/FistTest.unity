@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.5748171, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 225118503}
   - component: {fileID: 225118502}
   - component: {fileID: 225118506}
+  - component: {fileID: 225118507}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -281,6 +282,19 @@ MonoBehaviour:
   serialized_action_nodes: '[{"_window_rect":{"xMin":154.0,"yMin":170.0,"xMax":254.0,"yMax":270.0},"_id":"b5292e2f-76e6-4cd1-b7d8-3789fdc150dd","_name":"Action
     Node","_description":"hola","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_id":"4ed0b0b1-83b3-4561-a1e4-b3df9c5658cf","_variables":{"f93f508c-7ca2-4e30-8e06-2f6328da9981":{"_name":"int","_id":"f93f508c-7ca2-4e30-8e06-2f6328da9981","_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_protect":false},"7f2c1716-b403-4c98-8500-6e983556960d":{"_name":"hola","_id":"7f2c1716-b403-4c98-8500-6e983556960d","_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_protect":false}}}'
+--- !u!114 &225118507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 225118501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a6d10d8888c7314ea2dac646915b3e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _a: 0
+  _a2: 0
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0
