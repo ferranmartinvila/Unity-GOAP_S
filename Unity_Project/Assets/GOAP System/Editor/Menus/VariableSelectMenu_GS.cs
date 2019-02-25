@@ -5,6 +5,9 @@ using UnityEngine;
 using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.Blackboard;
+using System.Linq;
+using System.Reflection;
+using System;
 
 namespace GOAP_S.UI
 {
@@ -15,6 +18,10 @@ namespace GOAP_S.UI
         static private string _variable_name = null; //New variable name
         VariableType _variable_type = VariableType._undefined; //New variable type
         static private object _variable_value = null; //New variable value
+        //Bind properties
+        private int _selected_property_index = -1;
+        private PropertyInfo[] _properties_info;
+        private string[] _properties_paths;
 
         //Contructors =================
         public VariableSelectMenu_GS(NodeEditor_GS target_node_editor)
@@ -53,36 +60,73 @@ namespace GOAP_S.UI
                 AllocateValue();
             }
             GUILayout.EndHorizontal();
-            
+
             //Custom field value
-            GUILayout.BeginVertical();
-            switch(_variable_type)
+            if (_variable_type != VariableType._undefined)
             {
-                case VariableType._int:
+                GUILayout.BeginVertical();
+                switch (_variable_type)
+                {
+                    case VariableType._int:
+                        {
+                            _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
+                        }
+                        break;
+                    case VariableType._float:
+                        {
+                            _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
+                        }
+                        break;
+                }
+
+                //Bind variable
+                GUILayout.BeginHorizontal();
+                //Show bind selection dropdown
+                if (GUILayout.Button("Bind"))
+                {
+                    //Get all the fields in the agent gameobject
+                    _properties_info = ProTools.FindConcretePropertiesInGameObject(_target_node_editor.selected_agent.gameObject,ProTools.VariableTypeToSystemType(_variable_type));
+                    //Get all the paths of the fields found
+                    _properties_paths = new string[_properties_info.Length];
+                    int index = 0;
+                    foreach (PropertyInfo field_info in _properties_info)
                     {
-                        _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
+                        //_properties_paths[index] = _properties_info[index].DeclaringType + "/" + _properties_info[index].PropertyType + "/" +  _properties_info[index].Name;// _properties_info[index].Name;
+                        _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName + "/", field_info.Name);
+                        index += 1;
                     }
-                    break;
-                case VariableType._float:
+
+                    GenericMenu dropdown = new GenericMenu();
+                    for (int k = 0; k < _properties_paths.Length; k++)
                     {
-                        _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
+                        dropdown.AddItem(
+                            //Generate gui content from property path strin
+                            new GUIContent(_properties_paths[k]),
+                            //show the currently selected item as selected
+                            k == _selected_property_index,
+                            //lambda to set the selected item to the one being clicked
+                            selectedIndex => _selected_property_index = (int)selectedIndex,
+                            //index of this menu item, passed on to the lambda when pressed.
+                            k
+                       );
                     }
-                    break;
+                    dropdown.ShowAsContext(); //finally show the dropdown
+                }
+
+                //Show selected bind path
+                if (_selected_property_index != -1)
+                {
+                    GUILayout.Label(_properties_paths[_selected_property_index],GUILayout.ExpandWidth(true));
+                }
+                else
+                {
+                    GUILayout.Label("Property bind not set", GUILayout.ExpandWidth(true));
+                }
+
+                GUILayout.EndHorizontal();
+
+                GUILayout.EndVertical();
             }
-
-            //Bind variable
-            if (GUILayout.Button("Bind"))
-            {
-                //EditorGUILayout.Popup()
-            }
-
-            /*GenericMenu dropdown = new GenericMenu();
-
-            dropdown.AddItem(new GUIContent("hola"),true,1,)
-
-            dropdown.ShowAsContext();*/
-
-            GUILayout.EndVertical();
 
 
 
@@ -145,6 +189,43 @@ namespace GOAP_S.UI
             }
         }
 
+        //Get/Set methods =============
+
+
+
+
+
+        /*public string bind_selected_field_path
+        {
+            get
+            {
+                if (_selected_field_index == 0 || _selected_field_index > _fields_paths.Length - 1)
+                {
+                    return "NO_FIELD_PATH";
+                }
+                else
+                {
+                    return _fields_paths[_selected_field_index];
+                }
+            }
+        }
+
+        private string bind_selected_short_path
+        {
+            get
+            {
+                if (_selected_field_index < 0 || _selected_field_index > _fields_paths.Length - 1)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return bind_selected_field_path.Split(new char[] { '/', '\\' }).Last();
+                }
+            }
+        }
+
+
         public int GetAllClassInstances(System.Type type, out ArrayList elements)
         {
             //Allocate a new array
@@ -164,6 +245,6 @@ namespace GOAP_S.UI
             }
 
             return elements.Count;
-        }
+        }*/
     }
 }

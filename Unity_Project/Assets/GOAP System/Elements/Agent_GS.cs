@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections.Generic;
 using GOAP_S.Blackboard;
 using GOAP_S.PT;
@@ -12,14 +13,14 @@ namespace GOAP_S.AI
         //Content fields
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
         [SerializeField] internal string _id = "null"; //Agent UUID
-        [System.NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
-        [System.NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
-        [System.NonSerialized] private Blackboard_GS _blackboard = null;
+        [NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
+        [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
+        [NonSerialized] private Blackboard_GS _blackboard = null;
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_action_nodes; //String where the action nodes are serialized
         [SerializeField] private string serialized_blackboard; //String where the blackboard is serialized
-
+        
         //Constructors ====================
         public Agent_GS()
         {

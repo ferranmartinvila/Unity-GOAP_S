@@ -23,8 +23,12 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Selected Agent / Clear")]
         static void ClearAgentPlanning()
         {
+            //Clear agent planning
             Agent_GS agent = Selection.activeGameObject.GetComponent<Agent_GS>();
             agent.ClearPlanning();
+            //Clear node editor planning
+            NodeEditor_GS editor = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
+            editor.ClearPlanning();
         }
 
         [MenuItem("Tools / GOAP / Selected Agent / Clear", true)]

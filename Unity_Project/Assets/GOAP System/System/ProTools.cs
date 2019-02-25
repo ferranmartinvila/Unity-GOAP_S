@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine;
+using System.Reflection;
+using System;
 
 namespace GOAP_S.PT
 {
@@ -63,28 +66,96 @@ namespace GOAP_S.PT
             return assets;
         }
 
-
-        //Basic Type from System.Type ===========
-        public static string BasicTypeFromSystemType(string system_type)
+        //Find properties methods ===============
+        public static PropertyInfo[] FindAllPropertiesInGameObject(GameObject target)
         {
-            string ret;
+            //Total strings to allocate in the array
+            int total_paths_count = 0;
 
-            //Split string 
-            string[] parts = system_type.Split('.');
-            //Get last part
-            ret = parts[parts.Length - 1];
+            //Count game object properties
+            int game_object_properties_count = target.GetType().GetProperties().Length;
+            total_paths_count += game_object_properties_count;
 
-            //Change System.Type to Base Type
-            switch(ret)
+            //Count components properties
+            Component[] agent_components = target.GetComponents(typeof(Component));
+            foreach (Component comp in agent_components)
             {
-                case "Single":
-                    ret = "Float";
-                    break;
+                total_paths_count += comp.GetType().GetProperties().Length;
             }
 
-            return ret;
+            //Allocate array
+            PropertyInfo[] properties_info = new PropertyInfo[total_paths_count];
+            int index = 0;
+
+            //Add game object properties
+            foreach (PropertyInfo property_info in typeof(GameObject).GetProperties())
+            {
+                properties_info[index] = property_info;
+                index += 1;
+            }
+
+            //Add components properties
+            foreach (Component comp in agent_components)
+            {
+                PropertyInfo[] comp_properties = comp.GetType().GetProperties();
+                foreach (PropertyInfo comp_property_info in comp_properties)
+                {
+                    properties_info[index] = comp_property_info;
+                    index+=1;
+                }
+            }
+
+            return properties_info;
+
         }
-        /*public static T Cast<T>(this object myobj)
+
+        public static PropertyInfo[] FindConcretePropertiesInGameObject(GameObject target, Type target_property_type)
+        {
+            //Allocate the list
+            List<PropertyInfo> properties_list = new List<PropertyInfo>();
+
+            //Collect game object properties that match with the target type
+            foreach (PropertyInfo property_info in typeof(GameObject).GetProperties())
+            {
+                if(property_info.PropertyType == target_property_type)
+                {
+                    properties_list.Add(property_info);
+                }
+            }
+
+            //Collect components properties that match with the target type
+            Component[] agent_components = target.GetComponents(typeof(Component));
+            foreach (Component comp in agent_components)
+            {
+                PropertyInfo[] comp_properties = comp.GetType().GetProperties();
+                foreach (PropertyInfo comp_property_info in comp_properties)
+                {
+                    if (comp_property_info.PropertyType == target_property_type)
+                    {
+                        properties_list.Add(comp_property_info);
+                    }
+                }
+            }
+
+            //Retur list converted to array
+            return properties_list.ToArray();
+        }
+
+
+        //VariableType to System.Type ===========
+        public static Type VariableTypeToSystemType(VariableType var_type)
+        {
+            switch (var_type)
+            {
+                case VariableType._int:     return typeof(int);     
+                case VariableType._float:   return typeof(float);   
+            }
+
+            //No found type return
+            return null;
+        }
+
+/*public static T Cast<T>(this object myobj)
 {
     System.Type ty = myobj.GetType();
     if (ty == UnityEngine.Object)
