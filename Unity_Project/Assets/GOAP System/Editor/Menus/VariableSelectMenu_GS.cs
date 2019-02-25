@@ -69,7 +69,22 @@ namespace GOAP_S.UI
                     }
                     break;
             }
+
+            //Bind variable
+            if (GUILayout.Button("Bind"))
+            {
+                //EditorGUILayout.Popup()
+            }
+
+            /*GenericMenu dropdown = new GenericMenu();
+
+            dropdown.AddItem(new GUIContent("hola"),true,1,)
+
+            dropdown.ShowAsContext();*/
+
             GUILayout.EndVertical();
+
+
 
             //Separation
             GUILayout.FlexibleSpace(); 
