@@ -10,18 +10,15 @@ namespace GOAP_S.UI
         //UI fields
         private Rect _window = Rect.zero; //Rect used to place bb window
         //Target fileds
-        private NodeEditor_GS _target_node_editor = null; //NodeEditor is this editor in
         private Blackboard_GS _target_bb = null; //Bb is this editor showing
         private Variable_GS_Editor[] _variable_editors = null;
         private int _variable_editors_num = 0;
 
         //Construtors =====================
-        public Blackboard_GS_Editor(Blackboard_GS target_bb, NodeEditor_GS target_editor)
+        public Blackboard_GS_Editor(Blackboard_GS target_bb)
         {
             //Set the target bb
             _target_bb = target_bb;
-            //Set the target node editor
-            _target_node_editor = target_editor;
             //Allocate variable editors array
             _variable_editors = new Variable_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate variable editors with the existing variables
@@ -37,9 +34,9 @@ namespace GOAP_S.UI
         public void DrawUI(int id)
         {
             //Update position
-            if (window_position.x != _target_node_editor.position.width - ProTools.BLACKBOARD_MARGIN)
+            if (window_position.x != NodeEditor_GS.Instance.position.width - ProTools.BLACKBOARD_MARGIN)
             {
-                window_position = new Vector2(_target_node_editor.position.width - ProTools.BLACKBOARD_MARGIN, 0);
+                window_position = new Vector2(NodeEditor_GS.Instance.position.width - ProTools.BLACKBOARD_MARGIN, 0);
             }
 
             //Separaion between title and variables
@@ -50,7 +47,7 @@ namespace GOAP_S.UI
 
             //Blit all the variables
             GUILayout.BeginVertical();
-            GUILayout.Label("Variables", _target_node_editor.UI_configuration.blackboard_title_style);
+            GUILayout.Label("Variables", UIConfig_GS.Instance.blackboard_title_style);
             for(int k = 0; k <_variable_editors_num; k++)
             { 
                 _variable_editors[k].DrawUI();
@@ -61,7 +58,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Add", GUILayout.Width(50)))
             {
                 Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS(_target_node_editor));
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS());
             }
         }
 
@@ -81,7 +78,7 @@ namespace GOAP_S.UI
             }
 
             //Generate new variable editor
-            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb,_target_node_editor);
+            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb);
             //Add it to the array
             _variable_editors[_variable_editors_num] = new_variable_editor;
             //Update variable editors num
@@ -159,18 +156,6 @@ namespace GOAP_S.UI
             set
             {
                 _target_bb = value;
-            }
-        }
-
-        public NodeEditor_GS target_editor
-        {
-            get
-            {
-                return _target_node_editor;
-            }
-            set
-            {
-                _target_node_editor = value;
             }
         }
     }

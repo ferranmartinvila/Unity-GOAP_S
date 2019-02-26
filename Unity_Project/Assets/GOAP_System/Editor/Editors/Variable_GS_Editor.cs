@@ -10,20 +10,17 @@ namespace GOAP_S.UI
         //Conten fields
         private Variable_GS _target_variable = null;
         private Blackboard_GS _target_bb = null;
-        private NodeEditor_GS _target_node_editor = null;
         //State fields
         private string edit_button_str = "O";
         private bool on_edit_state = false;
 
         //Constructors ====================
-        public Variable_GS_Editor(Variable_GS target_variable, Blackboard_GS target_bb, NodeEditor_GS target_node_editor)
+        public Variable_GS_Editor(Variable_GS target_variable, Blackboard_GS target_bb)
         {
             //Set target variable
             _target_variable = target_variable;
             //Set target bb
             _target_bb = target_bb;
-            //Set node editor
-            _target_node_editor = target_node_editor;
         }
 
         //Loop Methods ====================
@@ -88,7 +85,7 @@ namespace GOAP_S.UI
                 //Remove the current var
                 _target_bb.RemoveVariable(_target_variable.id);
                 //Remove current var editor from blackboard editor
-                _target_node_editor.blackboard_editor.DeleteVariableEditor(this);
+                NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(this);
             }
 
             GUILayout.EndHorizontal();

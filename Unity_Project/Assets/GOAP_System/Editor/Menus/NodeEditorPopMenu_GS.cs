@@ -8,13 +8,10 @@ namespace GOAP_S.UI
 {
     public sealed class NodeEditorPopMenu_GS : PopupWindowContent
     {
-        //Content Fields ==============
-        static private NodeEditor_GS _target_node_editor = null; //Focused node editor menu
-
         //Constructors ================
-        public NodeEditorPopMenu_GS(NodeEditor_GS target)
+        public NodeEditorPopMenu_GS()
         {
-            _target_node_editor = target;
+
         }
 
         //Loop Methods ================
@@ -23,7 +20,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu", _target_node_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Planning Menu", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -37,11 +34,11 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Focus the target selected agent and add an action in the target canvas pos
-                ActionNode_GS new_action_node = _target_node_editor.selected_agent.AddActionNode(_target_node_editor.mouse_position.x, _target_node_editor.mouse_position.y);
+                ActionNode_GS new_action_node = NodeEditor_GS.Instance.selected_agent.AddActionNode(NodeEditor_GS.Instance.mouse_position.x, NodeEditor_GS.Instance.mouse_position.y);
                 //Add the new node editor
-                _target_node_editor.AddTargetAgentNodeUI(new_action_node);
+                NodeEditor_GS.Instance.AddTargetAgentNodeUI(new_action_node);
                 //Repaint the target window
-                _target_node_editor.Repaint();
+                NodeEditor_GS.Instance.Repaint();
                 //Close this window
                 editorWindow.Close();
             }
@@ -53,11 +50,11 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Clear agent planning
-                _target_node_editor.selected_agent.ClearPlanning();
+                NodeEditor_GS.Instance.selected_agent.ClearPlanning();
                 //Clear editor planning
-                _target_node_editor.ClearPlanning();
+                NodeEditor_GS.Instance.ClearPlanning();
                 //Repaint target window
-                _target_node_editor.Repaint();
+                NodeEditor_GS.Instance.Repaint();
                 //Close this window
                 editorWindow.Close();
             }

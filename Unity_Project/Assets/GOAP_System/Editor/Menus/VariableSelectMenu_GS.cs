@@ -14,7 +14,6 @@ namespace GOAP_S.UI
     public class VariableSelectMenu_GS : PopupWindowContent
     {
         //Content fields
-        static private NodeEditor_GS _target_node_editor = null; //Node editor where this window is shown
         static private string _variable_name = null; //New variable name
         VariableType _variable_type = VariableType._undefined; //New variable type
         static private object _variable_value = null; //New variable value
@@ -24,10 +23,9 @@ namespace GOAP_S.UI
         private string[] _properties_paths;
 
         //Contructors =================
-        public VariableSelectMenu_GS(NodeEditor_GS target_node_editor)
+        public VariableSelectMenu_GS()
         {
-            //Set the node editor
-            _target_node_editor = target_node_editor;
+
         }
 
         //Loop Methods ================
@@ -36,7 +34,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Variable Select", _target_node_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Variable Select", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             
@@ -65,18 +63,27 @@ namespace GOAP_S.UI
             if (_variable_type != VariableType._undefined)
             {
                 GUILayout.BeginVertical();
-                switch (_variable_type)
+
+                //Show variable value or info label if the variable is binded
+                if (_selected_property_index != -1)
                 {
-                    case VariableType._int:
-                        {
-                            _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
-                        }
-                        break;
-                    case VariableType._float:
-                        {
-                            _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
-                        }
-                        break;
+                    GUILayout.Label("Value=" + bind_selected_property_display_path, UIConfig_GS.Instance.node_elements_style,GUILayout.ExpandWidth(true));
+                }
+                else
+                {
+                    switch (_variable_type)
+                    {
+                        case VariableType._int:
+                            {
+                                _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
+                            }
+                            break;
+                        case VariableType._float:
+                            {
+                                _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
+                            }
+                            break;
+                    }
                 }
 
                 //Bind variable
@@ -85,7 +92,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button("Bind"))
                 {
                     //Get all the fields in the agent gameobject
-                    _properties_info = ProTools.FindConcretePropertiesInGameObject(_target_node_editor.selected_agent.gameObject,ProTools.VariableTypeToSystemType(_variable_type));
+                    _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject,ProTools.VariableTypeToSystemType(_variable_type));
                     //Get all the paths of the fields found
                     _properties_paths = new string[_properties_info.Length];
                     int index = 0;
@@ -124,7 +131,7 @@ namespace GOAP_S.UI
                 GUILayout.EndHorizontal();
 
                 //Show selected bind path
-                GUILayout.Label(bind_selected_property_display_path);
+                if(_selected_property_index == -1)GUILayout.Label(bind_selected_property_display_path);
 
                 GUILayout.EndVertical();
             }
@@ -136,24 +143,30 @@ namespace GOAP_S.UI
 
             GUILayout.BeginHorizontal();
             //Add button
-            if (GUILayout.Button("Add", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true)))
+            if (GUILayout.Button("Add", UIConfig_GS.Instance.node_modify_button_style, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true)))
             {
                 //Add the new variable if the data is correct
                 if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined && _variable_value != null)
                 {
                     //Send info to the bb to generate the variable
-                    Variable_GS new_variable =_target_node_editor.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    Variable_GS new_variable = NodeEditor_GS.Instance.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    //Check if var have to be bind
+                    if(_selected_property_index != -1)
+                    {
+                        //Bind new variable
+                        new_variable.field_path = bind_selected_property_path;
+                    }
                     //Send the new variable to the blackboard editor to generate the variable editor
-                    _target_node_editor.blackboard_editor.AddVariableEditor(new_variable);
+                    NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Close this popup and updat bb window
                     editorWindow.Close();
-                    _target_node_editor.Repaint();
+                    NodeEditor_GS.Instance.Repaint();
                 }
             }
             //Close button
-            if (GUILayout.Button("Close", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
+            if (GUILayout.Button("Close", UIConfig_GS.Instance.node_modify_button_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true)))
             {
                 editorWindow.Close();
             }
@@ -217,7 +230,7 @@ namespace GOAP_S.UI
                 else
                 {
                     string[] parts = bind_selected_property_path.Split('.');
-                    return (parts[parts.Length - 2] + "/" + parts.Last());
+                    return (parts[parts.Length - 2] + "." + parts.Last());
                 }
             }
         }

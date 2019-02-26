@@ -9,16 +9,13 @@ namespace GOAP_S.UI
     {
         //Content fields
         static private ActionNode_GS_Editor _target_action_node = null; //Focused node action
-        static private NodeEditor_GS _target_node_editor = null; //Focused node editor
         static private Dictionary<string, UnityEngine.Object> all_action_scripts = new Dictionary<string, UnityEngine.Object>(); //Action scripts dic
 
         //Constructors ================
-        public ActionSelectMenu_GS(ActionNode_GS_Editor target_action_node, NodeEditor_GS target_node_editor)
+        public ActionSelectMenu_GS(ActionNode_GS_Editor target_action_node)
         {
             //Focus the action node
             _target_action_node = target_action_node;
-            //Focus the node editor
-            _target_node_editor = target_node_editor;
             //List all action scripts
             ListActionScripts();
         }
@@ -29,7 +26,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Action Select",_target_node_editor.UI_configuration.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Action Select",UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 

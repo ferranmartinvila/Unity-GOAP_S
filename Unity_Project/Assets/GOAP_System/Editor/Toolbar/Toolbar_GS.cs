@@ -33,7 +33,7 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Selected Agent / Show Planning")]
         static void ShowPlanning()
         {
-            NodeEditor_GS editor = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
+            NodeEditor_GS.Instance = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
         }
 
         [MenuItem("Tools / GOAP / Selected Agent / Show Planning", true)]

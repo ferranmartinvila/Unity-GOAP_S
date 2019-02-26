@@ -285,7 +285,9 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":113.0,"yMin":107.0,"xMax":213.0,"yMax":207.0},"_id":"c161074d-bef7-4589-9cb4-1730744df0c0","_name":"Action
+    Node","_description":"","serialized_action":"null"},{"_window_rect":{"xMin":467.0,"yMin":173.0,"xMax":567.0,"yMax":273.0},"_id":"d985f1a9-697f-4452-8b59-08bbd31e3954","_name":"Action
+    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_id":"2089752e-0b20-48e3-85c6-10f50395f905","_variables":{"97346241-dc9e-47a2-b3ca-858929d402ef":{"_value":0,"_name":null,"_id":"97346241-dc9e-47a2-b3ca-858929d402ef","_object_value":{"$content":7,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!65 &1645938993

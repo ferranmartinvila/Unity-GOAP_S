@@ -12,7 +12,6 @@ namespace GOAP_S.UI
     {
 
         //Target fields
-        private NodeEditor_GS _target_node_editor = null;
         private ActionNode_GS _target_node = null;
         //Content fields
         private GUIContent _description_label = null;
@@ -22,12 +21,11 @@ namespace GOAP_S.UI
         public ActionNode_GS_Editor(ActionNode_GS new_target, NodeEditor_GS new_editor)
         {
             //Set targets
-            _target_node_editor = new_editor;
             _target_node = new_target;
             //Generate new description ui content
             _description_label = new GUIContent(_target_node.description);
             //Calculate new ui content size
-            _label_size = _target_node_editor.UI_configuration.node_description_style.CalcSize(_description_label);
+            _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
         }
 
         //Loop Methods ====================
@@ -74,7 +72,7 @@ namespace GOAP_S.UI
                 //Generate new description ui content
                 _description_label = new GUIContent(_target_node.description);
                 //Calculate new ui content size
-                _label_size = _target_node_editor.UI_configuration.node_description_style.CalcSize(_description_label);
+                _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
             }
             GUILayout.EndHorizontal();
 
@@ -82,7 +80,7 @@ namespace GOAP_S.UI
 
             //Close edit mode
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Close", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(120), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Close", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(120), GUILayout.ExpandWidth(true)))
             {
                 _target_node.UImode = NodeUIMode.SET_STATE;
             }
@@ -95,18 +93,18 @@ namespace GOAP_S.UI
         {
             GUILayout.BeginHorizontal();
             //Edit
-            if (GUILayout.Button("Edit", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Edit", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Set edit state
                 _target_node.UImode = NodeUIMode.EDIT_STATE;
             }
             //Delete
-            if (GUILayout.Button("Delete", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Delete node in the target agent
-                _target_node_editor.selected_agent.DeleteActionNode(_target_node);
+                NodeEditor_GS.Instance.selected_agent.DeleteActionNode(_target_node);
                 //Delete node editor in the target editor
-                _target_node_editor.DeleteTargetAgentNodeUI(this);
+                NodeEditor_GS.Instance.DeleteTargetAgentNodeUI(this);
 
                 return;
             }
@@ -117,7 +115,7 @@ namespace GOAP_S.UI
 
             //Condition -------------------
             //Condition null case
-            if (GUILayout.Button("Select Condition", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Select Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
 
             }
@@ -131,10 +129,10 @@ namespace GOAP_S.UI
             if (_target_node.action == null)
             {
 
-                if (GUILayout.Button("Select Action", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Select Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
-                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this, _target_node_editor));
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this));
                 }
             }
             //Action set case
@@ -143,14 +141,14 @@ namespace GOAP_S.UI
                 //Action area
                 GUILayout.BeginHorizontal("HelpBox");
                 GUILayout.FlexibleSpace();
-                GUILayout.Label(_target_node.action.name, _target_node_editor.UI_configuration.node_elements_style, GUILayout.ExpandWidth(true));
+                GUILayout.Label(_target_node.action.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
 
                 //Edit / Delete area
                 GUILayout.BeginHorizontal();
                 //Edit
-                if (GUILayout.Button("Edit", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Edit", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
                     //Get asset path by adding folder and type
                     string[] file_names = Directory.GetFiles(Application.dataPath, _target_node.action.GetType().ToString() + ".cs", SearchOption.AllDirectories);
@@ -169,7 +167,7 @@ namespace GOAP_S.UI
                     }
                 }
                 //Delete
-                if (GUILayout.Button("Delete", _target_node_editor.UI_configuration.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
                     _target_node.action = null;
                 }
@@ -182,7 +180,7 @@ namespace GOAP_S.UI
 
             //Reward ----------------------
             //Reward null case
-            if (GUILayout.Button("Select Reward", _target_node_editor.UI_configuration.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Select Reward", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
 
             }
@@ -197,7 +195,7 @@ namespace GOAP_S.UI
             //Set the new action in the target action node
             _target_node.action = new_action;
             //Repaint the node editor to update the UI
-            _target_node_editor.Repaint();
+            NodeEditor_GS.Instance.Repaint();
         }
 
         public GUIContent description_label

@@ -11,7 +11,6 @@ namespace GOAP_S.UI
         private static string _id = ""; //Node ID used to set pop window id
         private EventType _last_event_type; //Last event type
         //UI fields
-        public UIConfig_GS UI_configuration = new UIConfig_GS(); //The UI configuration of the action node
         private static Texture2D _back_texture = null; //Texture in the background of the window
         private static Vector2 _mouse_position = Vector2.zero; //Used to track the mouse position in this window
         private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
@@ -22,6 +21,27 @@ namespace GOAP_S.UI
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
         private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
+
+        //Static instance of this class
+        private static NodeEditor_GS _Instance;
+
+        //Property to get/set static instance
+        public static NodeEditor_GS Instance
+        {
+            get
+            {
+                //Check if the instance is null, in null case generates a new one
+                if (_Instance == null)
+                {
+                    _Instance = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
+                }
+                return _Instance;
+            }
+            set
+            {
+                _Instance = value;
+            }
+        }
 
         //Loop Methods ====================     
         private void OnEnable()
@@ -98,7 +118,7 @@ namespace GOAP_S.UI
                     //Get mouse pos
                     Vector2 _mouse_pos = Event.current.mousePosition;
                     //Show node editor popup menu
-                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new GOAP_S.UI.NodeEditorPopMenu_GS(this));
+                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodeEditorPopMenu_GS());
                 }
 
                 //Middle click
@@ -134,9 +154,9 @@ namespace GOAP_S.UI
                 //Focus action node editor
                 ActionNode_GS_Editor node_editor = _action_node_editors[k];
                 //Show node window
-                Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UI_configuration.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 //Show description label
-                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UI_configuration.node_description_style);
+                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.Instance.node_description_style);
 
                 //Move the node if it's position is editable
                 if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
@@ -146,7 +166,7 @@ namespace GOAP_S.UI
             }
             
             //Draw agent blackboard
-            GUILayout.Window(_selected_agent.blackboard.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UI_configuration.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            GUILayout.Window(_selected_agent.blackboard.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.Instance.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             
             //End area of popup windows
             EndWindows();
@@ -197,7 +217,7 @@ namespace GOAP_S.UI
             }
 
             //Generate blackboard editor
-            _blackboard_editor = new Blackboard_GS_Editor(_selected_agent.blackboard, this);
+            _blackboard_editor = new Blackboard_GS_Editor(_selected_agent.blackboard);
             _blackboard_editor.window_size = new Vector2(250, 100);
         }
 

@@ -14,16 +14,21 @@ namespace GOAP_S.Blackboard
         public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
             //Generate the new variable
-            System.Type dataType = typeof(TVariable_GS<>).MakeGenericType(new System.Type[] { value.GetType() });
-            Variable_GS newData = (Variable_GS)System.Activator.CreateInstance(dataType);
-            newData.type = type;
-            newData.object_value = value;
+            //First get system type of the object value
+            System.Type variable_system_type = typeof(TVariable_GS<>).MakeGenericType(new System.Type[] { value.GetType() });
+            //Instantiate a variable with the system type
+            Variable_GS new_variable = (Variable_GS)System.Activator.CreateInstance(variable_system_type);
+            //Set new var name 
+            new_variable.name = name;
+            //Set new var GOAP type
+            new_variable.type = type;
+            //Set new var object value
+            new_variable.object_value = value;
 
-            //Variable_GS new_variable = new TVariable_GS(name, type, value);
             //Add the new var to the bb list
-            _variables.Add(newData.id, newData);
+            _variables.Add(new_variable.id, new_variable);
 
-            return newData;
+            return new_variable;
         }
 
         public bool RemoveVariable(string key)

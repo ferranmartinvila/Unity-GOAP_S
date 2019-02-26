@@ -20,6 +20,23 @@ namespace GOAP_S.UI
         static private GUIStyle _blackboard_variable_style = null; //Used in bb variables
         static private GUIStyle _blackboard_title_style = null; //Used in the title inside the bb window, not window title
 
+        //Static instance of this class
+        private static UIConfig_GS _Instance;
+        
+        //Property to get static instance
+        public static UIConfig_GS Instance
+        {
+            get
+            {
+                //Check if the instance is null, in null case generates a new one
+                if (_Instance == null)
+                {
+                    _Instance = new UIConfig_GS();
+                }
+                return _Instance;
+            }
+        }
+
         //Get/Set methods =================
         public GUIStyle node_window_style
         {
