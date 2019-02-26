@@ -9,9 +9,9 @@ public class Action_Attribute_GS : System.Attribute
 
 [Action_Attribute_GS]
 //Actions inherit from this class and can manage all kind of scene data
-public abstract class Action_GS : ScriptableObject
+public abstract class Action_GS
 {
-
+    //Content fields
     [SerializeField] private string _name = "no_name";
     [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
 

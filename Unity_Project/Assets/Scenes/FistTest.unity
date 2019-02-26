@@ -285,9 +285,9 @@ MonoBehaviour:
   _name: un_named
   _id: null
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":119.0,"yMin":78.0,"xMax":219.0,"yMax":178.0},"_id":"65e6609a-1470-4f6e-8f78-b2fec19fe512","_name":"Action
-    Node","_description":"d","serialized_action":"{\"target_obj\":null,\"_name\":\"TestBoiii\",\"$type\":\"TestBoiii\"}"},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"aa280a3e-09c8-4945-9c0e-a9b526ff344c","_variables":{}}'
+  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":"2089752e-0b20-48e3-85c6-10f50395f905","_variables":{"97346241-dc9e-47a2-b3ca-858929d402ef":{"_value":0,"_name":null,"_id":"97346241-dc9e-47a2-b3ca-858929d402ef","_object_value":{"$content":7,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!65 &1645938993
 BoxCollider:
   m_ObjectHideFlags: 0

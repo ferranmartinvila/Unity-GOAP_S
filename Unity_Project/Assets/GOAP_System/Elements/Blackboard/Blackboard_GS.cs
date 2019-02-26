@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace GOAP_S.Blackboard
 {
@@ -13,11 +14,16 @@ namespace GOAP_S.Blackboard
         public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
             //Generate the new variable
-            Variable_GS new_variable = new Variable_GS(name, type, value);
-            //Add the new var to the bb list
-            _variables.Add(new_variable.id, new_variable);
+            System.Type dataType = typeof(TVariable_GS<>).MakeGenericType(new System.Type[] { value.GetType() });
+            Variable_GS newData = (Variable_GS)System.Activator.CreateInstance(dataType);
+            newData.type = type;
+            newData.object_value = value;
 
-            return new_variable;
+            //Variable_GS new_variable = new TVariable_GS(name, type, value);
+            //Add the new var to the bb list
+            _variables.Add(newData.id, newData);
+
+            return newData;
         }
 
         public bool RemoveVariable(string key)

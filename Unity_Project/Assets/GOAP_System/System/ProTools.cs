@@ -3,6 +3,7 @@ using UnityEditor;
 using UnityEngine;
 using System.Reflection;
 using System;
+using System.Linq;
 
 namespace GOAP_S.PT
 {
@@ -32,6 +33,22 @@ namespace GOAP_S.PT
         //Defines ===============================
         public const int BLACKBOARD_MARGIN = 250;
         public const int INITIAL_ARRAY_SIZE = 10;
+
+        //Assemblies ============================
+        private static List<Assembly> _assemblies = null;
+        public static List<Assembly> assemblies
+        {
+            get
+            {
+                //Check if assamblies were stored before
+                if (_assemblies == null)
+                {
+                    _assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
+                }
+                return _assemblies;
+            }
+        }
+
 
         //Universal allocate class method =======
         public static T AllocateClass<T>(this object myobj)
@@ -158,6 +175,23 @@ namespace GOAP_S.PT
             return properties_list.ToArray();
         }
 
+        //Types =================================
+        private static Dictionary<string, System.Type> system_type_map = new Dictionary<string, System.Type>();
+
+        //Get all systme types in assemblies ====
+        public static System.Type[] GetAllSystemTypes()
+        {
+            //Allocate types list
+            List<Type> types = new List<Type>();
+            //Iterate all the loaded assemblies
+            foreach (Assembly asm in assemblies)
+            {
+                //Add all the exportes type of the current asm
+                types.AddRange(asm.GetExportedTypes());
+            }
+            //Return the generated list as array
+            return types.ToArray();
+        }
 
         //VariableType to System.Type ===========
         public static Type VariableTypeToSystemType(VariableType var_type)
@@ -170,6 +204,59 @@ namespace GOAP_S.PT
 
             //No found type return
             return null;
+        }
+
+        //String to System.Type =================
+        public static Type StringToSystemType(string type_string)
+        {
+            Type system_type = null;
+
+            //Try get the system type value in the map, value will be found if we already use it before
+            if(system_type_map.TryGetValue(type_string, out system_type))
+            {
+                //Return the found type
+                return system_type;
+            }
+
+            //Try to get type by system current assembly
+            system_type = Type.GetType(type_string);
+            if(system_type != null)
+            {
+                //If we find the type we store int the dictionary for the next search
+                return system_type_map[type_string] = system_type;
+            }
+
+            //Try to find the type in the loded assemblies
+            foreach(Assembly asm in assemblies)
+            {
+                //Try get type 
+                system_type = asm.GetType(type_string);
+                //If not continue search
+                if (system_type == null) continue;
+                //If found  store in the dictionary
+                return system_type_map[type_string] = system_type;
+            }
+
+            //Finally try to find the type in all the assemblies in the project
+            System.Type[] system_types = GetAllSystemTypes();
+            //Iterate all found system types in assemblies exported ones
+            foreach (System.Type s_type in system_types)
+            {
+                //Compare using names
+                if (s_type.Name == type_string)
+                {
+                    return system_type_map[type_string] = system_type;
+                }
+            }
+
+            return system_type;
+        }
+
+
+        //Extra Methods =========================
+        public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
+        {
+            return (T)(object)Delegate.CreateDelegate(typeof(T), instance, method_info);
         }
 
 /*public static T Cast<T>(this object myobj)
