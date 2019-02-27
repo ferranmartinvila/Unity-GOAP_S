@@ -31,7 +31,7 @@ namespace GOAP_S.PT
     public static class ProTools
     {
         //Defines ===============================
-        public const int BLACKBOARD_MARGIN = 250;
+        public const int BLACKBOARD_MARGIN = 300;
         public const int INITIAL_ARRAY_SIZE = 10;
 
         //Assemblies ============================

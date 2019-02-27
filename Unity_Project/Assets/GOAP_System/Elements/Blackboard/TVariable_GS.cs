@@ -71,17 +71,17 @@ namespace GOAP_S.Blackboard
         }
 
         //Bind Methods ================
-        public override bool BindField(MemberInfo field_info, GameObject target_obj)
+        public override bool BindField(string field_path, GameObject target_obj)
         {
             //Check if the member info is info of a field or a property
-            if (!(field_info is FieldInfo) && !(field_info is PropertyInfo))
+            /*if (!(field_info is FieldInfo) && !(field_info is PropertyInfo))
             {
                 Debug.LogWarning("BindField ERROR: Member info non correct format.");
                 return false;
-            }
+            }*/
 
             //Get bind field path adding field full name and field name in dot between format
-            _field_path = string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
+            _field_path = field_path; // string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
 
             //If target GameObject is not null field bind is initialized
             if(target_obj != null)

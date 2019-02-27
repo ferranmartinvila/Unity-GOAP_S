@@ -216,7 +216,7 @@ namespace GOAP_S.UI
 
             //Generate blackboard editor
             _blackboard_editor = new Blackboard_GS_Editor(_selected_agent.blackboard);
-            _blackboard_editor.window_size = new Vector2(250, 100);
+            _blackboard_editor.window_size = new Vector2(ProTools.BLACKBOARD_MARGIN, 100);
         }
 
         public void AddTargetAgentNodeUI(ActionNode_GS new_node)

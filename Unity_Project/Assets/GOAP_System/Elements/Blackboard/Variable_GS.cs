@@ -2,6 +2,7 @@
 using System;
 using GOAP_S.PT;
 using System.Reflection;
+using System.Linq;
 
 namespace GOAP_S.Blackboard
 {
@@ -25,7 +26,7 @@ namespace GOAP_S.Blackboard
         private event Action<string,object> _OnValueChange; //Callback when variable value changes
 
         //Bind methods
-        public abstract bool BindField(MemberInfo field_info, GameObject target_obj);
+        public abstract bool BindField(string field_path, GameObject target_obj);
         public abstract void UnbindField();
         public abstract bool InitializeBinding(GameObject target_obj);
 
@@ -139,12 +140,37 @@ namespace GOAP_S.Blackboard
             {
                 return _field_path;
             }
-            set
+        }
+
+        public string display_field_long_path
+        {
+            get
             {
-                _field_path = value;
+                //Returns null if there's no path
+                if (!is_binded)
+                {
+                    return null;
+                }
+                //Split path
+                string[] parts = _field_path.Split('.');
+                return (parts[parts.Length - 2] + "." + parts.Last());
             }
         }
 
+        public string display_field_short_path
+        {
+            get
+            {
+                //Returns null if there's no path
+                if (!is_binded)
+                {
+                    return null;
+                }
+                //Split path
+                string[] parts = _field_path.Split('.');
+                return ("." + parts.Last());
+            }
+        }
         //Actions =====================
         protected void OnValueChange(string name, object value)
         {

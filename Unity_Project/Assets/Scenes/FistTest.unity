@@ -364,7 +364,9 @@ MonoBehaviour:
   _name: un_named
   obj_refs: []
   serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"1c4897fe-646c-43a4-a078-73be77255f8a","_variables":{}}'
+  serialized_blackboard: '{"_id":"1c4897fe-646c-43a4-a078-73be77255f8a","_variables":{"c997c163-b7d5-41cf-a780-3c8299a8668d":{"_value":0.0,"_name":"damage_setter","_id":"c997c163-b7d5-41cf-a780-3c8299a8668d","_object_value":{"$content":66.0,"$type":"System.Single"},"_type":"_float","_field_path":"UnityEngine.BoxCollider.contactOffset","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"1761ce70-ad21-4142-9b6f-787f127bebf5":{"_value":0,"_name":"i","_id":"1761ce70-ad21-4142-9b6f-787f127bebf5","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"ClassTest.a","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!114 &1645938998
 MonoBehaviour:
   m_ObjectHideFlags: 0
