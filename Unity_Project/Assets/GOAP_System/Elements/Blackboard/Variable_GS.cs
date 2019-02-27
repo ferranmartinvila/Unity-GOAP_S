@@ -129,7 +129,7 @@ namespace GOAP_S.Blackboard
         {
             get
             {
-                return string.IsNullOrEmpty(_field_path);
+                return !string.IsNullOrEmpty(_field_path);
             }
         }
 

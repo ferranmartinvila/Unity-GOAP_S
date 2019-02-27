@@ -12,10 +12,10 @@ namespace GOAP_S.AI
     {
         //Content fields
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
-        [SerializeField] internal string _id = "null"; //Agent UUID
         [NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
         [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
         [NonSerialized] private Blackboard_GS _blackboard = null;
+        [NonSerialized] private BlackboardComp_GS _blackboard_component = null;
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_action_nodes; //String where the action nodes are serialized
@@ -29,6 +29,26 @@ namespace GOAP_S.AI
         }
 
         //Loop Methods ====================
+        private void OnValidate()
+        {
+            //Check if the agent have a blackboard
+            if (_blackboard == null)
+            {
+                //If not generate one for him
+                _blackboard = blackboard;
+            }
+        }
+
+        private void Awake()
+        {
+            //Check if the agent have a blackboard
+            if (_blackboard == null)
+            {
+                //If not generate one for him
+                _blackboard = blackboard;
+            }
+        }
+
         private void Start()
         {
             foreach (ActionNode_GS node in action_nodes)
@@ -116,19 +136,6 @@ namespace GOAP_S.AI
             }
         }
 
-        public string id
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_id))
-                {
-                    _id = System.Guid.NewGuid().ToString();
-                }
-                return _id;
-            }
-
-        }
-
         public ActionNode_GS[] action_nodes
         {
             get
@@ -149,11 +156,35 @@ namespace GOAP_S.AI
         {
             get
             {
+                //Generate blackboard in null case
                 if (_blackboard == null)
                 {
                     _blackboard = new Blackboard_GS();
                 }
+                
+                //Generate blackboard component in null case
+                if (_blackboard_component == null)
+                {
+                    _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
+                    _blackboard_component.agent = this;
+                }
+
                 return _blackboard;
+            }
+        }
+
+        public BlackboardComp_GS blackboard_comp
+        {
+            get
+            {
+                //Generate blackboard component in null case
+                if (_blackboard_component == null)
+                {
+                    _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
+                    _blackboard_component.agent = this;
+                }
+
+                return _blackboard_component;
             }
         }
 

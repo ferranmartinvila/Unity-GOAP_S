@@ -8,7 +8,6 @@ namespace GOAP_S.UI
     public class NodeEditor_GS : EditorWindow
     {
         //State fields
-        private static string _id = ""; //Node ID used to set pop window id
         private EventType _last_event_type; //Last event type
         //UI fields
         private static Texture2D _back_texture = null; //Texture in the background of the window
@@ -186,7 +185,6 @@ namespace GOAP_S.UI
         private void ConfigureWindow()
         {
             this.titleContent.text = "Node Editor"; //Set a window title
-            _id = System.Guid.NewGuid().ToString(); //Generate window UUID
             //Generate back texture
             if (_back_texture == null)
             {

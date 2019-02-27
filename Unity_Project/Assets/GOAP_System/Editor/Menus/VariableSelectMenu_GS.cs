@@ -154,7 +154,7 @@ namespace GOAP_S.UI
                     if(_selected_property_index != -1)
                     {
                         //Bind new variable
-                        new_variable.field_path = bind_selected_property_path;
+                        new_variable.BindField(_properties_info[_selected_property_index], null);
                     }
                     //Send the new variable to the blackboard editor to generate the variable editor
                     NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);

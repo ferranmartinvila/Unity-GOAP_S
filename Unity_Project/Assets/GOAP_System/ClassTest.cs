@@ -44,5 +44,10 @@ public class ClassTest : MonoBehaviour
             return _c;
         }
     }
+
+    private void Update()
+    {
+        _a += 1;
+    }
 }
 

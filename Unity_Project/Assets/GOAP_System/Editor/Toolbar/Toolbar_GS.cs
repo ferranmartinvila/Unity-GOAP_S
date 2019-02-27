@@ -61,5 +61,31 @@ namespace GOAP_S.UI
                 && Selection.activeGameObject.GetComponent<Agent_GS>() != null
                 && Selection.activeGameObject.GetComponent<Agent_GS>().action_nodes.Length > 0;
         }
+
+        //Add Agent Item ==============
+        [MenuItem("Tools / GOAP / Add Agent")]
+        static void AddAgent()
+        {
+            Selection.activeGameObject.AddComponent<Agent_GS>();
+        }
+
+        [MenuItem("Tools / GOAP / Add Agent", true)]
+        static bool CheckAddAgent()
+        {
+            return Selection.activeGameObject.GetComponent<Agent_GS>() == null;
+        }
+
+        //Remove Agent Item ===========
+        [MenuItem("Tools / GOAP / Selected Agent / Remove")]
+        static void RemoveAgent()
+        {
+            Object.DestroyImmediate(Selection.activeGameObject.GetComponent<Agent_GS>());
+        }
+
+        [MenuItem("Tools / GOAP / Selected Agent / Remove", true)]
+        static bool CheckRemoveAgent()
+        {
+            return Selection.activeGameObject.GetComponent<Agent_GS>() != null;
+        }
     }
 }

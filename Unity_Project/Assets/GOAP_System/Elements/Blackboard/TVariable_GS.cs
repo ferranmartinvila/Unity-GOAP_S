@@ -133,7 +133,7 @@ namespace GOAP_S.Blackboard
                 //Check if methods are static
                 bool is_static = (get_method_info != null && get_method_info.IsStatic) || (set_method_info != null && set_method_info.IsStatic);
                 //Get field instance if the property is not static
-                Component field_instance = is_static ? null : target_obj.GetComponent(system_type);
+                Component field_instance = is_static ? null : target_obj.GetComponent(field_type);
                 if(field_instance == null && !is_static)
                 {
                     Debug.Log("Variable bind missing component: " + type_string);
