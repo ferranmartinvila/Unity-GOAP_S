@@ -447,8 +447,9 @@ namespace GOAP_S.PT
                     break;
             }
         }
-
+        //Dropdowns system
         private static int[] dropdown_select = new int[INITIAL_ARRAY_SIZE] { -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 };
+        //Get dropdown slot method
         public static int GetDropdownSlot()
         {
             for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
@@ -476,6 +477,7 @@ namespace GOAP_S.PT
 
             return GetDropdownSlot();
         }
+        //Free dropdown slot method
         public static void FreeDropdownSlot(int index)
         {
             //Reset an specific dropdown after checking if index fits inside the array size
@@ -484,6 +486,7 @@ namespace GOAP_S.PT
                 dropdown_select[index] = -2;
             }
         }
+        //Free all dropdowns method
         public static void ResetDropdowns()
         {
             for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
@@ -491,7 +494,16 @@ namespace GOAP_S.PT
                 dropdown_select[k] = -2;
             }
         }
-
+        //Set specific dropdown index method
+        public static void SetDropdownIndex(int dropdown_id, int new_index)
+        {
+            if(dropdown_id >= dropdown_select.Length)
+            {
+                Debug.LogError("You are trying to access a non allocated dropdown index!");
+            }
+            else dropdown_select[dropdown_id] = new_index;
+        }
+        //Generate dropdown UI method
         public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, float button_width, int dropdown_id)
         {
             if (GUILayout.Button(dropdown_select[dropdown_id] != -1 && show_selection ? options[dropdown_select[dropdown_id]] : button_string, GUILayout.MaxWidth(button_width)))

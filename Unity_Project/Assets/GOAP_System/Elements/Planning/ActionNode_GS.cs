@@ -170,6 +170,30 @@ namespace GOAP_S.AI
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
 
+        public void RemoveCondition(Property_GS target_condition)
+        {
+            //First search property
+            for(int k = 0; k < _conditions_num; k++)
+            {
+                if(_conditions[k] == target_condition)
+                {
+                    //When property is found copy values in front of it a slot backwards
+                    for(int n = k; n < _conditions_num -1; n++)
+                    {
+                        _conditions[n] = _conditions[n + 1];
+                    }
+                    //Update conditions count
+                    _conditions_num -= 1;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Job is done we dont need to continue the iteration
+                    return;
+                }
+            }
+            //Porperty not found case
+            Debug.LogWarning("Condition: " + target_condition.A_key + " not found on remove!");
+        }
+
         //Serialization Methods =======
         public void OnBeforeSerialize()
         {

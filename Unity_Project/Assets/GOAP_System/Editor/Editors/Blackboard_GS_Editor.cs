@@ -88,7 +88,7 @@ namespace GOAP_S.UI
             _variable_editors_num += 1;
         }
 
-        public void DeleteVariableEditor(string name)
+        public void RemoveVariableEditor(string name)
         {
             for (int k = 0; k < _variable_editors_num; k++)
             {

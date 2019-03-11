@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
+using UnityEngine;
 using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.AI;
@@ -12,7 +14,7 @@ namespace GOAP_S.UI
     {
 
         //Target fields
-        private ActionNode_GS _target_node = null;
+        private ActionNode_GS _target_action_node = null;
         //UI fields
         private GUIContent _description_label = null;
         private Vector2 _label_size = Vector2.zero;
@@ -26,17 +28,17 @@ namespace GOAP_S.UI
         public ActionNode_GS_Editor(ActionNode_GS new_target)
         {
             //Set targets
-            _target_node = new_target;
+            _target_action_node = new_target;
             //Generate new description ui content
-            _description_label = new GUIContent(_target_node.description);
+            _description_label = new GUIContent(_target_action_node.description);
             //Calculate new ui content size
             _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
             //Allocate condition editors array
             _condition_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate conditions UI
-            for (int k = 0; k < _target_node.conditions_num; k++)
+            for (int k = 0; k < _target_action_node.conditions_num; k++)
             {
-                AddConditionEditor(_target_node.conditions[k]);
+                AddConditionEditor(_target_action_node.conditions[k]);
             }
         }
 
@@ -62,27 +64,27 @@ namespace GOAP_S.UI
             //Node name text field
             GUILayout.BeginHorizontal();
             GUILayout.Label("Name");
-            _target_node.name = GUILayout.TextField(_target_node.name, GUILayout.Width(90), GUILayout.ExpandWidth(true));
+            _target_action_node.name = GUILayout.TextField(_target_action_node.name, GUILayout.Width(90), GUILayout.ExpandWidth(true));
             if(GUILayout.Button("X",GUILayout.Width(20),GUILayout.ExpandWidth(false)))
             {
-                _target_node.name = "";
+                _target_action_node.name = "";
             }
             GUILayout.EndHorizontal();
 
             //Node description text field
             GUILayout.BeginHorizontal();
             GUILayout.Label("Description");
-            string prev_description = _target_node.description;
-            _target_node.description = GUILayout.TextArea(_target_node.description, GUILayout.Width(250), GUILayout.ExpandWidth(true));
+            string prev_description = _target_action_node.description;
+            _target_action_node.description = GUILayout.TextArea(_target_action_node.description, GUILayout.Width(250), GUILayout.ExpandWidth(true));
             if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.ExpandWidth(true)))
             {
-                _target_node.description = "";
+                _target_action_node.description = "";
             }
             //Check if description has been modified
-            if(_target_node.description != prev_description)
+            if(_target_action_node.description != prev_description)
             {
                 //Generate new description ui content
-                _description_label = new GUIContent(_target_node.description);
+                _description_label = new GUIContent(_target_action_node.description);
                 //Calculate new ui content size
                 _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
             }
@@ -114,7 +116,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Delete node in the target agent
-                NodeEditor_GS.Instance.selected_agent.DeleteActionNode(_target_node);
+                NodeEditor_GS.Instance.selected_agent.DeleteActionNode(_target_action_node);
                 //Delete node editor in the target editor
                 NodeEditor_GS.Instance.DeleteTargetAgentNodeUI(this);
 
@@ -150,7 +152,7 @@ namespace GOAP_S.UI
 
             //Action ----------------------
             //Action null case
-            if (_target_node.action == null)
+            if (_target_action_node.action == null)
             {
                 if (GUILayout.Button("Select Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
@@ -164,7 +166,7 @@ namespace GOAP_S.UI
                 //Action area
                 GUILayout.BeginHorizontal("HelpBox");
                 GUILayout.FlexibleSpace();
-                GUILayout.Label(_target_node.action.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
+                GUILayout.Label(_target_action_node.action.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
 
@@ -174,7 +176,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button("Edit", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
                     //Get asset path by adding folder and type
-                    string[] file_names = Directory.GetFiles(Application.dataPath, _target_node.action.GetType().ToString() + ".cs", SearchOption.AllDirectories);
+                    string[] file_names = Directory.GetFiles(Application.dataPath, _target_action_node.action.GetType().ToString() + ".cs", SearchOption.AllDirectories);
                     //Check if there's more than one asset or no asset, in both cases the result is negative
                     if (file_names.Length == 0 || file_names.Length > 1)
                     {
@@ -192,7 +194,7 @@ namespace GOAP_S.UI
                 //Delete
                 if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
-                    _target_node.action = null;
+                    _target_action_node.action = null;
                 }
                 GUILayout.EndHorizontal();
             }
@@ -216,7 +218,7 @@ namespace GOAP_S.UI
         public void AddCondition(Property_GS new_condition)
         {
             //Add the new condition to the target action node
-            _target_node.AddCondition(new_condition);
+            _target_action_node.AddCondition(new_condition);
             //Generate and add a condition editor to this node editor
             AddConditionEditor(new_condition);
         }
@@ -224,22 +226,53 @@ namespace GOAP_S.UI
         private void AddConditionEditor(Property_GS condition)
         {
             //Generate an editor for the new condition
-            Property_GS_Editor property_editor = new Property_GS_Editor(condition, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_CONDITION);
+            Property_GS_Editor property_editor = new Property_GS_Editor(condition, this, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_CONDITION);
             //Add the editor to the correct array
             _condition_editors[_condition_editors_num] = property_editor;
             //Update condition editors count
             _condition_editors_num += 1;
         }
 
+        public void RemoveConditionEditor(Property_GS_Editor target_condition_editor)
+        {
+            //First search property editor
+            for (int k = 0; k < _condition_editors_num; k++)
+            {
+                if (_condition_editors[k] == target_condition_editor)
+                {
+                    //When property is found copy values in front of it a slot backwards
+                    for (int n = k; n < _condition_editors_num - 1; n++)
+                    {
+                        _condition_editors[n] = _condition_editors[n + 1];
+                    }
+                    //Update condition editors count
+                    _condition_editors_num -= 1;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Job is done we dont need to continue the iteration
+                    return;
+                }
+            }
+            //Porperty editor not found case
+            Debug.LogWarning("Condition: " + target_condition_editor.target_property.A_key + " not found on remove!");
+        }
+
         public void SetAction(Action_GS new_action)
         {
             //Set the new action in the target action node
-            _target_node.action = new_action;
+            _target_action_node.action = new_action;
             //Repaint the node editor to update the UI
             NodeEditor_GS.Instance.Repaint();
         }
 
         //Get/Set Methods =================
+        public ActionNode_GS target_action_node
+        {
+            get
+            {
+                return _target_action_node;
+            }
+        }
         public GUIContent description_label
         {
             get

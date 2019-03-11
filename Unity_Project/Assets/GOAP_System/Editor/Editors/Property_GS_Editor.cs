@@ -12,6 +12,7 @@ namespace GOAP_S.UI
         private EditorUIMode _UI_mode = EditorUIMode.SET_STATE; //Swap between edit and set state, so the suer can edit values or not
         private PropertyUIMode _property_UI_mode = PropertyUIMode.IS_UNDEFINED; //Depending of the mode the user will be able to modify the properties with different options
         private Property_GS _target_property = null; //The property is this editor working with
+        private ActionNode_GS_Editor _target_action_node_editor = null; //The node editor is this property editor showing
         private Blackboard_GS _target_blackboard = null; //The blackboard is this editor working with
         //Edit fields
         private OperatorType[] _valid_operators = null;
@@ -20,12 +21,15 @@ namespace GOAP_S.UI
         private int _selected_B_key_index = -1;
         private int _operator_dropdown_slot = -1;
         private int _variable_dropdown_slot = -1;
-        
+        private object value = null;
+
         //Constructors
-        public Property_GS_Editor(Property_GS new_property, Blackboard_GS new_bb, PropertyUIMode new_ui_mode)
+        public Property_GS_Editor(Property_GS new_property,ActionNode_GS_Editor new_action_node_editor, Blackboard_GS new_bb, PropertyUIMode new_ui_mode)
         {
             //Set target property
             _target_property = new_property;
+            //Set target action node editor
+            _target_action_node_editor = new_action_node_editor;
             //Set target bb
             _target_blackboard = new_bb;
             //Set property editor UI mode
@@ -72,6 +76,20 @@ namespace GOAP_S.UI
                     //Get dropdown slots
                     _operator_dropdown_slot = ProTools.GetDropdownSlot();
                     _variable_dropdown_slot = ProTools.GetDropdownSlot();
+                    //Initialize value
+                    value = _target_property.value;
+                    //Search and set the already selected B key index
+                    //Iterate avaliable B keys
+                    for (int k = 0; k < _B_variable_keys.Length; k++)
+                    {
+                        if (string.Compare(_B_variable_keys[k], _target_property.B_key) == 0)
+                        {
+                            //When key is found save index and break the iteration
+                            _selected_B_key_index = k;
+                            ProTools.SetDropdownIndex(_variable_dropdown_slot, _selected_B_key_index);
+                            break;
+                        }
+                    }
                 }
             }
 
@@ -93,6 +111,34 @@ namespace GOAP_S.UI
                 GUILayout.Label(_target_property.B_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
             }
 
+            //Delete button(hide on play)
+            if (!Application.isPlaying)
+            {
+                if (GUILayout.Button(new GUIContent("X", "Remove"), GUILayout.MaxWidth(20.0f)))
+                {
+                    //We need to check if the target property is a condition or an effect to delete it from the correct container
+                    switch(_property_UI_mode)
+                    {
+                        case PropertyUIMode.IS_CONDITION:
+                            {
+                                //Add remove the current property from target action node conditions
+                                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_action_node_editor.target_action_node.RemoveCondition(_target_property);
+                                //Add remove current property editor from target acton node editor conditions editors
+                                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_action_node_editor.RemoveConditionEditor(this);
+                            }
+                            break;
+                        case PropertyUIMode.IS_EFFECT:
+                            {
+                                break;
+                            }
+                    }
+                    //Get mouse current position
+                    Vector2 mousePos = Event.current.mousePosition;
+                    //Open security accept menu on mouse position
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+                }
+            }
+
             GUILayout.EndHorizontal();
         }
 
@@ -111,10 +157,15 @@ namespace GOAP_S.UI
                 ProTools.FreeDropdownSlot(_operator_dropdown_slot);
                 ProTools.FreeDropdownSlot(_variable_dropdown_slot);
                 //Check B key
-                if(string.Compare(_target_property.B_key,"Not Set") == 0)
+                if(string.Compare(_target_property.B_key,"Not Set") == 0 || string.IsNullOrEmpty(_target_property.B_key))
                 {
                     //If property B key is not ser property will use value
                     _target_property.B_key = null;
+                    //If value is different we update the variable value
+                    if (value != _target_property.value)
+                    {
+                        _target_property.value = value;
+                    };
                 }
                 return;
             }
@@ -134,20 +185,17 @@ namespace GOAP_S.UI
             //First check if the target property uses a value or a variable
             if(string.IsNullOrEmpty(_target_property.B_key))
             {
-                //Get property value
-                object value = _target_property.value;
                 //Generate UI field from type
                 ProTools.ValueFieldByVariableType(_target_property.variable_type, ref value);
-                //If value is different we update the variable value
-                if (value != _target_property.value)
-                {
-                    _target_property.value = value;
-                };
-
+                
                 //Change to variable button
                 if(GUILayout.Button(new GUIContent(" ","Change to variable"),GUILayout.MaxWidth(10.0f)))
                 {
-                    _target_property.B_key = "Not Set";
+                    //If target property variable string is null we set an informative(not set)
+                    if (string.IsNullOrEmpty(_target_property.B_key))
+                    {
+                        _target_property.B_key = "Not Set";
+                    }
                 }
             }
             else
@@ -168,6 +216,15 @@ namespace GOAP_S.UI
                 }
             }
             GUILayout.EndHorizontal();
+        }
+
+        //Get/Set Methods =============
+        public Property_GS target_property
+        {
+            get
+            {
+                return _target_property;
+            }
         }
     }
 }

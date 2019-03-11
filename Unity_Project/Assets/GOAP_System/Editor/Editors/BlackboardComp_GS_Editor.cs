@@ -52,7 +52,7 @@ namespace GOAP_S.UI
                         //Add remove the current var method to accept menu delegates callback
                         SecurityAcceptMenu_GS.on_accept_delegate += () => target_blackboard.RemoveVariable(variable.name);
                         //Add remove current var editor from blackboard editor to accept menu delegates calback
-                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(variable.name);
                         //Get mouse current position
                         Vector2 mousePos = Event.current.mousePosition;
                         //Open security accept menu on mouse position
