@@ -262,10 +262,10 @@ GameObject:
   - component: {fileID: 740662231}
   - component: {fileID: 740662230}
   - component: {fileID: 740662229}
-  - component: {fileID: 740662228}
-  - component: {fileID: 740662227}
   - component: {fileID: 740662233}
   - component: {fileID: 740662234}
+  - component: {fileID: 740662228}
+  - component: {fileID: 740662227}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -298,7 +298,7 @@ MonoBehaviour:
   _name: un_named
   obj_refs: []
   serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"0262a1a1-5a36-4447-9a5c-9dfdd1d6f083","_variables":{"test":{"_value":0,"_name":"test","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"ClassTest.a","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+  serialized_blackboard: '{"_id":"b72b3879-40ca-492a-b25c-d3bda6fe67cc","_variables":{"h":{"_value":0,"_name":"test","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!65 &740662229
 BoxCollider:

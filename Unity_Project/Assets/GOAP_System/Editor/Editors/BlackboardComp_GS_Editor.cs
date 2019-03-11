@@ -12,6 +12,7 @@ namespace GOAP_S.UI
             //Blackboard component can be removed immediately so we need to check if still exists 
             if (((BlackboardComp_GS)target).agent == null)
             {
+                //Destroy called at the end of ui update to avoid problems
                 EditorApplication.delayCall += () => DestroyImmediate(target);
                 return;
             }
@@ -45,10 +46,14 @@ namespace GOAP_S.UI
 
                 if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
                 {
-                    //Delete variable
-                    EditorApplication.delayCall += () => target_blackboard.RemoveVariable(variable.name);
-                    //Delete variable editor
-                    EditorApplication.delayCall += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
+                    //Add remove the current var method to accept menu delegates callback
+                    SecurityAcceptMenu_GS.on_accept_delegate += () => target_blackboard.RemoveVariable(variable.name);
+                    //Add remove current var editor from blackboard editor to accept menu delegates calback
+                    SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
+                    //Get mouse current position
+                    Vector2 mousePos = Event.current.mousePosition;
+                    //Open security accept menu on mouse position
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
                 }
                 GUILayout.EndHorizontal();
             }

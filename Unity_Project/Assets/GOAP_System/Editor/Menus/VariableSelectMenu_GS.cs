@@ -1,13 +1,10 @@
 ﻿using System.Collections;
-using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.Blackboard;
 using System.Linq;
 using System.Reflection;
-using System;
 
 namespace GOAP_S.UI
 {
@@ -150,19 +147,27 @@ namespace GOAP_S.UI
                 {
                     //Send info to the bb to generate the variable
                     Variable_GS new_variable = NodeEditor_GS.Instance.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
-                    //Check if var have to be bind
-                    if(_selected_property_index != -1)
+
+                    //If add var return null is because the name is invalid(exists a variable with the same name)
+                    if (new_variable != null)
                     {
-                        //Bind new variable
-                        new_variable.BindField(bind_selected_property_path, null);
+                        //Check if var have to be bind
+                        if (_selected_property_index != -1)
+                        {
+                            //Bind new variable
+                            new_variable.BindField(bind_selected_property_path, null);
+                        }
+                        //Send the new variable to the blackboard editor to generate the variable editor
+                        NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
+                        //Close this popup and updat bb window
+                        editorWindow.Close();
+                        NodeEditor_GS.Instance.Repaint();
                     }
-                    //Send the new variable to the blackboard editor to generate the variable editor
-                    NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
-                    //Mark scene dirty
-                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-                    //Close this popup and updat bb window
-                    editorWindow.Close();
-                    NodeEditor_GS.Instance.Repaint();
+                    else
+                    {
+                        //Add a rep prefix to the variable name, so the user can see that the name is repeated
+                        _variable_name = "Rep:" + _variable_name;
+                    }
                 }
             }
             //Close button

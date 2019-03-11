@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
+using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 namespace GOAP_S.Blackboard
 {
@@ -13,6 +13,14 @@ namespace GOAP_S.Blackboard
         //Varibles methods ================
         public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
+            //Check if exists a variable with the same name
+            Variable_GS old_variable;
+            if (variables.TryGetValue(name,out old_variable))
+            {
+                Debug.LogWarning("Theres a variable named" + name + "already!");
+                return null;
+            }
+
             //Generate the new variable
             //First get system type of the object value
             System.Type variable_system_type = typeof(TVariable_GS<>).MakeGenericType(new System.Type[] { value.GetType() });
@@ -28,6 +36,9 @@ namespace GOAP_S.Blackboard
             //Add the new var to the bb list
             _variables.Add(new_variable.name, new_variable);
 
+            //Mark scene dirty
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
             return new_variable;
         }
 
@@ -37,6 +48,9 @@ namespace GOAP_S.Blackboard
             //Variable found case
             if (_variables.TryGetValue(key, out find_var))
             {
+                //Mark scene dirty
+                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
                 return _variables.Remove(key);
             }
             //Variable not found case

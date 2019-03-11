@@ -25,10 +25,16 @@ namespace GOAP_S.UI
             GUI.backgroundColor = new Color(1.0f, 0.2f, 0.2f, 1.0f);
             if (GUILayout.Button("Remove Agent", GUILayout.ExpandWidth(true)))
             {
-                //Destroy agent
-                DestroyImmediate((Agent_GS)target);
+                //Add remove this agent to accept menu delegates callback
+                SecurityAcceptMenu_GS.on_accept_delegate += () => DestroyImmediate((Agent_GS)target);
+                //Add mark scene dirty to accept menu delegates calback
+                SecurityAcceptMenu_GS.on_accept_delegate += () => EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 //Blackboard will detect that there's no agent and will destroy itself
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
+                //Get mouse current position
+                Vector2 mousePos = Event.current.mousePosition;
+                //Open security accept menu on mouse position
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
             }
 
             //Check if blackboard existst (the real use is to creat a new bb component when is destroyed if the agent component is still alive)
