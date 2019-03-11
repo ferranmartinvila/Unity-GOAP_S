@@ -10,7 +10,7 @@ namespace GOAP_S.UI
         //UI fields
         private Rect _window = Rect.zero; //Rect used to place bb window
         //Target fileds
-        private Blackboard_GS _target_bb = null; //Bb is this editor showing
+        private Blackboard_GS _target_blackboard = null; //Bb is this editor showing
         private Variable_GS_Editor[] _variable_editors = null;
         private int _variable_editors_num = 0;
 
@@ -18,7 +18,7 @@ namespace GOAP_S.UI
         public Blackboard_GS_Editor(Blackboard_GS target_bb)
         {
             //Set the target bb
-            _target_bb = target_bb;
+            _target_blackboard = target_bb;
             //Allocate variable editors array
             _variable_editors = new Variable_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate variable editors with the existing variables
@@ -78,18 +78,18 @@ namespace GOAP_S.UI
             }
 
             //Generate new variable editor
-            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_bb);
+            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_blackboard);
             //Add it to the array
             _variable_editors[_variable_editors_num] = new_variable_editor;
             //Update variable editors num
             _variable_editors_num += 1;
         }
 
-        public void DeleteVariableEditor(Variable_GS_Editor target_variable_editor)
+        public void DeleteVariableEditor(string key)
         {
             for (int k = 0; k < _variable_editors_num; k++)
             {
-                if (_variable_editors[k] == target_variable_editor)
+                if (_variable_editors[k].target_variable.id == key)
                 {
                     if (k == _variable_editors.Length - 1)
                     {
@@ -104,6 +104,8 @@ namespace GOAP_S.UI
                     }
                     //Update variable editors count
                     _variable_editors_num -= 1;
+                    //Repaint node editor window
+                    NodeEditor_GS.Instance.Repaint();
                 }
             }
         }
@@ -151,11 +153,11 @@ namespace GOAP_S.UI
         {
             get
             {
-                return _target_bb;
+                return _target_blackboard;
             }
             set
             {
-                _target_bb = value;
+                _target_blackboard = value;
             }
         }
     }
