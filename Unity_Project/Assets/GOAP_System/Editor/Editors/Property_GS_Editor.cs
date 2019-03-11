@@ -11,17 +11,18 @@ namespace GOAP_S.UI
         //Content fields
         private EditorUIMode _UI_mode = EditorUIMode.SET_STATE; //Swap between edit and set state, so the suer can edit values or not
         private PropertyUIMode _property_UI_mode = PropertyUIMode.IS_UNDEFINED; //Depending of the mode the user will be able to modify the properties with different options
+        private bool edit_value = true; //True if target property uses value false if uses a variable
         private Property_GS _target_property = null; //The property is this editor working with
         private ActionNode_GS_Editor _target_action_node_editor = null; //The node editor is this property editor showing
         private Blackboard_GS _target_blackboard = null; //The blackboard is this editor working with
         //Edit fields
-        private OperatorType[] _valid_operators = null;
-        private int _selected_operator_index = -1;
-        private string[] _B_variable_keys = null;
-        private int _selected_B_key_index = -1;
-        private int _operator_dropdown_slot = -1;
-        private int _variable_dropdown_slot = -1;
-        private object value = null;
+        private OperatorType[] _valid_operators = null; //Operators user can choose
+        private int _selected_operator_index = -1; //Operator choosed by user index
+        private string[] _B_variable_keys = null; //Variables user can choose
+        private int _selected_B_key_index = -1; //Variable choosed by user index
+        private int _operator_dropdown_slot = -1; //Valid operators dropdown slot
+        private int _variable_dropdown_slot = -1; //Valid variables dropdown slot
+        private object value = null; //Value selected by user in property using value case
 
         //Constructors
         public Property_GS_Editor(Property_GS new_property,ActionNode_GS_Editor new_action_node_editor, Blackboard_GS new_bb, PropertyUIMode new_ui_mode)
@@ -45,6 +46,8 @@ namespace GOAP_S.UI
             }
             //Get variables in the blackboard with the same type
             _B_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_target_property.variable_type);
+            //Check if the target property has a B key to adapt UI
+            edit_value = string.IsNullOrEmpty(_target_property.B_key);
         }
 
         //Loop Methods ====================
@@ -129,6 +132,10 @@ namespace GOAP_S.UI
                             break;
                         case PropertyUIMode.IS_EFFECT:
                             {
+                                //Add remove the current property from target action node effects
+                                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_action_node_editor.target_action_node.RemoveEffect(_target_property);
+                                //Add remove current property editor from target acton node editor effects editors
+                                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_action_node_editor.RemoveEffectEditor(this);
                                 break;
                             }
                     }
@@ -157,7 +164,7 @@ namespace GOAP_S.UI
                 ProTools.FreeDropdownSlot(_operator_dropdown_slot);
                 ProTools.FreeDropdownSlot(_variable_dropdown_slot);
                 //Check B key
-                if(string.Compare(_target_property.B_key,"Not Set") == 0 || string.IsNullOrEmpty(_target_property.B_key))
+                if(edit_value)
                 {
                     //If property B key is not ser property will use value
                     _target_property.B_key = null;
@@ -183,7 +190,7 @@ namespace GOAP_S.UI
 
             //Value area
             //First check if the target property uses a value or a variable
-            if(string.IsNullOrEmpty(_target_property.B_key))
+            if(edit_value)
             {
                 //Generate UI field from type
                 ProTools.ValueFieldByVariableType(_target_property.variable_type, ref value);
@@ -191,11 +198,7 @@ namespace GOAP_S.UI
                 //Change to variable button
                 if(GUILayout.Button(new GUIContent(" ","Change to variable"),GUILayout.MaxWidth(10.0f)))
                 {
-                    //If target property variable string is null we set an informative(not set)
-                    if (string.IsNullOrEmpty(_target_property.B_key))
-                    {
-                        _target_property.B_key = "Not Set";
-                    }
+                    edit_value = false;
                 }
             }
             else
@@ -212,6 +215,7 @@ namespace GOAP_S.UI
                 //Change to value button
                 if (GUILayout.Button(new GUIContent(" ", "Change to value"), GUILayout.MaxWidth(10.0f)))
                 {
+                    edit_value = true;
                     _target_property.B_key = null;
                 }
             }

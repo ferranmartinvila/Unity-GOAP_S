@@ -16,13 +16,16 @@ namespace GOAP_S.AI
         //Content fields
         [SerializeField] private string _name = "Action Node"; //Node name
         [SerializeField] private string _description = ""; //Node description
-        [NonSerialized] private int _conditions_num = 0; //Number of conditions to do this node action
         [NonSerialized] private Property_GS[] _conditions = null; //Conditions array
+        [NonSerialized] private int _conditions_num = 0; //Number of conditions to execute this node action
+        [NonSerialized] private Property_GS[] _effects = null; //Effects array
+        [NonSerialized] private int _effects_num = 0; //Number of effects on action execute
         [NonSerialized] private Action_GS _action = null; //Action linked to the action node
 
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> _obj_refs; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_conditions; //String where the serialized conditions are stored                                                       
+        [SerializeField] private string serialized_effects; //String where the serialized effects are stored
         [SerializeField] private string serialized_action; //String where the serialized action is stored
 
         //Constructor =================
@@ -30,6 +33,8 @@ namespace GOAP_S.AI
         {
             //Allocate conditions array
             _conditions = new Property_GS[ProTools.INITIAL_ARRAY_SIZE];
+            //Allocate effects array
+            _effects = new Property_GS[ProTools.INITIAL_ARRAY_SIZE];
         }
 
         //Loop Methods ================
@@ -111,6 +116,22 @@ namespace GOAP_S.AI
             }
         }
 
+        public int effects_num
+        {
+            get
+            {
+                return _effects_num;
+            }
+        }
+
+        public Property_GS[] effects
+        {
+            get
+            {
+                return _effects;
+            }
+        }
+
         public Action_GS action
         {
             get
@@ -163,7 +184,7 @@ namespace GOAP_S.AI
             }
 
             //Add the new condition to the array
-            conditions[conditions_num] = new_condition;
+            _conditions[_conditions_num] = new_condition;
             //Update conditions count
             _conditions_num += 1;
             //Mark scene dirty
@@ -194,6 +215,53 @@ namespace GOAP_S.AI
             Debug.LogWarning("Condition: " + target_condition.A_key + " not found on remove!");
         }
 
+        public void AddEffect(Property_GS new_effect)
+        {
+            //Check if we need to allocate more items in the array
+            if (_effects_num == _effects.Length)
+            {
+                //Double array capacity
+                Property_GS[] new_array = new Property_GS[_effects_num * 2];
+                //Copy values
+                for (int k = 0; k < _effects_num; k++)
+                {
+                    new_array[k] = _effects[k];
+                }
+            }
+
+            //Add the new effects to the array
+            _effects[_effects_num] = new_effect;
+            //Update effects count
+            _effects_num += 1;
+            //Mark scene dirty
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
+        }
+
+        public void RemoveEffect(Property_GS target_effect)
+        {
+            //First search property
+            for (int k = 0; k < _effects_num; k++)
+            {
+                if (_effects[k] == target_effect)
+                {
+                    //When property is found copy values in front of it a slot backwards
+                    for (int n = k; n < _effects_num - 1; n++)
+                    {
+                        _effects[n] = _effects[n + 1];
+                    }
+                    //Update effects count
+                    _effects_num -= 1;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Job is done we dont need to continue the iteration
+                    return;
+                }
+            }
+            //Porperty not found case
+            Debug.LogWarning("Effect: " + target_effect.A_key + " not found on remove!");
+        }
+
         //Serialization Methods =======
         public void OnBeforeSerialize()
         {
@@ -201,6 +269,8 @@ namespace GOAP_S.AI
             _obj_refs = new List<UnityEngine.Object>();
             //Serialize conditions set
             serialized_conditions = Serialization.SerializationManager.Serialize(_conditions, typeof(Property_GS[]), _obj_refs);
+            //Serialize effects set
+            serialized_effects = Serialization.SerializationManager.Serialize(_effects, typeof(Property_GS[]), _obj_refs);
             //Serialize the action set
             serialized_action = Serialization.SerializationManager.Serialize(action, typeof(Action_GS), _obj_refs);
         }
@@ -215,6 +285,16 @@ namespace GOAP_S.AI
                 if (_conditions[k] != null)
                 {
                     _conditions_num++;
+                }
+            }
+            //Deserialize effects
+            _effects = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_effects, _obj_refs);
+            //Count effects
+            for (int k = 0; k < _effects.Length; k++)
+            {
+                if(_effects[k] != null)
+                {
+                    _effects_num++;
                 }
             }
             //Deserialize the action

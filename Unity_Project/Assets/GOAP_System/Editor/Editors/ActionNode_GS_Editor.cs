@@ -5,6 +5,7 @@ using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.AI;
 using GOAP_S.Planning;
+using GOAP_S.PT;
 using System.IO;
 
 namespace GOAP_S.UI
@@ -23,6 +24,8 @@ namespace GOAP_S.UI
         //Content fields
         private Property_GS_Editor[] _condition_editors = null;
         private int _condition_editors_num = 0;
+        private Property_GS_Editor[] _effect_editors = null;
+        private int _effect_editors_num = 0;
 
         //Constructor =====================
         public ActionNode_GS_Editor(ActionNode_GS new_target)
@@ -39,6 +42,13 @@ namespace GOAP_S.UI
             for (int k = 0; k < _target_action_node.conditions_num; k++)
             {
                 AddConditionEditor(_target_action_node.conditions[k]);
+            }
+            //Allocate effect editors array
+            _effect_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
+            //Generate conditions UI
+            for (int k = 0; k < _target_action_node.effects_num; k++)
+            {
+                AddEffectEditor(_target_action_node.effects[k]);
             }
         }
 
@@ -143,7 +153,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Add Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
                 Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ConditionSelectMenu_GS(this));
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_CONDITION));
             }
             //-----------------------------
 
@@ -203,11 +213,23 @@ namespace GOAP_S.UI
             //Separation
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Reward ----------------------
-            //Reward null case
-            if (GUILayout.Button("Select Reward", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            //Effects ----------------------
+            //Effects Title
+            GUILayout.BeginHorizontal("HelpBox");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Effects", UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            //Show current effects
+            for (int k = 0; k < _effect_editors_num; k++)
             {
-
+                _effect_editors[k].DrawUI();
+            }
+            //Effect add button
+            if (GUILayout.Button("Add Effect", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            {
+                Vector2 mousePos = Event.current.mousePosition;
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_EFFECT));
             }
             //-----------------------------
 
@@ -255,6 +277,48 @@ namespace GOAP_S.UI
             }
             //Porperty editor not found case
             Debug.LogWarning("Condition: " + target_condition_editor.target_property.A_key + " not found on remove!");
+        }
+
+        public void AddEffect(Property_GS new_effect)
+        {
+            //Add the new effect to the target action node
+            _target_action_node.AddEffect(new_effect);
+            //Generate and add a effect editor to this node editor
+            AddEffectEditor(new_effect);
+        }
+
+        private void AddEffectEditor(Property_GS effect)
+        {
+            //Generate an editor for the new condition
+            Property_GS_Editor property_editor = new Property_GS_Editor(effect, this, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_EFFECT);
+            //Add the editor to the correct array
+            _effect_editors[_effect_editors_num] = property_editor;
+            //Update effect editors count
+            _effect_editors_num += 1;
+        }
+
+        public void RemoveEffectEditor(Property_GS_Editor target_effect_editor)
+        {
+            //First search property editor
+            for (int k = 0; k < _effect_editors_num; k++)
+            {
+                if (_effect_editors[k] == target_effect_editor)
+                {
+                    //When property is found copy values in front of it a slot backwards
+                    for (int n = k; n < _effect_editors_num - 1; n++)
+                    {
+                        _effect_editors[n] = _effect_editors[n + 1];
+                    }
+                    //Update effect editors count
+                    _effect_editors_num -= 1;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Job is done we dont need to continue the iteration
+                    return;
+                }
+            }
+            //Porperty editor not found case
+            Debug.LogWarning("Effect: " + target_effect_editor.target_property.A_key + " not found on remove!");
         }
 
         public void SetAction(Action_GS new_action)

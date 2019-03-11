@@ -5,33 +5,48 @@ using GOAP_S.Planning;
 
 namespace GOAP_S.UI
 {
-    public class ConditionSelectMenu_GS : PopupWindowContent
+    public class PropertySelectMenu_GS : PopupWindowContent
     {
         //Content fields
-        static private ActionNode_GS_Editor _target_action_node = null; //Focused node action
+        private PropertyUIMode _property_UI_mode = PropertyUIMode.IS_UNDEFINED; //Depending of the mode the user will be able to modify the properties with different options
+        private string _menu_title = null; //Condition Select or Effect Select
+        private ActionNode_GS_Editor _target_action_node_editor = null; //Focused node action
         //Variable A fields
-        private string[] _A_variable_keys = null;
-        private int prev_selected_variable_index = -1;
-        private VariableType _selected_variable_type = VariableType._undefined_var_type;
-        private int _selected_A_key_index = -1;
+        private string[] _A_variable_keys = null; //Avaliable variables in the target blackboard
+        private int prev_selected_variable_index = -1; //To check variable type change
+        private VariableType _selected_variable_type = VariableType._undefined_var_type; //Selected variable type
+        private int _selected_A_key_index = -1; //Selected A key dropdown index
         //Operator fields
-        private OperatorType[] _valid_operators = null;
-        private int _selected_operator_index = -1;
+        private OperatorType[] _valid_operators = null; //Valid operators in relation of the variable type
+        private int _selected_operator_index = -1; //Operator selected by user in dropdown index
         //Variable B fields
         private int _value_or_key = 0; //1 = value / 2 = key
-        private object _selected_value = null;
-        private int _selected_B_key_index = -1;
-        private string[] _B_variable_keys = null;
+        private object _selected_value = null; //Selected in property using value case
+        private int _selected_B_key_index = -1; //Selected B key in property using variable case
+        private string[] _B_variable_keys = null; //Avaliable B keys (variable with the same variable type of A in blackboard)
         //Dropdowns slots
-        private int _A_key_dropdown_slot = -1;
-        private int _operator_dropdown_slot = -1;
-        private int _B_key_dropdown_slot = -1;
+        private int _A_key_dropdown_slot = -1; //A key dropdown slot
+        private int _operator_dropdown_slot = -1; //Operator dropdown slot
+        private int _B_key_dropdown_slot = -1; //B key dropdown slot
 
         //Contructors =================
-        public ConditionSelectMenu_GS(ActionNode_GS_Editor target_action_node)
+        public PropertySelectMenu_GS(ActionNode_GS_Editor new_target_action_node_editor, PropertyUIMode new_property_UI_mode)
         {
+            //Set property UI mode
+            _property_UI_mode = new_property_UI_mode;
+            //Set menu title
+            if(_property_UI_mode == PropertyUIMode.IS_CONDITION)
+            {
+                //Condition title case
+                _menu_title = "Condition Select";
+            }
+            else if(_property_UI_mode == PropertyUIMode.IS_EFFECT)
+            {
+                //Effect title case
+                _menu_title = "Effect Select";
+            }
             //Set the action node is this menu working with
-            _target_action_node = target_action_node;
+            _target_action_node_editor = new_target_action_node_editor;
             //Get blackboard variables
             _A_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
             //Get dropdown slots
@@ -51,7 +66,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Condition Select", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label(_menu_title, UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -75,7 +90,17 @@ namespace GOAP_S.UI
                     //Then we can allocate the property value with the variable type
                     ProTools.AllocateFromVariableType(_selected_variable_type, ref _selected_value);
                     //Get valid operators
-                    _valid_operators = ProTools.GetValidPassiveOperatorTypesFromVariableType(_selected_variable_type);
+                    //Need to check if si a condition or an effect
+                    if (_property_UI_mode == PropertyUIMode.IS_CONDITION)
+                    {
+                        //Condition passive operators case
+                        _valid_operators = ProTools.GetValidPassiveOperatorTypesFromVariableType(_selected_variable_type);
+                    }
+                    else if (_property_UI_mode == PropertyUIMode.IS_EFFECT)
+                    {
+                        //Effect active operators case
+                        _valid_operators = ProTools.GetValidActiveOperatorTypesFromVariableType(_selected_variable_type);
+                    }
                     //Reset operator selected
                     _selected_operator_index = -1;
                     //Get variables in the blackboard with the same type
@@ -170,25 +195,35 @@ namespace GOAP_S.UI
                 //If everithing is correct we generate the condition
                 else
                 {
-                    //First allocate the condition class
-                    Property_GS new_condition = new Property_GS();
+                    //First allocate the property class
+                    Property_GS new_property = new Property_GS();
                     //Set A key
-                    new_condition.A_key = _A_variable_keys[_selected_A_key_index];
+                    new_property.A_key = _A_variable_keys[_selected_A_key_index];
                     //Set variable type
-                    new_condition.variable_type = _selected_variable_type;
+                    new_property.variable_type = _selected_variable_type;
                     //Set operator type
-                    new_condition.operator_type = _valid_operators[_selected_operator_index];
+                    new_property.operator_type = _valid_operators[_selected_operator_index];
                     //Set value or key in property B part
                     if(_value_or_key == 2)
                     {
-                        new_condition.B_key = _B_variable_keys[_selected_B_key_index];
+                        new_property.B_key = _B_variable_keys[_selected_B_key_index];
                     }
                     else
                     {
-                        new_condition.value = _selected_value;
+                        new_property.value = _selected_value;
                     }
-                    //Add condition to the action node we are working with
-                    _target_action_node.AddCondition(new_condition);
+                    //Add property to the action node we are working with
+                    //Need to check if is a condition or an effect
+                    if (_property_UI_mode == PropertyUIMode.IS_CONDITION)
+                    {
+                        //Add condition case
+                        _target_action_node_editor.AddCondition(new_property);
+                    }
+                    else if(_property_UI_mode == PropertyUIMode.IS_EFFECT)
+                    {
+                        //Add effect case
+                        _target_action_node_editor.AddEffect(new_property);
+                    }
                     //Close this menu
                     editorWindow.Close();
                     //Update node editor

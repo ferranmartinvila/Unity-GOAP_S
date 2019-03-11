@@ -232,9 +232,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":202.0,"yMin":96.0,"xMax":302.0,"yMax":196.0},"_id":"2aa4a7c1-f007-4f9e-afaa-567e01986e38","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"jj\",\"_operator\":\"_different\",\"_B_key\":\"jj\",\"_value\":null},null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"4f63691a-b4e8-463c-9e45-f676a53d32c7","_variables":{"jj":{"_value":false,"_name":"jj","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
+  serialized_action_nodes: '[{"_window_rect":{"xMin":152.0,"yMin":65.0,"xMax":252.0,"yMax":165.0},"_id":"79a5cc96-6a45-433e-b95c-8e5897aaf0da","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"d\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"d\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":"fee8a898-ae79-4e04-b025-4544f6bf6523","_variables":{"d":{"_value":false,"_name":"d","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!65 &740662229
 BoxCollider:
