@@ -14,12 +14,6 @@ namespace GOAP_S.UI
             EditorWindow.GetWindow(typeof(NodeEditor_GS));
         }
 
-        [MenuItem("Tools / GOAP / Node Editor", true)]
-        static bool CheckAgentToShowNodeEditor()
-        {
-            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
-        }
-
         ///Info ---------------------------------
         //Github Link =====================
         [MenuItem("Tools / GOAP / Github")]
@@ -72,7 +66,7 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Add Agent", true)]
         static bool CheckAddAgent()
         {
-            return Selection.activeGameObject.GetComponent<Agent_GS>() == null;
+            return Selection.activeGameObject != null &&  Selection.activeGameObject.GetComponent<Agent_GS>() == null;
         }
 
         //Remove Agent Item ===========
@@ -85,7 +79,7 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Selected Agent / Remove", true)]
         static bool CheckRemoveAgent()
         {
-            return Selection.activeGameObject.GetComponent<Agent_GS>() != null;
+            return Selection.activeGameObject != null && Selection.activeGameObject.GetComponent<Agent_GS>() != null;
         }
     }
 }

@@ -5,7 +5,6 @@ using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.AI;
 using GOAP_S.Planning;
-using GOAP_S.PT;
 using System.IO;
 
 namespace GOAP_S.UI

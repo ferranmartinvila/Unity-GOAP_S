@@ -92,6 +92,18 @@ namespace GOAP_S.UI
                 }
                 else
                 {
+                    //Empty node editor inputs
+                    if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+                    {
+                        //Right click
+                        if (Event.current.button == 1)
+                        {
+                            //Get mouse pos
+                            Vector2 _mouse_pos = Event.current.mousePosition;
+                            //Show empty node editor popup menu
+                            PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyNodeEditorPopMenu_GS());
+                        }
+                    }
                     return;
                 }
             }

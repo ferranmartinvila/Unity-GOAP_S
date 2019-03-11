@@ -8,6 +8,8 @@ namespace GOAP_S.UI
         //Content fields
         public delegate void AcceptCallbackFunction();
         public static AcceptCallbackFunction on_accept_delegate;
+        public static AcceptCallbackFunction on_cancel_delegate;
+
         //Config fields
         private Vector2 window_size = new Vector2(250.0f, 50.0f);
 
@@ -54,6 +56,15 @@ namespace GOAP_S.UI
             //Cancel button
             if(GUILayout.Button("Cancel", GUILayout.ExpandWidth(true)))
             {
+                //First check if there's a method to call
+                if (on_cancel_delegate != null)
+                {
+                    //Call the delegate on cancel
+                    on_cancel_delegate();
+                    //Reset delegate(deletes method pointers in)
+                    on_cancel_delegate = null;
+                }
+
                 //Simply close on cancel
                 editorWindow.Close();
             }
