@@ -251,20 +251,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1645938991
+--- !u!1 &740662226
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 1645938996}
-  - component: {fileID: 1645938995}
-  - component: {fileID: 1645938994}
-  - component: {fileID: 1645938993}
-  - component: {fileID: 1645938998}
-  - component: {fileID: 1645938997}
-  - component: {fileID: 1645938992}
+  - component: {fileID: 740662232}
+  - component: {fileID: 740662231}
+  - component: {fileID: 740662230}
+  - component: {fileID: 740662229}
+  - component: {fileID: 740662228}
+  - component: {fileID: 740662227}
+  - component: {fileID: 740662233}
+  - component: {fileID: 740662234}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -272,35 +273,51 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1645938992
+--- !u!114 &740662227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e70e7eef93619af4d90c2bbdfe84b6f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!65 &1645938993
+--- !u!114 &740662228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 740662226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: un_named
+  obj_refs: []
+  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":"0262a1a1-5a36-4447-9a5c-9dfdd1d6f083","_variables":{"test":{"_value":0,"_name":"test","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"ClassTest.a","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+--- !u!65 &740662229
 BoxCollider:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!23 &1645938994
+--- !u!23 &740662230
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -330,19 +347,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!33 &1645938995
+--- !u!33 &740662231
 MeshFilter:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &1645938996
+--- !u!4 &740662232
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -350,33 +367,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1645938997
+--- !u!114 &740662233
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _name: un_named
-  obj_refs: []
-  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"1c4897fe-646c-43a4-a078-73be77255f8a","_variables":{"1761ce70-ad21-4142-9b6f-787f127bebf5":{"_value":0,"_name":"i","_id":"1761ce70-ad21-4142-9b6f-787f127bebf5","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"ClassTest.a","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"3e65b986-165a-4d19-8060-3c5e43448455":{"_value":0,"_name":"j","_id":"3e65b986-165a-4d19-8060-3c5e43448455","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
---- !u!114 &1645938998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1645938991}
+  m_GameObject: {fileID: 740662226}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a6d10d8888c7314ea2dac646915b3e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _a: 5
-  _a2: 6
+  _a: 0
+  _a2: 0
+--- !u!114 &740662234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 740662226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff9c50e69b879534a820ca816f06d717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

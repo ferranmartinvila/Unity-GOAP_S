@@ -46,9 +46,9 @@ namespace GOAP_S.UI
                 if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
                 {
                     //Delete variable
-                    EditorApplication.delayCall += () => target_blackboard.RemoveVariable(variable.id);
+                    EditorApplication.delayCall += () => target_blackboard.RemoveVariable(variable.name);
                     //Delete variable editor
-                    EditorApplication.delayCall += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.id);
+                    EditorApplication.delayCall += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
                 }
                 GUILayout.EndHorizontal();
             }

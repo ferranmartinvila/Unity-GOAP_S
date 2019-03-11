@@ -51,17 +51,19 @@ namespace GOAP_S.AI
 
         private void Start()
         {
-            foreach (ActionNode_GS node in action_nodes)
+            //Start action nodes
+            for (int k = 0; k < _action_nodes_num; k++)
             {
-                node.Start();
+                _action_nodes[k].Start();
             }
         }
 
         private void Update()
         {
-            foreach (ActionNode_GS node in action_nodes)
+            //Update Action nodes
+            for (int k = 0; k < _action_nodes_num; k++)
             {
-                node.Update();
+                _action_nodes[k].Update();
             }
         }
 
@@ -165,7 +167,8 @@ namespace GOAP_S.AI
                 //Generate blackboard component in null case
                 if (_blackboard_component == null)
                 {
-                    _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
+                    _blackboard_component = gameObject.GetComponent<BlackboardComp_GS>();
+                    if (_blackboard_component == null) _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
                     _blackboard_component.agent = this;
                 }
 

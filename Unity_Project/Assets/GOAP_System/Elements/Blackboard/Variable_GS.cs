@@ -14,7 +14,6 @@ namespace GOAP_S.Blackboard
     {
         //Content fields
         [SerializeField] protected string _name = null;
-        [SerializeField] protected string _id = null;
         [SerializeField] protected object _object_value = null;
         [SerializeField] protected VariableType _type = VariableType._undefined;
 
@@ -65,24 +64,6 @@ namespace GOAP_S.Blackboard
                         _OnNameChange(_name);
                     }
                 }
-            }
-        }
-
-        public string id
-        {
-            get
-            {
-                //Chech if theres a generated UUID
-                if (string.IsNullOrEmpty(_id))
-                {
-                    //If not generates a new one
-                    _id = Guid.NewGuid().ToString();
-                }
-                return _id;
-            }
-            set
-            {
-                _id = value;
             }
         }
 

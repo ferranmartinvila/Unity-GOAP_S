@@ -26,7 +26,7 @@ namespace GOAP_S.Blackboard
             new_variable.object_value = value;
 
             //Add the new var to the bb list
-            _variables.Add(new_variable.id, new_variable);
+            _variables.Add(new_variable.name, new_variable);
 
             return new_variable;
         }
@@ -70,6 +70,23 @@ namespace GOAP_S.Blackboard
                     _id = System.Guid.NewGuid().ToString();
                 }
                 return _id.GetHashCode();
+            }
+        }
+
+        public TVariable_GS<T> GetVariable<T>(string name)
+        {
+            //First try to get variable by name in de dictionary
+            Variable_GS variable;
+            if (_variables.TryGetValue(name, out variable))
+            {
+                //Return the variable casted to the real class and with the T type
+                return (TVariable_GS<T>)variable;
+            }
+            else
+            {
+                //If variable is not found we display a warning in console with the variable name
+                Debug.LogWarning("Variable:" + name + "not found!");
+                return null;
             }
         }
     }

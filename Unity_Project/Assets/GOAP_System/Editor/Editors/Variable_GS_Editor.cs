@@ -80,9 +80,9 @@ namespace GOAP_S.UI
             if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
             {
                 //Remove the current var
-                _target_blackboard.RemoveVariable(_target_variable.id);
+                _target_blackboard.RemoveVariable(_target_variable.name);
                 //Remove current var editor from blackboard editor
-                NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(_target_variable.id);
+                NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(_target_variable.name);
             }
 
             GUILayout.EndHorizontal();

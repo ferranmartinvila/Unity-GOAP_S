@@ -37,10 +37,15 @@ namespace GOAP_S.Blackboard
             {
                 if (_target_agent == null)
                 {
-                    DestroyImmediate(this);
-                    return null;
+                    _target_agent = this.GetComponent<Agent_GS>();
+                    if (_target_agent == null)
+                    {
+                        DestroyImmediate(this);
+                        return null;
+                    }
                 }
-                else return _target_agent.blackboard;
+
+                return _target_agent.blackboard;
             }
         }
 
