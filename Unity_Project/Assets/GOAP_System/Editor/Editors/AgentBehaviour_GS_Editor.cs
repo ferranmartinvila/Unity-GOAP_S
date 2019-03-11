@@ -23,17 +23,38 @@ namespace GOAP_S.UI
         //Loop Methods ================
         public void DrawUI(int id)
         {
-            //Update position
-            /*if (window_position.x != NodePlanning_GS.Instance.position.x)
-            {
-                window_position = new Vector2(NodePlanning_GS.Instance.position.x, 0.0f);
-            }*/
-
             //Separaion between title and variables
             GUILayout.BeginVertical();
             GUILayout.Space(15);
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             GUILayout.EndVertical();
+
+            //No behaviour selected case
+            if (_target_agent.behaviour == null)
+            {
+                GUILayout.Label("No Behaviour", UIConfig_GS.center_big_white_style);
+                //Behaviour select button
+                if (GUILayout.Button("Set Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                {
+                    Vector2 mousePos = Event.current.mousePosition;
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new BehaviourSelectMenu_GS(_target_agent));
+                }
+            }
+            //Behaviour selected case
+            else
+            {
+                GUILayout.BeginHorizontal("HelpBox");
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(_target_agent.behaviour.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+                //Behaviour select button
+                if (GUILayout.Button("Change Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                {
+                    Vector2 mousePos = Event.current.mousePosition;
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new BehaviourSelectMenu_GS(_target_agent));
+                }
+            }
         }
 
         //Get/Set methods =============

@@ -217,6 +217,7 @@ namespace GOAP_S.UI
                 {
                     edit_value = true;
                     _target_property.B_key = null;
+                    ProTools.AllocateFromVariableType(_target_property.variable_type, ref value);
                 }
             }
             GUILayout.EndHorizontal();

@@ -4,22 +4,23 @@ using UnityEditor;
 using UnityEngine;
 using GOAP_S.Tools;
 using GOAP_S.Planning;
+using GOAP_S.AI;
 
 namespace GOAP_S.UI
 {
     public sealed class ActionSelectMenu_GS : PopupWindowContent
     {
         //Content fields
-        private ActionNode_GS_Editor _target_action_node = null; //Focused node action
+        private ActionNode_GS _target_action_node = null; //Focused node action
         //Selection fields
         private int _action_dropdown_slot = -1;
         private int _selected_action_index = -1;
         
         //Constructors ================
-        public ActionSelectMenu_GS(ActionNode_GS_Editor target_action_node)
+        public ActionSelectMenu_GS(ActionNode_GS new_target_action_node)
         {
             //Focus the action node
-            _target_action_node = target_action_node;
+            _target_action_node = new_target_action_node;
             //Get dropdown slot for action select
             _action_dropdown_slot = ProTools.GetDropdownSlot();
         }
@@ -51,15 +52,21 @@ namespace GOAP_S.UI
                 ResourcesTool.action_scripts.TryGetValue(ResourcesTool.action_paths[_selected_action_index], out script);
                 //Allocate a class with the same type of script value
                 Action_GS new_script = ProTools.AllocateClass<Action_GS>(script);
-                //Set the class name to the new allocated action
-                new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
-                //Set the action target agent
-                new_script.agent = NodeEditor_GS.Instance.selected_agent;
-                //Set the allocated class to the action node
-                _target_action_node.SetAction(new_script);
-                //Mark scene dirty
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-                //Close the pop window when the action is selected & set
+                //Check if the selected action is different to the node action
+                if (_target_action_node.action == null || _target_action_node.action.GetType() != new_script.GetType())
+                {
+                    //Set the class name to the new allocated action
+                    new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
+                    //Set the action target agent
+                    new_script.agent = NodeEditor_GS.Instance.selected_agent;
+                    //Set the allocated class to the action node
+                    _target_action_node.action = new_script;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    //Repaint the node editor to update the UI
+                    NodeEditor_GS.Instance.Repaint();
+                }
+                //Close the pop window at the end of the process
                 editorWindow.Close();
             }
 

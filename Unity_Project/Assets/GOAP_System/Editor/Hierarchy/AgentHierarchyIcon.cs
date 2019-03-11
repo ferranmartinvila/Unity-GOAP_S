@@ -7,8 +7,8 @@ using GOAP_S.AI;
 public class AgentHierarchyIcon
 {
     //Content fields
-    static Texture2D _icon_texture = null; //Texture we use as agent hierarchy icon
-    static List<int> _agent_object_ids = null; //List with the gameobjects that containt an agent ids
+    private static Texture2D _icon_texture = null; //Texture we use as agent hierarchy icon
+    private static List<int> _agent_object_ids = null; //List with the gameobjects that containt an agent ids
     
     //Initialize GoapSystem agents hierarchy icon system
     static AgentHierarchyIcon()

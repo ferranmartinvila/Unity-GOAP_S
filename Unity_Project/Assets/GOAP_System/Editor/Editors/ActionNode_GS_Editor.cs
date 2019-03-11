@@ -177,7 +177,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button("Set Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
-                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this));
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(_target_action_node));
                 }
             }
             //Action set case
@@ -351,14 +351,6 @@ namespace GOAP_S.UI
             }
             //Porperty editor not found case
             Debug.LogWarning("Effect: " + target_effect_editor.target_property.A_key + " not found on remove!");
-        }
-
-        public void SetAction(Action_GS new_action)
-        {
-            //Set the new action in the target action node
-            _target_action_node.action = new_action;
-            //Repaint the node editor to update the UI
-            NodeEditor_GS.Instance.Repaint();
         }
 
         //Get/Set Methods =================

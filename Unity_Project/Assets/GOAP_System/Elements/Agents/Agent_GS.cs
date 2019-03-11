@@ -208,6 +208,18 @@ namespace GOAP_S.AI
             }
         }
 
+        public AgentBehaviour_GS behaviour
+        {
+            get
+            {
+                return _behaviour;
+            }
+            set
+            {
+                _behaviour = value;
+            }
+        }
+
         //Serialization Methods ===========
         public void OnBeforeSerialize() //Serialize
         {

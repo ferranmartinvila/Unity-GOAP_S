@@ -16,6 +16,7 @@ namespace GOAP_S.AI
     {
         //Content fields
         [NonSerialized] private Agent_GS _agent = null; //The agent is under control of this behaviour
+        [SerializeField] private string _name = null; //Behaviour name
 
         //Loop Methods ================
         public virtual void Start()
@@ -38,6 +39,18 @@ namespace GOAP_S.AI
             set
             {
                 _agent = value;
+            }
+        }
+
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
             }
         }
     }
