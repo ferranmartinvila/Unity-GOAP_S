@@ -232,9 +232,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":112.0,"yMin":95.0,"xMax":212.0,"yMax":195.0},"_id":"768a527d-268d-4ff4-9df8-08448621bfd3","_name":"Action
-    Node","_description":"","_conditions_num":1,"_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_undefined_var_type\",\"_A_key\":\"g\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":170.0,"yMin":26.0,"xMax":270.0,"yMax":126.0},"_id":"768a527d-268d-4ff4-9df8-08448621bfd3","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_undefined_var_type\",\"_A_key\":\"g\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"}},{\"_variable_type\":\"_undefined_var_type\",\"_A_key\":\"g\",\"_operator\":\"_different\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"}},{\"_variable_type\":\"_undefined_var_type\",\"_A_key\":\"g\",\"_operator\":\"_different\",\"_B_key\":\"g\",\"_value\":null},null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_id":"1b644884-88a9-4b84-b015-3cf00bc15f6a","_variables":{"g":{"_value":0,"_name":"g","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"kk":{"_value":false,"_name":"kk","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":"ClassTest.useGUILayout","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
 --- !u!65 &740662229
 BoxCollider:

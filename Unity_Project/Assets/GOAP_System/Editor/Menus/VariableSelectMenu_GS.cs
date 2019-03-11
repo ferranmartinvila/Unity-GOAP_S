@@ -18,11 +18,13 @@ namespace GOAP_S.UI
         private int _selected_property_index = -1;
         private PropertyInfo[] _properties_info;
         private string[] _properties_paths;
+        private string[] _properties_display_paths;
 
         //Contructors =================
         public VariableSelectMenu_GS()
         {
-
+            //Reset dropdowns tool
+            ProTools.ResetDropdowns();
         }
 
         //Loop Methods ================
@@ -52,7 +54,27 @@ namespace GOAP_S.UI
             //Check if var type is changed
             if(current_type != _variable_type)
             {
+                //Allocate value from variable type
                 ProTools.AllocateFromVariableType(_variable_type, ref _variable_value);
+
+                //Get all the fields in the agent gameobject
+                _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, ProTools.VariableTypeToSystemType(_variable_type));
+                //Allocate strings arrays
+                _properties_paths = new string[_properties_info.Length];
+                _properties_display_paths = new string[_properties_info.Length];
+                //Generate properties full paths
+                int index = 0;
+                foreach (PropertyInfo field_info in _properties_info)
+                {
+                    _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
+                    index += 1;
+                }
+                //Generate display paths
+                for (int k = 0; k < _properties_paths.Length; k++)
+                {
+                    //Adapt path to the dropdown format
+                    _properties_display_paths[k] = _properties_paths[k].Replace('.', '/');
+                }
             }
             GUILayout.EndHorizontal();
 
@@ -64,7 +86,7 @@ namespace GOAP_S.UI
                 //Show variable value or info label if the variable is binded
                 if (_selected_property_index != -1)
                 {
-                    GUILayout.Label("Value=" + bind_selected_property_display_path, UIConfig_GS.Instance.node_elements_style,GUILayout.ExpandWidth(true));
+                    GUILayout.Label("Value=" + bind_selected_property_display_path, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 }
                 else
                 {
@@ -82,50 +104,19 @@ namespace GOAP_S.UI
 
                 //Bind variable
                 GUILayout.BeginHorizontal();
-                //Show bind selection dropdown
-                if (GUILayout.Button("Bind"))
-                {
-                    //Get all the fields in the agent gameobject
-                    _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject,ProTools.VariableTypeToSystemType(_variable_type));
-                    //Get all the paths of the fields found
-                    _properties_paths = new string[_properties_info.Length];
-                    int index = 0;
-                    foreach (PropertyInfo field_info in _properties_info)
-                    {
-                        //_properties_paths[index] = _properties_info[index].DeclaringType + "/" + _properties_info[index].PropertyType + "/" +  _properties_info[index].Name;// _properties_info[index].Name;
-                        _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
-                       // _properties_paths[index] = _properties_paths[index].Replace('.', '/');
-                        index += 1;
-                    }
-
-                    GenericMenu dropdown = new GenericMenu();
-                    for (int k = 0; k < _properties_paths.Length; k++)
-                    {
-                        //First adapt path to the dropdown format
-                        string ui_adapted_path = _properties_paths[k].Replace('.', '/');
-
-                        dropdown.AddItem(
-                            //Generate gui content from property path strin
-                            new GUIContent(ui_adapted_path),
-                            //show the currently selected item as selected
-                            k == _selected_property_index,
-                            //lambda to set the selected item to the one being clicked
-                            selectedIndex => _selected_property_index = (int)selectedIndex,
-                            //index of this menu item, passed on to the lambda when pressed.
-                            k
-                       );
-                    }
-                    dropdown.ShowAsContext(); //finally show the dropdown
-                }
+                //Generate bind selection dropdown
+                ProTools.GenerateButtonDropdownMenu(ref _selected_property_index, _properties_display_paths, "Bind", false, 0);
                 //UnBind button
-                if(GUILayout.Button("UnBind"))
+                if (GUILayout.Button("UnBind"))
                 {
                     _selected_property_index = -1;
+                    //Reset dropdowns tool
+                    ProTools.ResetDropdowns();
                 }
                 GUILayout.EndHorizontal();
 
                 //Show selected bind path
-                if(_selected_property_index == -1)GUILayout.Label(bind_selected_property_display_path);
+                if (_selected_property_index == -1) GUILayout.Label(bind_selected_property_display_path);
 
                 GUILayout.EndVertical();
             }
@@ -207,7 +198,7 @@ namespace GOAP_S.UI
                 else
                 {
                     string[] parts = bind_selected_property_path.Split('.');
-                    return (parts[parts.Length - 2] + "." + parts.Last());
+                    return ("." + parts.Last());
                 }
             }
         }

@@ -52,7 +52,7 @@ namespace GOAP_S.UI
         private void OnGUI()
         {
             //Draw background texture 
-            GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), _back_texture, ScaleMode.StretchToFill);
+            GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
 
             //Check if the current selected object is the same that the windows is focusing
             if (Selection.activeGameObject != _selected_object)
@@ -185,13 +185,6 @@ namespace GOAP_S.UI
         private void ConfigureWindow()
         {
             this.titleContent.text = "Node Editor"; //Set a window title
-            //Generate back texture
-            if (_back_texture == null)
-            {
-                _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-                _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
-                _back_texture.Apply();
-            }
         }
 
         private void GenerateTargetAgentUI()
@@ -275,6 +268,20 @@ namespace GOAP_S.UI
         }
 
         //Get/Set Methods =================
+        private Texture2D back_texture
+        {
+            get
+            {
+                //Generate background texture
+                if (_back_texture == null)
+                {
+                    _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
+                    _back_texture.SetPixel(0, 0, new Color(0.35f, 0.35f, 0.35f));
+                    _back_texture.Apply();
+                }
+                return _back_texture;
+            }
+        }
         public Agent_GS selected_agent
         {
             get

@@ -30,6 +30,8 @@ namespace GOAP_S.UI
             _target_action_node = target_action_node;
             //Get blackboard variables
             _A_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
+            //Reset dropdowns tool
+            ProTools.ResetDropdowns();
         }
 
         //Loop Methods ================
@@ -54,24 +56,9 @@ namespace GOAP_S.UI
             //Variable select
             GUILayout.BeginHorizontal();
             GUILayout.Label("Variable:",GUILayout.MaxWidth(60.0f));
-            if (GUILayout.Button(_selected_A_key_index != -1 ? _A_variable_keys[_selected_A_key_index] : "not set"))
-            {
-                GenericMenu dropdown = new GenericMenu();
-                for (int k = 0; k < _A_variable_keys.Length; k++)
-                {
-                    dropdown.AddItem(
-                        //Generate gui content from property path strin
-                        new GUIContent(_A_variable_keys[k]),
-                        //show the currently selected item as selected
-                        k == _selected_A_key_index,
-                        //lambda to set the selected item to the one being clicked
-                        selectedIndex => _selected_A_key_index = (int)selectedIndex,
-                        //index of this menu item, passed on to the lambda when pressed.
-                        k
-                   );
-                }
-                dropdown.ShowAsContext(); //finally show the dropdown
-            }
+            //Generate dropdown with the variables in the target blackboard
+            ProTools.GenerateButtonDropdownMenu(ref _selected_A_key_index, _A_variable_keys, "Not Set", true, 0);
+
             //Check variable selection change
             if (prev_selected_variable_index != _selected_A_key_index)
             {
@@ -108,24 +95,7 @@ namespace GOAP_S.UI
             {
                 GUILayout.Label("Operator:", GUILayout.MaxWidth(60.0f));
                 //Generate enumerator popup with the operator type
-                if (GUILayout.Button(_selected_operator_index != -1 ? _valid_operators[_selected_operator_index].ToShortString() : "not set"))
-                {
-                    GenericMenu dropdown = new GenericMenu();
-                    for (int k = 0; k < _valid_operators.Length; k++)
-                    {
-                        dropdown.AddItem(
-                            //Generate gui content from property path strin
-                            new GUIContent(_valid_operators[k].ToShortString()),
-                            //show the currently selected item as selected
-                            k == _selected_operator_index,
-                            //lambda to set the selected item to the one being clicked
-                            selectedIndex => _selected_operator_index = (int)selectedIndex,
-                            //index of this menu item, passed on to the lambda when pressed.
-                            k
-                       );
-                    }
-                    dropdown.ShowAsContext(); //finally show the dropdown
-                }
+                ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortString(), "Not Set", true, 1);
             }
             GUILayout.EndHorizontal();
 
@@ -171,25 +141,8 @@ namespace GOAP_S.UI
                 //Show input field in variable case
                 else if (_value_or_key == 2)
                 {
-                    //Generate enumerator popup with the operator type
-                    if (GUILayout.Button(_selected_B_key_index != -1 ? _B_variable_keys[_selected_B_key_index] : "not set"))
-                    {
-                        GenericMenu dropdown = new GenericMenu();
-                        for (int k = 0; k < _B_variable_keys.Length; k++)
-                        {
-                            dropdown.AddItem(
-                                //Generate gui content from property path strin
-                                new GUIContent(_B_variable_keys[k]),
-                                //show the currently selected item as selected
-                                k == _selected_B_key_index,
-                                //lambda to set the selected item to the one being clicked
-                                selectedIndex => _selected_B_key_index = (int)selectedIndex,
-                                //index of this menu item, passed on to the lambda when pressed.
-                                k
-                           );
-                        }
-                        dropdown.ShowAsContext(); //finally show the dropdown
-                    }
+                    //Generate enumerator popup with the avaliable B keys
+                    ProTools.GenerateButtonDropdownMenu(ref _selected_B_key_index, _B_variable_keys, "Not Set", true, 2);
                 }
             }
             GUILayout.EndHorizontal();

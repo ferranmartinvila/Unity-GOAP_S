@@ -185,7 +185,7 @@ namespace GOAP_S.AI
         {
             //Deserialize conditions
             _conditions = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_conditions, _obj_refs);
-            //Count nodes
+            //Count conditions
             for (int k = 0; k < _conditions.Length; k++)
             {
                 if (_conditions[k] != null)

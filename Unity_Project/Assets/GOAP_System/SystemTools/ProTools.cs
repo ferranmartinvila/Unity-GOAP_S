@@ -448,6 +448,38 @@ namespace GOAP_S.PT
             }
         }
 
+        private static int [] dropdown_select = new int[INITIAL_ARRAY_SIZE];
+        public static void ResetDropdowns()
+        {
+            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            {
+                dropdown_select[k] = -1;
+            }
+        }
+
+        public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, int dropdown_id)
+        {
+            if (GUILayout.Button(dropdown_select[dropdown_id] != -1 && show_selection ? options[dropdown_select[dropdown_id]] : button_string))
+            {
+                GenericMenu dropdown = new GenericMenu();
+                for (int k = 0; k < options.Length; k++)
+                {
+                    dropdown.AddItem(
+                        //Generate gui content from property path strin
+                        new GUIContent(options[k]),
+                        //show the currently selected item as selected
+                        k == index,
+                        //lambda to set the selected item to the one being clicked
+                        selectedIndex => dropdown_select[dropdown_id] = (int)selectedIndex,
+                        //index of this menu item, passed on to the lambda when pressed.
+                        k
+                   );
+                }
+                dropdown.ShowAsContext(); //finally show the dropdown
+            }
+            index = dropdown_select[dropdown_id];
+        }
+
         //Extra Methods =========================
         //Create a delegate
         public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
@@ -482,6 +514,19 @@ namespace GOAP_S.PT
                 case OperatorType._minus_equal: return "-=";
             }
             return "Undefined";
+        }
+
+        public static string [] ToShortString(this OperatorType[] operator_types)
+        {
+            //First allocate a strings array with the size of the operator types
+            string[] strings = new string[operator_types.Length];
+            //Iterate the operator types and transform them to strings
+            for (int k = 0; k < operator_types.Length; k++)
+            {
+                strings[k] = operator_types[k].ToShortString();
+            }
+            //Finally return the generated strings array
+            return strings;
         }
     }
 
