@@ -55,10 +55,10 @@ namespace GOAP_S.UI
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_',' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(40.0f));
+            GUILayout.Label(_target_variable.type.ToString().Replace('_',' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Show variable name
-            GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(70.0f));
+            GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(80.0f));
 
             //Show variable value
             //Non binded variable case
@@ -106,10 +106,10 @@ namespace GOAP_S.UI
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(40.0f));
+            GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Edit variable name
-            _target_variable.name = EditorGUILayout.TextField(_target_variable.name,GUILayout.MaxWidth(70.0f));
+            _target_variable.name = EditorGUILayout.TextField(_target_variable.name,GUILayout.MaxWidth(80.0f));
 
             //Show variable value
             //Non binded variable case
@@ -126,12 +126,17 @@ namespace GOAP_S.UI
 
         private void ShowVariableValue()
         {
-            //Show variable value
+            //Generate an input field adapted to the type of the variable
             switch (_target_variable.type)
             {
                 case VariableType._undefined:
                     {
                         GUILayout.Label("Type Error");
+                    }
+                    break;
+                case VariableType._bool:
+                    {
+                        _target_variable.object_value = GUILayout.Toggle((bool)_target_variable.object_value, "", GUILayout.MaxWidth(70.0f));
                     }
                     break;
                 case VariableType._int:
@@ -142,6 +147,39 @@ namespace GOAP_S.UI
                 case VariableType._float:
                     {
                         _target_variable.object_value = EditorGUILayout.FloatField((float)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._char:
+                    {
+                        _target_variable.object_value = EditorGUILayout.TextField("", (string)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
+                        //Limit value to one char
+                        if (!string.IsNullOrEmpty((string)_target_variable.object_value))
+                        {
+                            _target_variable.object_value = ((string)_target_variable.object_value).Substring(0, 1);
+                        }
+                    }
+                    break;
+                case VariableType._string:
+                    {
+                        _target_variable.object_value = EditorGUILayout.TextField("", (string)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._vector2:
+                    {
+                        //Value field
+                        _target_variable.object_value = EditorGUILayout.Vector2Field("", (Vector2)_target_variable.object_value, GUILayout.MaxWidth(110.0f));
+                    }
+                    break;
+                case VariableType._vector3:
+                    {
+                        //Value field
+                        _target_variable.object_value = EditorGUILayout.Vector3Field("", (Vector3)_target_variable.object_value, GUILayout.MaxWidth(110.0f));
+                    }
+                    break;
+                case VariableType._vector4:
+                    {
+                        //Value field
+                        _target_variable.object_value = EditorGUILayout.Vector4Field("", (Vector4)_target_variable.object_value, GUILayout.MaxWidth(150.0f));
                     }
                     break;
             }

@@ -34,11 +34,11 @@ namespace GOAP_S.UI
 
                 if (!variable.is_binded)
                 {
-                    GUILayout.Label(variable.value.ToString(), GUILayout.MaxWidth(100.0f));
+                    GUILayout.Label(variable.value.ToString(), GUILayout.MaxWidth(150.0f));
                 }
                 else
                 {
-                    GUILayout.Label(variable.display_field_short_path, GUILayout.MaxWidth(100.0f));
+                    GUILayout.Label(variable.display_field_short_path, GUILayout.MaxWidth(150.0f));
                 }
 
                 //Free space margin

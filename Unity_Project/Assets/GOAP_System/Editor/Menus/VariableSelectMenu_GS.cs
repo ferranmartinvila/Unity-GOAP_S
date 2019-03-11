@@ -68,19 +68,70 @@ namespace GOAP_S.UI
                 }
                 else
                 {
+                    //Define horizontal area
+                    GUILayout.BeginHorizontal(GUILayout.MaxWidth(150.0f));
+
+                    //Value label
+                    GUILayout.Label("Value", GUILayout.MaxWidth(40.0f));
+
+                    //Generate an input field adapted to the type of the variable
                     switch (_variable_type)
                     {
+                        case VariableType._bool:
+                            {
+                                //Value field
+                                _variable_value = GUILayout.Toggle((bool)_variable_value,"");
+                            }
+                            break;
                         case VariableType._int:
                             {
-                                _variable_value = EditorGUILayout.IntField("Value", (int)_variable_value);
+                                //Value field
+                                _variable_value = EditorGUILayout.IntField("", (int)_variable_value, GUILayout.MaxWidth(100.0f));
                             }
                             break;
                         case VariableType._float:
                             {
-                                _variable_value = EditorGUILayout.FloatField("Value", (float)_variable_value);
+                                //Value field
+                                _variable_value = EditorGUILayout.FloatField("", (float)_variable_value, GUILayout.MaxWidth(100.0f));
+                            }
+                            break;
+                        case VariableType._char:
+                            {
+                                //Value field
+                                _variable_value = EditorGUILayout.TextField("", (string)_variable_value, GUILayout.MaxWidth(40.0f));
+                                //Limit value to one char
+                                if (!string.IsNullOrEmpty((string)_variable_value))
+                                {
+                                    _variable_value = ((string)_variable_value).Substring(0, 1);
+                                }
+                            }
+                            break;
+                        case VariableType._string:
+                            {
+                                //Value field
+                                _variable_value = EditorGUILayout.TextField("", (string)_variable_value, GUILayout.MaxWidth(120.0f));
+                            }
+                            break;
+                        case VariableType._vector2:
+                            {
+                                //Value field
+                                _variable_value = EditorGUILayout.Vector2Field("", (Vector2)_variable_value, GUILayout.MaxWidth(90.0f));
+                            }
+                            break;
+                        case VariableType._vector3:
+                            {
+                                //Value field
+                                _variable_value = EditorGUILayout.Vector3Field("", (Vector3)_variable_value, GUILayout.MaxWidth(110.0f));
+                            }
+                            break;
+                        case VariableType._vector4:
+                            {
+                                //Value field
+                                _variable_value = EditorGUILayout.Vector4Field("", (Vector4)_variable_value, GUILayout.MaxWidth(150.0f));
                             }
                             break;
                     }
+                    GUILayout.EndHorizontal();
                 }
 
                 //Bind variable
@@ -186,11 +237,18 @@ namespace GOAP_S.UI
         //Functionality Methods =======
         private void AllocateValue()
         {
+            //Here we basically allocate diferent elements depending of the variable type and set the allocated field to the variable value
             switch(_variable_type)
             {
                 case VariableType._undefined:
                     {
                         _variable_value = null;
+                    }
+                    break;
+                case VariableType._bool:
+                    {
+                        bool new_bool = false;
+                        _variable_value = new_bool;
                     }
                     break;
                 case VariableType._int:
@@ -203,6 +261,36 @@ namespace GOAP_S.UI
                     {
                         float new_float = 0.0f;
                         _variable_value = new_float;
+                    }
+                    break;
+                case VariableType._char:
+                    {
+                        string new_char = "";
+                        _variable_value = new_char;
+                    }
+                    break;
+                case VariableType._string:
+                    {
+                        string new_string = "";
+                        _variable_value = new_string;
+                    }
+                    break;
+                case VariableType._vector2:
+                    {
+                        Vector2 new_vector2 = new Vector2(0.0f, 0.0f);
+                        _variable_value = new_vector2;
+                    }
+                    break;
+                case VariableType._vector3:
+                    {
+                        Vector3 new_vector3 = new Vector3(0.0f, 0.0f, 0.0f);
+                        _variable_value = new_vector3;
+                    }
+                    break;
+                case VariableType._vector4:
+                    {
+                        Vector4 new_vector4 = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+                        _variable_value = new_vector4;
                     }
                     break;
             }

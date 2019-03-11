@@ -16,6 +16,7 @@ namespace GOAP_S.PT
     public enum VariableType
     {
         _undefined = 0,
+        _bool,
         _int,
         _float,
         _char,
@@ -23,9 +24,7 @@ namespace GOAP_S.PT
         _vector2,
         _vector3,
         _vector4,
-        _array,
-        _enum,
-        _class
+        _enum
     }
 
     public static class ProTools
@@ -198,8 +197,15 @@ namespace GOAP_S.PT
         {
             switch (var_type)
             {
-                case VariableType._int:     return typeof(int);     
-                case VariableType._float:   return typeof(float);   
+                case VariableType._bool:        return typeof(bool);
+                case VariableType._int:         return typeof(int);     
+                case VariableType._float:       return typeof(float);
+                case VariableType._char:        return typeof(char);
+                case VariableType._string:      return typeof(string);
+                case VariableType._vector2:     return typeof(Vector2);
+                case VariableType._vector3:     return typeof(Vector3);
+                case VariableType._vector4:     return typeof(Vector4);
+                // TODO case VariableType._enum:        return typeof(enum);
             }
 
             //No found type return
