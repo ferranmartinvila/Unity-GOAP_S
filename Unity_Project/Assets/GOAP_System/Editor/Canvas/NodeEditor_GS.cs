@@ -106,7 +106,7 @@ namespace GOAP_S.UI
                         //Get mouse pos
                         Vector2 _mouse_pos = Event.current.mousePosition;
                         //Show empty node editor popup menu
-                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS());
+                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
                     }
                 }
                 return;
@@ -191,6 +191,11 @@ namespace GOAP_S.UI
         public static bool IsOpen()
         {
             return _Instance != null;
+        }
+
+        public void CheckSelection()
+        {
+            OnSelectionChange();
         }
 
         private void ConfigureWindow()

@@ -6,10 +6,14 @@ namespace GOAP_S.UI
 {
     public sealed class EmptyCanvasPopMenu_GS : PopupWindowContent
     {
-        //Constructors ================
-        public EmptyCanvasPopMenu_GS()
-        {
+        //UI fields
+        EditorWindow _target_window; //The window from where is this popup menu opened
 
+        //Constructors ================
+        public EmptyCanvasPopMenu_GS(EditorWindow target)
+        {
+            //Set the target editor window
+            _target_window = target;
         }
 
         //Loop Methods ================
@@ -48,6 +52,15 @@ namespace GOAP_S.UI
                 {
                     //Add a new agent component to the selected gameobject
                     Selection.activeGameObject.AddComponent<Agent_GS>();
+                    //Repaint the window is currently focused by the user
+                    if (_target_window.GetType() == typeof(NodeEditor_GS))
+                    {
+                        NodeEditor_GS.Instance.CheckSelection();
+                    }
+                    else
+                    {
+                        NodePlanning_GS.Instance.CheckSelection();
+                    }
                     //Close this window
                     editorWindow.Close();
                 }

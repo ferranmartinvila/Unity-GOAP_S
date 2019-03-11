@@ -82,12 +82,12 @@ namespace GOAP_S.UI
                 if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
                 {
                     //Right click
-                    if (Event.current.button == 1 && Event.current.type == EventType.Repaint)
+                    if (Event.current.button == 1)
                     {
                         //Get mouse pos
                         Vector2 _mouse_pos = Event.current.mousePosition;
                         //Show empty node editor popup menu
-                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS());
+                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
                     }
                 }
                 return;
@@ -96,12 +96,29 @@ namespace GOAP_S.UI
             //Selected agent title
             GUILayout.Label("Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
 
+            //Window inputs
+            if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+            {
+                //Right click
+                if (Event.current.button == 1)
+                {
+                    //Get mouse pos
+                    Vector2 _mouse_pos = Event.current.mousePosition;
+                    //Show node editor popup menu
+                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodePlanningPopMenu_GS());
+                }
+            }
         }
 
         //Functionality Methods =======
         public static bool IsOpen()
         {
             return _Instance != null;
+        }
+
+        public void CheckSelection()
+        {
+            OnSelectionChange();
         }
 
         private void ConfigureWindow()
@@ -128,6 +145,18 @@ namespace GOAP_S.UI
                     _back_texture.Apply();
                 }
                 return _back_texture;
+            }
+        }
+
+        public Agent_GS selected_agent
+        {
+            get
+            {
+                return _selected_agent;
+            }
+            set
+            {
+                _selected_agent = value;
             }
         }
     }

@@ -88,6 +88,8 @@ namespace GOAP_S.UI
                 //Add mark scene dirty to accept menu delegates callback
                 SecurityAcceptMenu_GS.on_accept_delegate += () => EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 //Blackboard will detect that there's no agent and will destroy itself
+                //Add node planning repaint
+                SecurityAcceptMenu_GS.on_accept_delegate += () => NodePlanning_GS.Instance.Repaint();
                 //Add node editor repaint
                 SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.Repaint();
                 //Add close this window

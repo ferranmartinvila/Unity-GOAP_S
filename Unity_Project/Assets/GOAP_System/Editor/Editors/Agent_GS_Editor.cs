@@ -7,8 +7,9 @@ using GOAP_S.AI;
 namespace GOAP_S.UI
 {
     [CustomEditor(typeof(Agent_GS))]
-    public class Agent_GS_Editor : Editor
+    public sealed class Agent_GS_Editor : Editor
     {
+        //Loop Methods ================
         public override void OnInspectorGUI()
         {
             //Fields
