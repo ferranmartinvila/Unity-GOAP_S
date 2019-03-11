@@ -44,16 +44,20 @@ namespace GOAP_S.UI
                 //Free space margin
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
+                //Delete variable button
+                if (!Application.isPlaying)
                 {
-                    //Add remove the current var method to accept menu delegates callback
-                    SecurityAcceptMenu_GS.on_accept_delegate += () => target_blackboard.RemoveVariable(variable.name);
-                    //Add remove current var editor from blackboard editor to accept menu delegates calback
-                    SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
-                    //Get mouse current position
-                    Vector2 mousePos = Event.current.mousePosition;
-                    //Open security accept menu on mouse position
-                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+                    if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
+                    {
+                        //Add remove the current var method to accept menu delegates callback
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => target_blackboard.RemoveVariable(variable.name);
+                        //Add remove current var editor from blackboard editor to accept menu delegates calback
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(variable.name);
+                        //Get mouse current position
+                        Vector2 mousePos = Event.current.mousePosition;
+                        //Open security accept menu on mouse position
+                        PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+                    }
                 }
                 GUILayout.EndHorizontal();
             }

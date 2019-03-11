@@ -55,10 +55,13 @@ namespace GOAP_S.UI
             GUILayout.EndVertical();
 
             //Button to add new variables
-            if (GUILayout.Button("Add", GUILayout.Width(50)))
+            if (!Application.isPlaying)
             {
-                Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS());
+                if (GUILayout.Button("Add", GUILayout.Width(50)))
+                {
+                    Vector2 mousePos = Event.current.mousePosition;
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS());
+                }
             }
         }
 

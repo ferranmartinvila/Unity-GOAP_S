@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using GOAP_S.PT;
+using GOAP_S.Planning;
 
 namespace GOAP_S.AI
 {
     public class ActionNode_GS : ISerializationCallbackReceiver
     {
-
-
-
         //UI fields
         [SerializeField] private Rect _window_rect; //Position of the node window in the editor
         [SerializeField] private string _id = ""; //Node ID used to set window 

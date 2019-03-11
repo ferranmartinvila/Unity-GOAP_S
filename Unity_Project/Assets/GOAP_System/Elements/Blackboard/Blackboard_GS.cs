@@ -2,15 +2,26 @@
 using UnityEngine;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+using GOAP_S.Planning;
+using GOAP_S.AI;
 
 namespace GOAP_S.Blackboard
 {
     public class Blackboard_GS
     {
-        [SerializeField] private string _id;
-        [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
+        //Content fields
+        [SerializeField] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
+        [SerializeField] private string _id; //ID used for blackboard window
+        [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>(); //Variables of the agent
 
-        //Varibles methods ============
+        //Constructors
+        public Blackboard_GS(Agent_GS new_target_agent)
+        {
+            //The agent is this blackboard pointing
+            _target_agent = new_target_agent;
+        }
+
+        //Varibles Methods ============
         public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
             //Check if exists a variable with the same name
@@ -66,7 +77,27 @@ namespace GOAP_S.Blackboard
             _variables.Clear();
         }
 
-        //Get/Set methods =============
+        //Planning Methods ============
+        public HashSet<Property_GS> GenerateWorldState()
+        {
+            //First allocate a hashset of properties
+            HashSet<Property_GS> world_state = new HashSet<Property_GS>();
+
+            //Iterate all variables and generate a propery from them
+            foreach(Variable_GS variable in variables.Values)
+            {
+
+                Property_GS property = new Property_GS(_target_agent.id, variable.name, variable.object_value);
+
+                world_state.Add(property);
+            }
+
+            //Finally return the generated hashset
+            return world_state;
+        }
+
+
+        //Get/Set Methods =============
         public Dictionary<string, Variable_GS> variables
         {
             get
@@ -134,6 +165,16 @@ namespace GOAP_S.Blackboard
                 Debug.LogWarning("Variable:" + name + "not found!");
                 return default(T);
             }
+        }
+
+        public string[] GetKeys()
+        {
+            //First allocate a string array with the size of the variables num
+            string[] keys = new string[variables.Count];
+            //Get variable keys(names)
+            variables.Keys.CopyTo(keys,0);
+            //Return the generated strings array
+            return keys;
         }
     }
 }

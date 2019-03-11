@@ -15,7 +15,7 @@ namespace GOAP_S.Blackboard
         //Content fields
         [SerializeField] protected string _name = null;
         [SerializeField] protected object _object_value = null;
-        [SerializeField] protected VariableType _type = VariableType._undefined;
+        [SerializeField] protected VariableType _type = VariableType._undefined_var_type;
 
         //Bind fields
         [SerializeField] protected string _field_path = null;

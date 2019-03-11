@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using GOAP_S.Planning;
 
 public class MoveAction_GS : Action_GS
 {

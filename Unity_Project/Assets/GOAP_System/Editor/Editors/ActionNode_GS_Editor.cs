@@ -2,8 +2,8 @@
 using UnityEditor;
 using GOAP_S.PT;
 using GOAP_S.AI;
+using GOAP_S.Planning;
 using System.IO;
-using System.Collections.Generic;
 
 namespace GOAP_S.UI
 {
@@ -115,9 +115,10 @@ namespace GOAP_S.UI
 
             //Condition -------------------
             //Condition null case
-            if (GUILayout.Button("Select Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button("Add Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
-
+                Vector2 mousePos = Event.current.mousePosition;
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ConditionSelectMenu_GS(this));
             }
             //-----------------------------
 

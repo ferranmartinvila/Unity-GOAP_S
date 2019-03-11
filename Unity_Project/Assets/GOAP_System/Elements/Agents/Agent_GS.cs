@@ -12,6 +12,7 @@ namespace GOAP_S.AI
     {
         //Content fields
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
+        [NonSerialized] private string _id = null; //Agent id used to generate world state and differentiate agents
         [NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
         [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
         [NonSerialized] private Blackboard_GS _blackboard = null;
@@ -138,6 +139,20 @@ namespace GOAP_S.AI
             }
         }
 
+        public string id
+        {
+            get
+            {
+                //If id is null generate a new one
+                if(string.IsNullOrEmpty(_id))
+                {
+
+                }
+
+                return _id;
+            }
+        }
+
         public ActionNode_GS[] action_nodes
         {
             get
@@ -161,7 +176,7 @@ namespace GOAP_S.AI
                 //Generate blackboard in null case
                 if (_blackboard == null)
                 {
-                    _blackboard = new Blackboard_GS();
+                    _blackboard = new Blackboard_GS(this);
                 }
                 
                 //Generate blackboard component in null case
@@ -219,7 +234,7 @@ namespace GOAP_S.AI
             _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
             if (_blackboard == null)
             {
-                _blackboard = new Blackboard_GS();
+                _blackboard = new Blackboard_GS(this);
             }
         }
     }

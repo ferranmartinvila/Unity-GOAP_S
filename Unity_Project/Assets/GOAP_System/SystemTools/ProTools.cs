@@ -15,7 +15,7 @@ namespace GOAP_S.PT
 
     public enum VariableType
     {
-        _undefined = 0,
+        _undefined_var_type = 0,
         _bool,
         _int,
         _float,
@@ -25,6 +25,24 @@ namespace GOAP_S.PT
         _vector3,
         _vector4,
         _enum
+    }
+
+    public enum OperatorType
+    {
+        _undefined_operator = 0,
+        _bigger,
+        _bigger_or_equal,
+        _smaller,
+        _smaller_or_equal,
+        _equal,
+        _different
+    }
+
+    public enum ConditionerType
+    {
+        _undefined_conditioner = 0,
+        _and,
+        _or
     }
 
     public static class ProTools
@@ -174,6 +192,67 @@ namespace GOAP_S.PT
             return properties_list.ToArray();
         }
 
+        public static void AllocateFromVariableType(VariableType variable_type, ref object value)
+        {
+            //Here we basically allocate diferent elements depending of the variable type and set the allocated field to the variable value
+            switch (variable_type)
+            {
+                case VariableType._undefined_var_type:
+                    {
+                        value  = null;
+                    }
+                    break;
+                case VariableType._bool:
+                    {
+                        bool new_bool = false;
+                        value  = new_bool;
+                    }
+                    break;
+                case VariableType._int:
+                    {
+                        int new_int = 0;
+                        value  = new_int;
+                    }
+                    break;
+                case VariableType._float:
+                    {
+                        float new_float = 0.0f;
+                        value  = new_float;
+                    }
+                    break;
+                case VariableType._char:
+                    {
+                        string new_char = "";
+                        value  = new_char;
+                    }
+                    break;
+                case VariableType._string:
+                    {
+                        string new_string = "";
+                        value  = new_string;
+                    }
+                    break;
+                case VariableType._vector2:
+                    {
+                        Vector2 new_vector2 = new Vector2(0.0f, 0.0f);
+                        value  = new_vector2;
+                    }
+                    break;
+                case VariableType._vector3:
+                    {
+                        Vector3 new_vector3 = new Vector3(0.0f, 0.0f, 0.0f);
+                        value  = new_vector3;
+                    }
+                    break;
+                case VariableType._vector4:
+                    {
+                        Vector4 new_vector4 = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+                        value  = new_vector4;
+                    }
+                    break;
+            }
+        }
+
         //Types =================================
         private static Dictionary<string, System.Type> system_type_map = new Dictionary<string, System.Type>();
 
@@ -208,6 +287,25 @@ namespace GOAP_S.PT
                     // TODO case VariableType._enum:        return typeof(enum);
             }
 
+            //No found type return
+            return null;
+        }
+
+        public static OperatorType [] GetValidOperatorTypesFromVariableType(VariableType variable_type)
+        {
+            switch (variable_type)
+            {
+                case VariableType._bool: return new OperatorType [] { OperatorType._undefined_operator, OperatorType._equal,OperatorType._different};
+                case VariableType._int: 
+                case VariableType._float: 
+                case VariableType._char: 
+                case VariableType._string: 
+                case VariableType._vector2: 
+                case VariableType._vector3: 
+                case VariableType._vector4: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
+                // TODO case VariableType._enum:        return typeof(enum);
+            }
+            
             //No found type return
             return null;
         }
@@ -258,6 +356,67 @@ namespace GOAP_S.PT
             return system_type;
         }
 
+        //UI Generation Methods =================
+        public static void ValueFieldByVariableType(VariableType variable_type, ref object value)
+        {
+            //Generate an input field adapted to the type of the variable
+            switch (variable_type)
+            {
+                case VariableType._undefined_var_type:
+                    {
+                        GUILayout.Label("Type Error");
+                    }
+                    break;
+                case VariableType._bool:
+                    {
+                        value = GUILayout.Toggle((bool)value, "", GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._int:
+                    {
+                        value = EditorGUILayout.IntField((int)value, GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._float:
+                    {
+                        value = EditorGUILayout.FloatField((float)value, GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._char:
+                    {
+                        value = EditorGUILayout.TextField("", (string)value, GUILayout.MaxWidth(70.0f));
+                        //Limit value to one char
+                        if (!string.IsNullOrEmpty((string)value))
+                        {
+                            value = ((string)value).Substring(0, 1);
+                        }
+                    }
+                    break;
+                case VariableType._string:
+                    {
+                        value= EditorGUILayout.TextField("", (string)value, GUILayout.MaxWidth(70.0f));
+                    }
+                    break;
+                case VariableType._vector2:
+                    {
+                        //Value field
+                        value= EditorGUILayout.Vector2Field("", (Vector2)value, GUILayout.MaxWidth(110.0f));
+                    }
+                    break;
+                case VariableType._vector3:
+                    {
+                        //Value field
+                        value = EditorGUILayout.Vector3Field("", (Vector3)value, GUILayout.MaxWidth(110.0f));
+                    }
+                    break;
+                case VariableType._vector4:
+                    {
+                        //Value field
+                        value = EditorGUILayout.Vector4Field("", (Vector4)value, GUILayout.MaxWidth(150.0f));
+                    }
+                    break;
+            }
+        }
 
         //Extra Methods =========================
         //Create a delegate
@@ -275,6 +434,22 @@ namespace GOAP_S.PT
             dictionary.Remove(original_key);
             //Finally add a new variable with the value that we get and store it with the new key
             dictionary[new_key] = value;
+        }
+
+        public static string ToShortString(this OperatorType type)
+        {
+            switch(type)
+            {
+                case OperatorType._undefined_operator: return "Undefined";
+                case OperatorType._equal: return "==";
+                case OperatorType._different: return "!=";
+                case OperatorType._smaller: return "<";
+                case OperatorType._smaller_or_equal: return "<=";
+                case OperatorType._bigger: return ">";
+                case OperatorType._bigger_or_equal: return ">=";
+            }
+
+            return "Undefined";
         }
     }
 

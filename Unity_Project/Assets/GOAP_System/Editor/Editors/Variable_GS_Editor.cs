@@ -47,14 +47,17 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
+            if (!Application.isPlaying)
             {
-                //Change state
-                on_edit_state = true;
-                //Set input focus to null
-                GUI.FocusControl("null");
-                //Set new name string
-                new_name = _target_variable.name;
+                if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
+                {
+                    //Change state
+                    on_edit_state = true;
+                    //Set input focus to null
+                    GUI.FocusControl("null");
+                    //Set new name string
+                    new_name = _target_variable.name;
+                }
             }
 
             //Show variable type
@@ -67,7 +70,15 @@ namespace GOAP_S.UI
             //Non binded variable case
             if (!_target_variable.is_binded)
             {
-                ShowVariableValue();
+                //Get variable value
+                object value = _target_variable.object_value;
+                //Generate UI field from type
+                ProTools.ValueFieldByVariableType(_target_variable.type, ref value);
+                //If value is different we update the variable value
+                if (value != _target_variable.object_value)
+                {
+                    _target_variable.object_value = value;
+                };
             }
             //Binded variable case
             else
@@ -80,16 +91,19 @@ namespace GOAP_S.UI
             GUILayout.FlexibleSpace();
 
             //Remove button
-            if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
+            if (!Application.isPlaying)
             {
-                //Add remove the current var method to accept menu delegates callback
-                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_blackboard.RemoveVariable(_target_variable.name);
-                //Add remove current var editor from blackboard editor to accept menu delegates calback
-                SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(_target_variable.name);
-                //Get mouse current position
-                Vector2 mousePos = Event.current.mousePosition;
-                //Open security accept menu on mouse position
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+                if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
+                {
+                    //Add remove the current var method to accept menu delegates callback
+                    SecurityAcceptMenu_GS.on_accept_delegate += () => _target_blackboard.RemoveVariable(_target_variable.name);
+                    //Add remove current var editor from blackboard editor to accept menu delegates calback
+                    SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.DeleteVariableEditor(_target_variable.name);
+                    //Get mouse current position
+                    Vector2 mousePos = Event.current.mousePosition;
+                    //Open security accept menu on mouse position
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+                }
             }
 
             GUILayout.EndHorizontal();
@@ -100,7 +114,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)))
+            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || (Application.isPlaying && on_edit_state))
             {
                 //Change state
                 on_edit_state = false;
@@ -135,7 +149,15 @@ namespace GOAP_S.UI
             //Non binded variable case
             if (!_target_variable.is_binded)
             {
-                ShowVariableValue();
+                //Get variable value
+                object value = _target_variable.object_value;
+                //Generate UI field from type
+                ProTools.ValueFieldByVariableType(_target_variable.type, ref value);
+                //If value is different we update the variable value
+                if (value != _target_variable.object_value)
+                {
+                    _target_variable.object_value = value;
+                }
             }
 
             ShowBindOptions();
@@ -143,69 +165,6 @@ namespace GOAP_S.UI
 
             GUILayout.EndHorizontal();
         }
-
-        private void ShowVariableValue()
-        {
-            //Generate an input field adapted to the type of the variable
-            switch (_target_variable.type)
-            {
-                case VariableType._undefined:
-                    {
-                        GUILayout.Label("Type Error");
-                    }
-                    break;
-                case VariableType._bool:
-                    {
-                        _target_variable.object_value = GUILayout.Toggle((bool)_target_variable.object_value, "", GUILayout.MaxWidth(70.0f));
-                    }
-                    break;
-                case VariableType._int:
-                    {
-                        _target_variable.object_value = EditorGUILayout.IntField((int)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
-                    }
-                    break;
-                case VariableType._float:
-                    {
-                        _target_variable.object_value = EditorGUILayout.FloatField((float)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
-                    }
-                    break;
-                case VariableType._char:
-                    {
-                        _target_variable.object_value = EditorGUILayout.TextField("", (string)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
-                        //Limit value to one char
-                        if (!string.IsNullOrEmpty((string)_target_variable.object_value))
-                        {
-                            _target_variable.object_value = ((string)_target_variable.object_value).Substring(0, 1);
-                        }
-                    }
-                    break;
-                case VariableType._string:
-                    {
-                        _target_variable.object_value = EditorGUILayout.TextField("", (string)_target_variable.object_value, GUILayout.MaxWidth(70.0f));
-                    }
-                    break;
-                case VariableType._vector2:
-                    {
-                        //Value field
-                        _target_variable.object_value = EditorGUILayout.Vector2Field("", (Vector2)_target_variable.object_value, GUILayout.MaxWidth(110.0f));
-                    }
-                    break;
-                case VariableType._vector3:
-                    {
-                        //Value field
-                        _target_variable.object_value = EditorGUILayout.Vector3Field("", (Vector3)_target_variable.object_value, GUILayout.MaxWidth(110.0f));
-                    }
-                    break;
-                case VariableType._vector4:
-                    {
-                        //Value field
-                        _target_variable.object_value = EditorGUILayout.Vector4Field("", (Vector4)_target_variable.object_value, GUILayout.MaxWidth(150.0f));
-                    }
-                    break;
-            }
-        }
-
-
 
         private void ShowBindOptions()
         {

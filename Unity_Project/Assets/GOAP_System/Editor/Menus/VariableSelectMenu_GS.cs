@@ -12,7 +12,7 @@ namespace GOAP_S.UI
     {
         //Content fields
         static private string _variable_name = null; //New variable name
-        VariableType _variable_type = VariableType._undefined; //New variable type
+        VariableType _variable_type = VariableType._undefined_var_type; //New variable type
         static private object _variable_value = null; //New variable value
         //Bind properties
         private int _selected_property_index = -1;
@@ -52,12 +52,12 @@ namespace GOAP_S.UI
             //Check if var type is changed
             if(current_type != _variable_type)
             {
-                AllocateValue();
+                ProTools.AllocateFromVariableType(_variable_type, ref _variable_value);
             }
             GUILayout.EndHorizontal();
 
             //Custom field value
-            if (_variable_type != VariableType._undefined)
+            if (_variable_type != VariableType._undefined_var_type)
             {
                 GUILayout.BeginVertical();
 
@@ -75,7 +75,9 @@ namespace GOAP_S.UI
                     GUILayout.Label("Value", GUILayout.MaxWidth(40.0f));
 
                     //Generate an input field adapted to the type of the variable
-                    switch (_variable_type)
+                    ProTools.ValueFieldByVariableType(_variable_type, ref _variable_value);
+
+                    /*switch (_variable_type)
                     {
                         case VariableType._bool:
                             {
@@ -130,7 +132,7 @@ namespace GOAP_S.UI
                                 _variable_value = EditorGUILayout.Vector4Field("", (Vector4)_variable_value, GUILayout.MaxWidth(150.0f));
                             }
                             break;
-                    }
+                    }*/
                     GUILayout.EndHorizontal();
                 }
 
@@ -194,7 +196,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Add", UIConfig_GS.Instance.node_modify_button_style, GUILayout.ExpandWidth(true),GUILayout.ExpandHeight(true)))
             {
                 //Add the new variable if the data is correct
-                if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined && _variable_value != null)
+                if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined_var_type && _variable_value != null)
                 {
                     //Send info to the bb to generate the variable
                     Variable_GS new_variable = NodeEditor_GS.Instance.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
@@ -232,68 +234,6 @@ namespace GOAP_S.UI
         public override void OnClose()
         {
             _variable_name = "";
-        }
-
-        //Functionality Methods =======
-        private void AllocateValue()
-        {
-            //Here we basically allocate diferent elements depending of the variable type and set the allocated field to the variable value
-            switch(_variable_type)
-            {
-                case VariableType._undefined:
-                    {
-                        _variable_value = null;
-                    }
-                    break;
-                case VariableType._bool:
-                    {
-                        bool new_bool = false;
-                        _variable_value = new_bool;
-                    }
-                    break;
-                case VariableType._int:
-                    {
-                        int new_int = 0;
-                        _variable_value = new_int;
-                    }
-                    break;
-                case VariableType._float:
-                    {
-                        float new_float = 0.0f;
-                        _variable_value = new_float;
-                    }
-                    break;
-                case VariableType._char:
-                    {
-                        string new_char = "";
-                        _variable_value = new_char;
-                    }
-                    break;
-                case VariableType._string:
-                    {
-                        string new_string = "";
-                        _variable_value = new_string;
-                    }
-                    break;
-                case VariableType._vector2:
-                    {
-                        Vector2 new_vector2 = new Vector2(0.0f, 0.0f);
-                        _variable_value = new_vector2;
-                    }
-                    break;
-                case VariableType._vector3:
-                    {
-                        Vector3 new_vector3 = new Vector3(0.0f, 0.0f, 0.0f);
-                        _variable_value = new_vector3;
-                    }
-                    break;
-                case VariableType._vector4:
-                    {
-                        Vector4 new_vector4 = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-                        _variable_value = new_vector4;
-                    }
-                    break;
-            }
         }
 
         //Get/Set methods =============
