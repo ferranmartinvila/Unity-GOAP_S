@@ -4,10 +4,10 @@ using GOAP_S.AI;
 
 namespace GOAP_S.UI
 {
-    public sealed class EmptyNodeEditorPopMenu_GS : PopupWindowContent
+    public sealed class EmptyCanvasPopMenu_GS : PopupWindowContent
     {
         //Constructors ================
-        public EmptyNodeEditorPopMenu_GS()
+        public EmptyCanvasPopMenu_GS()
         {
 
         }

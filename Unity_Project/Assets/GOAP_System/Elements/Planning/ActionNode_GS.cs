@@ -196,12 +196,20 @@ namespace GOAP_S.AI
             //First search property
             for(int k = 0; k < _conditions_num; k++)
             {
-                if(_conditions[k] == target_condition)
+                if (_conditions[k] == target_condition)
                 {
-                    //When property is found copy values in front of it a slot backwards
-                    for(int n = k; n < _conditions_num -1; n++)
+                    //Last condition case
+                    if (k == _conditions.Length - 1)
                     {
-                        _conditions[n] = _conditions[n + 1];
+                        _conditions[k] = null;
+                    }
+                    else
+                    {
+                        //When property is found copy values in front of it a slot backwards
+                        for (int n = k; n < _conditions_num - 1; n++)
+                        {
+                            _conditions[n] = _conditions[n + 1];
+                        }
                     }
                     //Update conditions count
                     _conditions_num -= 1;
@@ -245,10 +253,18 @@ namespace GOAP_S.AI
             {
                 if (_effects[k] == target_effect)
                 {
-                    //When property is found copy values in front of it a slot backwards
-                    for (int n = k; n < _effects_num - 1; n++)
+                    //Last effect case
+                    if (k == _effects.Length - 1)
                     {
-                        _effects[n] = _effects[n + 1];
+                        _effects[k] = null;
+                    }
+                    else
+                    {
+                        //When property is found copy values in front of it a slot backwards
+                        for (int n = k; n < _effects_num - 1; n++)
+                        {
+                            _effects[n] = _effects[n + 1];
+                        }
                     }
                     //Update effects count
                     _effects_num -= 1;

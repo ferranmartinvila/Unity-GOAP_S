@@ -11,7 +11,8 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Node Editor")]
         static void ShowNodeEditor()
         {
-            EditorWindow.GetWindow(typeof(NodeEditor_GS));
+            NodePlanning_GS.Instance = (NodePlanning_GS)EditorWindow.GetWindow(typeof(NodePlanning_GS));
+            NodeEditor_GS.Instance = EditorWindow.GetWindow<NodeEditor_GS>(typeof(NodePlanning_GS));
         }
 
         ///Info ---------------------------------
@@ -28,6 +29,7 @@ namespace GOAP_S.UI
         static void ShowPlanning()
         {
             NodeEditor_GS.Instance = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
+            NodePlanning_GS.Instance = EditorWindow.GetWindow<NodePlanning_GS>(typeof(NodeEditor_GS));
         }
 
         [MenuItem("Tools / GOAP / Selected Agent / Show Planning", true)]

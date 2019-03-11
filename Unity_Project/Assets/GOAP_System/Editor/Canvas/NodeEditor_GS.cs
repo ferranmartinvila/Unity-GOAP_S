@@ -5,7 +5,8 @@ using GOAP_S.PT;
 
 namespace GOAP_S.UI
 {
-    public class NodeEditor_GS : EditorWindow
+    [InitializeOnLoad]
+    public sealed class NodeEditor_GS : EditorWindow
     {
         //State fields
         private EventType _last_event_type; //Last event type
@@ -15,8 +16,7 @@ namespace GOAP_S.UI
         private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
         private float _mouse_motion_relation = 1.2f; //Mouse motion is multiplied for this value to accurate the drag speed
         //Target fields
-        private GameObject _selected_object = null;
-        private Agent_GS _selected_agent = null;
+        private static Agent_GS _selected_agent = null; //The agent selected by the user
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
         private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
@@ -32,7 +32,7 @@ namespace GOAP_S.UI
                 //Check if the instance is null, in null case generates a new one
                 if (_Instance == null)
                 {
-                    _Instance = (NodeEditor_GS)EditorWindow.GetWindow(typeof(NodeEditor_GS));
+                    _Instance = EditorWindow.GetWindow<NodeEditor_GS>(typeof(NodePlanning_GS));
                 }
                 return _Instance;
             }
@@ -42,11 +42,50 @@ namespace GOAP_S.UI
             }
         }
 
-        //Loop Methods ====================     
+        //Constructors ================
+        static NodeEditor_GS()
+        {
+            //Set selected agent to null on load
+            _selected_agent = null;
+        }
+
+        //Loop Methods ================
+        private void OnFocus()
+        {
+            if (_selected_agent == null)
+            {
+                OnSelectionChange();
+            }
+        }
+
+        private void OnSelectionChange()
+        {
+            if (Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
+            {
+                _selected_agent = null;
+                _action_node_editors = null;
+                _action_node_editors_num = 0;
+
+                Repaint();
+
+                return;
+            }
+            else if(_selected_agent != Selection.activeGameObject.GetComponent<Agent_GS>())
+            {
+                _selected_agent = Selection.activeGameObject.GetComponent<Agent_GS>();
+
+                GenerateTargetAgentUI();
+
+                Repaint();
+            }
+        }
+
         private void OnEnable()
         {
-            //Configure window on enable(title, back texture, id content, ...)
+            //Configure window on enable(title)
             ConfigureWindow();
+            //Check selected agent
+            OnSelectionChange();
         }
 
         private void OnGUI()
@@ -54,58 +93,21 @@ namespace GOAP_S.UI
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
 
-            //Check if the current selected object is the same that the windows is focusing
-            if (Selection.activeGameObject != _selected_object)
+            if (_selected_agent == null)
             {
-                //Set agent to null in case of no object selected
-                if (Selection.activeGameObject == null)
+                //Empty node editor inputs
+                if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
                 {
-                    _selected_agent = null;
-                }
-                //Set selected agent from the agent comp of the selected obj, if is null data is not shown
-                else
-                {
-                    _selected_agent = Selection.activeGameObject.gameObject.GetComponent<Agent_GS>();
-                    if(_selected_agent != null)
+                    //Right click
+                    if (Event.current.button == 1)
                     {
-                        GenerateTargetAgentUI();
+                        //Get mouse pos
+                        Vector2 _mouse_pos = Event.current.mousePosition;
+                        //Show empty node editor popup menu
+                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS());
                     }
                 }
-                //Change the selected object and repaint the window content
-                _selected_object = Selection.activeGameObject;
-                //Repaint the window when the target object is changed
-                Repaint();
-            }
-
-            //Check if the current selected object have agent if selected agent is null
-            if (_selected_agent == null || _action_node_editors == null)
-            {
-                //Get agent and return, so if is null is check in the next loop
-                if (_selected_object != null)
-                {
-                    _selected_agent = _selected_object.GetComponent<Agent_GS>();
-                }
-                //Check if the selected agent is null, in null case return, else generate agent UI
-                if (_selected_agent != null)
-                {
-                    GenerateTargetAgentUI();
-                }
-                else
-                {
-                    //Empty node editor inputs
-                    if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
-                    {
-                        //Right click
-                        if (Event.current.button == 1)
-                        {
-                            //Get mouse pos
-                            Vector2 _mouse_pos = Event.current.mousePosition;
-                            //Show empty node editor popup menu
-                            PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyNodeEditorPopMenu_GS());
-                        }
-                    }
-                    return;
-                }
+                return;
             }
 
             //Track mouse position and mouse motion
@@ -183,26 +185,22 @@ namespace GOAP_S.UI
             EndWindows();
         }
 
-        /*void DrawNodeCurve(Rect start, Rect end)
-        {
-            Vector3 startPos = new Vector3(start.x + start.width, start.y + start.height / 2, 0);
-            Vector3 endPos = new Vector3(end.x, end.y + end.height / 2, 0);
-            Vector3 startTan = startPos + Vector3.right * 50;
-            Vector3 endTan = endPos + Vector3.left * 50;
-
-            Handles.DrawBezier(startPos, endPos, startTan, endTan, Color.black, null, 4);
-        }*/
-
         //Functionality Methods =======
+        public static bool IsOpen()
+        {
+            return _Instance != null;
+        }
+
         private void ConfigureWindow()
         {
             this.titleContent.text = "Node Editor"; //Set a window title
+            this.minSize = new Vector2(800.0f, 500.0f);
         }
 
         private void GenerateTargetAgentUI()
         {
             //Check if window has been configured
-            ConfigureWindow();
+            //ConfigureWindow();
 
             //Alloc node editors array
             _action_node_editors_num = 0;
@@ -224,7 +222,7 @@ namespace GOAP_S.UI
             _blackboard_editor.window_size = new Vector2(ProTools.BLACKBOARD_MARGIN, 100);
         }
 
-        public void AddTargetAgentNodeUI(ActionNode_GS new_node)
+        public void AddTargetAgentActionNodeEditor(ActionNode_GS new_node)
         {
             //Check if we need to allocate more items in the array
             if (_action_node_editors_num == _action_node_editors.Length)
@@ -246,7 +244,7 @@ namespace GOAP_S.UI
             _action_node_editors_num += 1;
         }
 
-        public void DeleteTargetAgentNodeUI(ActionNode_GS_Editor target_node_editor)
+        public void RemoveTargetAgentActionNodeEditor(ActionNode_GS_Editor target_node_editor)
         {
             for (int k = 0; k < _action_node_editors_num; k++)
             {
@@ -294,6 +292,7 @@ namespace GOAP_S.UI
                 return _back_texture;
             }
         }
+
         public Agent_GS selected_agent
         {
             get

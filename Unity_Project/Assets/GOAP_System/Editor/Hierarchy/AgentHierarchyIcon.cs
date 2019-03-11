@@ -19,6 +19,8 @@ public class AgentHierarchyIcon
         EditorApplication.hierarchyChanged += Update_GS_Hierarchy;
         //Add goap system agent hierarchy item method
         EditorApplication.hierarchyWindowItemOnGUI += Hierarchy_GS_Agent;
+        //Call update
+        Update_GS_Hierarchy();
     }
 
     //GoapSystem hierarchy update

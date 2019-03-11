@@ -99,17 +99,22 @@ namespace GOAP_S.AI
             return new_node;
         }
 
-        public void DeleteActionNode(ActionNode_GS target)
+        public void RemoveActionNode(ActionNode_GS target)
         {
-            int len = action_nodes.Length;
-            for (int k = 0; k < len; k++)
+            for (int k = 0; k < action_nodes.Length; k++)
             {
                 if (action_nodes[k] == target)
                 {
-                    if (k == len - 1) action_nodes[k] = null;
-                    for (int i = k; i < len - 1; i++)
+                    if (k == action_nodes.Length - 1)
                     {
-                        action_nodes[i] = action_nodes[i + 1];
+                        action_nodes[k] = null;
+                    }
+                    else
+                    {
+                        for (int i = k; i < action_nodes.Length - 1; i++)
+                        {
+                            action_nodes[i] = action_nodes[i + 1];
+                        }
                     }
                     //Update node count
                     _action_nodes_num -= 1;

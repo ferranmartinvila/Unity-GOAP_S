@@ -21,6 +21,13 @@ namespace GOAP_S.UI
                 EditorApplication.ExecuteMenuItem("Tools/GOAP/Node Editor");
             }
 
+            //Planning Button
+            if (GUILayout.Button("Open Planning"))
+            {
+                //Open the editor menu in the desired path (no spaces in the path)
+                EditorApplication.ExecuteMenuItem("Tools/GOAP/Selected Agent/Show Planning");
+            }
+
             //Remove button
             GUI.backgroundColor = new Color(1.0f, 0.2f, 0.2f, 1.0f);
             if (GUILayout.Button("Remove Agent", GUILayout.ExpandWidth(true)))

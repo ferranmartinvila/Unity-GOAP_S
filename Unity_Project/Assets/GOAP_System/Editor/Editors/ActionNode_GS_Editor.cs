@@ -125,9 +125,9 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Delete node in the target agent
-                NodeEditor_GS.Instance.selected_agent.DeleteActionNode(_target_action_node);
+                NodeEditor_GS.Instance.selected_agent.RemoveActionNode(_target_action_node);
                 //Delete node editor in the target editor
-                NodeEditor_GS.Instance.DeleteTargetAgentNodeUI(this);
+                NodeEditor_GS.Instance.RemoveTargetAgentActionNodeEditor(this);
 
                 return;
             }
@@ -261,10 +261,18 @@ namespace GOAP_S.UI
             {
                 if (_condition_editors[k] == target_condition_editor)
                 {
-                    //When property is found copy values in front of it a slot backwards
-                    for (int n = k; n < _condition_editors_num - 1; n++)
+                    //Last condition editor case
+                    if (k == _condition_editors.Length - 1)
                     {
-                        _condition_editors[n] = _condition_editors[n + 1];
+                        _condition_editors[k] = null;
+                    }
+                    else
+                    {
+                        //When property is found copy values in front of it a slot backwards
+                        for (int n = k; n < _condition_editors_num - 1; n++)
+                        {
+                            _condition_editors[n] = _condition_editors[n + 1];
+                        }
                     }
                     //Update condition editors count
                     _condition_editors_num -= 1;
@@ -303,10 +311,18 @@ namespace GOAP_S.UI
             {
                 if (_effect_editors[k] == target_effect_editor)
                 {
-                    //When property is found copy values in front of it a slot backwards
-                    for (int n = k; n < _effect_editors_num - 1; n++)
+                    //Last effect editor case
+                    if (k == _effect_editors.Length - 1)
                     {
-                        _effect_editors[n] = _effect_editors[n + 1];
+                        _effect_editors[k] = null;
+                    }
+                    else
+                    {
+                        //When property is found copy values in front of it a slot backwards
+                        for (int n = k; n < _effect_editors_num - 1; n++)
+                        {
+                            _effect_editors[n] = _effect_editors[n + 1];
+                        }
                     }
                     //Update effect editors count
                     _effect_editors_num -= 1;

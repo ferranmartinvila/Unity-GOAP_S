@@ -241,4 +241,4 @@ MonoBehaviour:
   _name: un_named
   obj_refs: []
   serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{}}'
+  serialized_blackboard: '{"_id":"8149704c-9bea-4a66-ae0f-12870340dc38","_variables":{}}'
