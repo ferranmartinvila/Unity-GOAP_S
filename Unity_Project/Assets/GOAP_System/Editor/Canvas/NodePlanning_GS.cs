@@ -14,6 +14,7 @@ namespace GOAP_S.UI
 
         //Static instance of this class
         private static NodePlanning_GS _Instance;
+        private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
 
         //Property to get/set static instance
         public static NodePlanning_GS Instance
@@ -50,11 +51,15 @@ namespace GOAP_S.UI
         {
             if(Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
             {
+                //In null case set agent to null
                 _selected_agent = null;
             }
             else if(_selected_agent != Selection.activeGameObject.GetComponent<Agent_GS>())
             {
+                //Set selected agent
                 _selected_agent = Selection.activeGameObject.GetComponent<Agent_GS>();
+                //Generate selected agent UI
+                GenerateAgentUI();
             }
         }
 
@@ -108,6 +113,13 @@ namespace GOAP_S.UI
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodePlanningPopMenu_GS());
                 }
             }
+
+            BeginWindows();
+
+            //Draw agent behaviour editor
+            GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+
+            EndWindows();
         }
 
         //Functionality Methods =======
@@ -129,7 +141,9 @@ namespace GOAP_S.UI
 
         private void GenerateAgentUI()
         {
-
+            //Generate agent behaviour editor
+            _agent_behaviour_editor = new AgentBehaviour_GS_Editor(_selected_agent);
+            _agent_behaviour_editor.window_size = new Vector2(250.0f, 100.0f);
         }
 
         //Get/Set Methods =================

@@ -34,7 +34,7 @@ namespace GOAP_S.UI
             //Generate new description ui content
             _description_label = new GUIContent(_target_action_node.description);
             //Calculate new ui content size
-            _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
+            _label_size = UIConfig_GS.left_white_style.CalcSize(_description_label);
             //Allocate condition editors array
             _condition_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate conditions UI
@@ -95,7 +95,7 @@ namespace GOAP_S.UI
                 //Generate new description ui content
                 _description_label = new GUIContent(_target_action_node.description);
                 //Calculate new ui content size
-                _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
+                _label_size = UIConfig_GS.left_white_style.CalcSize(_description_label);
             }
             GUILayout.EndHorizontal();
 

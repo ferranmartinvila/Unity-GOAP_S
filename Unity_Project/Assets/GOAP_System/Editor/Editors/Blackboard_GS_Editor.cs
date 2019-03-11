@@ -9,10 +9,11 @@ namespace GOAP_S.UI
     {
         //UI fields
         private Rect _window = Rect.zero; //Rect used to place bb window
-        //Target fileds
+        //Content fileds
         private Blackboard_GS _target_blackboard = null; //Bb is this editor showing
         private Variable_GS_Editor[] _variable_editors = null;
         private int _variable_editors_num = 0;
+        private string _id = null; //Window UUID
 
         //Construtors =====================
         public Blackboard_GS_Editor(Blackboard_GS target_bb)
@@ -47,7 +48,7 @@ namespace GOAP_S.UI
 
             //Blit all the variables
             GUILayout.BeginVertical();
-            GUILayout.Label("Variables", UIConfig_GS.Instance.blackboard_title_style);
+            GUILayout.Label("Variables", UIConfig_GS.left_big_style);
             for(int k = 0; k <_variable_editors_num; k++)
             { 
                 _variable_editors[k].DrawUI();
@@ -113,7 +114,19 @@ namespace GOAP_S.UI
             }
         }
 
-        //Get/Set methods =================
+        //Get/Set methods =============
+        public int id
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_id))
+                {
+                    _id = System.Guid.NewGuid().ToString();
+                }
+                return _id.GetHashCode();
+            }
+        }
+
         public Rect window
         {
             get

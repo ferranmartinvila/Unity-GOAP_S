@@ -7,7 +7,7 @@ using GOAP_S.Planning;
 
 namespace GOAP_S.UI
 {
-    public class ActionSelectMenu_GS : PopupWindowContent
+    public sealed class ActionSelectMenu_GS : PopupWindowContent
     {
         //Content fields
         private ActionNode_GS_Editor _target_action_node = null; //Focused node action

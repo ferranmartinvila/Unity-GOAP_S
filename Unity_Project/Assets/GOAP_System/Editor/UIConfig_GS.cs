@@ -13,12 +13,12 @@ namespace GOAP_S.UI
         static private GUIStyle _node_selection_buttons_style = null; //Buttons used to select node elements style
         static private GUIStyle _node_modify_button_style = null; //Button used to delete or edit the node data
         static private GUIStyle _node_elements_style = null; //Used in the condition,action,reward names
-        static private GUIStyle _node_description_style = null; //Used in the description label of action nodes
+        static private GUIStyle _left_white_style = null; //Used in the description label of action nodes
         static private GUIStyle _select_menu_title_style = null; //Used to set the pop windows in node editor style
         static private GUIStyle _select_menu_button_style = null; //Used to set the buttons in the selection menus
-        static private GUIStyle _blackboard_window_style = null; //Used in the bb base window
+        static private GUIStyle _canvas_window_style = null; //Used in the bb base window
         static private GUIStyle _blackboard_variable_style = null; //Used in bb variables
-        static private GUIStyle _blackboard_title_style = null; //Used in the title inside the bb window, not window title
+        static private GUIStyle _left_big_style = null; //Used in the title inside the bb window, not window title
 
         static private GUIStyle _left_bold_style = null;
         static private GUIStyle _center_normal_style = null;
@@ -99,17 +99,17 @@ namespace GOAP_S.UI
             }
         }
 
-        public GUIStyle node_description_style
+        public static GUIStyle left_white_style
         {
             get
             {
-                if (_node_description_style == null)
+                if (_left_white_style == null)
                 {
                     //Configure node description style
-                    _node_description_style = new GUIStyle("label");
-                    _node_description_style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+                    _left_white_style = new GUIStyle("label");
+                    _left_white_style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
                 }
-                return _node_description_style;
+                return _left_white_style;
             }
         }
 
@@ -143,19 +143,19 @@ namespace GOAP_S.UI
             }
         }
 
-        public GUIStyle blackboard_window_style
+        public static GUIStyle canvas_window_style
         {
             get
             {
-                if (_blackboard_window_style == null)
+                if (_canvas_window_style == null)
                 {
                     //Configure the bb window style
-                    _blackboard_window_style = new GUIStyle("Box");
-                    _blackboard_window_style.alignment = TextAnchor.UpperCenter;
-                    _blackboard_window_style.fontStyle = FontStyle.Bold;
-                    _blackboard_window_style.fontSize = 15;
+                    _canvas_window_style = new GUIStyle("Box");
+                    _canvas_window_style.alignment = TextAnchor.UpperCenter;
+                    _canvas_window_style.fontStyle = FontStyle.Bold;
+                    _canvas_window_style.fontSize = 15;
                 }
-                return _blackboard_window_style;
+                return _canvas_window_style;
             }
         }
 
@@ -172,17 +172,17 @@ namespace GOAP_S.UI
             }
         }
 
-        public GUIStyle blackboard_title_style
+        public static GUIStyle left_big_style
         {
             get
             {
-                if (_blackboard_title_style == null)
+                if (_left_big_style == null)
                 {
                     //Config the bb variable style
-                    _blackboard_title_style = new GUIStyle("Label");
-                    _blackboard_title_style.fontSize = 12;
+                    _left_big_style = new GUIStyle("Label");
+                    _left_big_style.fontSize = 12;
                 }
-                return _blackboard_title_style;
+                return _left_big_style;
             }
         }
 

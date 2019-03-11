@@ -171,7 +171,7 @@ namespace GOAP_S.UI
                 //Show node window
                 Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 //Show description label
-                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.Instance.node_description_style);
+                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.left_white_style);
 
                 //Move the node if it's position is editable
                 if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
@@ -181,7 +181,7 @@ namespace GOAP_S.UI
             }
             
             //Draw agent blackboard
-            GUILayout.Window(_selected_agent.blackboard.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.Instance.blackboard_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
             
             //End area of popup windows
             EndWindows();
@@ -206,9 +206,6 @@ namespace GOAP_S.UI
 
         private void GenerateTargetAgentUI()
         {
-            //Check if window has been configured
-            //ConfigureWindow();
-
             //Alloc node editors array
             _action_node_editors_num = 0;
             _action_node_editors = new ActionNode_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];

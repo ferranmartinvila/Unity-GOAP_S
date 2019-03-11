@@ -119,18 +119,6 @@ namespace GOAP_S.Blackboard
             }
         }
 
-        public int id
-        {
-            get
-            {
-                if (string.IsNullOrEmpty(_id))
-                {
-                    _id = System.Guid.NewGuid().ToString();
-                }
-                return _id.GetHashCode();
-            }
-        }
-
         public TVariable_GS<T> GetVariable<T>(string name)
         {
             //First try to get variable by name in de dictionary
