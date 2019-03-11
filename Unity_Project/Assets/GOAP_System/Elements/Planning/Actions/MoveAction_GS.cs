@@ -38,12 +38,12 @@ public class MoveAction_GS : Action_GS
 
     public override void BlitUI()
     {
-        EditorGUIUtility.ShowObjectPicker<GameObject>(target_obj, true, "", EditorGUIUtility.GetControlID(FocusType.Passive) + 100);
+        /*EditorGUIUtility.ShowObjectPicker<GameObject>(target_obj, true, "", EditorGUIUtility.GetControlID(FocusType.Passive) + 100);
 
         if (Event.current.commandName == "ObjectSelectorClosed")
         {
             Debug.Log(EditorGUIUtility.GetObjectPickerObject());
-        }
+        }*/
 
         //EditorGUI.ObjectField(new Rect(10, 20, 100, 20), target_obj,typeof(GameObject));
     }

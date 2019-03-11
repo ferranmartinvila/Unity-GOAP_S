@@ -17,6 +17,7 @@ namespace GOAP_S.AI
         //Content fields
         [NonSerialized] private Agent_GS _agent = null; //The agent is under control of this behaviour
 
+        //Loop Methods ================
         public virtual void Start()
         {
             //Agent behaviour can initialize necessary stuff at start
@@ -25,6 +26,19 @@ namespace GOAP_S.AI
         public virtual void Update()
         {
             //Here we code the actions the agent should do depending of the results/state
+        }
+
+        //Get/Set Methods =============
+        public Agent_GS agent
+        {
+            get
+            {
+                return _agent;
+            }
+            set
+            {
+                _agent = value;
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using UnityEditor;
-using GOAP_S.PT;
+using GOAP_S.Tools;
 using GOAP_S.AI;
 using GOAP_S.Planning;
 using System.IO;
@@ -128,7 +128,8 @@ namespace GOAP_S.UI
                 _target_action_node.agent.RemoveActionNode(_target_action_node);
                 //Delete node editor in the target editor
                 NodeEditor_GS.Instance.RemoveTargetAgentActionNodeEditor(this);
-
+                //Mark scene dirty
+                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 return;
             }
             GUILayout.EndHorizontal();
@@ -170,7 +171,10 @@ namespace GOAP_S.UI
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
 
-                if (GUILayout.Button("Select Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                //Action select dropdown
+
+
+                if (GUILayout.Button("Set Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this));
@@ -213,7 +217,10 @@ namespace GOAP_S.UI
                 //Delete
                 if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
+                    //Set action node action to null
                     _target_action_node.action = null;
+                    //Mark scene dirty
+                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 }
                 GUILayout.EndHorizontal();
             }

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
 using GOAP_S.Blackboard;
-using GOAP_S.PT;
+using GOAP_S.Tools;
 
 namespace GOAP_S.AI
 {
@@ -262,6 +262,7 @@ namespace GOAP_S.AI
             {
                 //If serialization string is not null lets deserialize the behaviour
                 _behaviour = (AgentBehaviour_GS)Serialization.SerializationManager.Deserialize(typeof(AgentBehaviour_GS), serialized_behaviour, obj_refs);
+                _behaviour.agent = this;
             }
         }
     }

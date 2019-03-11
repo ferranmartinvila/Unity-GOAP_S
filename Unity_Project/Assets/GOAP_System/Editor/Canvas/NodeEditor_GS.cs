@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.AI;
-using GOAP_S.PT;
+using GOAP_S.Tools;
 
 namespace GOAP_S.UI
 {
@@ -231,6 +231,9 @@ namespace GOAP_S.UI
 
         public void AddTargetAgentActionNodeEditor(ActionNode_GS new_node)
         {
+            //Set new node agent
+            new_node.agent = _selected_agent;
+
             //Check if we need to allocate more items in the array
             if (_action_node_editors_num == _action_node_editors.Length)
             {

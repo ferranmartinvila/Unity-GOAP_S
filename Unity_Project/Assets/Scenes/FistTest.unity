@@ -240,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":87.0,"yMin":81.0,"xMax":187.0,"yMax":181.0},"_id":"1b8b0f71-2f02-474e-a258-0a1ea4509b7a","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"{\"target_obj\":null,\"_name\":\"TestBoiii\",\"$type\":\"TestBoiii\"}"},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":"79d47bbf-0cbb-4d30-9184-3cb97429026c","_variables":{}}'
+  serialized_behaviour: 
+  serialized_action_nodes: '[{"_window_rect":{"xMin":142.0,"yMin":104.0,"xMax":242.0,"yMax":204.0},"_id":"3832c32e-a6cc-41ef-a0de-c51e482bab2f","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":"3ddc8782-4231-464c-a830-c9a59729723c","_variables":{}}'

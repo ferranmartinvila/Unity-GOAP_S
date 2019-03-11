@@ -5,7 +5,7 @@ using System.Reflection;
 using System;
 using System.Linq;
 
-namespace GOAP_S.PT
+namespace GOAP_S.Tools
 {
     public enum EditorUIMode
     {
@@ -574,6 +574,15 @@ namespace GOAP_S.PT
             }
             //Finally return the generated strings array
             return strings;
+        }
+
+        public static string PathToName(this string original)
+        {
+            string result;
+            int folder_index = original.LastIndexOf('/') + 1;
+            int format_index = original.LastIndexOf('.');
+            result = original.Substring(folder_index, format_index - folder_index);
+            return result;
         }
     }
 

@@ -4,7 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using GOAP_S.Planning;
 using GOAP_S.AI;
-using GOAP_S.PT;
+using GOAP_S.Tools;
 
 namespace GOAP_S.Blackboard
 {
@@ -23,7 +23,7 @@ namespace GOAP_S.Blackboard
         }
 
         //Varibles Methods ============
-        public Variable_GS AddVariable(string name, PT.VariableType type, object value)
+        public Variable_GS AddVariable(string name, VariableType type, object value)
         {
             //Check if exists a variable with the same name
             Variable_GS old_variable;
