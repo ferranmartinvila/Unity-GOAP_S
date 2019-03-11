@@ -149,7 +149,7 @@ namespace GOAP_S.UI
                     //Refresh assets
                     AssetDatabase.Refresh();
                     //Load asset and save it in the generated script static object to use it in future actions
-                    ScriptCreationCompile._Instance.Create();    
+                    //ScriptCreationCompile._Instance.Create();    
                 /*if (!ScriptCreationCompile.IsOpen())
                     {
                         ScriptCreationCompile creation_compile = Selection.activeGameObject.AddComponent(typeof(ScriptCreationCompile).ToString());

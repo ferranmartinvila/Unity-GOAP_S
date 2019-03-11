@@ -224,7 +224,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e70e7eef93619af4d90c2bbdfe84b6f0, type: 3}
+  m_Script: {fileID: 11500000, guid: 56c90ab764593284981610505c77c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1255048985
@@ -235,15 +235,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0170827141e7df74f9a92941f67e29c0, type: 3}
+  m_Script: {fileID: 11500000, guid: fab6d0c709cf4e24ea527e621b3623c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
-  serialized_action_nodes: '[{"_window_rect":{"xMin":147.0,"yMin":88.0,"xMax":247.0,"yMax":188.0},"_id":"56ffdc15-b9b0-4f5b-955c-76567010f8ad","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"t\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":99,\"$type\":\"System.Int32\"}},{\"_variable_type\":\"_int\",\"_A_key\":\"t\",\"_operator\":\"_smaller\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"}},{\"_variable_type\":\"_bool\",\"_A_key\":\"jj\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"}},{\"_variable_type\":\"_int\",\"_A_key\":\"op\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"}},null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{"jj":{"_value":false,"_name":"jj","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"t":{"_value":0,"_name":"t","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"UnityEngine.GameObject.layer","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"op":{"_value":0,"_name":"op","_object_value":{"$content":88,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+  serialized_behaviour: 
+  serialized_action_nodes: '[{"_window_rect":{"xMin":212.0,"yMin":115.0,"xMax":312.0,"yMax":215.0},"_id":"8c4b4640-0e18-4e7b-9a7e-2e99561cc749","_name":"Action
+    Node","_description":"sfsdcvxl","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":null,"_variables":{}}'

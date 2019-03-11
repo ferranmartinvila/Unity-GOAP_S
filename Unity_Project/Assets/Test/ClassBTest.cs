@@ -11,8 +11,7 @@ public class ClassBTest : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        NodeCanvas.Framework.Blackboard b = GetComponent<NodeCanvas.Framework.Blackboard>();
-
+        
         Debug.Log(GetComponent<GOAP_S.Blackboard.BlackboardComp_GS>().blackboard.GetValue<int>("test"));
 
         //int bh = (int)b.GetVariable("test").value;

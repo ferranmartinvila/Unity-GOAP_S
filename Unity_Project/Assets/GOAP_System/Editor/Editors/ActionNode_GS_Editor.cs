@@ -18,6 +18,7 @@ namespace GOAP_S.UI
         //UI fields
         private GUIContent _description_label = null;
         private Vector2 _label_size = Vector2.zero;
+        private bool _label_allocated = false; //Weird boolean to avoid Unity error display
         private EditorUIMode _UI_mode = EditorUIMode.SET_STATE;
 
         //Content fields
@@ -34,7 +35,7 @@ namespace GOAP_S.UI
             //Generate new description ui content
             _description_label = new GUIContent(_target_action_node.description);
             //Calculate new ui content size
-            _label_size = UIConfig_GS.left_white_style.CalcSize(_description_label);
+            
             //Allocate condition editors array
             _condition_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate conditions UI
@@ -360,6 +361,10 @@ namespace GOAP_S.UI
         {
             get
             {
+                if(!_label_allocated)
+                {
+                    _label_size = UIConfig_GS.left_white_style.CalcSize(_description_label);
+                }
                 return _label_size;
             }
         }
