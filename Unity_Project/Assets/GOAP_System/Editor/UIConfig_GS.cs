@@ -21,6 +21,7 @@ namespace GOAP_S.UI
         static private GUIStyle _blackboard_title_style = null; //Used in the title inside the bb window, not window title
 
         static private GUIStyle _left_bold_style = null;
+        static private GUIStyle _center_normal_style = null;
 
         //Static instance of this class
         private static UIConfig_GS _Instance;
@@ -184,7 +185,7 @@ namespace GOAP_S.UI
             }
         }
 
-        public GUIStyle left_bold_style
+        public static GUIStyle left_bold_style
         {
             get
             {
@@ -195,6 +196,19 @@ namespace GOAP_S.UI
                     _left_bold_style.fontStyle = FontStyle.Bold;
                 }
                 return _left_bold_style;
+            }
+        }
+
+        public static GUIStyle center_normal_style
+        {
+            get
+            {
+                if (_center_normal_style == null)
+                {
+                    _center_normal_style = new GUIStyle("label");
+                    _center_normal_style.alignment = TextAnchor.MiddleCenter;
+                }
+                return _center_normal_style;
             }
         }
     }

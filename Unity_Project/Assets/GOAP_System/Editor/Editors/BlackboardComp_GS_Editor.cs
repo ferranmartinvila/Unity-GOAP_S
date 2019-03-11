@@ -27,7 +27,7 @@ namespace GOAP_S.UI
                 GUILayout.BeginHorizontal();
 
                 //Show variable type
-                GUILayout.Label(variable.type.ToString().Replace('_', ' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(40.0f));
+                GUILayout.Label(variable.type.ToString().Replace('_', ' '), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(40.0f));
 
                 //Show variable name
                 GUILayout.Label(variable.name, GUILayout.MaxWidth(100.0f));

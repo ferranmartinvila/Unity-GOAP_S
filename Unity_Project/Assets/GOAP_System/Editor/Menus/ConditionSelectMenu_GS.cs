@@ -22,6 +22,10 @@ namespace GOAP_S.UI
         private object _selected_value = null;
         private int _selected_B_key_index = -1;
         private string[] _B_variable_keys = null;
+        //Dropdowns slots
+        private int _A_key_dropdown_slot = -1;
+        private int _operator_dropdown_slot = -1;
+        private int _B_key_dropdown_slot = -1;
 
         //Contructors =================
         public ConditionSelectMenu_GS(ActionNode_GS_Editor target_action_node)
@@ -30,8 +34,10 @@ namespace GOAP_S.UI
             _target_action_node = target_action_node;
             //Get blackboard variables
             _A_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
-            //Reset dropdowns tool
-            ProTools.ResetDropdowns();
+            //Get dropdown slots
+            _A_key_dropdown_slot = ProTools.GetDropdownSlot();
+            _operator_dropdown_slot = ProTools.GetDropdownSlot();
+            _B_key_dropdown_slot = ProTools.GetDropdownSlot();
         }
 
         //Loop Methods ================
@@ -57,7 +63,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
             GUILayout.Label("Variable:",GUILayout.MaxWidth(60.0f));
             //Generate dropdown with the variables in the target blackboard
-            ProTools.GenerateButtonDropdownMenu(ref _selected_A_key_index, _A_variable_keys, "Not Set", true, 0);
+            ProTools.GenerateButtonDropdownMenu(ref _selected_A_key_index, _A_variable_keys, "Not Set", true, 120.0f, _A_key_dropdown_slot);
 
             //Check variable selection change
             if (prev_selected_variable_index != _selected_A_key_index)
@@ -95,7 +101,7 @@ namespace GOAP_S.UI
             {
                 GUILayout.Label("Operator:", GUILayout.MaxWidth(60.0f));
                 //Generate enumerator popup with the operator type
-                ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortString(), "Not Set", true, 1);
+                ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortString(), "Not Set", true, 120.0f, _operator_dropdown_slot);
             }
             GUILayout.EndHorizontal();
 
@@ -142,7 +148,7 @@ namespace GOAP_S.UI
                 else if (_value_or_key == 2)
                 {
                     //Generate enumerator popup with the avaliable B keys
-                    ProTools.GenerateButtonDropdownMenu(ref _selected_B_key_index, _B_variable_keys, "Not Set", true, 2);
+                    ProTools.GenerateButtonDropdownMenu(ref _selected_B_key_index, _B_variable_keys, "Not Set", true, 120.0f, _B_key_dropdown_slot);
                 }
             }
             GUILayout.EndHorizontal();
@@ -168,6 +174,8 @@ namespace GOAP_S.UI
                     Property_GS new_condition = new Property_GS();
                     //Set A key
                     new_condition.A_key = _A_variable_keys[_selected_A_key_index];
+                    //Set variable type
+                    new_condition.variable_type = _selected_variable_type;
                     //Set operator type
                     new_condition.operator_type = _valid_operators[_selected_operator_index];
                     //Set value or key in property B part
@@ -195,6 +203,14 @@ namespace GOAP_S.UI
             GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
+        }
+
+        public override void OnClose()
+        {
+            //Free dropdown slots
+            ProTools.FreeDropdownSlot(_A_key_dropdown_slot);
+            ProTools.FreeDropdownSlot(_operator_dropdown_slot);
+            ProTools.FreeDropdownSlot(_B_key_dropdown_slot);
         }
     }
 }

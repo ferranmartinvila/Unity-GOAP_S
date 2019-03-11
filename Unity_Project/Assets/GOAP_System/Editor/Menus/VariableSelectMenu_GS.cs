@@ -11,7 +11,7 @@ namespace GOAP_S.UI
     public class VariableSelectMenu_GS : PopupWindowContent
     {
         //Content fields
-        static private string _variable_name = null; //New variable name
+        private string _variable_name = null; //New variable name
         VariableType _variable_type = VariableType._undefined_var_type; //New variable type
         static private object _variable_value = null; //New variable value
         //Bind properties
@@ -19,12 +19,13 @@ namespace GOAP_S.UI
         private PropertyInfo[] _properties_info;
         private string[] _properties_paths;
         private string[] _properties_display_paths;
+        private int _bind_dropdown_slot = -1;
 
         //Contructors =================
         public VariableSelectMenu_GS()
         {
-            //Reset dropdowns tool
-            ProTools.ResetDropdowns();
+            //Get dropdown slots
+            _bind_dropdown_slot = ProTools.GetDropdownSlot();
         }
 
         //Loop Methods ================
@@ -105,7 +106,7 @@ namespace GOAP_S.UI
                 //Bind variable
                 GUILayout.BeginHorizontal();
                 //Generate bind selection dropdown
-                ProTools.GenerateButtonDropdownMenu(ref _selected_property_index, _properties_display_paths, "Bind", false, 0);
+                ProTools.GenerateButtonDropdownMenu(ref _selected_property_index, _properties_display_paths, "Bind", false, 90.0f, 0);
                 //UnBind button
                 if (GUILayout.Button("UnBind"))
                 {
@@ -168,7 +169,8 @@ namespace GOAP_S.UI
 
         public override void OnClose()
         {
-            _variable_name = "";
+            //Free dropdown slots
+            ProTools.FreeDropdownSlot(_bind_dropdown_slot);
         }
 
         //Get/Set methods =============

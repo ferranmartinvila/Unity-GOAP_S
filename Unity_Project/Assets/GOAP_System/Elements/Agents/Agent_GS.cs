@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using System;
@@ -36,17 +37,7 @@ namespace GOAP_S.AI
             if (_blackboard == null)
             {
                 //If not generate one for him
-                _blackboard = blackboard;
-            }
-        }
-
-        private void Awake()
-        {
-            //Check if the agent have a blackboard
-            if (_blackboard == null)
-            {
-                //If not generate one for him
-                _blackboard = blackboard;
+                EditorApplication.delayCall += () => _blackboard = blackboard;
             }
         }
 
@@ -183,7 +174,10 @@ namespace GOAP_S.AI
                 if (_blackboard_component == null)
                 {
                     _blackboard_component = gameObject.GetComponent<BlackboardComp_GS>();
-                    if (_blackboard_component == null) _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
+                    if (_blackboard_component == null)
+                    {
+                        _blackboard_component = gameObject.AddComponent<BlackboardComp_GS>();
+                    }
                     _blackboard_component.agent = this;
                 }
 

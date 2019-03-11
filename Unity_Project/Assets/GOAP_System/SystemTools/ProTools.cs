@@ -307,13 +307,13 @@ namespace GOAP_S.PT
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType [] { OperatorType._undefined_operator, OperatorType._equal,OperatorType._different};
+                case VariableType._bool: return new OperatorType [] { OperatorType._equal,OperatorType._different};
                 case VariableType._int: 
                 case VariableType._float: 
                 case VariableType._char: 
                 case VariableType._vector2: 
                 case VariableType._vector3: 
-                case VariableType._vector4: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
+                case VariableType._vector4: return new OperatorType[] { OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
                 // TODO case VariableType._enum:        return typeof(enum);
             }
             
@@ -326,13 +326,13 @@ namespace GOAP_S.PT
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._is_equal };
+                case VariableType._bool: return new OperatorType[] { OperatorType._is_equal };
                 case VariableType._int:
                 case VariableType._float:
                 case VariableType._char:
                 case VariableType._vector2:
                 case VariableType._vector3:
-                case VariableType._vector4: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal };
+                case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal };
                     // TODO case VariableType._enum:        return typeof(enum);
             }
 
@@ -448,18 +448,53 @@ namespace GOAP_S.PT
             }
         }
 
-        private static int [] dropdown_select = new int[INITIAL_ARRAY_SIZE];
+        private static int[] dropdown_select = new int[INITIAL_ARRAY_SIZE] { -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 };
+        public static int GetDropdownSlot()
+        {
+            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            {
+                if(dropdown_select[k] == -2)
+                {
+                    dropdown_select[k] = -1;
+                    return k;
+                }
+            }
+
+            int[] new_array = new int[dropdown_select.Length * 2];
+
+            for (int k = INITIAL_ARRAY_SIZE - 1; k<new_array.Length; k++)
+            {
+                new_array[k] = -2;
+            }
+
+            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            {
+                new_array[k] = dropdown_select[k];
+            }
+
+            dropdown_select = new_array;
+
+            return GetDropdownSlot();
+        }
+        public static void FreeDropdownSlot(int index)
+        {
+            //Reset an specific dropdown after checking if index fits inside the array size
+            if (index < dropdown_select.Length)
+            {
+                dropdown_select[index] = -2;
+            }
+        }
         public static void ResetDropdowns()
         {
             for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
             {
-                dropdown_select[k] = -1;
+                dropdown_select[k] = -2;
             }
         }
 
-        public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, int dropdown_id)
+        public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, float button_width, int dropdown_id)
         {
-            if (GUILayout.Button(dropdown_select[dropdown_id] != -1 && show_selection ? options[dropdown_select[dropdown_id]] : button_string))
+            if (GUILayout.Button(dropdown_select[dropdown_id] != -1 && show_selection ? options[dropdown_select[dropdown_id]] : button_string, GUILayout.MaxWidth(button_width)))
             {
                 GenericMenu dropdown = new GenericMenu();
                 for (int k = 0; k < options.Length; k++)

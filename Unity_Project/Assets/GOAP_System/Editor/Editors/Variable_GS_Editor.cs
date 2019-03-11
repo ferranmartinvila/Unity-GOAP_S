@@ -12,11 +12,12 @@ namespace GOAP_S.UI
         private  Variable_GS _target_variable = null;
         private Blackboard_GS _target_blackboard = null;
         //State fields
-        private int _selected_property_index = -1;
-        PropertyInfo[] _properties_info = null;
-        string[] _properties_paths = null;
         private EditorUIMode _UI_mode = EditorUIMode.SET_STATE;
         private string new_name = null;
+        private int _selected_property_index = -1;
+        private string[] _properties_paths = null;
+        private string[] _properties_display_paths = null;
+        private int _bind_dropdown_slot = -1;
 
         //Constructors ====================
         public Variable_GS_Editor(Variable_GS new_variable, Blackboard_GS new_bb)
@@ -46,22 +47,47 @@ namespace GOAP_S.UI
         {
             GUILayout.BeginHorizontal();
 
-            //Edit button, swap between edit and show state
+            //Edit button, swap between edit and show state(hide on play)
             if (!Application.isPlaying)
             {
                 if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
                 {
-                    //Change state
+                    //Change UI mode
                     _UI_mode = EditorUIMode.EDIT_STATE;
                     //Set input focus to null
                     GUI.FocusControl("null");
                     //Set new name string
                     new_name = _target_variable.name;
+
+                    //Generate bind options
+                    //First check if are already generated
+                    if (_properties_paths == null)
+                    {
+                        //Get all the fields in the agent gameobject
+                        PropertyInfo[] _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, target_variable.system_type);
+                        //Get all the paths of the fields found
+                        _properties_paths = new string[_properties_info.Length];
+                        for (int k = 0; k < _properties_info.Length; k++)
+                        {
+                            //Generate properties full paths
+                            _properties_paths[k] = string.Format("{0}.{1}", _properties_info[k].ReflectedType.FullName, _properties_info[k].Name);
+                        }
+                        //Allocate display paths array
+                        _properties_display_paths = new string[_properties_paths.Length];
+                        for (int k = 0; k < _properties_display_paths.Length; k++)
+                        {
+                            //Generate display paths by replacing . for / (adapt to dropdown format)
+                            _properties_display_paths[k] = _properties_paths[k].Replace('.', '/');
+                        }
+                    }
+
+                    //Get dropdown slot
+                    _bind_dropdown_slot = ProTools.GetDropdownSlot();
                 }
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_',' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_variable.type.ToString().Replace('_',' '), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Show variable name
             GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(80.0f));
@@ -114,7 +140,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || (Application.isPlaying && _UI_mode == EditorUIMode.EDIT_STATE))
+            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || Application.isPlaying)
             {
                 //Change state
                 _UI_mode = EditorUIMode.SET_STATE;
@@ -137,10 +163,14 @@ namespace GOAP_S.UI
                         _target_variable.name = new_name;
                     }
                 }
+                //Free dropdown slot
+                ProTools.FreeDropdownSlot(_bind_dropdown_slot);
+
+                return;
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Edit variable name
             new_name = EditorGUILayout.TextField(new_name, GUILayout.MaxWidth(80.0f));
@@ -176,40 +206,14 @@ namespace GOAP_S.UI
                 //Free space margin
                 GUILayout.FlexibleSpace();
 
-                //Show bind selection dropdown
-                if (GUILayout.Button("Bind",GUILayout.MaxWidth(40.0f)))
+                //Generate bind selection dropdown
+                ProTools.GenerateButtonDropdownMenu(ref _selected_property_index, _properties_display_paths, "Bind", false, 40.0f, _bind_dropdown_slot);
+
+                //Check if the variable has been binded, so a path index has been set
+                if (!target_variable.is_binded && _selected_property_index != -1)
                 {
-                    //Get all the fields in the agent gameobject
-                    _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, ProTools.VariableTypeToSystemType(target_variable.type));
-                    //Get all the paths of the fields found
-                    _properties_paths = new string[_properties_info.Length];
-                    int index = 0;
-                    foreach (PropertyInfo field_info in _properties_info)
-                    {
-                        //_properties_paths[index] = _properties_info[index].DeclaringType + "/" + _properties_info[index].PropertyType + "/" +  _properties_info[index].Name;// _properties_info[index].Name;
-                        _properties_paths[index] = string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
-                        // _properties_paths[index] = _properties_paths[index].Replace('.', '/');
-                        index += 1;
-                    }
-
-                    GenericMenu dropdown = new GenericMenu();
-                    for (int k = 0; k < _properties_paths.Length; k++)
-                    {
-                        //First adapt path to the dropdown format
-                        string ui_adapted_path = _properties_paths[k].Replace('.', '/');
-
-                        dropdown.AddItem(
-                            //Generate gui content from property path strin
-                            new GUIContent(ui_adapted_path),
-                            //show the currently selected item as selected
-                            k == _selected_property_index,
-                            //lambda to set the selected item to the one being clicked
-                            selectedIndex => _selected_property_index = (int)selectedIndex,
-                            //index of this menu item, passed on to the lambda when pressed.
-                            k
-                       );
-                    }
-                    dropdown.ShowAsContext(); //finally show the dropdown
+                    //Bind variable to the new field using the selected path
+                    EditorApplication.delayCall += () => _target_variable.BindField(_properties_paths[_selected_property_index], null);
                 }
             }
             else
@@ -230,13 +234,6 @@ namespace GOAP_S.UI
                 }
             }
             GUILayout.EndHorizontal();
-
-            //Check if the variable has been binded, so a path index has been set
-            if (!target_variable.is_binded && _selected_property_index != -1)
-            {
-                //Bind variable to the new field using the selected path
-                EditorApplication.delayCall += () => _target_variable.BindField(_properties_paths[_selected_property_index], null);
-            }
         }
 
         //Get/Set Methods =================
