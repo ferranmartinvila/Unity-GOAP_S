@@ -21,7 +21,7 @@ namespace GOAP_S.AI
         [NonSerialized] private Property_GS[] _effects = null; //Effects array
         [NonSerialized] private int _effects_num = 0; //Number of effects on action execute
         [NonSerialized] private Action_GS _action = null; //Action linked to the action node
-
+        [NonSerialized] private Agent_GS _agent = null; //The agent is this action node in
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> _obj_refs; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_conditions; //String where the serialized conditions are stored                                                       
@@ -141,6 +141,18 @@ namespace GOAP_S.AI
             set
             {
                 _action = value;
+            }
+        }
+
+        public Agent_GS agent
+        {
+            get
+            {
+                return _agent;
+            }
+            set
+            {
+                _agent = value;
             }
         }
 

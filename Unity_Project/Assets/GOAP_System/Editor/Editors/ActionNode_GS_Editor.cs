@@ -125,7 +125,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Delete node in the target agent
-                NodeEditor_GS.Instance.selected_agent.RemoveActionNode(_target_action_node);
+                _target_action_node.agent.RemoveActionNode(_target_action_node);
                 //Delete node editor in the target editor
                 NodeEditor_GS.Instance.RemoveTargetAgentActionNodeEditor(this);
 
@@ -163,6 +163,13 @@ namespace GOAP_S.UI
             //Action null case
             if (_target_action_node.action == null)
             {
+                //Action area
+                GUILayout.BeginHorizontal("HelpBox");
+                GUILayout.FlexibleSpace();
+                GUILayout.Label("No Action", UIConfig_GS.center_big_white_style, GUILayout.ExpandWidth(true));
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
+
                 if (GUILayout.Button("Select Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
@@ -178,6 +185,9 @@ namespace GOAP_S.UI
                 GUILayout.Label(_target_action_node.action.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+
+                //Draw selected action UI
+                _target_action_node.action.BlitUI();
 
                 //Edit / Delete area
                 GUILayout.BeginHorizontal();
@@ -247,7 +257,7 @@ namespace GOAP_S.UI
         private void AddConditionEditor(Property_GS condition)
         {
             //Generate an editor for the new condition
-            Property_GS_Editor property_editor = new Property_GS_Editor(condition, this, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_CONDITION);
+            Property_GS_Editor property_editor = new Property_GS_Editor(condition, this, _target_action_node.agent.blackboard, PropertyUIMode.IS_CONDITION);
             //Add the editor to the correct array
             _condition_editors[_condition_editors_num] = property_editor;
             //Update condition editors count
@@ -297,7 +307,7 @@ namespace GOAP_S.UI
         private void AddEffectEditor(Property_GS effect)
         {
             //Generate an editor for the new condition
-            Property_GS_Editor property_editor = new Property_GS_Editor(effect, this, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_EFFECT);
+            Property_GS_Editor property_editor = new Property_GS_Editor(effect, this, _target_action_node.agent.blackboard, PropertyUIMode.IS_EFFECT);
             //Add the editor to the correct array
             _effect_editors[_effect_editors_num] = property_editor;
             //Update effect editors count

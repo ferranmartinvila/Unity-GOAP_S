@@ -226,6 +226,13 @@ namespace GOAP_S.AI
                 if (_action_nodes[k] != null)
                 {
                     _action_nodes_num++;
+                    //Set action node agent
+                    _action_nodes[k].agent = this;
+                    //If the action node have an action set the action agent
+                    if (_action_nodes[k].action != null)
+                    {
+                        _action_nodes[k].action.agent = this;
+                    }
                 }
             }
 

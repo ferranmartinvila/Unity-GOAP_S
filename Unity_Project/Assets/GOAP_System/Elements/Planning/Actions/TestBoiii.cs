@@ -12,9 +12,9 @@ public class TestBoiii : Action_GS
     }
 
         //Called on the first action loop
-        public override ACTION_RESULT ActionStart()
+        public override bool ActionStart()
         {
-            return ACTION_RESULT.CONTINUE;
+            return true;
         }
 
         //Called on the action update
@@ -22,7 +22,7 @@ public class TestBoiii : Action_GS
         {
             target_obj.transform.position.Set(target_obj.transform.position.x + 0.5f, target_obj.transform.position.y, target_obj.transform.position.z);
 
-            return ACTION_RESULT.CONTINUE;
+            return ACTION_RESULT.A_CONTINUE;
         }
 
         //Called when the action ends correctly
@@ -43,7 +43,7 @@ public class TestBoiii : Action_GS
 
         public override void BlitUI()
         {
-            GUILayout.Label("TEST ADDED!");
+            GUILayout.Label(agent.name);
             //EditorGUI.ObjectField(new Rect(10, 20, 100, 20), target_obj,typeof(GameObject));
         }
     }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.Planning;
 
@@ -9,9 +7,9 @@ public class MoveAction_GS : Action_GS
     public GameObject target_obj = null;
 
     //Called on the first action loop
-    public override ACTION_RESULT ActionStart()
+    public override bool ActionStart()
     {
-        return ACTION_RESULT.CONTINUE;
+        return true;
     }
 
     //Called on the action update
@@ -19,7 +17,7 @@ public class MoveAction_GS : Action_GS
     {
         target_obj.transform.position.Set(target_obj.transform.position.x + 0.5f, target_obj.transform.position.y, target_obj.transform.position.z);
 
-        return ACTION_RESULT.CONTINUE;
+        return ACTION_RESULT.A_CONTINUE;
     }
 
     //Called when the action ends correctly

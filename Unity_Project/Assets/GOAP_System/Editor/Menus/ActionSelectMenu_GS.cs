@@ -44,6 +44,8 @@ namespace GOAP_S.UI
                     Action_GS new_script = ProTools.AllocateClass<Action_GS>(script.Value);
                     //Set the class name to the new allocated action
                     new_script.name = script.Key;
+                    //Set the action target agent
+                    new_script.agent = NodeEditor_GS.Instance.selected_agent;
                     //Set the allocated class to the action node
                     _target_action_node.SetAction(new_script);
                     //Close the pop window when the action is selected & set
