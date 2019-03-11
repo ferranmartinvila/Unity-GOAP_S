@@ -15,8 +15,6 @@ namespace GOAP_S.Planning
     {
         //Content fields
         [SerializeField] private string _name = "no_name";
-        [System.NonSerialized] private NodeUIMode _UImode = NodeUIMode.SET_STATE;
-
         /*
         Action update return the state of the action process
         ActionStart also uses this enum, 

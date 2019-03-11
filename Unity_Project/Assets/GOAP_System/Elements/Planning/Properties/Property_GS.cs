@@ -1,35 +1,93 @@
-﻿namespace GOAP_S.Planning
+﻿using GOAP_S.PT;
+
+namespace GOAP_S.Planning
 {
     public class Property_GS
     {
         //Content fields
-        private string _target_UUID = null; //Target agent property UUID
-        private string _key = null; //Property key, what we use to detect a key
-        private object _value = null; //Target variable we are working with
+        private VariableType _variable_type = VariableType._undefined_var_type; //Variable type we are working with in this condition
+        private string _A_key = null; //A Property key, the key of the first property in the condition
+        private OperatorType _operator = OperatorType._undefined_operator; //Condition operator
+        private string _B_key = null; //B Property key, the key of the second property in the condition
+        private object _value = null; //B value, value that we compare with the A Property value
 
         //Constructors
-        public Property_GS(string new_target_UUID, string new_key, object new_value)
+        public Property_GS()
+        {
+
+        }
+
+        //Used to generate properties form bb variables
+        public Property_GS(string new_key, VariableType new_type, OperatorType new_operator, object new_value)
         {
             //Set property fields
-            _target_UUID = new_target_UUID;
-            _key = new_key;
+            _A_key = new_key;
+            _variable_type = new_type;
+            _operator = new_operator;
             _value = new_value;
         }
 
+        //Planning Methods ============
+        public bool Check(Property_GS property)
+        {
+            //Do different operations depending of the operator type
+            switch (_operator)
+            {
+                case OperatorType._equal: return _value == property.value;
+                case OperatorType._different: return _value != property.value;
+
+            }
+
+            //In non valid operator type return false
+            return false;
+        }
+
         //Get/Set Methods =============
-        public string target_UUID
+        public VariableType variable_type
         {
             get
             {
-                return _target_UUID;
+                return _variable_type;
+            }
+            set
+            {
+                _variable_type = value;
             }
         }
 
-        public string key
+        public string A_key
         {
             get
             {
-                return _key;
+                return _A_key;
+            }
+            set
+            {
+                _A_key = value;
+            }
+        }
+
+        public string B_key
+        {
+            get
+            {
+                return _B_key;
+            }
+            set
+            {
+                _B_key = value;
+            }
+        }
+
+        public OperatorType operator_type
+        {
+            get
+            {
+                return _operator;
+            }
+            set
+            {
+                _operator = value;
             }
         }
 
@@ -39,16 +97,10 @@
             {
                 return _value;
             }
-        }
-
-        //Planning Methods ============
-        public bool Compare(Property_GS compare_property)
-        {
-            return (
-                string.Compare(_target_UUID, compare_property.target_UUID) == 0
-                && string.Compare(_key, compare_property.key) == 0
-                && _value == compare_property._value
-                );
+            set
+            {
+                _value = value;
+            }
         }
     }
 }

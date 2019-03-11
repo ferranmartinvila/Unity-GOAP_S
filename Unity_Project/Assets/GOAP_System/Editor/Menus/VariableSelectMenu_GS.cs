@@ -77,62 +77,6 @@ namespace GOAP_S.UI
                     //Generate an input field adapted to the type of the variable
                     ProTools.ValueFieldByVariableType(_variable_type, ref _variable_value);
 
-                    /*switch (_variable_type)
-                    {
-                        case VariableType._bool:
-                            {
-                                //Value field
-                                _variable_value = GUILayout.Toggle((bool)_variable_value,"");
-                            }
-                            break;
-                        case VariableType._int:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.IntField("", (int)_variable_value, GUILayout.MaxWidth(100.0f));
-                            }
-                            break;
-                        case VariableType._float:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.FloatField("", (float)_variable_value, GUILayout.MaxWidth(100.0f));
-                            }
-                            break;
-                        case VariableType._char:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.TextField("", (string)_variable_value, GUILayout.MaxWidth(40.0f));
-                                //Limit value to one char
-                                if (!string.IsNullOrEmpty((string)_variable_value))
-                                {
-                                    _variable_value = ((string)_variable_value).Substring(0, 1);
-                                }
-                            }
-                            break;
-                        case VariableType._string:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.TextField("", (string)_variable_value, GUILayout.MaxWidth(120.0f));
-                            }
-                            break;
-                        case VariableType._vector2:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.Vector2Field("", (Vector2)_variable_value, GUILayout.MaxWidth(90.0f));
-                            }
-                            break;
-                        case VariableType._vector3:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.Vector3Field("", (Vector3)_variable_value, GUILayout.MaxWidth(110.0f));
-                            }
-                            break;
-                        case VariableType._vector4:
-                            {
-                                //Value field
-                                _variable_value = EditorGUILayout.Vector4Field("", (Vector4)_variable_value, GUILayout.MaxWidth(150.0f));
-                            }
-                            break;
-                    }*/
                     GUILayout.EndHorizontal();
                 }
 

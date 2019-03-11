@@ -98,7 +98,7 @@ namespace GOAP_S.AI
             ActionNode_GS new_node = new ActionNode_GS();
             //Set a position in the node editor canvas
             new_node.window_rect = new Rect(x_pos, y_pos, 100, 100);
-            //Add the new node to the action nodes list
+            //Add the new node to the action nodes array
             _action_nodes[_action_nodes_num] = new_node;
             //Add node count
             _action_nodes_num += 1;
@@ -146,7 +146,7 @@ namespace GOAP_S.AI
                 //If id is null generate a new one
                 if(string.IsNullOrEmpty(_id))
                 {
-
+                    _id = System.Guid.NewGuid().ToString();
                 }
 
                 return _id;

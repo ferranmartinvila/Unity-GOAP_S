@@ -207,7 +207,7 @@ namespace GOAP_S.UI
             for (int k = 0; k < _selected_agent.action_nodes_num; k++)
             {
                 //Allocate action node editor
-                ActionNode_GS_Editor new_node_editor = new ActionNode_GS_Editor(_selected_agent.action_nodes[k], this);
+                ActionNode_GS_Editor new_node_editor = new ActionNode_GS_Editor(_selected_agent.action_nodes[k]);
                 //Add on the node editor
                 _action_node_editors[_action_node_editors_num] = new_node_editor;
                 //Update nodes count
@@ -234,7 +234,7 @@ namespace GOAP_S.UI
             }
 
             //Generate the new action node editor
-            ActionNode_GS_Editor new_node_editor = new ActionNode_GS_Editor(new_node, this);
+            ActionNode_GS_Editor new_node_editor = new ActionNode_GS_Editor(new_node);
             //Add it to the array
             _action_node_editors[_action_node_editors_num] = new_node_editor;
             //Update editors num

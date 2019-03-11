@@ -232,8 +232,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_action_nodes: '[{"_window_rect":{"xMin":82.0,"yMin":55.0,"xMax":182.0,"yMax":155.0},"_id":"2fd51de9-fb7f-424b-aa9e-ac837d3b9eae","_name":"Action
-    Node","_description":"","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":278.0,"yMin":144.0,"xMax":378.0,"yMax":244.0},"_id":"2079d061-b68a-4914-b18e-293be62024d3","_name":"Action
+    Node","_description":"","_conditions_num":1,"_conditions":[{},null,null,null,null,null,null,null,null,null],"serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_target_agent":null,"_id":"3f35f1b7-ec27-46cf-a496-96a79a9748ff","_variables":{"damaged":{"_value":false,"_name":"damaged","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"kills":{"_value":0,"_name":"kills","_object_value":{"$content":87,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"speed":{"_value":0.0,"_name":"speed","_object_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,

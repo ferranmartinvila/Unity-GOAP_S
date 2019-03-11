@@ -7,10 +7,18 @@ using System.Linq;
 
 namespace GOAP_S.PT
 {
-    public enum NodeUIMode
+    public enum EditorUIMode
     {
         SET_STATE, //State in which the user can set action node attributes
         EDIT_STATE //State in which the user can set node description/name
+    }
+
+    public enum PropertyUIMode
+    {
+        IS_UNDEFINED = 0,
+        IS_CONDITION,
+        IS_EFFECT,
+        IS_VARIABLE
     }
 
     public enum VariableType
@@ -35,7 +43,10 @@ namespace GOAP_S.PT
         _smaller,
         _smaller_or_equal,
         _equal,
-        _different
+        _different,
+        _is_equal,
+        _plus_equal,
+        _minus_equal
     }
 
     public enum ConditionerType
@@ -295,11 +306,11 @@ namespace GOAP_S.PT
         {
             switch (variable_type)
             {
+                case VariableType._string:
                 case VariableType._bool: return new OperatorType [] { OperatorType._undefined_operator, OperatorType._equal,OperatorType._different};
                 case VariableType._int: 
                 case VariableType._float: 
                 case VariableType._char: 
-                case VariableType._string: 
                 case VariableType._vector2: 
                 case VariableType._vector3: 
                 case VariableType._vector4: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };

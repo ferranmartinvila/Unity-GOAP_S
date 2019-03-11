@@ -4,6 +4,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 using GOAP_S.Planning;
 using GOAP_S.AI;
+using GOAP_S.PT;
 
 namespace GOAP_S.Blackboard
 {
@@ -87,7 +88,7 @@ namespace GOAP_S.Blackboard
             foreach(Variable_GS variable in variables.Values)
             {
 
-                Property_GS property = new Property_GS(_target_agent.id, variable.name, variable.object_value);
+                Property_GS property = new Property_GS(variable.name, variable.type, OperatorType._is_equal, variable.object_value);
 
                 world_state.Add(property);
             }
@@ -175,6 +176,22 @@ namespace GOAP_S.Blackboard
             variables.Keys.CopyTo(keys,0);
             //Return the generated strings array
             return keys;
+        }
+
+        public string [] GetKeysByVariableType(VariableType target_type)
+        {
+            //First allocate a string list
+            List<string> keys = new List<string>();
+            //Get the variable keys of the variables that have the target type
+            foreach (Variable_GS var in variables.Values)
+            {
+                if(var.type == target_type)
+                {
+                    keys.Add(var.name);
+                }
+            }
+            //Return the generated strings list transformed to an array
+            return keys.ToArray();
         }
     }
 }

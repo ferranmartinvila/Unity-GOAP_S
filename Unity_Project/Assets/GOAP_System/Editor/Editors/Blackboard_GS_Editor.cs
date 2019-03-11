@@ -81,7 +81,7 @@ namespace GOAP_S.UI
             }
 
             //Generate new variable editor
-            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(ref new_variable, ref _target_blackboard);
+            Variable_GS_Editor new_variable_editor = new Variable_GS_Editor(new_variable, _target_blackboard);
             //Add it to the array
             _variable_editors[_variable_editors_num] = new_variable_editor;
             //Update variable editors num
@@ -152,7 +152,7 @@ namespace GOAP_S.UI
             }
         }
 
-        public Blackboard_GS target_bb
+        public Blackboard_GS target_blackboard
         {
             get
             {

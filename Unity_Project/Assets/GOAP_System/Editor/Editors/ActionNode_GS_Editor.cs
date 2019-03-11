@@ -13,12 +13,17 @@ namespace GOAP_S.UI
 
         //Target fields
         private ActionNode_GS _target_node = null;
-        //Content fields
+        //UI fields
         private GUIContent _description_label = null;
         private Vector2 _label_size = Vector2.zero;
+        private EditorUIMode _UI_mode = EditorUIMode.SET_STATE;
+
+        //Content fields
+        private Property_GS_Editor[] _condition_editors = null;
+        private int _condition_editors_num = 0;
 
         //Constructor =====================
-        public ActionNode_GS_Editor(ActionNode_GS new_target, NodeEditor_GS new_editor)
+        public ActionNode_GS_Editor(ActionNode_GS new_target)
         {
             //Set targets
             _target_node = new_target;
@@ -26,19 +31,26 @@ namespace GOAP_S.UI
             _description_label = new GUIContent(_target_node.description);
             //Calculate new ui content size
             _label_size = UIConfig_GS.Instance.node_description_style.CalcSize(_description_label);
+            //Allocate condition editors array
+            _condition_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
+            //Generate conditions UI
+            for (int k = 0; k < _target_node.conditions_num; k++)
+            {
+                AddConditionEditor(_target_node.conditions[k]);
+            }
         }
 
         //Loop Methods ====================
         public void DrawUI(int id)
         {
-            switch (_target_node.UImode)
+            switch (_UI_mode)
             {
-                case NodeUIMode.EDIT_STATE:
+                case EditorUIMode.EDIT_STATE:
                     //Draw window in edit state
                     DrawNodeWindowEditState();
                     break;
 
-                case NodeUIMode.SET_STATE:
+                case EditorUIMode.SET_STATE:
                     //Draw window in set state
                     DrawNodeWindowSetState();
                     break;
@@ -82,7 +94,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Close", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(120), GUILayout.ExpandWidth(true)))
             {
-                _target_node.UImode = NodeUIMode.SET_STATE;
+                _UI_mode = EditorUIMode.SET_STATE;
             }
             GUILayout.EndHorizontal();
 
@@ -96,7 +108,7 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Edit", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
                 //Set edit state
-                _target_node.UImode = NodeUIMode.EDIT_STATE;
+                _UI_mode = EditorUIMode.EDIT_STATE;
             }
             //Delete
             if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
@@ -114,7 +126,18 @@ namespace GOAP_S.UI
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
             //Condition -------------------
-            //Condition null case
+            //Conditions Title
+            GUILayout.BeginHorizontal("HelpBox");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Conditions", UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            //Show current conditions
+            for (int k = 0; k < _condition_editors_num; k++)
+            {
+                _condition_editors[k].DrawUI();
+            }
+            //Condition add button
             if (GUILayout.Button("Add Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
                 Vector2 mousePos = Event.current.mousePosition;
@@ -129,7 +152,6 @@ namespace GOAP_S.UI
             //Action null case
             if (_target_node.action == null)
             {
-
                 if (GUILayout.Button("Select Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
@@ -190,7 +212,25 @@ namespace GOAP_S.UI
             GUI.DragWindow();
         }
 
-        //Get/Set Methods =================
+        //Planning Methods ============
+        public void AddCondition(Property_GS new_condition)
+        {
+            //Add the new condition to the target action node
+            _target_node.AddCondition(new_condition);
+            //Generate and add a condition editor to this node editor
+            AddConditionEditor(new_condition);
+        }
+
+        private void AddConditionEditor(Property_GS condition)
+        {
+            //Generate an editor for the new condition
+            Property_GS_Editor property_editor = new Property_GS_Editor(condition, NodeEditor_GS.Instance.selected_agent.blackboard, PropertyUIMode.IS_CONDITION);
+            //Add the editor to the correct array
+            _condition_editors[_condition_editors_num] = property_editor;
+            //Update condition editors count
+            _condition_editors_num += 1;
+        }
+
         public void SetAction(Action_GS new_action)
         {
             //Set the new action in the target action node
@@ -199,6 +239,7 @@ namespace GOAP_S.UI
             NodeEditor_GS.Instance.Repaint();
         }
 
+        //Get/Set Methods =================
         public GUIContent description_label
         {
             get

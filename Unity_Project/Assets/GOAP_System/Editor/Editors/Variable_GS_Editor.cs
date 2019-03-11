@@ -8,30 +8,30 @@ namespace GOAP_S.UI
 {
     public class Variable_GS_Editor
     {
-        //Conten fields
+        //Content fields
         private  Variable_GS _target_variable = null;
         private Blackboard_GS _target_blackboard = null;
         //State fields
         private int _selected_property_index = -1;
         PropertyInfo[] _properties_info = null;
         string[] _properties_paths = null;
-        private bool on_edit_state = false;
+        private EditorUIMode _UI_mode = EditorUIMode.SET_STATE;
         private string new_name = null;
 
         //Constructors ====================
-        public Variable_GS_Editor(ref Variable_GS target_variable, ref Blackboard_GS target_bb)
+        public Variable_GS_Editor(Variable_GS new_variable, Blackboard_GS new_bb)
         {
             //Set target variable
-            _target_variable = target_variable;
+            _target_variable = new_variable;
             //Set target bb
-            _target_blackboard = target_bb;
+            _target_blackboard = new_bb;
         }
 
         //Loop Methods ====================
         public void DrawUI()
         {
             //Draw variable in edit mode
-            if (on_edit_state)
+            if (_UI_mode == EditorUIMode.EDIT_STATE)
             {
                 DrawInEditMode();
             }
@@ -52,7 +52,7 @@ namespace GOAP_S.UI
                 if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
                 {
                     //Change state
-                    on_edit_state = true;
+                    _UI_mode = EditorUIMode.EDIT_STATE;
                     //Set input focus to null
                     GUI.FocusControl("null");
                     //Set new name string
@@ -114,10 +114,10 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || (Application.isPlaying && on_edit_state))
+            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || (Application.isPlaying && _UI_mode == EditorUIMode.EDIT_STATE))
             {
                 //Change state
-                on_edit_state = false;
+                _UI_mode = EditorUIMode.SET_STATE;
                 //Set input focus to null
                 GUI.FocusControl("null");
                 //Check name change
