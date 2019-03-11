@@ -45,17 +45,14 @@ namespace GOAP_S.UI
         //Constructors ================
         static NodeEditor_GS()
         {
-            //Set selected agent to null on load
+            //Reset selection on load
             _selected_agent = null;
         }
 
         //Loop Methods ================
         private void OnFocus()
         {
-            if (_selected_agent == null)
-            {
-                OnSelectionChange();
-            }
+            OnSelectionChange();
         }
 
         private void OnSelectionChange()
@@ -84,6 +81,8 @@ namespace GOAP_S.UI
         {
             //Configure window on enable(title)
             ConfigureWindow();
+            //Reset selection
+            _selected_agent = null;
             //Check selected agent
             OnSelectionChange();
         }
@@ -95,6 +94,9 @@ namespace GOAP_S.UI
 
             if (_selected_agent == null)
             {
+                //Show non agent title
+                GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
+
                 //Empty node editor inputs
                 if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
                 {

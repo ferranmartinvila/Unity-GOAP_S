@@ -15,6 +15,8 @@ namespace GOAP_S.UI
         //Loop Methods ================
         public override void OnGUI(Rect rect)
         {
+            GUILayout.BeginVertical();
+
             //Set window size
             if (Selection.activeGameObject != null)
             {
@@ -30,7 +32,7 @@ namespace GOAP_S.UI
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Node Editor Menu", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Agent Canvas Menu", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -51,16 +53,19 @@ namespace GOAP_S.UI
                 }
             }
 
-            //Close node editor button
-            if (GUILayout.Button(new GUIContent("Close Node Editor", "Close GoapSystem node editor"),
+            //Close agent canvas button
+            if (GUILayout.Button(new GUIContent("Close Agent Canvas", "Close GoapSystem agent canvas"),
                 GUILayout.ExpandWidth(true),
                 GUILayout.Height(25)))
             {
                 //Close node editor
                 NodeEditor_GS.Instance.Close();
+                NodePlanning_GS.Instance.Close();
                 //Close this window
                 editorWindow.Close();
             }
+
+            GUILayout.EndVertical();
         }
     }
 }

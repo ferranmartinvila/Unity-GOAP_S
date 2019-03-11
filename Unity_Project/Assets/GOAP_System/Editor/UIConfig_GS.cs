@@ -22,6 +22,7 @@ namespace GOAP_S.UI
 
         static private GUIStyle _left_bold_style = null;
         static private GUIStyle _center_normal_style = null;
+        static private GUIStyle _center_big_white_style = null;
 
         //Static instance of this class
         private static UIConfig_GS _Instance;
@@ -209,6 +210,22 @@ namespace GOAP_S.UI
                     _center_normal_style.alignment = TextAnchor.MiddleCenter;
                 }
                 return _center_normal_style;
+            }
+        }
+
+        public static GUIStyle center_big_white_style
+        {
+            get
+            {
+                if(_center_big_white_style == null)
+                {
+                    _center_big_white_style = new GUIStyle("label");
+                    _center_big_white_style.fontSize = 14;
+                    _center_big_white_style.fontStyle = FontStyle.Bold;
+                    _center_big_white_style.normal.textColor = new Color(1.0f, 1.0f, 1.0f);
+                    _center_big_white_style.alignment = TextAnchor.MiddleCenter;
+                }
+                return _center_big_white_style;
             }
         }
     }

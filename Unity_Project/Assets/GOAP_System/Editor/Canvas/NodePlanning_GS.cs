@@ -33,13 +33,17 @@ namespace GOAP_S.UI
             }
         }
 
+        //Constructors ================
+        static NodePlanning_GS()
+        {
+            //Reset selection on load
+            _selected_agent = null;
+        }
+
         //Loop Methods ================
         private void OnFocus()
         {
-            if (_selected_agent == null)
-            {
-                OnSelectionChange();
-            }
+            OnSelectionChange();
         }
 
         private void OnSelectionChange()
@@ -58,6 +62,8 @@ namespace GOAP_S.UI
         {
             //Configure window on enable(title)
             ConfigureWindow();
+            //Reset selection
+            _selected_agent = null;
             //Check selected agent
             OnSelectionChange();
         }
@@ -67,9 +73,29 @@ namespace GOAP_S.UI
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
 
-            if (_selected_agent == null) return;
+            if (_selected_agent == null)
+            {
+                //Show non agent title
+                GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
 
-            GUILayout.Label("Test");
+                //Empty node editor inputs
+                if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+                {
+                    //Right click
+                    if (Event.current.button == 1 && Event.current.type == EventType.Repaint)
+                    {
+                        //Get mouse pos
+                        Vector2 _mouse_pos = Event.current.mousePosition;
+                        //Show empty node editor popup menu
+                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS());
+                    }
+                }
+                return;
+            }
+
+            //Selected agent title
+            GUILayout.Label("Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
+
         }
 
         //Functionality Methods =======

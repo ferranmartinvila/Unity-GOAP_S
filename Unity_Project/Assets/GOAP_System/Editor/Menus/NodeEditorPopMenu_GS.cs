@@ -18,13 +18,13 @@ namespace GOAP_S.UI
         public override void OnGUI(Rect rect)
         {
             //Set window size
-            editorWindow.minSize = new Vector2(180.0f, 140.0f);
-            editorWindow.maxSize = new Vector2(180.0f, 140.0f);
+            editorWindow.minSize = new Vector2(180.0f, 167.5f);
+            editorWindow.maxSize = new Vector2(180.0f, 167.5f);
 
             //Menu title
             GUILayout.BeginHorizontal("Box");
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Planning Menu", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
+            GUILayout.Label("Node Editor Menu", UIConfig_GS.Instance.select_menu_title_style, GUILayout.ExpandWidth(true));
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
@@ -65,6 +65,18 @@ namespace GOAP_S.UI
                 Vector2 mousePos = Event.current.mousePosition;
                 //Open security accept menu on mouse position
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
+            }
+
+            //Close agent canvas button
+            if (GUILayout.Button(new GUIContent("Close Agent Canvas", "Close GoapSystem agent canvas"),
+                GUILayout.ExpandWidth(true),
+                GUILayout.Height(25)))
+            {
+                //Close node editor
+                NodeEditor_GS.Instance.Close();
+                NodePlanning_GS.Instance.Close();
+                //Close this window
+                editorWindow.Close();
             }
 
             //Remove agent button
