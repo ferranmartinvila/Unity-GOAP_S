@@ -11,7 +11,7 @@ namespace GOAP_S.Blackboard
     public class Blackboard_GS
     {
         //Content fields
-        [SerializeField] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
+        [System.NonSerialized] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
         [SerializeField] private string _id; //ID used for blackboard window
         [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>(); //Variables of the agent
 
@@ -99,6 +99,18 @@ namespace GOAP_S.Blackboard
 
 
         //Get/Set Methods =============
+        public Agent_GS target_agent
+        {
+            get
+            {
+                return _target_agent;
+            }
+            set
+            {
+                _target_agent = value;
+            }
+        }
+
         public Dictionary<string, Variable_GS> variables
         {
             get

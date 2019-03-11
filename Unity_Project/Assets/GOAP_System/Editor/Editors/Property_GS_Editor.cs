@@ -27,7 +27,7 @@ namespace GOAP_S.UI
         //Loop Methods ====================
         public void DrawUI()
         {
-            GUILayout.Label("hello");
+            GUILayout.Label(_target_property.A_key + " " + _target_property.operator_type.ToShortString() + " " + _target_property.display_value);
         }
     }
 }

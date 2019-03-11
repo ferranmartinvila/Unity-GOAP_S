@@ -1,15 +1,16 @@
-﻿using GOAP_S.PT;
+﻿using UnityEngine;
+using GOAP_S.PT;
 
 namespace GOAP_S.Planning
 {
-    public class Property_GS
+    public class Property_GS //: ISerializationCallbackReceiver
     {
         //Content fields
-        private VariableType _variable_type = VariableType._undefined_var_type; //Variable type we are working with in this condition
-        private string _A_key = null; //A Property key, the key of the first property in the condition
-        private OperatorType _operator = OperatorType._undefined_operator; //Condition operator
-        private string _B_key = null; //B Property key, the key of the second property in the condition
-        private object _value = null; //B value, value that we compare with the A Property value
+        [SerializeField] private VariableType _variable_type = VariableType._undefined_var_type; //Variable type we are working with in this condition
+        [SerializeField] private string _A_key = null; //A Property key, the key of the first property in the condition
+        [SerializeField] private OperatorType _operator = OperatorType._undefined_operator; //Condition operator
+        [SerializeField] private string _B_key = null; //B Property key, the key of the second property in the condition
+        [SerializeField] private object _value = null; //B value, value that we compare with the A Property value
 
         //Constructors
         public Property_GS()
@@ -100,6 +101,18 @@ namespace GOAP_S.Planning
             set
             {
                 _value = value;
+            }
+        }
+
+        public string display_value
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(_B_key))
+                {
+                    return _B_key;
+                }
+                else return _value.ToString();
             }
         }
     }

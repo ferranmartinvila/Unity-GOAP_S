@@ -82,7 +82,7 @@ namespace GOAP_S.UI
                     //Then we can allocate the property value with the variable type
                     ProTools.AllocateFromVariableType(_selected_variable_type, ref _selected_value);
                     //Get valid operators
-                    _valid_operators = ProTools.GetValidOperatorTypesFromVariableType(_selected_variable_type);
+                    _valid_operators = ProTools.GetValidPassiveOperatorTypesFromVariableType(_selected_variable_type);
                     //Reset operator selected
                     _selected_operator_index = -1;
                     //Get variables in the blackboard with the same type

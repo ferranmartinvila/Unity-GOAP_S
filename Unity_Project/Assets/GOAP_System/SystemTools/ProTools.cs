@@ -302,7 +302,7 @@ namespace GOAP_S.PT
             return null;
         }
 
-        public static OperatorType [] GetValidOperatorTypesFromVariableType(VariableType variable_type)
+        public static OperatorType [] GetValidPassiveOperatorTypesFromVariableType(VariableType variable_type)
         {
             switch (variable_type)
             {
@@ -317,6 +317,25 @@ namespace GOAP_S.PT
                 // TODO case VariableType._enum:        return typeof(enum);
             }
             
+            //No found type return
+            return null;
+        }
+
+        public static OperatorType [] GetValidActiveOperatorTypesFromVariableType(VariableType variable_type)
+        {
+            switch (variable_type)
+            {
+                case VariableType._string:
+                case VariableType._bool: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._is_equal };
+                case VariableType._int:
+                case VariableType._float:
+                case VariableType._char:
+                case VariableType._vector2:
+                case VariableType._vector3:
+                case VariableType._vector4: return new OperatorType[] { OperatorType._undefined_operator, OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal };
+                    // TODO case VariableType._enum:        return typeof(enum);
+            }
+
             //No found type return
             return null;
         }
@@ -458,8 +477,10 @@ namespace GOAP_S.PT
                 case OperatorType._smaller_or_equal: return "<=";
                 case OperatorType._bigger: return ">";
                 case OperatorType._bigger_or_equal: return ">=";
+                case OperatorType._is_equal: return "=";
+                case OperatorType._plus_equal: return "+=";
+                case OperatorType._minus_equal: return "-=";
             }
-
             return "Undefined";
         }
     }
