@@ -11,17 +11,20 @@ namespace GOAP_S.AI
 {
     public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     {
-        //Content fields
+        //Identification fields
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
         [NonSerialized] private string _id = null; //Agent id used to generate world state and differentiate agents
+        [NonSerialized] private AgentBehaviour_GS _behaviour = null; //The behaviour is the agent using
+        //Content fields
         [NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
         [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
-        [NonSerialized] private Blackboard_GS _blackboard = null;
-        [NonSerialized] private BlackboardComp_GS _blackboard_component = null;
+        [NonSerialized] private Blackboard_GS _blackboard = null; //The blackboard is the agent using
+        [NonSerialized] private BlackboardComp_GS _blackboard_component = null; //Inspector representation of the blackboard
         //Serialization fields
-        [SerializeField] private List<UnityEngine.Object> obj_refs; //List that contains the references to the objects serialized
-        [SerializeField] private string serialized_action_nodes; //String where the action nodes are serialized
-        [SerializeField] private string serialized_blackboard; //String where the blackboard is serialized
+        [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
+        [SerializeField] private string serialized_behaviour = null; //String where the agent behaviour is serialized
+        [SerializeField] private string serialized_action_nodes = null; //String where the action nodes are serialized
+        [SerializeField] private string serialized_blackboard = null; //String where the blackboard is serialized
         
         //Constructors ====================
         public Agent_GS()
@@ -214,6 +217,11 @@ namespace GOAP_S.AI
             serialized_action_nodes = Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
             //Serialize blackboard
             serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
+            //Serialize behaviour
+            if(_behaviour != null)
+            {
+                serialized_behaviour = Serialization.SerializationManager.Serialize(_behaviour, typeof(AgentBehaviour_GS), obj_refs);
+            }
         }
 
         public void OnAfterDeserialize() //Deserialize
@@ -243,6 +251,18 @@ namespace GOAP_S.AI
                 _blackboard = new Blackboard_GS(this);
             }
             _blackboard.target_agent = this;
+
+            //Deserialize behaviour
+            if(string.IsNullOrEmpty(serialized_behaviour))
+            {
+                //If serailzation string is null behaviour is null
+                _behaviour = null;
+            }
+            else
+            {
+                //If serialization string is not null lets deserialize the behaviour
+                _behaviour = (AgentBehaviour_GS)Serialization.SerializationManager.Deserialize(typeof(AgentBehaviour_GS), serialized_behaviour, obj_refs);
+            }
         }
     }
 }

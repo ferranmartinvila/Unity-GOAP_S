@@ -5,13 +5,14 @@ using GOAP_S.AI;
 
 namespace GOAP_S.Planning
 {
+    //Action class attribute
     [AttributeUsage(AttributeTargets.Class, Inherited = true)]
-    public class Action_Attribute_GS : Attribute
+    public sealed class Action_Attribute_GS : Attribute
     {
 
     }
 
-    //Actions inherit from this class and can manage all kind of scene data
+    //Actions have a custom class attribute usefull to detect action derived classes
     [Action_Attribute_GS]
     public class Action_GS
     {
