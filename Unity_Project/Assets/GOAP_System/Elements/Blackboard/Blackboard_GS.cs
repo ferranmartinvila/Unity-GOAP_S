@@ -10,7 +10,7 @@ namespace GOAP_S.Blackboard
         [SerializeField] private string _id;
         [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>();
 
-        //Varibles methods ================
+        //Varibles methods ============
         public Variable_GS AddVariable(string name, PT.VariableType type, object value)
         {
             //Check if exists a variable with the same name
@@ -66,7 +66,7 @@ namespace GOAP_S.Blackboard
             _variables.Clear();
         }
 
-        //Get/Set methods =================
+        //Get/Set methods =============
         public Dictionary<string, Variable_GS> variables
         {
             get
@@ -90,17 +90,49 @@ namespace GOAP_S.Blackboard
         public TVariable_GS<T> GetVariable<T>(string name)
         {
             //First try to get variable by name in de dictionary
-            Variable_GS variable;
-            if (_variables.TryGetValue(name, out variable))
+            try 
             {
                 //Return the variable casted to the real class and with the T type
-                return (TVariable_GS<T>)variable;
+                return (TVariable_GS<T>)_variables[name];
             }
-            else
+            catch
             {
                 //If variable is not found we display a warning in console with the variable name
                 Debug.LogWarning("Variable:" + name + "not found!");
                 return null;
+            }
+        }
+
+        public TVariable_GS<T> SetVariable<T>(string name, object value)
+        {
+            //First try to get variable by name in de dictionary
+            try
+            {
+                //Set variable value
+                _variables[name].value = value;
+                //Return the resulting variable
+                return (TVariable_GS<T>)_variables[name];
+            }
+            catch
+            {
+                //If variable is not found we display a warning in console with the variable name
+                Debug.LogWarning("Variable:" + name + "not found!");
+                return null;
+            }
+        }
+
+        public T GetValue<T>(string name)
+        {
+            try
+            {
+                //Try to retur the value i the variable exists
+                return (T)_variables[name].value;
+            }
+            catch
+            {
+                //If variable is not found we display a warning in console with the variable name
+                Debug.LogWarning("Variable:" + name + "not found!");
+                return default(T);
             }
         }
     }

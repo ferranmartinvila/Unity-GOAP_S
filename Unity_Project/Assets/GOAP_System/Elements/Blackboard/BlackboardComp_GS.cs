@@ -13,10 +13,10 @@ namespace GOAP_S.Blackboard
         //Loop Methods ================
         private void OnValidate()
         {
-            if(gameObject.GetComponent<Agent_GS>() == null)
+            if (agent == null)
             {
                 //Destroy blackboard component if there's no agent to link
-                EditorApplication.delayCall += () => DestroyImmediate(this);
+                Debug.LogError("Blackboard with no agent will be destroyed.");
             }
         }
 
@@ -35,16 +35,12 @@ namespace GOAP_S.Blackboard
         {
             get
             {
-                if (_target_agent == null)
+                //In null case blackboard component is destroyed
+                if (agent == null)
                 {
-                    _target_agent = this.GetComponent<Agent_GS>();
-                    if (_target_agent == null)
-                    {
-                        DestroyImmediate(this);
-                        return null;
-                    }
+                    Debug.LogError("Blackboard with no agent will be destroyed.");
+                    return null;
                 }
-
                 return _target_agent.blackboard;
             }
         }
@@ -53,12 +49,37 @@ namespace GOAP_S.Blackboard
         {
             get
             {
+                if (_target_agent == null)
+                {
+                    //In null case check if there's the component
+                    _target_agent = this.GetComponent<Agent_GS>();
+                    if (_target_agent == null)
+                    {
+                        //If agent is null blackboard can't exist
+                        EditorApplication.delayCall += () => DestroyImmediate(this);
+                    }
+                }
                 return _target_agent;
             }
             set
             {
                 _target_agent = value;
             }
+        }
+
+        public TVariable_GS<T> GetVariable<T>(string name)
+        {
+            return blackboard.GetVariable<T>(name);
+        }
+
+        public TVariable_GS<T> SetVariable<T>(string name, object value)
+        {
+            return blackboard.SetVariable<T>(name, value);
+        }
+
+        public T GetValue<T>(string name)
+        {
+            return blackboard.GetValue<T>(name);
         }
     }
 }

@@ -134,7 +134,7 @@ namespace GOAP_S.PT
                 foreach (PropertyInfo comp_property_info in comp_properties)
                 {
                     properties_info[index] = comp_property_info;
-                    index+=1;
+                    index += 1;
                 }
             }
 
@@ -150,7 +150,7 @@ namespace GOAP_S.PT
             //Collect game object properties that match with the target type
             foreach (PropertyInfo property_info in typeof(GameObject).GetProperties())
             {
-                if(property_info.PropertyType == target_property_type)
+                if (property_info.PropertyType == target_property_type)
                 {
                     properties_list.Add(property_info);
                 }
@@ -197,15 +197,15 @@ namespace GOAP_S.PT
         {
             switch (var_type)
             {
-                case VariableType._bool:        return typeof(bool);
-                case VariableType._int:         return typeof(int);     
-                case VariableType._float:       return typeof(float);
-                case VariableType._char:        return typeof(char);
-                case VariableType._string:      return typeof(string);
-                case VariableType._vector2:     return typeof(Vector2);
-                case VariableType._vector3:     return typeof(Vector3);
-                case VariableType._vector4:     return typeof(Vector4);
-                // TODO case VariableType._enum:        return typeof(enum);
+                case VariableType._bool: return typeof(bool);
+                case VariableType._int: return typeof(int);
+                case VariableType._float: return typeof(float);
+                case VariableType._char: return typeof(char);
+                case VariableType._string: return typeof(string);
+                case VariableType._vector2: return typeof(Vector2);
+                case VariableType._vector3: return typeof(Vector3);
+                case VariableType._vector4: return typeof(Vector4);
+                    // TODO case VariableType._enum:        return typeof(enum);
             }
 
             //No found type return
@@ -218,7 +218,7 @@ namespace GOAP_S.PT
             Type system_type = null;
 
             //Try get the system type value in the map, value will be found if we already use it before
-            if(system_type_map.TryGetValue(type_string, out system_type))
+            if (system_type_map.TryGetValue(type_string, out system_type))
             {
                 //Return the found type
                 return system_type;
@@ -226,14 +226,14 @@ namespace GOAP_S.PT
 
             //Try to get type by system current assembly
             system_type = Type.GetType(type_string);
-            if(system_type != null)
+            if (system_type != null)
             {
                 //If we find the type we store int the dictionary for the next search
                 return system_type_map[type_string] = system_type;
             }
 
             //Try to find the type in the loded assemblies
-            foreach(Assembly asm in assemblies)
+            foreach (Assembly asm in assemblies)
             {
                 //Try get type 
                 system_type = asm.GetType(type_string);
@@ -260,10 +260,23 @@ namespace GOAP_S.PT
 
 
         //Extra Methods =========================
+        //Create a delegate
         public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
         {
             return (T)(object)Delegate.CreateDelegate(typeof(T), instance, method_info);
         }
+
+        //Change key in a dictionary
+        public static void RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey original_key, TKey new_key)
+        {
+            //First get the value stored by the original key
+            TValue value = dictionary[original_key];
+            //Next remove the variable with the original key
+            dictionary.Remove(original_key);
+            //Finally add a new variable with the value that we get and store it with the new key
+            dictionary[new_key] = value;
+        }
+    }
 
 /*public static T Cast<T>(this object myobj)
 {
@@ -370,5 +383,5 @@ namespace GOAP_S.PT
 
             return p;
         }*/
-    }
+   
 }

@@ -9,16 +9,17 @@ namespace GOAP_S.UI
     public class Variable_GS_Editor
     {
         //Conten fields
-        private Variable_GS _target_variable = null;
+        private  Variable_GS _target_variable = null;
         private Blackboard_GS _target_blackboard = null;
         //State fields
         private int _selected_property_index = -1;
         PropertyInfo[] _properties_info = null;
         string[] _properties_paths = null;
         private bool on_edit_state = false;
+        private string new_name = null;
 
         //Constructors ====================
-        public Variable_GS_Editor(Variable_GS target_variable, Blackboard_GS target_bb)
+        public Variable_GS_Editor(ref Variable_GS target_variable, ref Blackboard_GS target_bb)
         {
             //Set target variable
             _target_variable = target_variable;
@@ -52,6 +53,8 @@ namespace GOAP_S.UI
                 on_edit_state = true;
                 //Set input focus to null
                 GUI.FocusControl("null");
+                //Set new name string
+                new_name = _target_variable.name;
             }
 
             //Show variable type
@@ -103,13 +106,30 @@ namespace GOAP_S.UI
                 on_edit_state = false;
                 //Set input focus to null
                 GUI.FocusControl("null");
+                //Check name change
+                if(string.Compare(new_name,_target_variable.name) != 0)
+                {
+                    //Repeated name case
+                    if (_target_blackboard.variables.ContainsKey(new_name))
+                    {
+                        Debug.LogWarning("The name '" + new_name + "' already exists!");
+                    }
+                    //New name case
+                    else
+                    {
+                        //Change key in the dictionary, the variable is now stored with the new key
+                        _target_blackboard.variables.RenameKey(_target_variable.name, new_name);
+                        //Change variable name
+                        _target_variable.name = new_name;
+                    }
+                }
             }
 
             //Show variable type
             GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.Instance.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Edit variable name
-            _target_variable.name = EditorGUILayout.TextField(_target_variable.name,GUILayout.MaxWidth(80.0f));
+            new_name = EditorGUILayout.TextField(new_name, GUILayout.MaxWidth(80.0f));
 
             //Show variable value
             //Non binded variable case

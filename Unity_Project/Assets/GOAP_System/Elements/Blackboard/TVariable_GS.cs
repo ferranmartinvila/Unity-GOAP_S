@@ -52,6 +52,7 @@ namespace GOAP_S.Blackboard
                 if (object.Equals(value, _value)) return;
                 //Set var value
                 _value = value;
+                _object_value = value;
                 //Set binded field value
                 if (setter != null)
                 {

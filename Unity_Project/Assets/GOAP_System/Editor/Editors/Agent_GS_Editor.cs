@@ -27,7 +27,7 @@ namespace GOAP_S.UI
             {
                 //Add remove this agent to accept menu delegates callback
                 SecurityAcceptMenu_GS.on_accept_delegate += () => DestroyImmediate((Agent_GS)target);
-                //Add mark scene dirty to accept menu delegates calback
+                //Add mark scene dirty to accept menu delegates callback
                 SecurityAcceptMenu_GS.on_accept_delegate += () => EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 //Blackboard will detect that there's no agent and will destroy itself
 

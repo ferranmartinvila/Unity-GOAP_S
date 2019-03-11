@@ -13,8 +13,10 @@ public class ClassBTest : MonoBehaviour {
 	void Update () {
         NodeCanvas.Framework.Blackboard b = GetComponent<NodeCanvas.Framework.Blackboard>();
 
-        int bh = (int)b.GetVariable("_a").value;
-        Debug.Log(bh);
+        Debug.Log(GetComponent<GOAP_S.Blackboard.BlackboardComp_GS>().blackboard.GetValue<int>("test"));
+
+        //int bh = (int)b.GetVariable("test").value;
+        //Debug.Log(bh);
         
     }
 }

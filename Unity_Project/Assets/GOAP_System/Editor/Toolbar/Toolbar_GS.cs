@@ -79,7 +79,7 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Selected Agent / Remove")]
         static void RemoveAgent()
         {
-            Object.DestroyImmediate(Selection.activeGameObject.GetComponent<Agent_GS>());
+            EditorApplication.delayCall += () =>  Object.DestroyImmediate(Selection.activeGameObject.GetComponent<Agent_GS>());
         }
 
         [MenuItem("Tools / GOAP / Selected Agent / Remove", true)]

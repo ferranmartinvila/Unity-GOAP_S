@@ -39,6 +39,8 @@ namespace GOAP_S.UI
                 {
                     //Call the delegate on accept
                     on_accept_delegate();
+                    //Reset delegate(deletes method pointers in)
+                    on_accept_delegate = null;
                 }
                 else
                 {
