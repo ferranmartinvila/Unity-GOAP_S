@@ -198,21 +198,8 @@ namespace GOAP_S.UI
                 //Edit
                 if (GUILayout.Button("Edit", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
                 {
-                    //Get asset path by adding folder and type
-                    string[] file_names = Directory.GetFiles(Application.dataPath, _target_action_node.action.GetType().ToString() + ".cs", SearchOption.AllDirectories);
-                    //Check if there's more than one asset or no asset, in both cases the result is negative
-                    if (file_names.Length == 0 || file_names.Length > 1)
-                    {
-                        Debug.LogError("Asset not found!");
-                    }
-                    //Asset found case
-                    else
-                    {
-                        //Get asset full path
-                        string final_file_name = Path.GetFullPath(file_names[0]);
-                        //Open asset in the correct file editor
-                        UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(final_file_name, 1);
-                    }
+                    //Open target script code editor
+                    ProTools.OpenScriptEditor(_target_action_node.action.GetType());
                 }
                 //Delete
                 if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))

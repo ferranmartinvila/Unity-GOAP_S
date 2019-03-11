@@ -16,11 +16,15 @@ namespace GOAP_S.Tools
         private static Dictionary<string, UnityEngine.Object> _agent_behaviour_scripts = null;
         private static string[] _behaviour_paths = null;
 
+        private static string[] _assets_folders = null;
+
         //Constructors ================
         static ResourcesTool()
         {
             //Get action and agent behaviour scripts in the current project
             ListScripts();
+            //List all assets folder
+            _assets_folders = ListFoldersIn("Assets").ToArray();
         }
 
         //Functionality Methods =======
@@ -91,6 +95,23 @@ namespace GOAP_S.Tools
             _agent_behaviour_scripts.Keys.CopyTo(_behaviour_paths, 0);
         }
 
+        private static List<string> ListFoldersIn(string target_folder)
+        {
+            List<string> folders_list = new List<string>();
+            string[] folders = AssetDatabase.GetSubFolders(target_folder);
+            
+            foreach(string folder in folders)
+            {
+                folders_list.Add(folder);
+                List<string> folder_in_list = ListFoldersIn(folder);
+                foreach (string f_in in folder_in_list)
+                {
+                    folders_list.Add(f_in);
+                }
+            }
+            return folders_list;
+        }
+
         //Get/Set Methods =============
         public static Dictionary<string, UnityEngine.Object> action_scripts
         {
@@ -129,6 +150,18 @@ namespace GOAP_S.Tools
             get
             {
                 return _behaviour_paths;
+            }
+        }
+
+        public static string[] assets_folders
+        {
+            get
+            {
+                if(_assets_folders == null)
+                {
+                    _assets_folders = ListFoldersIn("Assets").ToArray();
+                }
+                return _assets_folders;
             }
         }
     }

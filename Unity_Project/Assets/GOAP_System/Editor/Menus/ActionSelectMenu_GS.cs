@@ -73,7 +73,15 @@ namespace GOAP_S.UI
             //Action create button
             if (GUILayout.Button("Create New", GUILayout.ExpandWidth(true)))
             {
+                //Add action set on new action script creation
+                ScriptCreationMenu_GS.on_script_creation_delegate += () => _target_action_node.action = ProTools.AllocateClass<Action_GS>(ScriptCreationMenu_GS.generated_script);
+                //Add popup close on new action script creation
+                ScriptCreationMenu_GS.on_script_creation_delegate += () => editorWindow.Close();
 
+                //Get mouse current position
+                Vector2 mousePos = Event.current.mousePosition;
+                //Open script creation menu
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ScriptCreationMenu_GS(_target_action_node, ScriptCreationMenu_GS.ScriptCreationType.ScriptC_action));
             }
 
             GUILayout.EndVertical();

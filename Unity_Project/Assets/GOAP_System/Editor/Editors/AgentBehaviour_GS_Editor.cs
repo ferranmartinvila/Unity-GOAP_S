@@ -48,11 +48,18 @@ namespace GOAP_S.UI
                 GUILayout.Label(_target_agent.behaviour.name, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+
                 //Behaviour select button
                 if (GUILayout.Button("Change Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new BehaviourSelectMenu_GS(_target_agent));
+                }
+
+                //Behaviour edit button
+                if (GUILayout.Button("Edit Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                {
+                    ProTools.OpenScriptEditor(_target_agent.behaviour.GetType());
                 }
             }
         }

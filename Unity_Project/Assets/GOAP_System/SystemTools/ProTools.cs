@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using System;
 using System.Linq;
+using System.IO;
 
 namespace GOAP_S.Tools
 {
@@ -527,6 +528,27 @@ namespace GOAP_S.Tools
             index = dropdown_select[dropdown_id];
         }
 
+        public static bool OpenScriptEditor(System.Type target_type)
+        {
+            //Get asset path by adding folder and type
+            string[] file_names = Directory.GetFiles(Application.dataPath, target_type.ToString() + ".cs", SearchOption.AllDirectories);
+            //Check if there's more than one asset or no asset, in both cases the result is negative
+            if (file_names.Length == 0 || file_names.Length > 1)
+            {
+                Debug.LogError("Asset not found!");
+                return false;
+            }
+            //Asset found case
+            else
+            {
+                //Get asset full path
+                string final_file_name = Path.GetFullPath(file_names[0]);
+                //Open asset in the correct file editor
+                UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(final_file_name, 1);
+                return true;
+            }
+        }
+
         //Extra Methods =========================
         //Create a delegate
         public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
@@ -582,6 +604,14 @@ namespace GOAP_S.Tools
             int folder_index = original.LastIndexOf('/') + 1;
             int format_index = original.LastIndexOf('.');
             result = original.Substring(folder_index, format_index - folder_index);
+            return result;
+        }
+
+        public static string FolderToName(this string original)
+        {
+            string result;
+            int folder_index = original.LastIndexOf('/');
+            result = original.Substring(folder_index, original.Length - folder_index);
             return result;
         }
     }

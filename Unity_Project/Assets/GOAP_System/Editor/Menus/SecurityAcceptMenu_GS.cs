@@ -9,11 +9,8 @@ namespace GOAP_S.UI
         public delegate void AcceptCallbackFunction();
         public static AcceptCallbackFunction on_accept_delegate;
         public static AcceptCallbackFunction on_cancel_delegate;
-
         //Config fields
         private Vector2 window_size = new Vector2(250.0f, 50.0f);
-
-
 
         //Loop Methods ================
         public override void OnGUI(Rect rect)
