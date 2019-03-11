@@ -99,8 +99,10 @@ namespace GOAP_S.UI
             {
                 //First generate the selected script at the selected path
                 MonoScript new_script = new MonoScript();
-                AssetDatabase.CreateAsset(new_script, ResourcesTool.assets_folders[_folder_selected_index]);
-
+                //Create the monoscript asset
+                AssetDatabase.CreateAsset(new_script, ResourcesTool.assets_folders[_folder_selected_index] + '/' + _new_script_name + ".cs");
+                //Save it at the generated script object for future actions
+                _generated_script = new_script;
 
                 //Check if there's a method to call
                 if(on_script_creation_delegate != null)
