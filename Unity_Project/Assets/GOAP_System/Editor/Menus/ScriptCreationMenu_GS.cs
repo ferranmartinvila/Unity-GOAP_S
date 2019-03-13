@@ -18,30 +18,25 @@ namespace GOAP_S.UI
         }
 
         //Content fields
-        private static ScriptCreationMenu_GS _this;
         public delegate void ScriptCreationCallbackFunction();
-        public static ScriptCreationCallbackFunction on_script_creation_delegate;
         public static ScriptCreationCallbackFunction on_script_creation_cancel_delegate;
         //Config fields
         private ScriptCreationType _script_creation_type = ScriptCreationType.ScriptC_undefined; //The script type we are going to generate
-        private object _target_data = null;
+        private int _node_index = 0; //
         private string _window_title = null;
         private string _new_script_name = "";
         private string _new_script_folder = "";
-        private static object _generated_script = null;
-        private static string _new_script_full_path = null;
+        private string _new_script_full_path = null;
         private int _folder_dropdown_slot = -1;
         private int _folder_selected_index = -1;
 
         //Constructors ================
-        public ScriptCreationMenu_GS(object data, ScriptCreationType new_creation_type)
+        public ScriptCreationMenu_GS(ScriptCreationType new_creation_type, int node_index = 0)
         {
-            //Set statis this
-            _this = this;
             //Set script creation type
             _script_creation_type = new_creation_type;
-            //Set target data
-            _target_data = data;
+            //Set action node case index
+            _node_index = node_index;
 
             //Check what 
             switch (_script_creation_type)
@@ -149,31 +144,15 @@ namespace GOAP_S.UI
                     //Refresh assets
                     AssetDatabase.Refresh();
                     //Load asset and save it in the generated script static object to use it in future actions
-                    //ScriptCreationCompile._Instance.Create();    
-                /*if (!ScriptCreationCompile.IsOpen())
-                    {
-                        ScriptCreationCompile creation_compile = Selection.activeGameObject.AddComponent(typeof(ScriptCreationCompile).ToString());
-                    }
-                    else ScriptCreationCompile.Create();*/
+                    GameObject temp_compilation_obj = new GameObject();
+                    temp_compilation_obj.transform.parent = Selection.activeGameObject.transform;
+
+                    ScriptCreationSetter_GS temp_comp = temp_compilation_obj.AddComponent<ScriptCreationSetter_GS>();
+                    temp_comp._script_full_path = _new_script_full_path;
+                    temp_comp._script_creation_type = _script_creation_type;
+                    temp_comp._node_index = _node_index;
                 }
 
-                /*//Generate the selected script at the selected path
-                MonoScript new_script = new MonoScript();
-                //Create the monoscript asset
-                AssetDatabase.CreateAsset(new_script, ResourcesTool.assets_folders[_folder_selected_index] + '/' + _new_script_name + ".cs");
-                //Save it at the generated script object for future actions
-                _generated_script = new_script;*/
-
-
-                /*//Check if there's a method to call
-                if (on_script_creation_delegate != null)
-                {
-                    //Call the script creation delegate
-                    on_script_creation_delegate();
-                    //Reset on script creation delegate
-                    on_script_creation_delegate = null;
-                }
-                */
                 //Close popup window
                 editorWindow.Close();
             }
@@ -201,74 +180,69 @@ namespace GOAP_S.UI
         {
             ProTools.FreeDropdownSlot(_folder_dropdown_slot);
         }
-
-        //Get/Set Methods =============
-        public static object generated_script
-        {
-            get
-            {
-                return _generated_script;
-            }
-        }
-
-        //Functionality Methods =======
-        public static void DoCreateActions()
-        {
-            //Check if there's a method to call
-            if (on_script_creation_delegate != null)
-            {
-                //Call the script creation delegate
-                on_script_creation_delegate();
-                //Reset on script creation delegate
-                on_script_creation_delegate = null;
-            }
-        }
-
-        public static void SaveGeneratedScript()
-        {
-            _generated_script = AssetDatabase.LoadAssetAtPath(_new_script_full_path, Type.GetType(_new_script_full_path));
-            Debug.Log(_generated_script);
-        }
     }
 
-    [InitializeOnLoad]
-    public class ScriptCreationCompile : MonoBehaviour
+    [ExecuteInEditMode]
+    public class ScriptCreationSetter_GS : MonoBehaviour
     {
-        public static ScriptCreationCompile _Instance;
-        private static Action action_after_compiling;
+        [SerializeField] public int _node_index = 0;
+        [SerializeField] public ScriptCreationMenu_GS.ScriptCreationType _script_creation_type = ScriptCreationMenu_GS.ScriptCreationType.ScriptC_undefined;
+        [SerializeField] public string _script_full_path;
+        [NonSerialized] private int try_count = 0;
 
-        private ScriptCreationCompile()
+        private void Update()
         {
-            _Instance = this;
-            Debug.LogError(ScriptCreationMenu_GS.on_script_creation_delegate);
-            if(ScriptCreationMenu_GS.on_script_creation_delegate != null)
+            //Try to get the script in the action scripts resources tool
+            UnityEngine.Object script = null;
+            switch(_script_creation_type)
             {
-                Create();
+                case ScriptCreationMenu_GS.ScriptCreationType.ScriptC_action:
+                    {
+                        if (ResourcesTool.action_scripts.TryGetValue(_script_full_path.Substring(7), out script))
+                        {
+                            //Allocate a class with the same type of script value
+                            Planning.Action_GS _new_script = ProTools.AllocateClass<Planning.Action_GS>(script);
+                            //Set new script name
+                            _new_script.name = _script_full_path.PathToName();
+                            //Set new script agent 
+                            _new_script.agent = NodeEditor_GS.Instance.selected_agent;
+                            //Place the new action in the selected action node
+                            NodeEditor_GS.Instance.selected_agent.action_nodes[_node_index].action = _new_script;
+                            //This dummy gameobject job is done, we can delete it
+                            DestroyImmediate(gameObject);
+                            return;
+                        }
+                    }
+                    break;
+                case ScriptCreationMenu_GS.ScriptCreationType.ScriptC_behaviour:
+                    {
+                        if (ResourcesTool.agent_behaviour_scripts.TryGetValue(_script_full_path.Substring(7), out script))
+                        {
+                            //Allocate a class with the same type of script value
+                            AI.AgentBehaviour_GS _new_script = ProTools.AllocateClass<AI.AgentBehaviour_GS>(script);
+                            //Set new script name
+                            _new_script.name = _script_full_path.PathToName();
+                            //Set new script agent 
+                            _new_script.agent = NodeEditor_GS.Instance.selected_agent;
+                            //Place the new action in the selected action node
+                            NodeEditor_GS.Instance.selected_agent.behaviour = _new_script;
+                            //Update node planning canvas
+                            NodePlanning_GS.Instance.Repaint();
+                            //This dummy gameobject job is done, we can delete it
+                            DestroyImmediate(gameObject);
+                        }
+                    }
+                    break;
             }
-        }
-
-        public static bool IsOpen()
-        {
-            return _Instance != null;
-        }
-
-        static IEnumerator DoActionAfterCompiling()
-        {
-            while (EditorApplication.isCompiling)
+            //Count test
+            try_count += 1;
+            if (try_count > ProTools.TRIES_LIMIT)
             {
-                yield return null;
+                //Warning message display
+                Debug.LogWarning("New script: " + _script_full_path.PathToName() + " target not found!");
+                //Destroy gameobject
+                DestroyImmediate(gameObject);
             }
-            action_after_compiling();
-            action_after_compiling = null;
-        }
-
-        public void Create()
-        {
-            action_after_compiling += () => ScriptCreationMenu_GS.SaveGeneratedScript();
-            action_after_compiling += () => ScriptCreationMenu_GS.DoCreateActions();
-            
-            StartCoroutine(DoActionAfterCompiling());
-
         }
     }
 }

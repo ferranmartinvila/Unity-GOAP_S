@@ -100,6 +100,18 @@ namespace GOAP_S.AI
             }
         }
 
+        public int index
+        {
+            get
+            {
+                for (int k = 0; k < _agent.action_nodes_num; k++)
+                {
+                    if (_agent.action_nodes[k] == this) return k;
+                }
+                return -1;
+            }
+        }
+
         public int conditions_num
         {
             get

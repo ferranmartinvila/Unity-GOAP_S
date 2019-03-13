@@ -74,7 +74,7 @@ namespace GOAP_S.Tools
                     //If there's the action attribute the script inherit from action script
                     if (script_attribute.Equals(action_attribute))
                     {
-                        //Add the script to the action scripts dic
+                        //Add the script to the action scripts dic with the path inside assets folder
                         _action_scripts.Add(AssetDatabase.GetAssetPath(script).Substring(7), script);
                     }
                     //If there's the agent behaviour attribute the script inherit from agent behaviour script

@@ -76,7 +76,13 @@ namespace GOAP_S.UI
             //Behaviour create button
             if (GUILayout.Button("Create New", GUILayout.ExpandWidth(true)))
             {
+                //Add popup close on new behaviour script creation
+                //ScriptCreationMenu_GS.on_script_creation_delegate += () => editorWindow.Close();
 
+                //Get mouse current position
+                Vector2 mousePos = Event.current.mousePosition;
+                //Open script creation menu
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ScriptCreationMenu_GS(ScriptCreationMenu_GS.ScriptCreationType.ScriptC_behaviour));
             }
 
             GUILayout.EndVertical();

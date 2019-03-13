@@ -240,7 +240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_behaviour: 
-  serialized_action_nodes: '[{"_window_rect":{"xMin":212.0,"yMin":115.0,"xMax":312.0,"yMax":215.0},"_id":"8c4b4640-0e18-4e7b-9a7e-2e99561cc749","_name":"Action
-    Node","_description":"sfsdcvxl","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
+  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_id":null,"_variables":{}}'

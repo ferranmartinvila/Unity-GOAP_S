@@ -62,6 +62,7 @@ namespace GOAP_S.Tools
         //Defines ===============================
         public const int BLACKBOARD_MARGIN = 300;
         public const int INITIAL_ARRAY_SIZE = 10;
+        public const int TRIES_LIMIT = 4;
 
         //Assemblies ============================
         private static List<Assembly> _assemblies = null;
