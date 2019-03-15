@@ -12,6 +12,12 @@ namespace GOAP_S.UI
         //Loop Methods ================
         public override void OnInspectorGUI()
         {
+            //No behaviour alert
+            if (Application.isPlaying && ((Agent_GS)target).behaviour == null)
+            {
+                GUILayout.Label("Agent Behaviour undefined!", UIConfig_GS.left_bold_red_style);
+            }
+
             //Fields
             ((Agent_GS)target).name = EditorGUILayout.TextField("Name", ((Agent_GS)target).name);
 

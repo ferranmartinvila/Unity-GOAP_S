@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using GOAP_S.Blackboard;
 
 namespace GOAP_S.AI
 {
@@ -29,7 +30,21 @@ namespace GOAP_S.AI
             //Here we code the actions the agent should do depending of the results/state
         }
 
+        //Functionality Methods =======
+
         //Get/Set Methods =============
+        public string name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                _name = value;
+            }
+        }
+
         public Agent_GS agent
         {
             get
@@ -42,15 +57,11 @@ namespace GOAP_S.AI
             }
         }
 
-        public string name
+        public Blackboard_GS blackboard
         {
             get
             {
-                return _name;
-            }
-            set
-            {
-                _name = value;
+                return _agent.blackboard;
             }
         }
     }

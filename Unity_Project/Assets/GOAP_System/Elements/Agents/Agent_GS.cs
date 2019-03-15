@@ -46,20 +46,24 @@ namespace GOAP_S.AI
 
         private void Start()
         {
-            //Start action nodes
-            for (int k = 0; k < _action_nodes_num; k++)
+            //First check if this agent have a defined behaviour
+            if(_behaviour != null)
             {
-                _action_nodes[k].Start();
+                //Start the behaviour
+                _behaviour.Start();
+            }
+            else
+            {
+                //Alert message
+                Debug.LogError("Agent: " + _name + " behaviour is null!");
+                //In null case the agent is disabled
+                enabled = false;
             }
         }
 
         private void Update()
         {
-            //Update Action nodes
-            for (int k = 0; k < _action_nodes_num; k++)
-            {
-                _action_nodes[k].Update();
-            }
+            _behaviour.Update();
         }
 
         //Planning Methods ================
