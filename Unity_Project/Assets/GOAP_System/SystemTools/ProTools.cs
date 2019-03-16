@@ -212,61 +212,61 @@ namespace GOAP_S.Tools
             {
                 case VariableType._undefined_var_type:
                     {
-                        value  = null;
+                        value = null;
                     }
                     break;
                 case VariableType._bool:
                     {
                         bool new_bool = false;
-                        value  = new_bool;
+                        value = new_bool;
                     }
                     break;
                 case VariableType._int:
                     {
                         int new_int = 0;
-                        value  = new_int;
+                        value = new_int;
                     }
                     break;
                 case VariableType._float:
                     {
                         float new_float = 0.0f;
-                        value  = new_float;
+                        value = new_float;
                     }
                     break;
                 case VariableType._char:
                     {
                         string new_char = "";
-                        value  = new_char;
+                        value = new_char;
                     }
                     break;
                 case VariableType._string:
                     {
                         string new_string = "";
-                        value  = new_string;
+                        value = new_string;
                     }
                     break;
                 case VariableType._vector2:
                     {
                         Vector2 new_vector2 = new Vector2(0.0f, 0.0f);
-                        value  = new_vector2;
+                        value = new_vector2;
                     }
                     break;
                 case VariableType._vector3:
                     {
                         Vector3 new_vector3 = new Vector3(0.0f, 0.0f, 0.0f);
-                        value  = new_vector3;
+                        value = new_vector3;
                     }
                     break;
                 case VariableType._vector4:
                     {
                         Vector4 new_vector4 = new Vector4(0.0f, 0.0f, 0.0f, 0.0f);
-                        value  = new_vector4;
+                        value = new_vector4;
                     }
                     break;
             }
         }
 
-        //Types =================================
+        //Types Methods =========================
         private static Dictionary<string, System.Type> system_type_map = new Dictionary<string, System.Type>();
 
         //Get all systme types in assemblies ====
@@ -284,8 +284,7 @@ namespace GOAP_S.Tools
             return types.ToArray();
         }
 
-        //VariableType to System.Type ===========
-        public static Type VariableTypeToSystemType(VariableType var_type)
+        public static Type ToSystemType(this VariableType var_type)
         {
             switch (var_type)
             {
@@ -304,26 +303,43 @@ namespace GOAP_S.Tools
             return null;
         }
 
-        public static OperatorType [] GetValidPassiveOperatorTypesFromVariableType(VariableType variable_type)
+        public static VariableType ToVariableType(this string system_type)
+        {
+            switch(system_type)
+            {
+                case "Boolean": return VariableType._bool;
+                case "Int32": return VariableType._int;
+                case "Single": return VariableType._float;
+                case "Double": return VariableType._float;
+                case "Char": return VariableType._char;
+                case "String": return VariableType._string;
+                case "Vector2": return VariableType._vector2;
+                case "Vector3": return VariableType._vector3;
+                case "Vector4": return VariableType._vector4;
+            }
+            return VariableType._undefined_var_type;
+        }
+
+        public static OperatorType[] GetValidPassiveOperatorTypes(this VariableType variable_type)
         {
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType [] { OperatorType._equal,OperatorType._different};
-                case VariableType._int: 
-                case VariableType._float: 
-                case VariableType._char: 
-                case VariableType._vector2: 
-                case VariableType._vector3: 
+                case VariableType._bool: return new OperatorType[] { OperatorType._equal, OperatorType._different };
+                case VariableType._int:
+                case VariableType._float:
+                case VariableType._char:
+                case VariableType._vector2:
+                case VariableType._vector3:
                 case VariableType._vector4: return new OperatorType[] { OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
-                // TODO case VariableType._enum:        return typeof(enum);
+                    // TODO case VariableType._enum:        return typeof(enum);
             }
-            
+
             //No found type return
             return null;
         }
 
-        public static OperatorType [] GetValidActiveOperatorTypesFromVariableType(VariableType variable_type)
+        public static OperatorType[] GetValidActiveOperatorTypes(this VariableType variable_type)
         {
             switch (variable_type)
             {
@@ -342,8 +358,38 @@ namespace GOAP_S.Tools
             return null;
         }
 
-        //String to System.Type =================
-        public static Type StringToSystemType(string type_string)
+        public static string ToShortString(this OperatorType type)
+        {
+            switch (type)
+            {
+                case OperatorType._undefined_operator: return "Undefined";
+                case OperatorType._equal: return "==";
+                case OperatorType._different: return "!=";
+                case OperatorType._smaller: return "<";
+                case OperatorType._smaller_or_equal: return "<=";
+                case OperatorType._bigger: return ">";
+                case OperatorType._bigger_or_equal: return ">=";
+                case OperatorType._is_equal: return "=";
+                case OperatorType._plus_equal: return "+=";
+                case OperatorType._minus_equal: return "-=";
+            }
+            return "Undefined";
+        }
+
+        public static string[] ToShortStrings(this OperatorType[] operator_types)
+        {
+            //First allocate a strings array with the size of the operator types
+            string[] strings = new string[operator_types.Length];
+            //Iterate the operator types and transform them to strings
+            for (int k = 0; k < operator_types.Length; k++)
+            {
+                strings[k] = operator_types[k].ToShortString();
+            }
+            //Finally return the generated strings array
+            return strings;
+        }
+
+        public static Type ToSystemType(this string type_string)
         {
             Type system_type = null;
 
@@ -426,13 +472,13 @@ namespace GOAP_S.Tools
                     break;
                 case VariableType._string:
                     {
-                        value= EditorGUILayout.TextField("", (string)value, GUILayout.MaxWidth(70.0f));
+                        value = EditorGUILayout.TextField("", (string)value, GUILayout.MaxWidth(70.0f));
                     }
                     break;
                 case VariableType._vector2:
                     {
                         //Value field
-                        value= EditorGUILayout.Vector2Field("", (Vector2)value, GUILayout.MaxWidth(110.0f));
+                        value = EditorGUILayout.Vector2Field("", (Vector2)value, GUILayout.MaxWidth(110.0f));
                     }
                     break;
                 case VariableType._vector3:
@@ -456,7 +502,7 @@ namespace GOAP_S.Tools
         {
             for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
             {
-                if(dropdown_select[k] == -2)
+                if (dropdown_select[k] == -2)
                 {
                     dropdown_select[k] = -1;
                     return k;
@@ -465,7 +511,7 @@ namespace GOAP_S.Tools
 
             int[] new_array = new int[dropdown_select.Length * 2];
 
-            for (int k = INITIAL_ARRAY_SIZE - 1; k<new_array.Length; k++)
+            for (int k = INITIAL_ARRAY_SIZE - 1; k < new_array.Length; k++)
             {
                 new_array[k] = -2;
             }
@@ -499,7 +545,7 @@ namespace GOAP_S.Tools
         //Set specific dropdown index method
         public static void SetDropdownIndex(int dropdown_id, int new_index)
         {
-            if(dropdown_id >= dropdown_select.Length)
+            if (dropdown_id >= dropdown_select.Length)
             {
                 Debug.LogError("You are trying to access a non allocated dropdown index!");
             }
@@ -568,37 +614,6 @@ namespace GOAP_S.Tools
             dictionary[new_key] = value;
         }
 
-        public static string ToShortString(this OperatorType type)
-        {
-            switch(type)
-            {
-                case OperatorType._undefined_operator: return "Undefined";
-                case OperatorType._equal: return "==";
-                case OperatorType._different: return "!=";
-                case OperatorType._smaller: return "<";
-                case OperatorType._smaller_or_equal: return "<=";
-                case OperatorType._bigger: return ">";
-                case OperatorType._bigger_or_equal: return ">=";
-                case OperatorType._is_equal: return "=";
-                case OperatorType._plus_equal: return "+=";
-                case OperatorType._minus_equal: return "-=";
-            }
-            return "Undefined";
-        }
-
-        public static string [] ToShortString(this OperatorType[] operator_types)
-        {
-            //First allocate a strings array with the size of the operator types
-            string[] strings = new string[operator_types.Length];
-            //Iterate the operator types and transform them to strings
-            for (int k = 0; k < operator_types.Length; k++)
-            {
-                strings[k] = operator_types[k].ToShortString();
-            }
-            //Finally return the generated strings array
-            return strings;
-        }
-
         public static string PathToName(this string original)
         {
             string result;
@@ -616,111 +631,4 @@ namespace GOAP_S.Tools
             return result;
         }
     }
-
-/*public static T Cast<T>(this object myobj)
-{
-    System.Type ty = myobj.GetType();
-    if (ty == UnityEngine.Object)
-    {
-        return myobj;
-    }
-    try
-    {
-        return (T)Convert.ChangeType(myobj, typeof(T));
-    }
-    catch (InvalidCastException)
-    {
-        return default(T);
-    }
-}*/
-
-
-        /*public static T Cast<T>(this object myobj)
-{
-    System.Type objectType = myobj.GetType();
-    System.Type target = typeof(T);
-    object x = System.Activator.CreateInstance(target, false);
-    MemberInfo[] member_info_array = objectType.GetMembers();
-    List<MemberInfo> list = new List<MemberInfo>(objectType.GetMembers());
-
-    var z = from source in list
-            where source.MemberType == MemberTypes.Property
-            select source;
-
-    var d = from source in target.GetMembers().//.ToList()
-            where source.MemberType == MemberTypes.Property
-            select source;
-    List<MemberInfo> members = d.Where(memberInfo => d.Select(c => c.Name).ToList().Contains(memberInfo.Name)).ToList();
-    PropertyInfo propertyInfo;
-    object value;
-    foreach (var memberInfo in members)
-    {
-        propertyInfo = typeof(T).GetProperty(memberInfo.Name);
-        value = myobj.GetType().GetProperty(memberInfo.Name).GetValue(myobj, null);
-
-        propertyInfo.SetValue(x, value, null);
-    }
-    return (T)x;
-}*/
-        /*
-            MemberInfo[] member_info_array = class_ty.GetMembers();
-            Action_GS t = new MoveAction_GS();
-            PropertyInfo property_info;
-            object val;
-            /*foreach (var variable in member_info_array)
-            {
-                if (variable.MemberType == MemberTypes.Field)
-                {
-                    property_info = typeof(T).GetProperty(variable.Name);
-                    val = myobj.GetType().GetProperty(variable.Name).GetValue(myobj, null);
-
-                    property_info.SetValue(x, val, null);
-                }
-            }
-
-            
-        }
-        
-             List<MemberInfo> list = new List<MemberInfo>(objectType.GetMembers());
-
-             var z = from source in list
-                     where source.MemberType == MemberTypes.Property
-                     select source;
-
-             var d = from source in target.GetMembers()//.ToList()
-                     where source.MemberType == MemberTypes.Property
-                     select source;
-
-             List<MemberInfo> members = d.Where(memberInfo => d.Select(c => c.Name).ToList().Contains(memberInfo.Name)).ToList();
-             PropertyInfo propertyInfo;
-             object value;
-             foreach (var memberInfo in members)
-             {
-                 propertyInfo = typeof(T).GetProperty(memberInfo.Name);
-                 value = myobj.GetType().GetProperty(memberInfo.Name).GetValue(myobj, null);
-
-                 propertyInfo.SetValue(x, value, null);
-             }
-             return (T)x;
-         }
-         
-        public static object CloneObject(object o)
-        {
-            Type t = o.GetType();
-            PropertyInfo[] properties = t.GetProperties();
-
-            UnityEditor.Object p = t.InvokeMember("", System.Reflection.BindingFlags.CreateInstance,
-                null, o, null);
-
-            foreach (PropertyInfo pi in properties)
-            {
-                if (pi.CanWrite)
-                {
-                    pi.SetValue(p, pi.GetValue(o, null), null);
-                }
-            }
-
-            return p;
-        }*/
-   
 }

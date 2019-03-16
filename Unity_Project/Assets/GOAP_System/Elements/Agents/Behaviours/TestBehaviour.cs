@@ -1,4 +1,6 @@
 ﻿using GOAP_S.AI;
+using GOAP_S.Tools;
+
 using UnityEngine;
 
 public class TestBehaviour : AgentBehaviour_GS
@@ -7,11 +9,15 @@ public class TestBehaviour : AgentBehaviour_GS
     {
         Debug.Log("TestB Start!");
         
+
+
     }
 
     public override void Update()
     {
-        Debug.Log("TestB Update!");
+
+        SetGoal("test",OperatorType._is_equal, 10);
+
         
     }
 }

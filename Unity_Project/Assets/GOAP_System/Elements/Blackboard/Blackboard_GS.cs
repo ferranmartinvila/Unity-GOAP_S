@@ -79,18 +79,18 @@ namespace GOAP_S.Blackboard
         }
 
         //Planning Methods ============
-        public HashSet<Property_GS> GenerateWorldState()
+        public Dictionary<string, Property_GS> GenerateWorldState()
         {
             //First allocate a hashset of properties
-            HashSet<Property_GS> world_state = new HashSet<Property_GS>();
+            Dictionary<string, Property_GS> world_state = new Dictionary<string, Property_GS>();
 
             //Iterate all variables and generate a propery from them
             foreach(Variable_GS variable in variables.Values)
             {
-
+                //Generate world property
                 Property_GS property = new Property_GS(variable.name, variable.type, OperatorType._is_equal, variable.object_value);
-
-                world_state.Add(property);
+                //Add the generated property in the current world state
+                world_state.Add(variable.name, property);
             }
 
             //Finally return the generated hashset

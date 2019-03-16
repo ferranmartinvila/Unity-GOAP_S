@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System;
 using System.Collections.Generic;
 using GOAP_S.Blackboard;
+using GOAP_S.Planning;
 using GOAP_S.Tools;
 
 namespace GOAP_S.AI
@@ -20,6 +21,8 @@ namespace GOAP_S.AI
         [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
         [NonSerialized] private Blackboard_GS _blackboard = null; //The blackboard is the agent using
         [NonSerialized] private BlackboardComp_GS _blackboard_component = null; //Inspector representation of the blackboard
+        [NonSerialized] private Dictionary<string, Property_GS> _goal_world_state = null; //Agent goal world state defined in the agent behaviour
+        [NonSerialized] private Queue<ActionNode_GS> current_plan = null; //Current actions plan generated from the goal world state
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_behaviour = null; //String where the agent behaviour is serialized
@@ -63,7 +66,12 @@ namespace GOAP_S.AI
 
         private void Update()
         {
-            _behaviour.Update();
+            if (current_plan.Count == 0)
+            {
+                _behaviour.Update();
+
+                current_plan = Planner_GS.GeneratePlan(this);
+            }
         }
 
         //Planning Methods ================
@@ -221,6 +229,18 @@ namespace GOAP_S.AI
             set
             {
                 _behaviour = value;
+            }
+        }
+
+        public Dictionary<string, Property_GS> goal_world_state
+        {
+            get
+            {
+                if(_goal_world_state == null)
+                {
+                    _goal_world_state = new Dictionary<string, Property_GS>();
+                }
+                return _goal_world_state;
             }
         }
 

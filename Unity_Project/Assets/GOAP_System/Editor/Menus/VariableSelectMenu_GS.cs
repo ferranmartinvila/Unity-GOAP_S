@@ -59,7 +59,7 @@ namespace GOAP_S.UI
                 ProTools.AllocateFromVariableType(_variable_type, ref _variable_value);
 
                 //Get all the fields in the agent gameobject
-                _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, ProTools.VariableTypeToSystemType(_variable_type));
+                _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
                 //Allocate strings arrays
                 _properties_paths = new string[_properties_info.Length];
                 _properties_display_paths = new string[_properties_info.Length];

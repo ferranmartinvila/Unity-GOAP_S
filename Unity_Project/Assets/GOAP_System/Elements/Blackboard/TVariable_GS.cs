@@ -108,7 +108,7 @@ namespace GOAP_S.Blackboard
             //Get field full name(what includes class inheritance)
             string unformatted_field_path_string = _field_path.Substring(last_dot_index + 1);
             //Search System.Type from type string
-            System.Type field_type = ProTools.StringToSystemType(type_string);
+            System.Type field_type = type_string.ToSystemType();
 
             //In null type case field can not be binded
             if(field_type == null)

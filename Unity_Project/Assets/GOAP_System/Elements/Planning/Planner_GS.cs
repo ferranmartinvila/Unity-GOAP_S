@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GOAP_S.AI;
+using GOAP_S.Tools;
 
 namespace GOAP_S.Planning
 {
@@ -25,14 +26,21 @@ namespace GOAP_S.Planning
         }
 
         //Planning Methods ================
-        public Queue<ActionNode_GS> GeneratePlan(Agent_GS agent, HashSet<Property_GS> goal_world_state)
+        public static Queue<ActionNode_GS> GeneratePlan(Agent_GS agent)
         {
             //Allocate a new queue of actions
             Queue<ActionNode_GS> action_plan = new Queue<ActionNode_GS>();
 
-            //First get the current world state
-            HashSet<Property_GS> world_state = agent.blackboard.GenerateWorldState();
+            //First get the world state states
+            //Current
+            Dictionary<string, Property_GS> current_world_state = agent.blackboard.GenerateWorldState();
+            //Goal
+            Dictionary<string, Property_GS> goal_world_state = agent.goal_world_state;
 
+            //Check if the current world state and the goal world state coincide
+
+
+            //
             //TODO
 
             //Finally return the generated actions queue

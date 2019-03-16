@@ -94,12 +94,12 @@ namespace GOAP_S.UI
                     if (_property_UI_mode == PropertyUIMode.IS_CONDITION)
                     {
                         //Condition passive operators case
-                        _valid_operators = ProTools.GetValidPassiveOperatorTypesFromVariableType(_selected_variable_type);
+                        _valid_operators = _selected_variable_type.GetValidPassiveOperatorTypes();
                     }
                     else if (_property_UI_mode == PropertyUIMode.IS_EFFECT)
                     {
                         //Effect active operators case
-                        _valid_operators = ProTools.GetValidActiveOperatorTypesFromVariableType(_selected_variable_type);
+                        _valid_operators = _selected_variable_type.GetValidActiveOperatorTypes();
                     }
                     //Reset operator selected
                     _selected_operator_index = -1;
@@ -126,7 +126,7 @@ namespace GOAP_S.UI
             {
                 GUILayout.Label("Operator:", GUILayout.MaxWidth(60.0f));
                 //Generate enumerator popup with the operator type
-                ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortString(), "Not Set", true, 120.0f, _operator_dropdown_slot);
+                ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortStrings(), "Not Set", true, 120.0f, _operator_dropdown_slot);
             }
             GUILayout.EndHorizontal();
 

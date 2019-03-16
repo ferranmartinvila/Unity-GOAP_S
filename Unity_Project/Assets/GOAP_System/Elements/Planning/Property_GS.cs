@@ -31,12 +31,22 @@ namespace GOAP_S.Planning
         //Planning Methods ============
         public bool Check(Property_GS property)
         {
+            //Accept different operators depending of the variable type
+            switch(_variable_type)
+            {
+                case VariableType._bool:
+                case VariableType._string:
+                    {
+
+                    }
+                    break;
+                    //case VariableType.
+            }
             //Do different operations depending of the operator type
             switch (_operator)
             {
                 case OperatorType._equal: return _value == property.value;
                 case OperatorType._different: return _value != property.value;
-
             }
 
             //In non valid operator type return false

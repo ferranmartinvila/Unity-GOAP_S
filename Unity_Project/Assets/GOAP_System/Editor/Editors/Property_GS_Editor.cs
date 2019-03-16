@@ -38,11 +38,11 @@ namespace GOAP_S.UI
             //Allocate the valid operators
             if(_property_UI_mode == PropertyUIMode.IS_CONDITION)
             {
-                _valid_operators = ProTools.GetValidPassiveOperatorTypesFromVariableType(_target_property.variable_type);
+                _valid_operators = _target_property.variable_type.GetValidPassiveOperatorTypes();
             }
             else if(_property_UI_mode == PropertyUIMode.IS_EFFECT)
             {
-                _valid_operators = ProTools.GetValidActiveOperatorTypesFromVariableType(_target_property.variable_type);
+                _valid_operators = _target_property.variable_type.GetValidActiveOperatorTypes();
             }
             //Get variables in the blackboard with the same type
             _B_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_target_property.variable_type);
@@ -181,7 +181,7 @@ namespace GOAP_S.UI
             GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
 
             //Operator dropdown
-            ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortString(), _target_property.operator_type.ToShortString(), true, 30.0f, _operator_dropdown_slot);
+            ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortStrings(), _target_property.operator_type.ToShortString(), true, 30.0f, _operator_dropdown_slot);
             //Check operator change
             if (_selected_operator_index!= -1 && _valid_operators[_selected_operator_index] != _target_property.operator_type)
             {
