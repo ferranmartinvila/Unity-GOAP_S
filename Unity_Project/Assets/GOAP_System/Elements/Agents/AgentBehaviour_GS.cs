@@ -33,29 +33,47 @@ namespace GOAP_S.AI
         }
 
         //Functionality Methods =======
-        protected void SetGoal(string variable_name,OperatorType operator_type, object value)
+        protected void SetGoal(string variable_name, OperatorType operator_type, object variable_value)
         {
+            //First check if the variable exists in the current world state
+            object target_variable = _agent.blackboard.GetValue<object>(variable_name);
+            if (target_variable == null)
+            {
+                //In null case goal set is cancelled
+                Debug.LogError("Variable: " + variable_name + " does not exist and can't be setted as goal");
+                return;
+            }
+
             //Check of the new goal value uses the correct type
-            if (value.GetType() != _agent.blackboard.GetValue<object>(variable_name).GetType())
+            if (variable_value.GetType() != target_variable.GetType())
             {
                 //In different types case the goal is not valid
-                Debug.LogError("Behaviour " + _name + " is trying to set a " + value.GetType() + "goal to a " + _agent.blackboard.GetValue<object>(variable_name).GetType() + "variable");
+                Debug.LogError("Behaviour " + _name + " is trying to set a " + variable_value.GetType() + "goal to a " + target_variable.GetType() + "variable");
+                return;
+            }
+
+            //Check if the new goal is already defined in the goal world state
+            Property_GS already_existing_property = null;
+            if (agent.goal_world_state.properties.TryGetValue(variable_name, out already_existing_property))
+            {
+                //If the goal already exists we only change the goal value
+                already_existing_property.value = variable_value;
             }
             else
             {
-                //In correct goal case we simply add it to the goal world state
-                agent.goal_world_state.Add(variable_name, new Property_GS(variable_name,value.GetType().ToString().ToVariableType(), operator_type, value));
+                //In correct and new goal case we simply add it to the goal world state
+                agent.goal_world_state.SetGoal(variable_name, new Property_GS(variable_name, variable_value.GetType().ToString().ToVariableType(), operator_type, variable_value));
             }
         }
 
         protected void RemoveGoal(string variable_name)
         {
-            agent.goal_world_state.Remove(variable_name);
+            agent.goal_world_state.RemoveGoal(variable_name);
         }
 
         protected void ClearAllGoals()
         {
-            agent.goal_world_state.Clear();
+            agent.goal_world_state.ClearAllGoals();
         }
 
         protected void AbortPlan()

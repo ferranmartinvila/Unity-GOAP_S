@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class TestBehaviour : AgentBehaviour_GS
 {
+    int k = 9;
     public override void Start()
     {
         Debug.Log("TestB Start!");
@@ -16,7 +17,9 @@ public class TestBehaviour : AgentBehaviour_GS
     public override void Update()
     {
 
-        SetGoal("test",OperatorType._is_equal, 10);
+        k += 1;
+
+        SetGoal("test", OperatorType._equal, 0);
 
         
     }

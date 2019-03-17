@@ -252,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_behaviour: 
+  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
   serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{}}'
+  serialized_blackboard: '{"_id":null,"_variables":{"test":{"_value":0,"_name":"test","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'

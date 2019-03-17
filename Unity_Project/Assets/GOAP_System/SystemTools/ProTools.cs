@@ -307,15 +307,15 @@ namespace GOAP_S.Tools
         {
             switch(system_type)
             {
-                case "Boolean": return VariableType._bool;
-                case "Int32": return VariableType._int;
-                case "Single": return VariableType._float;
-                case "Double": return VariableType._float;
-                case "Char": return VariableType._char;
-                case "String": return VariableType._string;
-                case "Vector2": return VariableType._vector2;
-                case "Vector3": return VariableType._vector3;
-                case "Vector4": return VariableType._vector4;
+                case "System.Boolean": return VariableType._bool;
+                case "System.Int32": return VariableType._int;
+                case "System.Single": return VariableType._float;
+                case "System.Double": return VariableType._float;
+                case "System.Char": return VariableType._char;
+                case "System.String": return VariableType._string;
+                case "System.Vector2": return VariableType._vector2;
+                case "System.Vector3": return VariableType._vector3;
+                case "System.Vector4": return VariableType._vector4;
             }
             return VariableType._undefined_var_type;
         }
@@ -344,13 +344,13 @@ namespace GOAP_S.Tools
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType[] { OperatorType._is_equal };
+                case VariableType._bool: return new OperatorType[] { OperatorType._is_equal, OperatorType._different };
                 case VariableType._int:
                 case VariableType._float:
                 case VariableType._char:
                 case VariableType._vector2:
                 case VariableType._vector3:
-                case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal };
+                case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal, OperatorType._different };
                     // TODO case VariableType._enum:        return typeof(enum);
             }
 

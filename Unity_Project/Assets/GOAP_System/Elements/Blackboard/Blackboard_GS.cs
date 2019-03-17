@@ -29,7 +29,7 @@ namespace GOAP_S.Blackboard
             Variable_GS old_variable;
             if (variables.TryGetValue(name,out old_variable))
             {
-                Debug.LogWarning("Theres a variable named" + name + "already!");
+                Debug.LogWarning("There is already a variable named " + name + " !");
                 return null;
             }
 
@@ -79,10 +79,10 @@ namespace GOAP_S.Blackboard
         }
 
         //Planning Methods ============
-        public Dictionary<string, Property_GS> GenerateWorldState()
+        public WorldState_GS GenerateWorldState()
         {
             //First allocate a hashset of properties
-            Dictionary<string, Property_GS> world_state = new Dictionary<string, Property_GS>();
+            WorldState_GS world_state = new WorldState_GS();
 
             //Iterate all variables and generate a propery from them
             foreach(Variable_GS variable in variables.Values)
@@ -90,7 +90,7 @@ namespace GOAP_S.Blackboard
                 //Generate world property
                 Property_GS property = new Property_GS(variable.name, variable.type, OperatorType._is_equal, variable.object_value);
                 //Add the generated property in the current world state
-                world_state.Add(variable.name, property);
+                world_state.SetGoal(variable.name, property);
             }
 
             //Finally return the generated hashset

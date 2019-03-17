@@ -33,12 +33,16 @@ namespace GOAP_S.Planning
 
             //First get the world state states
             //Current
-            Dictionary<string, Property_GS> current_world_state = agent.blackboard.GenerateWorldState();
+            WorldState_GS current_world_state = agent.blackboard.GenerateWorldState();
             //Goal
-            Dictionary<string, Property_GS> goal_world_state = agent.goal_world_state;
+            WorldState_GS goal_world_state = agent.goal_world_state;
 
             //Check if the current world state and the goal world state coincide
-
+            if(current_world_state.Compare(ref goal_world_state))
+            {
+                Debug.LogWarning("The current world state coincides with the goal world state: " + goal_world_state.name + " !");
+                return new Queue<ActionNode_GS>();
+            }
 
             //
             //TODO

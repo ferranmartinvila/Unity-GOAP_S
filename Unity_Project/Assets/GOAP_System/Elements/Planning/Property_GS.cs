@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using GOAP_S.Tools;
+using System.Runtime.CompilerServices;
+using System.Reflection;
 
 namespace GOAP_S.Planning
 {
@@ -29,27 +31,104 @@ namespace GOAP_S.Planning
         }
 
         //Planning Methods ============
-        public bool Check(Property_GS property)
+        public bool Check(Property_GS target_property)
         {
-            //Accept different operators depending of the variable type
-            switch(_variable_type)
+            //Check if the target properties have the same variable type
+            if(_variable_type != target_property.variable_type)
             {
-                case VariableType._bool:
-                case VariableType._string:
-                    {
+                Debug.LogError("Comparsion type between variable: " + _variable_type + " and variable: " + target_property.variable_type + " not supported!");
+                return false;
+            }
 
+            //Check if this property value have the defined value by the target property
+            //Do different operations depending of the operator type
+            switch (target_property.operator_type)
+            {
+                case OperatorType._equal:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._string: return string.Compare((string)_value, (string)target_property.value) == 0;
+                            case VariableType._bool: return (bool)_value == (bool)target_property.value;
+                            case VariableType._char: return (char)_value == (char)target_property.value;
+                            case VariableType._float: return (float)_value == (float)target_property.value;
+                            case VariableType._int: return (int)_value == (int)target_property.value;
+                            case VariableType._vector2: return (Vector2)_value == (Vector2)target_property.value;
+                            case VariableType._vector3: return (Vector3)_value ==  (Vector3)target_property.value;
+                            case VariableType._vector4: return (Vector4)_value == (Vector4)target_property.value;
+                        }
                     }
                     break;
-                    //case VariableType.
+                case OperatorType._different:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._string: return string.Compare((string)_value, (string)target_property.value) != 0;
+                            case VariableType._bool: return (bool)_value != (bool)target_property.value;
+                            case VariableType._char: return (char)_value != (char)target_property.value;
+                            case VariableType._float: return (float)_value != (float)target_property.value;
+                            case VariableType._int: return (int)_value != (int)target_property.value;
+                            case VariableType._vector2: return (Vector2)_value != (Vector2)target_property.value;
+                            case VariableType._vector3: return (Vector3)_value != (Vector3)target_property.value;
+                            case VariableType._vector4: return (Vector4)_value != (Vector4)target_property.value;
+                        }
+                    }
+                    break;
+                case OperatorType._bigger:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._char: return (char)_value > (char)target_property.value;
+                            case VariableType._float: return (float)_value > (float)target_property.value;
+                            case VariableType._int: return (int)_value > (int)target_property.value;
+                            case VariableType._vector2: return ((Vector2)_value).magnitude > ((Vector2)target_property.value).magnitude;
+                            case VariableType._vector3: return ((Vector3)_value).magnitude > ((Vector3)target_property.value).magnitude;
+                            case VariableType._vector4: return ((Vector4)_value).magnitude > ((Vector4)target_property.value).magnitude;
+                        }
+                    }
+                    break;
+                case OperatorType._bigger_or_equal:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._char: return (char)_value >= (char)target_property.value;
+                            case VariableType._float: return (float)_value >= (float)target_property.value;
+                            case VariableType._int: return (int)_value >= (int)target_property.value;
+                            case VariableType._vector2: return ((Vector2)_value).magnitude >= ((Vector2)target_property.value).magnitude;
+                            case VariableType._vector3: return ((Vector3)_value).magnitude >= ((Vector3)target_property.value).magnitude;
+                            case VariableType._vector4: return ((Vector4)_value).magnitude >= ((Vector4)target_property.value).magnitude;
+                        }
+                    }
+                    break;
+                case OperatorType._smaller:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._char: return (char)_value < (char)target_property.value;
+                            case VariableType._float: return (float)_value < (float)target_property.value;
+                            case VariableType._int: return (int)_value < (int)target_property.value;
+                            case VariableType._vector2: return ((Vector2)_value).magnitude < ((Vector2)target_property.value).magnitude;
+                            case VariableType._vector3: return ((Vector3)_value).magnitude < ((Vector3)target_property.value).magnitude;
+                            case VariableType._vector4: return ((Vector4)_value).magnitude < ((Vector4)target_property.value).magnitude;
+                        }
+                    }
+                    break;
+                case OperatorType._smaller_or_equal:
+                    {
+                        switch (_variable_type)
+                        {
+                            case VariableType._char: return (char)_value <= (char)target_property.value;
+                            case VariableType._float: return (float)_value <= (float)target_property.value;
+                            case VariableType._int: return (int)_value <= (int)target_property.value;
+                            case VariableType._vector2: return ((Vector2)_value).magnitude <= ((Vector2)target_property.value).magnitude;
+                            case VariableType._vector3: return ((Vector3)_value).magnitude <= ((Vector3)target_property.value).magnitude;
+                            case VariableType._vector4: return ((Vector4)_value).magnitude <= ((Vector4)target_property.value).magnitude;
+                        }
+                    }
+                    break;
             }
-            //Do different operations depending of the operator type
-            switch (_operator)
-            {
-                case OperatorType._equal: return _value == property.value;
-                case OperatorType._different: return _value != property.value;
-            }
-
             //In non valid operator type return false
+            Debug.LogError("Variable: current " + _A_key + " " + operator_type.ToShortString() + " goal " + target_property.A_key + " is not a valid operation!");
             return false;
         }
 
