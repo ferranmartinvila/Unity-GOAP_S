@@ -22,6 +22,7 @@ namespace GOAP_S.AI
         [NonSerialized] private Blackboard_GS _blackboard = null; //The blackboard is the agent using
         [NonSerialized] private BlackboardComp_GS _blackboard_component = null; //Inspector representation of the blackboard
         [NonSerialized] private WorldState_GS _goal_world_state = null; //Agent goal world state defined in the agent behaviour
+        [NonSerialized] private Planner_GS _planner; //Class that holds the planning algorithm
         [NonSerialized] private Queue<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
@@ -72,7 +73,18 @@ namespace GOAP_S.AI
             {
                 _behaviour.Update();
 
-                _current_plan = Planner_GS.GeneratePlan(this);
+                _current_plan = planner.GeneratePlan(this);
+            }
+            else
+            {
+                while (_current_plan.Count > 0)
+                {
+                    ActionNode_GS node = _current_plan.Dequeue();
+                    if (node != null)
+                    {
+                        Debug.Log(node.name + " @@ " + node.action.name);
+                    }
+                }
             }
         }
 
@@ -243,6 +255,18 @@ namespace GOAP_S.AI
                     _goal_world_state = new WorldState_GS();
                 }
                 return _goal_world_state;
+            }
+        }
+
+        private Planner_GS planner
+        {
+            get
+            {
+                if(_planner == null)
+                {
+                    _planner = new Planner_GS();
+                }
+                return _planner;
             }
         }
 

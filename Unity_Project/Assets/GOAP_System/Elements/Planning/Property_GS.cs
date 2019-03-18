@@ -14,10 +14,19 @@ namespace GOAP_S.Planning
         [SerializeField] private string _B_key = null; //B Property key, the key of the second property in the condition
         [SerializeField] private object _value = null; //B value, value that we compare with the A Property value
 
-        //Constructors
+        //Constructors ================
         public Property_GS()
         {
 
+        }
+
+        public Property_GS(Property_GS copy)
+        {
+            _variable_type = copy.variable_type;
+            _A_key = copy.A_key;
+            _operator = copy.operator_type;
+            _B_key = copy.B_key;
+            _value = copy.value;
         }
 
         //Used to generate properties form bb variables
@@ -31,7 +40,7 @@ namespace GOAP_S.Planning
         }
 
         //Planning Methods ============
-        public bool Check(Property_GS target_property)
+        public bool DistanceTo(Property_GS target_property)
         {
             //Check if the target properties have the same variable type
             if(_variable_type != target_property.variable_type)
@@ -44,7 +53,8 @@ namespace GOAP_S.Planning
             //Do different operations depending of the operator type
             switch (target_property.operator_type)
             {
-                case OperatorType._equal:
+                case OperatorType._is_equal:
+                case OperatorType._equal_equal:
                     {
                         switch (_variable_type)
                         {

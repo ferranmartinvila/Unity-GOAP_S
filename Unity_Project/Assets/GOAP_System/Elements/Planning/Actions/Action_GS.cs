@@ -43,6 +43,7 @@ namespace GOAP_S.Planning
 
         //Content fields
         [SerializeField] private string _name = "no_name";
+        [SerializeField] private int _cost = 1;
         [NonSerialized] private ACTION_STATE _action_state = ACTION_STATE.A_IDLE;
         [NonSerialized] private Agent_GS _agent = null;
 
@@ -105,6 +106,18 @@ namespace GOAP_S.Planning
             set
             {
                 _name = value;
+            }
+        }
+
+        public int cost
+        {
+            get
+            {
+                return _cost;
+            }
+            set
+            {
+                _cost = value;
             }
         }
 

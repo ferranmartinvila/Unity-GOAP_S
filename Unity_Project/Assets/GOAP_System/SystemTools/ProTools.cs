@@ -43,7 +43,7 @@ namespace GOAP_S.Tools
         _bigger_or_equal,
         _smaller,
         _smaller_or_equal,
-        _equal,
+        _equal_equal,
         _different,
         _is_equal,
         _plus_equal,
@@ -325,13 +325,13 @@ namespace GOAP_S.Tools
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType[] { OperatorType._equal, OperatorType._different };
+                case VariableType._bool: return new OperatorType[] { OperatorType._equal_equal, OperatorType._different };
                 case VariableType._int:
                 case VariableType._float:
                 case VariableType._char:
                 case VariableType._vector2:
                 case VariableType._vector3:
-                case VariableType._vector4: return new OperatorType[] { OperatorType._equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
+                case VariableType._vector4: return new OperatorType[] { OperatorType._equal_equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
                     // TODO case VariableType._enum:        return typeof(enum);
             }
 
@@ -363,7 +363,7 @@ namespace GOAP_S.Tools
             switch (type)
             {
                 case OperatorType._undefined_operator: return "Undefined";
-                case OperatorType._equal: return "==";
+                case OperatorType._equal_equal: return "==";
                 case OperatorType._different: return "!=";
                 case OperatorType._smaller: return "<";
                 case OperatorType._smaller_or_equal: return "<=";

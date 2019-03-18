@@ -50,6 +50,7 @@ LightmapSettings:
     m_BounceScale: 1
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
+    m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
@@ -115,10 +116,9 @@ NavMeshSettings:
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
   m_Component:
   - component: {fileID: 282840814}
   - component: {fileID: 282840813}
@@ -133,27 +133,20 @@ GameObject:
 --- !u!81 &282840811
 AudioListener:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_Enabled: 1
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
-  m_projectionMatrixMode: 1
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_GateFitMode: 2
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -183,9 +176,8 @@ Camera:
 --- !u!4 &282840814
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
@@ -197,10 +189,9 @@ Transform:
 --- !u!1 &1255048982
 GameObject:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
   m_Component:
   - component: {fileID: 1255048983}
   - component: {fileID: 1255048985}
@@ -215,9 +206,8 @@ GameObject:
 --- !u!4 &1255048983
 Transform:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -229,30 +219,31 @@ Transform:
 --- !u!114 &1255048984
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46e04c1158b98f540995c263ce5c23c4, type: 3}
+  m_Script: {fileID: 11500000, guid: 56c90ab764593284981610505c77c01b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1255048985
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9931a393e990ac14ea64a9e68937a78a, type: 3}
+  m_Script: {fileID: 11500000, guid: fab6d0c709cf4e24ea527e621b3623c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
   serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
-  serialized_action_nodes: '[null,null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{"test":{"_value":0,"_name":"test","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+  serialized_action_nodes: '[{"_window_rect":{"xMin":407.0,"yMin":151.0,"xMax":507.0,"yMax":251.0},"_id":"a34e761d-ca91-46d4-b497-d020dff37de0","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"defence\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":8,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test2\",\"_cost\":1,\"$type\":\"test2\"}"},{"_window_rect":{"xMin":112.0,"yMin":170.0,"xMax":212.0,"yMax":270.0},"_id":"6d1bc964-884f-498d-979b-bab493151e42","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test1\",\"_cost\":1,\"$type\":\"test1\"}"},null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":null,"_variables":{"damage":{"_value":0,"_name":"damage","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"defence":{"_value":0,"_name":"defence","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'

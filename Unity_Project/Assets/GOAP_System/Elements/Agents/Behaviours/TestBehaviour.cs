@@ -5,22 +5,14 @@ using UnityEngine;
 
 public class TestBehaviour : AgentBehaviour_GS
 {
-    int k = 9;
     public override void Start()
     {
-        Debug.Log("TestB Start!");
-        
-
-
+        Debug.Log("Test Start!");
     }
 
     public override void Update()
     {
-
-        k += 1;
-
-        SetGoal("test", OperatorType._equal, 0);
-
-        
+        SetGoal("damage", OperatorType._equal_equal, 5);
+        SetGoal("defence", OperatorType._equal_equal, 8);
     }
 }

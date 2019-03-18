@@ -156,6 +156,14 @@ namespace GOAP_S.AI
             }
         }
 
+        public int action_cost
+        {
+            get
+            {
+                return _action.cost;
+            }
+        }
+
         public Agent_GS agent
         {
             get
@@ -300,6 +308,33 @@ namespace GOAP_S.AI
             }
             //Porperty not found case
             Debug.LogWarning("Effect: " + target_effect.A_key + " not found on remove!");
+        }
+
+        public bool ValidateWorldState(WorldState_GS current)
+        {
+            for(int k = 0; k < _conditions_num; k++)
+            {
+                if(_conditions[k].DistanceTo(current.GetProperty(_conditions[k].A_key)) == false)
+                {
+                    //If one current world state property does not fit in the action conditions return false
+                    return false;
+                }
+            }
+            //If all current world state properties are correct return true
+            return true;
+        }
+
+        public WorldState_GS EffectWorldState(WorldState_GS current)
+        {
+            //Allocate the new world state based in the current
+            WorldState_GS new_world_state = new WorldState_GS(current);
+            //Iterate and apply all the action effects to the new world state
+            for(int k = 0; k < _effects_num; k++)
+            {
+                new_world_state.SetGoal(_effects[k].A_key, _effects[k]);
+            }
+            //Return the resultant world state
+            return new_world_state;
         }
 
         //Serialization Methods =======
