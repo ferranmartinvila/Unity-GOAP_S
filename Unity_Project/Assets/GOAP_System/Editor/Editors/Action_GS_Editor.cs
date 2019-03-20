@@ -87,15 +87,15 @@ namespace GOAP_S.UI
         private void DrawInEdit()
         {
             GUILayout.BeginVertical();
-
+            
+            //Hide button
             if (GUILayout.Button("Hide"))
             {
                 _UI_mode = EditorUIMode.HIDE_STATE;
             }
-
             //Draw properties
             //Title
-            GUILayout.Label("Properties:", UIConfig_GS.left_bold_style);
+            GUILayout.Label("Properties:");
             //Iterate the previiously selected properties
             for(int k = 0; k < _properties_num; k++)
             {
@@ -103,13 +103,34 @@ namespace GOAP_S.UI
 
                 //Get property value in the target action instance
                 object value = _properties[k].Value.GetGetMethod().Invoke(_target_action, null);
-                //Property field string
-                GUILayout.Label(value.GetType().ToVariableType().ToShortString(),UIConfig_GS.left_bold_style);
-                ProTools.ValueFieldByVariableType(value.GetType().ToVariableType(), ref value);
-
+                //In null case show error message
+                if (value == null)
+                {
+                    GUILayout.Label(_properties[k].Value.Name + " = null", UIConfig_GS.left_bold_red_style);
+                }
+                else
+                {
+                    //Property field type string
+                    GUILayout.Label(value.GetType().ToVariableType().ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
+                    //Property name string
+                    GUILayout.Label(_properties[k].Value.Name, GUILayout.MaxWidth(80.0f));
+                    //Property value
+                    if (_properties[k].Key == true)
+                    {
+                        //Defined setter case
+                        //Generate field UI
+                        ProTools.ValueFieldByVariableType(value.GetType().ToVariableType(), ref value);
+                        //Set field input
+                        _properties[k].Value.GetSetMethod().Invoke(_target_action, new object[] { value });
+                    }
+                    else
+                    {
+                        //Non defined setter case
+                        GUILayout.Label(value.ToString(), GUILayout.MaxWidth(70.0f));
+                    }
+                }
                 GUILayout.EndHorizontal();
             }
-            
 
             GUILayout.EndVertical();
         }
