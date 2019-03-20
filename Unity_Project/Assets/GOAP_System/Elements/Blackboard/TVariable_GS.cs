@@ -179,7 +179,7 @@ namespace GOAP_S.Blackboard
                 }
                 else
                 {
-                    //In case property can not be set wedisplay a error message
+                    //In case property can not be set we display a error message
                     setter = (input) => { Debug.LogError("You are trying to set a non editable property! Name:" + name); };
                 }
 

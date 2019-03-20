@@ -93,10 +93,11 @@ namespace GOAP_S.Planning
         //Blit action UI inside the action node
         public virtual void BlitUI()
         {
-
+          
         }
 
         //Get/Set Methods =================
+        [BlockedProperty_GS]
         public string name
         {
             get
@@ -121,6 +122,7 @@ namespace GOAP_S.Planning
             }
         }
 
+        [BlockedProperty_GS]
         public Blackboard_GS blackboard
         {
             get
@@ -129,6 +131,7 @@ namespace GOAP_S.Planning
             }
         }
 
+        [BlockedProperty_GS]
         public Agent_GS agent
         {
             get

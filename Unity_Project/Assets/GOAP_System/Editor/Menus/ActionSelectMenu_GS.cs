@@ -11,16 +11,18 @@ namespace GOAP_S.UI
     public sealed class ActionSelectMenu_GS : PopupWindowContent
     {
         //Content fields
-        private ActionNode_GS _target_action_node = null; //Focused node action
+        private ActionNode_GS_Editor _target_action_node_editor = null; //Focused action node editor
+        private ActionNode_GS _target_action_node = null; //Focused action node
         //Selection fields
         private int _action_dropdown_slot = -1;
         private int _selected_action_index = -1;
         
         //Constructors ================
-        public ActionSelectMenu_GS(ActionNode_GS new_target_action_node)
+        public ActionSelectMenu_GS(ActionNode_GS_Editor new_target_action_node_editor)
         {
             //Focus the action node
-            _target_action_node = new_target_action_node;
+            _target_action_node_editor = new_target_action_node_editor;
+            _target_action_node = _target_action_node_editor.target_action_node;
             //Get dropdown slot for action select
             _action_dropdown_slot = ProTools.GetDropdownSlot();
         }
@@ -61,6 +63,8 @@ namespace GOAP_S.UI
                     new_script.agent = NodeEditor_GS.Instance.selected_agent;
                     //Set the allocated class to the action node
                     _target_action_node.action = new_script;
+                    //Set target action node editor action editor
+                    _target_action_node_editor.action_editor = new Action_GS_Editor(new_script);
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Repaint the node editor to update the UI
@@ -73,11 +77,6 @@ namespace GOAP_S.UI
             //Action create button
             if (GUILayout.Button("Create New", GUILayout.ExpandWidth(true)))
             {
-                /*//Add action set on new action script creation
-                ScriptCreationMenu_GS.on_script_creation_delegate += () => _target_action_node.action = ProTools.AllocateClass<Action_GS>(ScriptCreationMenu_GS.generated_script);
-                //Add popup close on new action script creation
-                ScriptCreationMenu_GS.on_script_creation_delegate += () => editorWindow.Close();*/
-
                 //Get mouse current position
                 Vector2 mousePos = Event.current.mousePosition;
                 //Open script creation menu

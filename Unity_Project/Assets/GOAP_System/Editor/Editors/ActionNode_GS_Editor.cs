@@ -12,7 +12,6 @@ namespace GOAP_S.UI
     //Class used to draw action nodes in the node editor and handle input
     public class ActionNode_GS_Editor
     {
-
         //Target fields
         private ActionNode_GS _target_action_node = null;
         //UI fields
@@ -26,6 +25,7 @@ namespace GOAP_S.UI
         private int _condition_editors_num = 0;
         private Property_GS_Editor[] _effect_editors = null;
         private int _effect_editors_num = 0;
+        private Action_GS_Editor _action_editor = null;
 
         //Constructor =====================
         public ActionNode_GS_Editor(ActionNode_GS new_target)
@@ -35,7 +35,7 @@ namespace GOAP_S.UI
             //Generate new description ui content
             _description_label = new GUIContent(_target_action_node.description);
             //Calculate new ui content size
-            
+
             //Allocate condition editors array
             _condition_editors = new Property_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate conditions UI
@@ -49,6 +49,11 @@ namespace GOAP_S.UI
             for (int k = 0; k < _target_action_node.effects_num; k++)
             {
                 AddEffectEditor(_target_action_node.effects[k]);
+            }
+            //Allocate action editor
+            if (_target_action_node.action != null)
+            {
+                _action_editor = new Action_GS_Editor(_target_action_node.action);
             }
         }
 
@@ -75,7 +80,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
             GUILayout.Label("Name");
             _target_action_node.name = GUILayout.TextField(_target_action_node.name, GUILayout.Width(90), GUILayout.ExpandWidth(true));
-            if(GUILayout.Button("X",GUILayout.Width(20),GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.ExpandWidth(false)))
             {
                 _target_action_node.name = "";
             }
@@ -91,7 +96,7 @@ namespace GOAP_S.UI
                 _target_action_node.description = "";
             }
             //Check if description has been modified
-            if(_target_action_node.description != prev_description)
+            if (_target_action_node.description != prev_description)
             {
                 //Generate new description ui content
                 _description_label = new GUIContent(_target_action_node.description);
@@ -163,7 +168,7 @@ namespace GOAP_S.UI
 
             //Action ----------------------
             //Action null case
-            if (_target_action_node.action == null)
+            if (_action_editor == null)
             {
                 //Action area
                 GUILayout.BeginHorizontal("HelpBox");
@@ -173,12 +178,10 @@ namespace GOAP_S.UI
                 GUILayout.EndHorizontal();
 
                 //Action select dropdown
-
-
                 if (GUILayout.Button("Set Action", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
-                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(_target_action_node));
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new ActionSelectMenu_GS(this));
                 }
             }
             //Action set case
@@ -192,7 +195,7 @@ namespace GOAP_S.UI
                 GUILayout.EndHorizontal();
 
                 //Draw selected action UI
-                _target_action_node.action.BlitUI();
+                _action_editor.DrawUI();
 
                 //Edit / Delete area
                 GUILayout.BeginHorizontal();
@@ -207,6 +210,8 @@ namespace GOAP_S.UI
                 {
                     //Set action node action to null
                     _target_action_node.action = null;
+                    //Set action editor to null
+                    _action_editor = null;
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 }
@@ -349,6 +354,7 @@ namespace GOAP_S.UI
                 return _target_action_node;
             }
         }
+
         public GUIContent description_label
         {
             get
@@ -361,11 +367,23 @@ namespace GOAP_S.UI
         {
             get
             {
-                if(!_label_allocated)
+                if (!_label_allocated)
                 {
                     _label_size = UIConfig_GS.left_white_style.CalcSize(_description_label);
                 }
                 return _label_size;
+            }
+        }
+
+        public Action_GS_Editor action_editor
+        {
+            get
+            {
+                return _action_editor;
+            }
+            set
+            {
+                _action_editor = value;
             }
         }
     }

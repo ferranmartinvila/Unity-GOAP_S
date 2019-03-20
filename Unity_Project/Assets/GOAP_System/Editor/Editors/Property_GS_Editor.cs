@@ -9,9 +9,9 @@ namespace GOAP_S.UI
     public class Property_GS_Editor
     {
         //Content fields
-        private EditorUIMode _UI_mode = EditorUIMode.SET_STATE; //Swap between edit and set state, so the suer can edit values or not
+        private EditorUIMode _UI_mode = EditorUIMode.SET_STATE; //Swap between edit and set state, so the user can edit values or not
         private PropertyUIMode _property_UI_mode = PropertyUIMode.IS_UNDEFINED; //Depending of the mode the user will be able to modify the properties with different options
-        private bool edit_value = true; //True if target property uses value false if uses a variable
+        private bool edit_value = true; //True if target property uses value, false if uses a variable
         private Property_GS _target_property = null; //The property is this editor working with
         private ActionNode_GS_Editor _target_action_node_editor = null; //The node editor is this property editor showing
         private Blackboard_GS _target_blackboard = null; //The blackboard is this editor working with

@@ -10,6 +10,7 @@ namespace GOAP_S.Tools
 {
     public enum EditorUIMode
     {
+        HIDE_STATE = 0,
         SET_STATE, //State in which the user can set action node attributes
         EDIT_STATE //State in which the user can set node description/name
     }
@@ -130,7 +131,7 @@ namespace GOAP_S.Tools
             return asset;
         }
 
-        //Find properties methods ===============
+        //Properties Methods ====================
         public static PropertyInfo[] FindAllPropertiesInGameObject(GameObject target)
         {
             //Total strings to allocate in the array
@@ -303,6 +304,24 @@ namespace GOAP_S.Tools
             return null;
         }
 
+        public static string ToShortString(this VariableType var_type)
+        {
+            switch (var_type)
+            {
+                case VariableType._bool: return "bool";
+                case VariableType._int: return "int";
+                case VariableType._float: return "float";
+                case VariableType._char: return "char";
+                case VariableType._string: return "string";
+                case VariableType._vector2: return "vector2";
+                case VariableType._vector3: return "vector3";
+                case VariableType._vector4: return "vector4";
+                    // TODO case VariableType._enum:        return typeof(enum);
+            }
+
+            //No found type return
+            return "undef";
+        }
         public static VariableType ToVariableType(this string system_type)
         {
             switch(system_type)
@@ -317,6 +336,20 @@ namespace GOAP_S.Tools
                 case "System.Vector3": return VariableType._vector3;
                 case "System.Vector4": return VariableType._vector4;
             }
+            return VariableType._undefined_var_type;
+        }
+
+        public static VariableType ToVariableType(this System.Type type)
+        {
+            if (type == typeof(bool)) return VariableType._bool;
+            if (type == typeof(int)) return VariableType._int;
+            if (type == typeof(float)) return VariableType._float;
+            if (type == typeof(double)) return VariableType._float;
+            if (type == typeof(char)) return VariableType._char;
+            if (type == typeof(string)) return VariableType._string;
+            if (type == typeof(Vector2)) return VariableType._vector2;
+            if (type == typeof(Vector3)) return VariableType._vector3;
+            if (type == typeof(Vector4)) return VariableType._vector4;
             return VariableType._undefined_var_type;
         }
 

@@ -208,6 +208,8 @@ namespace GOAP_S.UI
                             _new_script.agent = NodeEditor_GS.Instance.selected_agent;
                             //Place the new action in the selected action node
                             NodeEditor_GS.Instance.selected_agent.action_nodes[_node_index].action = _new_script;
+                            //Set action node editor action editor
+                            NodeEditor_GS.Instance.action_node_editors[_node_index].action_editor = new Action_GS_Editor(_new_script);
                             //This dummy gameobject job is done, we can delete it
                             DestroyImmediate(gameObject);
                             return;

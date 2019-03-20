@@ -62,7 +62,7 @@ namespace GOAP_S.AI
             else
             {
                 //In correct and new goal case we simply add it to the goal world state
-                agent.goal_world_state.SetGoal(variable_name, new Property_GS(variable_name, variable_value.GetType().ToString().ToVariableType(), operator_type, variable_value));
+                agent.goal_world_state.SetGoal(variable_name, new Property_GS(variable_name, variable_value.GetType().ToVariableType(), operator_type, variable_value));
             }
         }
 

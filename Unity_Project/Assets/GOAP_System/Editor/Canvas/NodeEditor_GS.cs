@@ -312,6 +312,22 @@ namespace GOAP_S.UI
             }
         }
 
+        public ActionNode_GS_Editor[] action_node_editors
+        {
+            get
+            {
+                return _action_node_editors;
+            }
+        }
+
+        public int action_node_editors_num
+        {
+            get
+            {
+                return _action_node_editors_num;
+            }
+        }
+
         public Blackboard_GS_Editor blackboard_editor
         {
             get

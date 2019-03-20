@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using GOAP_S.Tools;
 using System.Runtime.CompilerServices;
 using System.Reflection;
 
 namespace GOAP_S.Planning
 {
-    public class Property_GS //: ISerializationCallbackReceiver
+    //BlockedProperty class attribute
+    [AttributeUsage(AttributeTargets.Property, Inherited = true)]
+    public sealed class BlockedProperty_GS : Attribute
+    {
+
+    }
+
+    public class Property_GS
     {
         //Content fields
         [SerializeField] private VariableType _variable_type = VariableType._undefined_var_type; //Variable type we are working with in this condition

@@ -160,6 +160,10 @@ namespace GOAP_S.AI
         {
             get
             {
+                if(_action == null)
+                {
+                    return int.MaxValue; //Return max value to avoid null actions during planning
+                }
                 return _action.cost;
             }
         }

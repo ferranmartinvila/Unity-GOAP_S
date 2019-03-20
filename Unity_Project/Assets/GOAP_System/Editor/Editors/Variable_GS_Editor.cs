@@ -87,7 +87,7 @@ namespace GOAP_S.UI
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_',' '), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_variable.type.ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Show variable name
             GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(80.0f));
@@ -170,7 +170,7 @@ namespace GOAP_S.UI
             }
 
             //Show variable type
-            GUILayout.Label(_target_variable.type.ToString().Replace('_', ' '), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_variable.type.ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Edit variable name
             new_name = EditorGUILayout.TextField(new_name, GUILayout.MaxWidth(80.0f));
