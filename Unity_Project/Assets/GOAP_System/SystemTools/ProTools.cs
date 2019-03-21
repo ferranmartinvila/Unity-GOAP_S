@@ -176,7 +176,7 @@ namespace GOAP_S.Tools
 
         public static PropertyInfo[] FindConcretePropertiesInGameObject(GameObject target, Type target_property_type)
         {
-            //Allocate the list
+            //Allocate the properties list
             List<PropertyInfo> properties_list = new List<PropertyInfo>();
 
             //Collect game object properties that match with the target type
@@ -202,8 +202,40 @@ namespace GOAP_S.Tools
                 }
             }
 
-            //Retur list converted to array
+            //Return list converted to array
             return properties_list.ToArray();
+        }
+
+        public static FieldInfo [] FindConcreteFieldsInGameObject(GameObject target, Type target_field_type)
+        {
+            //Allocate the fields list
+            List<FieldInfo> fields_list = new List<FieldInfo>();
+
+            //Collect game object fields that match with the target type
+            foreach(FieldInfo field_info in typeof(GameObject).GetFields())
+            {
+                if(field_info.FieldType == target_field_type)
+                {
+                    fields_list.Add(field_info);
+                }
+            }
+
+            //Collect components fields that match with the target type
+            Component[] agent_components = target.GetComponents(typeof(Component));
+            foreach(Component comp in agent_components)
+            {
+                FieldInfo[] comp_fields = comp.GetType().GetFields();
+                foreach(FieldInfo comp_field_info in comp_fields)
+                {
+                    if(comp_field_info.FieldType == target_field_type)
+                    {
+                        fields_list.Add(comp_field_info);
+                    }
+                }
+            }
+
+            //Return list converted to array
+            return fields_list.ToArray();
         }
 
         public static void AllocateFromVariableType(VariableType variable_type, ref object value)
