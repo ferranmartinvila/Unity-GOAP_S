@@ -16,8 +16,6 @@ namespace GOAP_S.UI
         static private object _variable_value = null; //New variable value
         //Bind properties/fields
         private int _selected_index = -1;
-        private PropertyInfo[] _properties_info = null;
-        private FieldInfo[] _fields_info = null;
         private string[] _paths;
         private string[] _display_paths;
         private int _bind_dropdown_slot = -1;
@@ -60,9 +58,9 @@ namespace GOAP_S.UI
                 ProTools.AllocateFromVariableType(_variable_type, ref _variable_value);
 
                 //Get all the properties in the agent gameobject
-                _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
+                PropertyInfo[] _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
                 //Get all fields in th agent gameobject
-                _fields_info = ProTools.FindConcreteFieldsInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
+                FieldInfo[] _fields_info = ProTools.FindConcreteFieldsInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
 
                 //Allocate strings arrays
                 _paths = new string[_properties_info.Length + _fields_info.Length];
@@ -149,7 +147,7 @@ namespace GOAP_S.UI
                         if (_selected_index != -1)
                         {
                             //Bind new variable
-                            new_variable.BindField(bind_selected_path, null);
+                            new_variable.BindField(_paths[_selected_index], null);
                         }
                         //Send the new variable to the blackboard editor to generate the variable editor
                         NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
@@ -179,21 +177,6 @@ namespace GOAP_S.UI
         }
 
         //Get/Set methods =============
-        private string bind_selected_path
-        {
-            get
-            {
-                if (_selected_index == -1 || _selected_index > _paths.Length - 1)
-                {
-                    return "Property bind not set";
-                }
-                else
-                {
-                    return _paths[_selected_index];
-                }
-            }
-        }
-
         private string bind_selected_display_path
         {
             get
@@ -204,7 +187,7 @@ namespace GOAP_S.UI
                 }
                 else
                 {
-                    string[] parts = bind_selected_path.Split('.');
+                    string[] parts = _paths[_selected_index].Split('.');
                     return ("." + parts.Last());
                 }
             }
