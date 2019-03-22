@@ -119,6 +119,8 @@ namespace GOAP_S.UI
             //Draw agent behaviour editor
             GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
+            //TODO: Draw planning nodes
+
             EndWindows();
         }
 
