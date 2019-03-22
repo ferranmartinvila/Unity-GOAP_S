@@ -12,18 +12,22 @@ namespace GOAP_S.UI
         //Content fields
         private EditorUIMode _UI_mode = EditorUIMode.HIDE_STATE; //Swap between edit and set state, so the user can edit values or not
         private Action_GS _target_action = null; //Target action script
-        private KeyValuePair<bool, PropertyInfo> [] _properties = null; //Non blocked properties array, bool is true if the property setter is defined
-        private int _properties_num = 0; //Properties num
+        private PropertyInfo[] _properties = null; //Non blocked properties array, bool is true if the property setter is defined
+        private FieldInfo[] _fields = null; //Public fields
+        private object[] _values = null; //All the selected values (properties + fields)
 
         //Contructors =================
         public Action_GS_Editor(Action_GS target)
         {
             //Set target action
             _target_action = target;
-            //Get action properties info
-            List<KeyValuePair<bool, PropertyInfo>> valid_properties = new List<KeyValuePair<bool, PropertyInfo>>();
 
-            PropertyInfo [] all_properties = _target_action.GetType().GetProperties();
+            //Temporal values list
+            List<object> temp_value_list = new List<object>();
+
+            //Get action properties info
+            PropertyInfo[] all_properties = _target_action.GetType().GetProperties(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            List<PropertyInfo> valid_properties = new List<PropertyInfo>();
             //Iterate all the action properties
             foreach (PropertyInfo property in all_properties)
             {
@@ -33,16 +37,45 @@ namespace GOAP_S.UI
                 {
                     continue;
                 }
-                //Try to get property set method
-                MethodInfo set_method = property.GetSetMethod();
-                //Allocate a new pair with the property and the set method info
-                KeyValuePair<bool, PropertyInfo> new_property = new KeyValuePair<bool, PropertyInfo>(set_method != null, property);
-                //Add the generated pair in the properties info list
-                valid_properties.Add(new_property);
+                //Add the non blocked property to the list
+                if(property.CanRead)
+                {
+                    //Add the property value
+                    temp_value_list.Add(property.GetGetMethod().Invoke(_target_action, null));
+                }
+                else
+                {
+                    //Add null value to mantain a logic index
+                    temp_value_list.Add(null);
+                }
+                //Add the non blocked property
+                valid_properties.Add(property);
             }
             //Finally tranform the generated list to an array and store it
             _properties = valid_properties.ToArray();
-            _properties_num = valid_properties.Count;
+
+            //Get fields info
+            FieldInfo[] all_fields = _target_action.GetType().GetFields(BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+            List<FieldInfo> valid_fields = new List<FieldInfo>();
+            //Iterate all the action fields
+            foreach(FieldInfo field in all_fields)
+            {
+                //Blocked fields are not stored
+                object[] block_attribute = field.GetCustomAttributes(typeof(BlockedField_GS), true);
+                if(block_attribute.Length != 0)
+                {
+                    continue;
+                }
+                //Add the non blocked field to the list
+                temp_value_list.Add(field.GetValue(_target_action));
+                //Add the non blocked field
+                valid_fields.Add(field);
+            }
+            //Finally transform the generated list to an array and store it
+            _fields = valid_fields.ToArray();
+
+            //Store the temp values list to the final array
+            _values = temp_value_list.ToArray();
         }
 
         //Loop Methods ====================
@@ -87,49 +120,115 @@ namespace GOAP_S.UI
         private void DrawInEdit()
         {
             GUILayout.BeginVertical();
-            
+
+            //Values local data
+            int values_index = 0;
+            object current_value = null;
+
             //Hide button
             if (GUILayout.Button("Hide"))
             {
                 _UI_mode = EditorUIMode.HIDE_STATE;
             }
-            //Draw properties
-            //Title
-            GUILayout.Label("Properties:");
-            //Iterate the previiously selected properties
-            for(int k = 0; k < _properties_num; k++)
-            {
-                GUILayout.BeginHorizontal();
 
-                //Get property value in the target action instance
-                object value = _properties[k].Value.GetGetMethod().Invoke(_target_action, null);
-                //In null case show error message
-                if (value == null)
+            //Draw properties
+            if (_properties.Length > 0)
+            {
+                //Title
+                GUILayout.Label("Properties:");
+                //Iterate the previously selected properties
+                for (int k = 0; k < _properties.Length; k++)
                 {
-                    GUILayout.Label(_properties[k].Value.Name + " = null", UIConfig_GS.left_bold_red_style);
-                }
-                else
-                {
-                    //Property field type string
-                    GUILayout.Label(value.GetType().ToVariableType().ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
-                    //Property name string
-                    GUILayout.Label(_properties[k].Value.Name, GUILayout.MaxWidth(80.0f));
-                    //Property value
-                    if (_properties[k].Key == true)
+                    GUILayout.BeginHorizontal();
+
+                    //Scope current value
+                    current_value = _values[values_index];
+
+                    if (current_value == null)
                     {
-                        //Defined setter case
-                        //Generate field UI
-                        ProTools.ValueFieldByVariableType(value.GetType().ToVariableType(), ref value);
-                        //Set field input
-                        _properties[k].Value.GetSetMethod().Invoke(_target_action, new object[] { value });
+                        if (_properties[k].CanRead == false)
+                        {
+                            //Only write type
+                            GUILayout.Label("no_getter", UIConfig_GS.left_bold_style, GUILayout.MaxWidth(80.0f));
+                            //Property name string
+                            GUILayout.Label(_properties[k].Name, GUILayout.MaxWidth(100.0f));
+                        }
+                        else
+                        {
+                            //In null case show error message
+                            GUILayout.Label(_properties[k].Name + " = null", UIConfig_GS.left_bold_red_style);
+                        }
                     }
                     else
                     {
-                        //Non defined setter case
-                        GUILayout.Label(value.ToString(), GUILayout.MaxWidth(70.0f));
+                        //Property type string
+                        GUILayout.Label(current_value.GetType().ToVariableType().ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(80.0f));
+                        //Property name string
+                        GUILayout.Label(_properties[k].Name, GUILayout.MaxWidth(100.0f));
+                        //Property value
+                        if (_properties[k].CanWrite)
+                        {
+                            //Defined setter case
+                            //Generate property UI
+                            ProTools.ValueFieldByVariableType(current_value.GetType().ToVariableType(), ref _values[values_index]);
+                            //Set property input
+                            if (current_value.Equals(_values[values_index]) == false)
+                            {
+                                _properties[k].GetSetMethod().Invoke(_target_action, new object[] { _values[values_index] });
+                            }
+                        }
+                        else
+                        {
+                            //Non defined setter case
+                            GUILayout.Label(current_value.ToString(), GUILayout.MaxWidth(70.0f));
+                        }
                     }
+
+                    //Update values index
+                    values_index += 1;
+
+                    GUILayout.EndHorizontal();
                 }
-                GUILayout.EndHorizontal();
+            }
+
+            //Draw fields
+            if (_fields.Length > 0)
+            {
+                //Title
+                GUILayout.Label("Fields:");
+                //Iterate the previously selected fields
+                for (int k = 0; k < _fields.Length; k++)
+                {
+                    GUILayout.BeginHorizontal();
+
+                    //Scope current value
+                    current_value = _values[values_index];
+
+                    //In null case show error message
+                    if (current_value == null)
+                    {
+                        GUILayout.Label(_fields[k].Name + " = null", UIConfig_GS.left_bold_red_style);
+                    }
+                    else
+                    {
+                        //Field type string
+                        GUILayout.Label(current_value.GetType().ToVariableType().ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(80.0f));
+                        //Field name string
+                        GUILayout.Label(_fields[k].Name, GUILayout.MaxWidth(100.0f));
+                        //Field value
+                        //Generate field UI
+                        ProTools.ValueFieldByVariableType(current_value.GetType().ToVariableType(), ref _values[values_index]);
+                        //Set field input
+                        if (current_value.Equals(_values[values_index]) == false)
+                        {
+                            _fields[k].SetValue(_target_action, current_value);
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+
+                    //Update values index
+                    values_index += 1;
+                }
             }
 
             GUILayout.EndVertical();

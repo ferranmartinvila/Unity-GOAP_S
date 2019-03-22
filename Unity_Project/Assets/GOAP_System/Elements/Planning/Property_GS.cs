@@ -6,7 +6,14 @@ using System.Reflection;
 
 namespace GOAP_S.Planning
 {
-    //BlockedProperty class attribute
+    //BlockedField field attribute
+    [AttributeUsage(AttributeTargets.Field, Inherited = true)]
+    public sealed class BlockedField_GS : Attribute
+    {
+
+    }
+
+    //BlockedProperty property attribute
     [AttributeUsage(AttributeTargets.Property, Inherited = true)]
     public sealed class BlockedProperty_GS : Attribute
     {
