@@ -80,8 +80,12 @@ namespace GOAP_S.Tools
             }
         }
 
+        //T Methods =============================
+        public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
+        {
+            return (T)(object)Delegate.CreateDelegate(typeof(T), instance, method_info);
+        }
 
-        //Universal allocate class method =======
         public static T AllocateClass<T>(this object myobj)
         {
             //Get the class to allocate type
@@ -92,7 +96,6 @@ namespace GOAP_S.Tools
             return (T)x;
         }
 
-        //Find assets by type T =================
         public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
         {
             List<T> assets = new List<T>();
@@ -114,7 +117,6 @@ namespace GOAP_S.Tools
             return assets;
         }
 
-        //Find asset by path ====================
         public static T FindAssetByPath<T>(string path) where T : UnityEngine.Object
         {
             string[] guids = AssetDatabase.FindAssets(null, path.Split('\\'));
@@ -661,24 +663,7 @@ namespace GOAP_S.Tools
             }
         }
 
-        //Extra Methods =========================
-        //Create a delegate
-        public static T CreateDelegate<T>(this MethodInfo method_info, object instance)
-        {
-            return (T)(object)Delegate.CreateDelegate(typeof(T), instance, method_info);
-        }
-
-        //Change key in a dictionary
-        public static void RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey original_key, TKey new_key)
-        {
-            //First get the value stored by the original key
-            TValue value = dictionary[original_key];
-            //Next remove the variable with the original key
-            dictionary.Remove(original_key);
-            //Finally add a new variable with the value that we get and store it with the new key
-            dictionary[new_key] = value;
-        }
-
+        //Path Methods ==========================
         public static string PathToName(this string original)
         {
             string result;
@@ -694,6 +679,38 @@ namespace GOAP_S.Tools
             int folder_index = original.LastIndexOf('/');
             result = original.Substring(folder_index, original.Length - folder_index);
             return result;
+        }
+
+        //Rect Methods ==========================
+        public static Rect Scale(this Rect rect, float scale, Vector2 pivot)
+        {
+            Rect scaled = rect;
+            scaled.x -= pivot.x;
+            scaled.y -= pivot.y;
+            scaled.xMin *= scale;
+            scaled.xMax *= scale;
+            scaled.yMin *= scale;
+            scaled.yMax *= scale;
+            scaled.x += pivot.x;
+            scaled.y += pivot.y;
+            return scaled;
+        }
+
+        public static Vector2 TopLeft(this Rect rect)
+        {
+            return new Vector2(rect.xMin, rect.yMin);
+        }
+
+        //Extra Methods =========================
+        //Change key in a dictionary
+        public static void RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey original_key, TKey new_key)
+        {
+            //First get the value stored by the original key
+            TValue value = dictionary[original_key];
+            //Next remove the variable with the original key
+            dictionary.Remove(original_key);
+            //Finally add a new variable with the value that we get and store it with the new key
+            dictionary[new_key] = value;
         }
     }
 }

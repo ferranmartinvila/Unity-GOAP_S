@@ -5,13 +5,8 @@ using GOAP_S.AI;
 namespace GOAP_S.UI
 {
     [InitializeOnLoad]
-    public sealed class NodePlanning_GS : EditorWindow
+    public sealed class NodePlanning_GS : ZoomableCanvas_GS
     {
-        //UI fields
-        private static Texture2D _back_texture = null; //Texture in the background of the window
-        //Target fields
-        private static Agent_GS _selected_agent = null; //The agent selected by the user
-
         //Static instance of this class
         private static NodePlanning_GS _Instance;
         private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
@@ -161,18 +156,6 @@ namespace GOAP_S.UI
                     _back_texture.Apply();
                 }
                 return _back_texture;
-            }
-        }
-
-        public Agent_GS selected_agent
-        {
-            get
-            {
-                return _selected_agent;
-            }
-            set
-            {
-                _selected_agent = value;
             }
         }
     }

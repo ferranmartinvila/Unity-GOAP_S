@@ -6,17 +6,14 @@ using GOAP_S.Tools;
 namespace GOAP_S.UI
 {
     [InitializeOnLoad]
-    public sealed class NodeEditor_GS : EditorWindow
+    public sealed class NodeEditor_GS : ZoomableCanvas_GS
     {
         //State fields
         private EventType _last_event_type; //Last event type
         //UI fields
-        private static Texture2D _back_texture = null; //Texture in the background of the window
-        private static Vector2 _mouse_position = Vector2.zero; //Used to track the mouse position in this window
         private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
         private float _mouse_motion_relation = 1.2f; //Mouse motion is multiplied for this value to accurate the drag speed
         //Target fields
-        private static Agent_GS _selected_agent = null; //The agent selected by the user
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
         private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
@@ -79,7 +76,7 @@ namespace GOAP_S.UI
 
         private void OnEnable()
         {
-            //Configure window on enable(title)
+            //Configure window on enable(title/min size)
             ConfigureWindow();
             //Reset selection
             _selected_agent = null;
@@ -92,6 +89,62 @@ namespace GOAP_S.UI
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
 
+            //Handle input
+            if (HandleInput() == false)
+            {
+                return;
+            }
+            
+            //Mark the beginning area of the popup windows
+            BeginWindows();
+
+            //GUI.Box(new Rect(0.0f - _zoom_position.x, 0.0f - _zoom_position.y, 130.0f, 50.0f), "Zoomed Box");
+
+            // You can also use GUILayout inside the zoomed area.
+            //GUILayout.BeginArea(new Rect(0.0f - _zoom_position.x, 0.0f - _zoom_position.y, 130.0f, 50.0f));
+            /*GUILayout.Button("Zoomed Button 1");
+            GUILayout.Button("Zoomed Button 2");*/
+
+            //Zommable layout
+            BeginZoomableLayout();
+
+            //Draw action nodes
+            for (int k = 0; k < _action_node_editors_num; k++)
+            {
+                //Focus action node
+                ActionNode_GS node = _selected_agent.action_nodes[k];
+                //Focus action node editor
+                ActionNode_GS_Editor node_editor = _action_node_editors[k];
+                //Show node window
+                Rect test_rect = new Rect(node.window_rect);
+                test_rect.x += _zoom_position.x * 2.0f;
+                test_rect.y += _zoom_position.y * 2.0f;
+                //_zoom_position = Vector2.zero;
+                Rect node_rect = GUILayout.Window(node.id, test_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                //Show description label
+                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.left_white_style);
+
+                //Update the node position 
+                /*if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
+                {
+                    node.window_position = new Vector2(node_rect.x, node_rect.y);
+                }*/
+            }
+            //GUILayout.EndArea();
+
+            EndZoomableLayout();
+
+            //Draw agent blackboard
+            GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            
+            //End area of popup windows
+            EndWindows();
+
+        }
+
+        private bool HandleInput()
+        {
+            //Null agent input
             if (_selected_agent == null)
             {
                 //Show non agent title
@@ -109,11 +162,11 @@ namespace GOAP_S.UI
                         PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
                     }
                 }
-                return;
+                return false;
             }
 
             //Track mouse position and mouse motion
-            if (_last_event_type == EventType.MouseUp ||_last_event_type == EventType.MouseDown)
+            if (_last_event_type == EventType.MouseUp || _last_event_type == EventType.MouseDown)
             {
                 _mouse_motion = Vector2.zero;
                 _mouse_position = Event.current.mousePosition;
@@ -123,7 +176,7 @@ namespace GOAP_S.UI
                 _mouse_motion = (Event.current.mousePosition - _mouse_position) * _mouse_motion_relation;
                 _mouse_position = Event.current.mousePosition;
             }
-        
+
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
             {
@@ -137,7 +190,7 @@ namespace GOAP_S.UI
                 }
 
                 //Middle click
-                if (Event.current.button == 2)
+                /*if (Event.current.button == 2)
                 {
                     //Check if motion is not null
                     if (_mouse_motion.x != 0.0f || _mouse_motion.y != 0.0f)
@@ -155,36 +208,14 @@ namespace GOAP_S.UI
                     _last_event_type = Event.current.type;
                     //On drag input you need to update UI constantly
                     Repaint();
-                }
+                }*/
             }
 
-            //Mark the beginning area of the popup windows
-            BeginWindows();
 
-            //Draw action nodes
-            for (int k = 0; k < _action_node_editors_num; k++)
-            {
-                //Focus action node
-                ActionNode_GS node = _selected_agent.action_nodes[k];
-                //Focus action node editor
-                ActionNode_GS_Editor node_editor = _action_node_editors[k];
-                //Show node window
-                Rect node_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-                //Show description label
-                GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.left_white_style);
+            //Zoom input
+            HandleZoomInput();
 
-                //Move the node if it's position is editable
-                if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
-                {
-                    node.window_position = new Vector2(node_rect.x, node_rect.y);
-                }
-            }
-            
-            //Draw agent blackboard
-            GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            
-            //End area of popup windows
-            EndWindows();
+            return true;
         }
 
         //Functionality Methods =======
@@ -300,18 +331,6 @@ namespace GOAP_S.UI
             }
         }
 
-        public Agent_GS selected_agent
-        {
-            get
-            {
-                return _selected_agent;
-            }
-            set
-            {
-                _selected_agent = value;
-            }
-        }
-
         public ActionNode_GS_Editor[] action_node_editors
         {
             get
@@ -337,14 +356,6 @@ namespace GOAP_S.UI
             set
             {
                 _blackboard_editor = value;
-            }
-        }
-
-        public Vector2 mouse_position
-        {
-            get
-            {
-                return _mouse_position;
             }
         }
     }

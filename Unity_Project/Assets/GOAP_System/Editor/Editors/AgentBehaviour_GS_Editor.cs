@@ -8,7 +8,7 @@ namespace GOAP_S.UI
     public class AgentBehaviour_GS_Editor
     {
         //UI fields
-        private Rect _window = Rect.zero; //Rect used to place bb window
+        private Rect _window = Rect.zero; //Rect used to place the editor window
         //Content fields
         private Agent_GS _target_agent = null; //The agent is the editor pointing
         private string _id = null; //Window UUID
