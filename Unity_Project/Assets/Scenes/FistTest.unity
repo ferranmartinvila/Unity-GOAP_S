@@ -240,10 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: un_named
   obj_refs: []
-  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
-  serialized_action_nodes: '[{"_window_rect":{"xMin":407.0,"yMin":151.0,"xMax":507.0,"yMax":251.0},"_id":"a34e761d-ca91-46d4-b497-d020dff37de0","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"defence\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":8,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test2\",\"_cost\":1,\"$type\":\"test2\"}"},{"_window_rect":{"xMin":112.0,"yMin":170.0,"xMax":212.0,"yMax":270.0},"_id":"6d1bc964-884f-498d-979b-bab493151e42","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test1\",\"_cost\":1,\"$type\":\"test1\"}"},null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{"damage":{"_value":0,"_name":"damage","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"defence":{"_value":0,"_name":"defence","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
+  serialized_behaviour: 
+  serialized_action_nodes: '[{"_window_rect":{"xMin":32.0,"yMin":57.0,"xMax":249.0,"yMax":309.0},"_id":"b6c4dec8-e853-45b1-ae17-d281d73c94a1","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":null,"_variables":{}}'

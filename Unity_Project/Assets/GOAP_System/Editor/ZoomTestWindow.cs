@@ -29,15 +29,25 @@ public static class RectExtensions
 
 public class EditorZoomArea
 {
+
+}
+
+
+
+public class ZoomTestWindow : EditorWindow
+{
     private const float kEditorWindowTabHeight = 21.0f;
     private static Matrix4x4 _prevGuiMatrix;
 
-    public static Rect Begin(float zoomScale, Rect screenCoordsArea)
+    public Rect Begin(float zoomScale, Rect screenCoordsArea)
     {
         GUI.EndGroup();        // End the group Unity begins automatically for an EditorWindow to clip out the window tab. This allows us to draw outside of the size of the EditorWindow.
 
         Rect clippedArea = screenCoordsArea.ScaleSizeBy(1.0f / zoomScale, screenCoordsArea.TopLeft());
         clippedArea.y += kEditorWindowTabHeight;
+        clippedArea.x -= _zoomCoordsOrigin.x;
+        clippedArea.y -= _zoomCoordsOrigin.y;
+
         GUI.BeginGroup(clippedArea);
 
         _prevGuiMatrix = GUI.matrix;
@@ -54,12 +64,7 @@ public class EditorZoomArea
         GUI.EndGroup();
         GUI.BeginGroup(new Rect(0.0f, kEditorWindowTabHeight, Screen.width * 2.0f, Screen.height));
     }
-}
 
-
-
-public class ZoomTestWindow : EditorWindow
-{
     [MenuItem("Window/Zoom Test")]
     private static void Init()
     {
@@ -88,12 +93,12 @@ public class ZoomTestWindow : EditorWindow
         // with the width and height being scaled versions of the original/unzoomed area's width and height.
         //this->windo
 
-        EditorZoomArea.Begin(_zoom, _zoomArea);
+        Begin(_zoom, _zoomArea);
 
         //GUI.Box(new Rect(0.0f - _zoomCoordsOrigin.x, 0.0f - _zoomCoordsOrigin.y, 100.0f, 25.0f), "Zoomed Box");
 
         // You can also use GUILayout inside the zoomed area.
-        GUILayout.BeginArea(new Rect(000.0f - _zoomCoordsOrigin.x, 0.0f - _zoomCoordsOrigin.y, Screen.width * 2.0f, Screen.height));
+        GUILayout.BeginArea(new Rect(0.0f - _zoomCoordsOrigin.x, 0.0f - _zoomCoordsOrigin.y, Screen.width * 2.0f, Screen.height));
 
         BeginWindows();
 
@@ -101,7 +106,7 @@ public class ZoomTestWindow : EditorWindow
         //Rect node_rect = GUILayout.Window(5, new Rect(50,50,50,50), null,"test");
 
         //GUILayout.Button("Zoomed Button 1");
-       // GUILayout.Button("Zoomed Button 2");
+       //GUILayout.Button("Zoomed Button 2");
 
         //Focus action node
         ActionNode_GS node = NodeEditor_GS.Instance.selected_agent.action_nodes[0];
@@ -112,18 +117,19 @@ public class ZoomTestWindow : EditorWindow
         test_rect.x += _zoom_position.x * 2.0f;
         test_rect.y += _zoom_position.y * 2.0f;*/
         //_zoom_position = Vector2.zero;
-        GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+        node.window_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
         EndWindows();
 
         GUILayout.EndArea();
 
-        EditorZoomArea.End();
+        End();
 
 
     }
 
     private void DrawNonZoomArea()
     {
+       
         GUI.Box(new Rect(0.0f, 200.0f, 600.0f, 50.0f), "Adjust zoom of middle box with slider or mouse wheel.\nMove zoom area dragging with middle mouse button or Alt+left mouse button.");
         //_zoom = EditorGUI.Slider(new Rect(0.0f, 50.0f, 600.0f, 25.0f), _zoom, kZoomMin, kZoomMax);
         //GUI.Box(new Rect(0.0f, 300.0f - 25.0f, 600.0f, 25.0f), "Unzoomed Box");

@@ -10,9 +10,6 @@ namespace GOAP_S.UI
     {
         //State fields
         private EventType _last_event_type; //Last event type
-        //UI fields
-        private Vector2 _mouse_motion = Vector2.zero; //Track the mouse motion, usefull in drag functionality
-        private float _mouse_motion_relation = 1.2f; //Mouse motion is multiplied for this value to accurate the drag speed
         //Target fields
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
@@ -54,6 +51,8 @@ namespace GOAP_S.UI
 
         private void OnSelectionChange()
         {
+            base.OnInspectorUpdate();
+
             if (Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
             {
                 _selected_agent = null;
@@ -87,26 +86,17 @@ namespace GOAP_S.UI
         private void OnGUI()
         {
             //Draw background texture 
-            GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
+            GUI.DrawTexture(new Rect(0, 0, position.width, position.height), back_texture, ScaleMode.StretchToFill);
 
-            //Handle input
-            if (HandleInput() == false)
-            {
-                return;
-            }
-            
+            //Zoomable layout
+            BeginZoomableLayout();
+
+            //Zoomable layout area
+            GUILayout.BeginArea(new Rect(-ProTools.CANVAS_SIZE -_zoom_position.x,-ProTools.CANVAS_SIZE - _zoom_position.y, position.width * 40.0f, position.height * 40.0f));
+            Debug.Log(position.width * 40.0f);
+
             //Mark the beginning area of the popup windows
             BeginWindows();
-
-            //GUI.Box(new Rect(0.0f - _zoom_position.x, 0.0f - _zoom_position.y, 130.0f, 50.0f), "Zoomed Box");
-
-            // You can also use GUILayout inside the zoomed area.
-            //GUILayout.BeginArea(new Rect(0.0f - _zoom_position.x, 0.0f - _zoom_position.y, 130.0f, 50.0f));
-            /*GUILayout.Button("Zoomed Button 1");
-            GUILayout.Button("Zoomed Button 2");*/
-
-            //Zommable layout
-            BeginZoomableLayout();
 
             //Draw action nodes
             for (int k = 0; k < _action_node_editors_num; k++)
@@ -116,30 +106,31 @@ namespace GOAP_S.UI
                 //Focus action node editor
                 ActionNode_GS_Editor node_editor = _action_node_editors[k];
                 //Show node window
-                Rect test_rect = new Rect(node.window_rect);
-                test_rect.x += _zoom_position.x * 2.0f;
-                test_rect.y += _zoom_position.y * 2.0f;
-                //_zoom_position = Vector2.zero;
-                Rect node_rect = GUILayout.Window(node.id, test_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                node.window_rect = GUILayout.Window(node.id, node.window_rect, node_editor.DrawUI, node.name, UIConfig_GS.Instance.node_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
                 //Show description label
                 GUI.Label(new Rect(node.window_position.x - node_editor.label_size.x, node.window_position.y, node_editor.label_size.x, node_editor.label_size.y), node.description, UIConfig_GS.left_white_style);
-
-                //Update the node position 
-                /*if (node_rect.x != node.window_position.x || node_rect.y != node.window_position.y)
-                {
-                    node.window_position = new Vector2(node_rect.x, node_rect.y);
-                }*/
             }
-            //GUILayout.EndArea();
 
-            EndZoomableLayout();
-
-            //Draw agent blackboard
+            //Reset matrix to keep blackboard window scale 
+            GUI.matrix = Matrix4x4.identity;
+            //Update blackboard window to simulate static position on padding
+            _blackboard_editor.window_position = new Vector2(position.width - ProTools.BLACKBOARD_MARGIN + _zoom_position.x * 2.0f + ProTools.CANVAS_SIZE, 0 + _zoom_position.y + ProTools.CANVAS_SIZE);
+            //Display blackboard window
             GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            
+
+            Debug.Log(_zoom_position);
+
             //End area of popup windows
             EndWindows();
 
+            //End zoomable layout area
+            GUILayout.EndArea();
+
+            //End zoomable layout
+            EndZoomableLayout();
+
+            //Handle input
+            HandleInput();
         }
 
         private bool HandleInput()
@@ -165,18 +156,6 @@ namespace GOAP_S.UI
                 return false;
             }
 
-            //Track mouse position and mouse motion
-            if (_last_event_type == EventType.MouseUp || _last_event_type == EventType.MouseDown)
-            {
-                _mouse_motion = Vector2.zero;
-                _mouse_position = Event.current.mousePosition;
-            }
-            else
-            {
-                _mouse_motion = (Event.current.mousePosition - _mouse_position) * _mouse_motion_relation;
-                _mouse_position = Event.current.mousePosition;
-            }
-
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
             {
@@ -187,30 +166,10 @@ namespace GOAP_S.UI
                     Vector2 _mouse_pos = Event.current.mousePosition;
                     //Show node editor popup menu
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodeEditorPopMenu_GS());
+
+                    return false;
                 }
-
-                //Middle click
-                /*if (Event.current.button == 2)
-                {
-                    //Check if motion is not null
-                    if (_mouse_motion.x != 0.0f || _mouse_motion.y != 0.0f)
-                    {
-                        //Iterate all the nodes 
-                        for (int k = 0; k < _selected_agent.action_nodes_num; k++)
-                        {
-                            //Get the current action node
-                            ActionNode_GS node = ((ActionNode_GS)_selected_agent.action_nodes[k]);
-                            //Modify node position
-                            node.window_position = new Vector2(node.window_position.x + (int)_mouse_motion.x, node.window_position.y + (int)_mouse_motion.y);
-                        }
-                    }
-                    //Save the last event related with the mouse input(MouseUp is always the last)
-                    _last_event_type = Event.current.type;
-                    //On drag input you need to update UI constantly
-                    Repaint();
-                }*/
             }
-
 
             //Zoom input
             HandleZoomInput();

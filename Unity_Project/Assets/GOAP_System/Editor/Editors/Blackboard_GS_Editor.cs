@@ -29,8 +29,6 @@ namespace GOAP_S.UI
                 //Generate a variable editor
                 AddVariableEditor(variable);
             }
-            //Define on resize callback
-            NodeEditor_GS.Instance.on_window_resize_delegate += () => window_position = new Vector2(NodeEditor_GS.Instance.position.width - ProTools.BLACKBOARD_MARGIN, 0);
         }
 
         //Loop methods ====================

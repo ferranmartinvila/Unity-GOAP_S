@@ -61,6 +61,7 @@ namespace GOAP_S.Tools
     public static class ProTools
     {
         //Defines ===============================
+        public const int CANVAS_SIZE = 2000;
         public const int BLACKBOARD_MARGIN = 300;
         public const int INITIAL_ARRAY_SIZE = 10;
         public const int TRIES_LIMIT = 4;
