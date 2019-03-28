@@ -22,7 +22,7 @@ namespace GOAP_S.UI
         protected const float _max_zoom = 1.2f;
         protected float _current_zoom = 1.0f;
         protected Rect _zoom_area = Rect.zero;
-        protected Vector2 _zoom_position = new Vector2(ProTools.CANVAS_SIZE * 0.5f, ProTools.CANVAS_SIZE * 0.5f);
+        protected Vector2 _zoom_position = new Vector2(ProTools.CANVAS_SIZE * 0.5f, ProTools.CANVAS_SIZE * 0.5f); //Canvas center
 
         protected Texture2D _back_texture = null; //Texture in the background of the window
         protected static Agent_GS _selected_agent = null; //The agent selected by the user
@@ -50,25 +50,60 @@ namespace GOAP_S.UI
         {
             if (Event.current.type == EventType.ScrollWheel)
             {
-                Vector2 screenCoordsMousePos = Event.current.mousePosition;
+                /*Vector2 screenCoordsMousePos = Event.current.mousePosition;
                 Vector2 delta = Event.current.delta;
-                Vector2 zoomCoordsMousePos = ScreenCoordsToZoomCoords(screenCoordsMousePos);
-                float zoomDelta = -delta.y / 150.0f;
-                float oldZoom = _current_zoom;
-                _current_zoom += zoomDelta;
-                _current_zoom = Mathf.Clamp(_current_zoom, _min_zoom, _max_zoom);
-                _zoom_position += (zoomCoordsMousePos - _zoom_position) - (oldZoom / _current_zoom) * (zoomCoordsMousePos - _zoom_position);
+                Vector2 zoomCoordsMousePos = ScreenCoordsToZoomCoords(screenCoordsMousePos);*/
 
-                Event.current.Use();
+                float zoomDelta = -Event.current.delta.y / 50.0f;
+                if ((_current_zoom < _max_zoom && zoomDelta > 0.0f) || (_current_zoom > _min_zoom && zoomDelta < 0.0f))
+                {
+                    float oldZoom = _current_zoom;
+                    _current_zoom += zoomDelta;
+                    _current_zoom = Mathf.Clamp(_current_zoom, _min_zoom, _max_zoom);
+
+                    float delta_x = (position.width - (position.width / _current_zoom) - (position.width - (position.width / oldZoom))) * 0.5f;
+                    float delta_y = (position.height - (position.height / _current_zoom) - (position.height - (position.height / oldZoom))) * 0.5f;
+
+                    /*float new_delta_x = (position.width - (position.width / _current_zoom)) * 0.5f;
+
+                    Debug.Log("Old " + old_delta_x);
+                    Debug.Log("New " + new_delta_x);*/
+
+                    _zoom_position.x += delta_x;
+                    _zoom_position.y += delta_y;
+
+                    ClampZoomPosition(new Vector2(-delta_x, -delta_y));
+
+                    //_zoom_position.x += new_delta_x;
+
+                    /*float zoom_delta = _current_zoom - oldZoom;
+                    _zoom_position.x += (position.width * 0.5f * zoomDelta);
+                    _zoom_position.y += (position.height * 0.5f * zoomDelta);
+
+                    Debug.Log("Current Zoom: " + _current_zoom);
+
+                    /*float delta_x = ((position.width * 0.5f) * oldZoom) - ((position.width * 0.5f) * _current_zoom);
+                    _zoom_position.x -= delta_x;
+                    float delta_y = ((position.height * 0.5f) * oldZoom) - ((position.height * 0.5f) * _current_zoom);
+                    _zoom_position.y -= delta_y;
+
+                    //_zoom_position = (zoomCoordsMousePos - _zoom_position) - (oldZoom / _current_zoom) * (zoomCoordsMousePos - _zoom_position);
+
+                    */
+
+                    Event.current.Use();
+                }
             }
 
-            if (Event.current.type == EventType.MouseDrag &&
+            else if (Event.current.type == EventType.MouseDrag &&
                 (Event.current.button == 0 && Event.current.modifiers == EventModifiers.Alt) ||
                 Event.current.button == 2)
             {
                 Vector2 delta = Event.current.delta;
                 delta /= _current_zoom;
                 _zoom_position -= delta;
+
+                ClampZoomPosition(-delta);
 
                 Repaint();
             }
@@ -77,15 +112,15 @@ namespace GOAP_S.UI
         //Zoom Methods ================
         public Vector2 ScreenCoordsToZoomCoords(Vector2 screen_coords)
         {
-            Debug.Log("S " + screen_coords);
+            //Debug.Log("S " + screen_coords);
             Vector2 trans_coords = screen_coords - position.position;
             trans_coords.y -= _zoomable_window_y_margin;
-            Debug.Log("P " + trans_coords);
+            //Debug.Log("P " + trans_coords);
             //trans_coords.x += (0.0f * _current_zoom);
             trans_coords /= _current_zoom;
             trans_coords.y += _zoom_position.y;
             trans_coords.x += _zoom_position.x * 2.0f;
-            Debug.Log("F " + _zoom_position);
+            //Debug.Log("F " + _zoom_position);
             return trans_coords;
 
             Debug.Log("Z " + _zoom_position);
@@ -94,15 +129,41 @@ namespace GOAP_S.UI
             //return (screen_coords - _zoom_area.TopLeft()) / _current_zoom + _zoom_position;
         }
 
+        protected void ClampZoomPosition(Vector2 delta)
+        {
+            if(_zoom_position.x < 0.0f)
+            {
+                _zoom_position.x = 0.0f;
+            }
+            if(_zoom_position.y < 0.0f)
+            {
+                _zoom_position.y = 0.0f;
+            }
+
+            /*float x_delta = (position.width - (position.width / _current_zoom)) *0.5f;
+            float x_p = _zoom_position.x;
+            float width_x = position.width / _current_zoom;
+            Debug.Log("X_Delta " + x_delta);
+            Debug.Log("XP: " + x_p);
+            Debug.Log("WX: " + width_x);*/
+
+            if (_zoom_position.x + (position.width / _current_zoom) > 3800.0f)
+            {
+                _zoom_position.x -= delta.x;
+            }
+            if(_zoom_position.y + (position.height / _current_zoom) > 3800.0f)
+            {
+                _zoom_position.y -= delta.y;
+            }
+        }
+
         protected Rect BeginZoomableLayout()
         {
             GUI.EndGroup();        // End the group Unity begins automatically for an EditorWindow to clip out the window tab. This allows us to draw outside of the size of the EditorWindow.
 
             Rect clippedArea = _zoom_area.ScaleSizeBy(1.0f / _current_zoom, _zoom_area.TopLeft());
             clippedArea.y += _zoomable_window_y_margin;
-            clippedArea.x -= _zoom_position.x;
-            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom) + Mathf.Abs(_zoom_position.x);
-            //Debug.Log(clippedArea.width);
+            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom) + _zoom_position.x;
 
             GUI.BeginGroup(clippedArea);
 
