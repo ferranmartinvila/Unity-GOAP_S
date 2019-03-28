@@ -8,8 +8,6 @@ namespace GOAP_S.UI
     [InitializeOnLoad]
     public sealed class NodeEditor_GS : ZoomableCanvas_GS
     {
-        //State fields
-        private EventType _last_event_type; //Last event type
         //Target fields
         private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
@@ -75,7 +73,7 @@ namespace GOAP_S.UI
 
         private void OnEnable()
         {
-            //Configure window on enable(title/min size)
+            //Configure window on enable
             ConfigureWindow();
             //Reset selection
             _selected_agent = null;
@@ -92,10 +90,10 @@ namespace GOAP_S.UI
             BeginZoomableLayout();
 
             //Zoomable layout area
-            Rect area_rect = new Rect(- _zoom_position.x, - _zoom_position.y, ProTools.CANVAS_SIZE * 2.0f, ProTools.CANVAS_SIZE * 2.0f);
+            Rect area_rect = new Rect(-_zoom_position.x, -_zoom_position.y, ProTools.NODE_EDITOR_CANVAS_SIZE, ProTools.NODE_EDITOR_CANVAS_SIZE);
             GUILayout.BeginArea(area_rect);
-            //Debug.Log(area_rect.width);
 
+            //Temp for guide
             for (int k = 0; k < area_rect.width; k += 200)
             {
                 for (int y = 0; y < area_rect.height; y += 200)
@@ -198,8 +196,14 @@ namespace GOAP_S.UI
 
         private void ConfigureWindow()
         {
-            this.titleContent.text = "Node Editor"; //Set a window title
-            this.minSize = new Vector2(800.0f, 500.0f);
+            //Set a window title
+            titleContent.text = "Node Editor";
+            //Set window min size
+            minSize = new Vector2(800.0f, 500.0f);
+            //Set canvas size
+            _canvas_size = new Vector2(ProTools.NODE_EDITOR_CANVAS_SIZE, ProTools.NODE_EDITOR_CANVAS_SIZE);
+            //Set canvas camera initial position
+            _zoom_position = new Vector2(ProTools.NODE_EDITOR_CANVAS_SIZE * 0.5f, ProTools.NODE_EDITOR_CANVAS_SIZE * 0.5f);
         }
 
         private void GenerateTargetAgentUI()
