@@ -14,7 +14,7 @@ namespace GOAP_S.UI
         public WindowResizeCallbackFunction on_window_resize_delegate;
 
         protected Vector2 _window_size = Vector2.zero;
-        protected float _zoomable_window_y_margin = 24.0f;
+        protected const float _zoomable_window_y_margin = 24.0f;
 
         protected Matrix4x4 _prev_transform_matrix = Matrix4x4.identity;
 
@@ -112,21 +112,13 @@ namespace GOAP_S.UI
         //Zoom Methods ================
         public Vector2 ScreenCoordsToZoomCoords(Vector2 screen_coords)
         {
-            //Debug.Log("S " + screen_coords);
-            Vector2 trans_coords = screen_coords - position.position;
-            trans_coords.y -= _zoomable_window_y_margin;
-            //Debug.Log("P " + trans_coords);
-            //trans_coords.x += (0.0f * _current_zoom);
-            trans_coords /= _current_zoom;
-            trans_coords.y += _zoom_position.y;
-            trans_coords.x += _zoom_position.x * 2.0f;
-            //Debug.Log("F " + _zoom_position);
-            return trans_coords;
+/*            Vector2 trans_coords = screen_coords - position.position;
 
-            Debug.Log("Z " + _zoom_position);
-            Debug.Log(_current_zoom);
-            return screen_coords * 2.0f; // _zoom_position + (screen_coords / _current_zoom); //TODO
-            //return (screen_coords - _zoom_area.TopLeft()) / _current_zoom + _zoom_position;
+            Vector2 final_coords = _zoom_position;
+            final_coords.x += (trans_coords.x / _current_zoom);
+            final_coords.y += (trans_coords.y / _current_zoom);*/
+
+            return new Vector2(_zoom_position.x + ((screen_coords.x - position.position.x) / _current_zoom), _zoom_position.y + ((screen_coords.y - position.position.y) / _current_zoom));
         }
 
         protected void ClampZoomPosition(Vector2 delta)

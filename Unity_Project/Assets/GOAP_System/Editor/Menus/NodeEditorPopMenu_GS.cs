@@ -37,7 +37,8 @@ namespace GOAP_S.UI
                 GUILayout.Height(25)))
             {
                 //Focus the target selected agent and add an action in the target canvas pos
-                ActionNode_GS new_action_node = NodeEditor_GS.Instance.selected_agent.AddActionNode(NodeEditor_GS.Instance.ScreenCoordsToZoomCoords(editorWindow.position.position));
+                Vector2 mouse_pos = NodeEditor_GS.Instance.ScreenCoordsToZoomCoords(editorWindow.position.position);
+                ActionNode_GS new_action_node = NodeEditor_GS.Instance.selected_agent.AddActionNode(mouse_pos);
                 //Add the new node editor
                 NodeEditor_GS.Instance.AddTargetAgentActionNodeEditor(new_action_node);
                 //Repaint the target window
