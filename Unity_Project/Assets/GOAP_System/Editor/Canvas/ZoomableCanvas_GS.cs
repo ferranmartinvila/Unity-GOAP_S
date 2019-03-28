@@ -14,7 +14,7 @@ namespace GOAP_S.UI
         public WindowResizeCallbackFunction on_window_resize_delegate;
 
         protected Vector2 _window_size = Vector2.zero;
-        protected float _zoomable_window_y_margin = 21.0f;
+        protected float _zoomable_window_y_margin = 24.0f;
 
         protected Matrix4x4 _prev_transform_matrix = Matrix4x4.identity;
 
@@ -22,7 +22,7 @@ namespace GOAP_S.UI
         protected const float _max_zoom = 1.2f;
         protected float _current_zoom = 1.0f;
         protected Rect _zoom_area = Rect.zero;
-        protected Vector2 _zoom_position = new Vector2(0.0f, ProTools.CANVAS_SIZE * 0.5f);
+        protected Vector2 _zoom_position = new Vector2(ProTools.CANVAS_SIZE * 0.5f, ProTools.CANVAS_SIZE * 0.5f);
 
         protected Texture2D _back_texture = null; //Texture in the background of the window
         protected static Agent_GS _selected_agent = null; //The agent selected by the user
@@ -77,7 +77,11 @@ namespace GOAP_S.UI
         //Zoom Methods ================
         public Vector2 ScreenCoordsToZoomCoords(Vector2 screen_coords)
         {
-            return (screen_coords - _zoom_area.TopLeft()) / _current_zoom + _zoom_position;
+            Debug.Log("S " + screen_coords);
+            Debug.Log("Z " + _zoom_position);
+            Debug.Log(_current_zoom);
+            return _zoom_position + (screen_coords / _current_zoom); //TODO
+            //return (screen_coords - _zoom_area.TopLeft()) / _current_zoom + _zoom_position;
         }
 
         protected Rect BeginZoomableLayout()
@@ -87,8 +91,9 @@ namespace GOAP_S.UI
             Rect clippedArea = _zoom_area.ScaleSizeBy(1.0f / _current_zoom, _zoom_area.TopLeft());
             clippedArea.y += _zoomable_window_y_margin;
             clippedArea.x -= _zoom_position.x;
-            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom);
-            
+            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom) * 2.0f;
+            Debug.Log(clippedArea.width);
+
             GUI.BeginGroup(clippedArea);
 
             _prev_transform_matrix = GUI.matrix;

@@ -92,11 +92,21 @@ namespace GOAP_S.UI
             BeginZoomableLayout();
 
             //Zoomable layout area
-            GUILayout.BeginArea(new Rect(-ProTools.CANVAS_SIZE -_zoom_position.x,-ProTools.CANVAS_SIZE - _zoom_position.y, position.width * 40.0f, position.height * 40.0f));
-            Debug.Log(position.width * 40.0f);
+            Rect area_rect = new Rect(- _zoom_position.x, - _zoom_position.y, ProTools.CANVAS_SIZE * 2.0f, ProTools.CANVAS_SIZE * 2.0f);
+            GUILayout.BeginArea(area_rect);
+            Debug.Log(area_rect.width);
+
+            for (int k = 0; k < area_rect.width; k += 200)
+            {
+                for (int y = 0; y < area_rect.height; y += 200)
+                {
+                    GUI.Label(new Rect(y, k, 120.0f, 25.0f), y + "||" + k);
+                }
+            }
 
             //Mark the beginning area of the popup windows
             BeginWindows();
+
 
             //Draw action nodes
             for (int k = 0; k < _action_node_editors_num; k++)
@@ -114,11 +124,11 @@ namespace GOAP_S.UI
             //Reset matrix to keep blackboard window scale 
             GUI.matrix = Matrix4x4.identity;
             //Update blackboard window to simulate static position on padding
-            _blackboard_editor.window_position = new Vector2(position.width - ProTools.BLACKBOARD_MARGIN + _zoom_position.x * 2.0f + ProTools.CANVAS_SIZE, 0 + _zoom_position.y + ProTools.CANVAS_SIZE);
+            _blackboard_editor.window_position = new Vector2(position.width - ProTools.BLACKBOARD_MARGIN + _zoom_position.x * 2.0f, 0 + _zoom_position.y);
             //Display blackboard window
             GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
-            Debug.Log(_zoom_position);
+
 
             //End area of popup windows
             EndWindows();

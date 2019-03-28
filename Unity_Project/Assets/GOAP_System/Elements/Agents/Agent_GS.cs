@@ -101,7 +101,7 @@ namespace GOAP_S.AI
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
         }
 
-        public ActionNode_GS AddActionNode(float x_pos, float y_pos)
+        public ActionNode_GS AddActionNode(Vector2 position)
         {
             //Check if we need to allocate more items in the array
             if (_action_nodes_num == _action_nodes.Length)
@@ -117,7 +117,7 @@ namespace GOAP_S.AI
 
             ActionNode_GS new_node = new ActionNode_GS();
             //Set a position in the node editor canvas
-            new_node.window_rect = new Rect(x_pos, y_pos, 100, 100);
+            new_node.window_rect = new Rect(position.x, position.y, 100, 100);
             //Add the new node to the action nodes array
             _action_nodes[_action_nodes_num] = new_node;
             //Add node count
