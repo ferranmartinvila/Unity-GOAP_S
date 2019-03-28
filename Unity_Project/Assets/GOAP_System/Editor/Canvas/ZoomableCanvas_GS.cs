@@ -78,9 +78,19 @@ namespace GOAP_S.UI
         public Vector2 ScreenCoordsToZoomCoords(Vector2 screen_coords)
         {
             Debug.Log("S " + screen_coords);
+            Vector2 trans_coords = screen_coords - position.position;
+            trans_coords.y -= _zoomable_window_y_margin;
+            Debug.Log("P " + trans_coords);
+            //trans_coords.x += (0.0f * _current_zoom);
+            trans_coords /= _current_zoom;
+            trans_coords.y += _zoom_position.y;
+            trans_coords.x += _zoom_position.x * 2.0f;
+            Debug.Log("F " + _zoom_position);
+            return trans_coords;
+
             Debug.Log("Z " + _zoom_position);
             Debug.Log(_current_zoom);
-            return _zoom_position + (screen_coords / _current_zoom); //TODO
+            return screen_coords * 2.0f; // _zoom_position + (screen_coords / _current_zoom); //TODO
             //return (screen_coords - _zoom_area.TopLeft()) / _current_zoom + _zoom_position;
         }
 
@@ -91,8 +101,8 @@ namespace GOAP_S.UI
             Rect clippedArea = _zoom_area.ScaleSizeBy(1.0f / _current_zoom, _zoom_area.TopLeft());
             clippedArea.y += _zoomable_window_y_margin;
             clippedArea.x -= _zoom_position.x;
-            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom) * 2.0f;
-            Debug.Log(clippedArea.width);
+            clippedArea.width += Mathf.Abs(clippedArea.width /_current_zoom) + Mathf.Abs(_zoom_position.x);
+            //Debug.Log(clippedArea.width);
 
             GUI.BeginGroup(clippedArea);
 

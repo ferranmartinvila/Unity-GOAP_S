@@ -94,7 +94,7 @@ namespace GOAP_S.UI
             //Zoomable layout area
             Rect area_rect = new Rect(- _zoom_position.x, - _zoom_position.y, ProTools.CANVAS_SIZE * 2.0f, ProTools.CANVAS_SIZE * 2.0f);
             GUILayout.BeginArea(area_rect);
-            Debug.Log(area_rect.width);
+            //Debug.Log(area_rect.width);
 
             for (int k = 0; k < area_rect.width; k += 200)
             {
