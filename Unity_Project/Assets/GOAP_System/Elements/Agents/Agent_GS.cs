@@ -113,6 +113,8 @@ namespace GOAP_S.AI
                 {
                     new_array[k] = _action_nodes[k];
                 }
+                //Set new array
+                _action_nodes = new_array;
             }
 
             ActionNode_GS new_node = new ActionNode_GS();

@@ -58,10 +58,7 @@ namespace GOAP_S.UI
                 SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.ClearPlanning();
                 //Add repaint target window
                 SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.Repaint();
-                //Add close this window
-                SecurityAcceptMenu_GS.on_accept_delegate += () => this.editorWindow.Close();
-                //Add close this window on cancel
-                SecurityAcceptMenu_GS.on_cancel_delegate += () => this.editorWindow.Close();
+
                 //Get mouse current position
                 Vector2 mousePos = Event.current.mousePosition;
                 //Open security accept menu on mouse position
@@ -93,17 +90,13 @@ namespace GOAP_S.UI
                 SecurityAcceptMenu_GS.on_accept_delegate += () => NodePlanning_GS.Instance.Repaint();
                 //Add node editor repaint
                 SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.Repaint();
-                //Add close this window
-                SecurityAcceptMenu_GS.on_accept_delegate += () => this.editorWindow.Close();
-                //Add close this window on cancel
-                SecurityAcceptMenu_GS.on_cancel_delegate += () => this.editorWindow.Close();
+                
                 //Get mouse current position
                 Vector2 mousePos = Event.current.mousePosition;
                 //Open security accept menu on mouse position
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
             }
             GUI.backgroundColor = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-
         }
     }
 }

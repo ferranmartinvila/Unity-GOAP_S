@@ -86,6 +86,12 @@ namespace GOAP_S.UI
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, position.width, position.height), back_texture, ScaleMode.StretchToFill);
 
+            //Check if there is an agent selected
+            if(_selected_agent == null)
+            {
+                return;
+            }
+
             //Zoomable layout
             BeginZoomableLayout();
 
@@ -172,7 +178,6 @@ namespace GOAP_S.UI
                     Vector2 _mouse_pos = Event.current.mousePosition;
                     //Show node editor popup menu
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodeEditorPopMenu_GS());
-
                     return false;
                 }
             }
@@ -210,7 +215,7 @@ namespace GOAP_S.UI
         {
             //Alloc node editors array
             _action_node_editors_num = 0;
-            _action_node_editors = new ActionNode_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
+            _action_node_editors = new ActionNode_GS_Editor[_selected_agent.action_nodes_num == 0 ? ProTools.INITIAL_ARRAY_SIZE : _selected_agent.action_nodes_num];
 
             //Generate action nodes editors
             for (int k = 0; k < _selected_agent.action_nodes_num; k++)
@@ -243,6 +248,8 @@ namespace GOAP_S.UI
                 {
                     new_array[k] = _action_node_editors[k];
                 }
+                //Set new array
+                _action_node_editors = new_array;
             }
 
             //Generate the new action node editor
