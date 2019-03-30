@@ -112,6 +112,8 @@ namespace GOAP_S.UI
             if (GUILayout.Button("Close", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(120), GUILayout.ExpandWidth(true)))
             {
                 _UI_mode = EditorUIMode.SET_STATE;
+                //Reset window size
+                _target_action_node.window_size = Vector2.zero;
             }
             GUILayout.EndHorizontal();
 
@@ -126,17 +128,23 @@ namespace GOAP_S.UI
             {
                 //Set edit state
                 _UI_mode = EditorUIMode.EDIT_STATE;
+                //Reset window size
+                _target_action_node.window_size = Vector2.zero;
             }
             //Delete
             if (GUILayout.Button("Delete", UIConfig_GS.Instance.node_modify_button_style, GUILayout.Width(30), GUILayout.ExpandWidth(true)))
             {
-                //Delete node in the target agent
-                _target_action_node.agent.RemoveActionNode(_target_action_node);
-                //Delete node editor in the target editor
-                NodeEditor_GS.Instance.RemoveTargetAgentActionNodeEditor(this);
-                //Mark scene dirty
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-                return;
+                //Add delete node to accept menu delegates callback
+                SecurityAcceptMenu_GS.on_accept_delegate += () => _target_action_node.agent.RemoveActionNode(_target_action_node);
+                //Add delete node editor to accept menu delegates callback
+                SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.RemoveTargetAgentActionNodeEditor(this);
+                //Add mark scene dirty to accept menu delegates callback
+                SecurityAcceptMenu_GS.on_accept_delegate += () => EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+
+                //Get mouse current position
+                Vector2 mousePos = Event.current.mousePosition;
+                //Open security accept menu on mouse position
+                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new SecurityAcceptMenu_GS());
             }
             GUILayout.EndHorizontal();
 
