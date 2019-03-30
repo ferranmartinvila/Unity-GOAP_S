@@ -53,6 +53,7 @@ namespace GOAP_S.UI
 
             if (Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
             {
+                //In null case set agent to null
                 _selected_agent = null;
                 _action_node_editors = null;
                 _action_node_editors_num = 0;
@@ -63,8 +64,10 @@ namespace GOAP_S.UI
             }
             else if(_selected_agent != Selection.activeGameObject.GetComponent<Agent_GS>())
             {
+                //Set selected agent
                 _selected_agent = Selection.activeGameObject.GetComponent<Agent_GS>();
 
+                //Generate selected agent UI
                 GenerateTargetAgentUI();
 
                 Repaint();
@@ -89,6 +92,8 @@ namespace GOAP_S.UI
             //Check if there is an agent selected
             if(_selected_agent == null)
             {
+                //Handle no agent input
+                HandleNoAgentInput();
                 return;
             }
 
@@ -127,7 +132,7 @@ namespace GOAP_S.UI
 
             //Reset matrix to keep blackboard window scale 
             GUI.matrix = Matrix4x4.identity;
-            //Update blackboard window to simulate static position on padding
+            //Update blackboard window to simulate static position
             _blackboard_editor.window_position = new Vector2(_zoom_position.x + position.width - ProTools.BLACKBOARD_MARGIN, 0 + _zoom_position.y);
             //Display blackboard window
             GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
@@ -145,28 +150,28 @@ namespace GOAP_S.UI
             HandleInput();
         }
 
-        private bool HandleInput()
+        protected override void HandleNoAgentInput()
         {
-            //Null agent input
-            if (_selected_agent == null)
-            {
-                //Show non agent title
-                GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
+            //Show non agent title
+            GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
 
-                //Empty node editor inputs
-                if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+            //Empty node editor inputs
+            if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+            {
+                //Right click
+                if (Event.current.button == 1)
                 {
-                    //Right click
-                    if (Event.current.button == 1)
-                    {
-                        //Get mouse pos
-                        Vector2 _mouse_pos = Event.current.mousePosition;
-                        //Show empty node editor popup menu
-                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
-                    }
+                    //Get mouse pos
+                    Vector2 _mouse_pos = Event.current.mousePosition;
+                    //Show empty node editor popup menu
+                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
                 }
-                return false;
             }
+        }
+
+        protected override void HandleInput()
+        {
+
 
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
@@ -178,14 +183,12 @@ namespace GOAP_S.UI
                     Vector2 _mouse_pos = Event.current.mousePosition;
                     //Show node editor popup menu
                     PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new NodeEditorPopMenu_GS());
-                    return false;
+                    return;
                 }
             }
 
             //Zoom input
             HandleZoomInput();
-
-            return true;
         }
 
         //Functionality Methods =======

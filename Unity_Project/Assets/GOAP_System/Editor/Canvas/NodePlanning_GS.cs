@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using GOAP_S.AI;
+using GOAP_S.Tools;
 
 namespace GOAP_S.UI
 {
     [InitializeOnLoad]
     public sealed class NodePlanning_GS : ZoomableCanvas_GS
     {
+        //Target fields
+        private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
+
         //Static instance of this class
         private static NodePlanning_GS _Instance;
-        private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
 
         //Property to get/set static instance
         public static NodePlanning_GS Instance
@@ -44,10 +47,16 @@ namespace GOAP_S.UI
 
         private void OnSelectionChange()
         {
+            base.OnInspectorUpdate();
+
             if(Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
             {
                 //In null case set agent to null
                 _selected_agent = null;
+
+                Repaint();
+
+                return;
             }
             else if(_selected_agent != Selection.activeGameObject.GetComponent<Agent_GS>())
             {
@@ -55,6 +64,8 @@ namespace GOAP_S.UI
                 _selected_agent = Selection.activeGameObject.GetComponent<Agent_GS>();
                 //Generate selected agent UI
                 GenerateAgentUI();
+
+                Repaint();
             }
         }
 
@@ -73,29 +84,80 @@ namespace GOAP_S.UI
             //Draw background texture 
             GUI.DrawTexture(new Rect(0, 0, maxSize.x, maxSize.y), back_texture, ScaleMode.StretchToFill);
 
+            //Check if there is an agent selected
             if (_selected_agent == null)
             {
-                //Show non agent title
-                GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
-
-                //Empty node editor inputs
-                if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
-                {
-                    //Right click
-                    if (Event.current.button == 1)
-                    {
-                        //Get mouse pos
-                        Vector2 _mouse_pos = Event.current.mousePosition;
-                        //Show empty node editor popup menu
-                        PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
-                    }
-                }
+                //Handle no agent input
+                HandleNoAgentInput();
                 return;
             }
 
-            //Selected agent title
-            GUILayout.Label("Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
+            //Zoomable layout
+            BeginZoomableLayout();
 
+            //Zoomable layout area
+            Rect area_rect = new Rect(-_zoom_position.x, -_zoom_position.y, ProTools.NODE_EDITOR_CANVAS_SIZE, ProTools.NODE_EDITOR_CANVAS_SIZE);
+            GUILayout.BeginArea(area_rect);
+
+            //Temp for guide
+            for (int k = 0; k < area_rect.width; k += 200)
+            {
+                for (int y = 0; y < area_rect.height; y += 200)
+                {
+                    GUI.Label(new Rect(y, k, 120.0f, 25.0f), y + "||" + k, UIConfig_GS.left_white_style);
+                }
+            }
+
+            //Mark the beginning area of the popup windows
+            BeginWindows();
+
+            //TODO: Draw planning nodes
+
+            //Reset matrix to keep blackboard window scale 
+            GUI.matrix = Matrix4x4.identity;
+
+            //Selected agent title
+            GUI.Label(new Rect(_zoom_position.x + position.width * 0.5f, _zoom_position.y, 200.0f, 30.0f), "Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
+
+            //Update behaviour window to simulate static position
+            _agent_behaviour_editor.window_position = _zoom_position;
+            //Draw agent behaviour editor
+            GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            
+            //End area of popup windows
+            EndWindows();
+
+            //End zoomable layout area
+            GUILayout.EndArea();
+
+            //End zoomable layout
+            EndZoomableLayout();
+
+            //Handle input
+            HandleInput();
+        }
+
+        protected override void HandleNoAgentInput()
+        {
+            //Show non agent title
+            GUILayout.Label("No agent selected", UIConfig_GS.center_big_white_style);
+
+            //Empty node editor inputs
+            if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
+            {
+                //Right click
+                if (Event.current.button == 1)
+                {
+                    //Get mouse pos
+                    Vector2 _mouse_pos = Event.current.mousePosition;
+                    //Show empty node editor popup menu
+                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
+                }
+            }
+        }
+
+        protected override void HandleInput()
+        {
             //Window inputs
             if (EditorWindow.focusedWindow == this && EditorWindow.mouseOverWindow == this)//Check if focus is on this windows
             {
@@ -109,14 +171,8 @@ namespace GOAP_S.UI
                 }
             }
 
-            BeginWindows();
-
-            //Draw agent behaviour editor
-            GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-
-            //TODO: Draw planning nodes
-
-            EndWindows();
+            //Zoom input
+            HandleZoomInput();
         }
 
         //Functionality Methods =======
@@ -132,8 +188,14 @@ namespace GOAP_S.UI
 
         private void ConfigureWindow()
         {
-            this.titleContent.text = "Planning";
-            this.minSize = new Vector2(800.0f, 500.0f);
+            //Set a window title
+            titleContent.text = "Planning";
+            //Set window min size
+            minSize = new Vector2(800.0f, 500.0f);
+            //Set canvas size
+            _canvas_size = new Vector2(ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE, ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE);
+            //Set canvas camera initial position
+            _zoom_position = new Vector2(ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE * 0.5f, ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE * 0.5f);
         }
 
         private void GenerateAgentUI()

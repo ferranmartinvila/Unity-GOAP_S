@@ -47,6 +47,17 @@ namespace GOAP_S.UI
             }
         }
 
+        protected virtual void HandleNoAgentInput()
+        {
+
+        }
+
+        protected virtual void HandleInput()
+        {
+            //Zoom input
+            HandleZoomInput();
+        }
+
         protected void HandleZoomInput()
         {
             if (Event.current.type == EventType.ScrollWheel)
