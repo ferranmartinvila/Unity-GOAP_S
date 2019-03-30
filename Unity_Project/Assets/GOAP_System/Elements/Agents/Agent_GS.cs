@@ -24,6 +24,9 @@ namespace GOAP_S.AI
         [NonSerialized] private WorldState_GS _goal_world_state = null; //Agent goal world state defined in the agent behaviour
         [NonSerialized] private Planner_GS _planner; //Class that holds the planning algorithm
         [NonSerialized] private Queue<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
+        //Callbacks
+        public delegate void AgentCallbackFunction(); //Agent delegate used to provide a basic callback system for some events
+        [NonSerialized]public AgentCallbackFunction on_agent_plan_change_delegate; //Agent plan change event callback
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_behaviour = null; //String where the agent behaviour is serialized
@@ -74,16 +77,9 @@ namespace GOAP_S.AI
                 _behaviour.Update();
 
                 _current_plan = planner.GeneratePlan(this);
-            }
-            else
-            {
-                while (_current_plan.Count > 0)
+                if (on_agent_plan_change_delegate != null)
                 {
-                    ActionNode_GS node = _current_plan.Dequeue();
-                    if (node != null)
-                    {
-                        Debug.Log(node.name + " @@ " + node.action.name);
-                    }
+                    on_agent_plan_change_delegate();
                 }
             }
         }
@@ -269,6 +265,14 @@ namespace GOAP_S.AI
                     _planner = new Planner_GS();
                 }
                 return _planner;
+            }
+        }
+
+        public Queue<ActionNode_GS> current_plan
+        {
+            get
+            {
+                return _current_plan;
             }
         }
 

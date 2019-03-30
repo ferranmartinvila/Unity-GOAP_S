@@ -50,7 +50,6 @@ LightmapSettings:
     m_BounceScale: 1
     m_IndirectOutputScale: 1
     m_AlbedoBoost: 1
-    m_TemporalCoherenceThreshold: 1
     m_EnvironmentLightingMode: 0
     m_EnableBakedLightmaps: 1
     m_EnableRealtimeLightmaps: 0
@@ -116,9 +115,10 @@ NavMeshSettings:
 --- !u!1 &282840810
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 282840814}
   - component: {fileID: 282840813}
@@ -133,20 +133,27 @@ GameObject:
 --- !u!81 &282840811
 AudioListener:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_Enabled: 1
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_GateFitMode: 2
+  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -176,8 +183,9 @@ Camera:
 --- !u!4 &282840814
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 282840810}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: -10}
@@ -189,9 +197,10 @@ Transform:
 --- !u!1 &1255048982
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 1255048983}
   - component: {fileID: 1255048985}
@@ -206,8 +215,9 @@ GameObject:
 --- !u!4 &1255048983
 Transform:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -219,28 +229,33 @@ Transform:
 --- !u!114 &1255048984
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56c90ab764593284981610505c77c01b, type: 3}
+  m_Script: {fileID: 11500000, guid: 46e04c1158b98f540995c263ce5c23c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1255048985
 MonoBehaviour:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1255048982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab6d0c709cf4e24ea527e621b3623c0, type: 3}
+  m_Script: {fileID: 11500000, guid: 9931a393e990ac14ea64a9e68937a78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: un_named
+  _name: amazing
   obj_refs: []
-  serialized_behaviour: 
-  serialized_action_nodes: '[{"_window_rect":{"xMin":32.0,"yMin":57.0,"xMax":249.0,"yMax":309.0},"_id":"b6c4dec8-e853-45b1-ae17-d281d73c94a1","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[null,null,null,null,null,null,null,null,null,null]","serialized_action":"null"},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_id":null,"_variables":{}}'
+  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":2404.0,"yMin":2158.4,"xMax":2621.0,"yMax":2469.4},"_id":"d8315f4b-7264-4100-b8ab-5e6ccb788e5f","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"defence\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":8,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test1\",\"_cost\":1,\"$type\":\"test1\"}"},{"_window_rect":{"xMin":2122.4,"yMin":2173.0,"xMax":2339.4,"yMax":2461.0},"_id":"026f7a37-4bc4-4ea8-aef3-7937ca54c7de","_name":"Action
+    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test2\",\"_cost\":1,\"$type\":\"test2\"}"},null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_id":null,"_variables":{"damage":{"_value":0,"_name":"damage","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"UnityEngine.GameObject.layer","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"defence":{"_value":0,"_name":"defence","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":"UnityEngine.GameObject.layer","$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'

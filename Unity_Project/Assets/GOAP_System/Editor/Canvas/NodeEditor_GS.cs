@@ -9,7 +9,7 @@ namespace GOAP_S.UI
     public sealed class NodeEditor_GS : ZoomableCanvas_GS
     {
         //Target fields
-        private ActionNode_GS_Editor[] _action_node_editors = null; //List where all the action nodes ui are stored
+        private ActionNode_GS_Editor[] _action_node_editors = null; //Array where all the action nodes ui are stored
         private int _action_node_editors_num = 0; //Number node editors allocated in the array
         private Blackboard_GS_Editor _blackboard_editor = null; //Editor of the focused agent blackboard
 

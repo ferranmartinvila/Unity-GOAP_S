@@ -56,8 +56,12 @@ namespace GOAP_S.Planning
                     {
                         //Update current node 
                         current_node = _closed[current_node.parent_id];
-                        //Enqueue the new current node
-                        action_plan.Enqueue(current_node.action);
+                        //Check if the node has an action assigned
+                        if (current_node.action != null)
+                        {
+                            //Enqueue the new current node
+                            action_plan.Enqueue(current_node.action);
+                        }
                     }
                     //Return the generated actions queue
                     return action_plan;

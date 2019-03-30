@@ -10,6 +10,8 @@ namespace GOAP_S.UI
     {
         //Target fields
         private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
+        private ActionNode_GS_Debugger[] _action_node_debuggers = null; //Array with all the target agent path action nodes debuggers
+        private int _action_node_debuggers_num = 0; //Num of action node debuggers
 
         //Static instance of this class
         private static NodePlanning_GS _Instance;
@@ -51,7 +53,8 @@ namespace GOAP_S.UI
 
             if(Selection.activeGameObject == null || Selection.activeGameObject.GetComponent<Agent_GS>() == null)
             {
-                //In null case set agent to null
+                //In null case set agent to null and reset
+                ResetPlanChangeDelegate();
                 _selected_agent = null;
 
                 Repaint();
@@ -60,8 +63,12 @@ namespace GOAP_S.UI
             }
             else if(_selected_agent != Selection.activeGameObject.GetComponent<Agent_GS>())
             {
+                //Reset prev agent
+                ResetPlanChangeDelegate();
                 //Set selected agent
                 _selected_agent = Selection.activeGameObject.GetComponent<Agent_GS>();
+                //Set new agent delegate
+                _selected_agent.on_agent_plan_change_delegate += () => UpdateAgentUI();
                 //Generate selected agent UI
                 GenerateAgentUI();
 
@@ -74,6 +81,7 @@ namespace GOAP_S.UI
             //Configure window on enable(title)
             ConfigureWindow();
             //Reset selection
+            ResetPlanChangeDelegate();
             _selected_agent = null;
             //Check selected agent
             OnSelectionChange();
@@ -111,12 +119,21 @@ namespace GOAP_S.UI
             //Mark the beginning area of the popup windows
             BeginWindows();
 
-            //TODO: Draw planning nodes
+            //Draw action nodes debuggers
+            for(int k = 0; k < _action_node_debuggers_num; k++)
+            {
+                //Focus action node
+                ActionNode_GS node = _selected_agent.action_nodes[k];
+                //Focus action node debugger
+                ActionNode_GS_Debugger node_debugger = _action_node_debuggers[k];
+                //Show node debugger window
+                GUILayout.Window(node.id, new Rect(400.0f + 200.0f * k, 400.0f, 100.0f, 100.0f), node_debugger.DrawUI, node.name, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            }
 
-            //Reset matrix to keep blackboard window scale 
+            //Reset matrix to keep behaviour window and agent name scale 
             GUI.matrix = Matrix4x4.identity;
 
-            //Selected agent title
+            //Selected agent name in zoom position coords
             GUI.Label(new Rect(_zoom_position.x + position.width * 0.5f, _zoom_position.y, 200.0f, 30.0f), "Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
 
             //Update behaviour window to simulate static position
@@ -186,6 +203,14 @@ namespace GOAP_S.UI
             OnSelectionChange();
         }
 
+        private void ResetPlanChangeDelegate()
+        {
+            if(_selected_agent != null)
+            {
+                _selected_agent.on_agent_plan_change_delegate = null;
+            }
+        }
+
         private void ConfigureWindow()
         {
             //Set a window title
@@ -200,9 +225,42 @@ namespace GOAP_S.UI
 
         private void GenerateAgentUI()
         {
+            //First reset current data
+            _agent_behaviour_editor = null;
+
             //Generate agent behaviour editor
             _agent_behaviour_editor = new AgentBehaviour_GS_Editor(_selected_agent);
             _agent_behaviour_editor.window_size = new Vector2(250.0f, 100.0f);
+
+            //Generate current plan debugger
+            UpdateAgentUI();
+        }
+
+        private void UpdateAgentUI()
+        {
+            //First reset current data
+            _action_node_debuggers = null;
+            _action_node_debuggers_num = 0;
+
+            //Check agent current plan
+            ActionNode_GS [] plan = _selected_agent.current_plan.ToArray();
+            if(plan == null || plan.Length == 0)
+            {
+                return;
+            }
+
+            //In valid plan case generate the plan debugger
+            //Allocate node debuggers array
+            _action_node_debuggers = new ActionNode_GS_Debugger[plan.Length];
+            _action_node_debuggers_num = plan.Length;
+            //Iterate plan nodes
+            for(int k = 0; k < _action_node_debuggers_num; k++)
+            {
+                //Generate plan action debugger
+                ActionNode_GS_Debugger node_debugger = new ActionNode_GS_Debugger(plan[k]);
+                //Add the new debugger to the array
+                _action_node_debuggers[k] = node_debugger;
+            }
         }
 
         //Get/Set Methods =================

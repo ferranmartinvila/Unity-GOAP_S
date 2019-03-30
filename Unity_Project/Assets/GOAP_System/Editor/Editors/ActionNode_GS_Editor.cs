@@ -27,7 +27,7 @@ namespace GOAP_S.UI
         private int _effect_editors_num = 0;
         private Action_GS_Editor _action_editor = null;
 
-        //Constructor =====================
+        //Constructors ================
         public ActionNode_GS_Editor(ActionNode_GS new_target)
         {
             //Set targets
@@ -57,7 +57,7 @@ namespace GOAP_S.UI
             }
         }
 
-        //Loop Methods ====================
+        //Loop Methods ================
         public void DrawUI(int id)
         {
             switch (_UI_mode)
@@ -151,7 +151,7 @@ namespace GOAP_S.UI
             //Separation
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Condition -------------------
+            //Condition ---------------
             //Conditions Title
             GUILayout.BeginHorizontal("HelpBox");
             GUILayout.FlexibleSpace();
@@ -169,12 +169,12 @@ namespace GOAP_S.UI
                 Vector2 mousePos = Event.current.mousePosition;
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_CONDITION));
             }
-            //-----------------------------
+            //-------------------------
 
             //Separation
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Action ----------------------
+            //Action ------------------
             //Action null case
             if (_action_editor == null)
             {
@@ -225,12 +225,12 @@ namespace GOAP_S.UI
                 }
                 GUILayout.EndHorizontal();
             }
-            //-----------------------------
+            //-------------------------
 
             //Separation
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
 
-            //Effects ----------------------
+            //Effects -----------------
             //Effects Title
             GUILayout.BeginHorizontal("HelpBox");
             GUILayout.FlexibleSpace();
@@ -248,7 +248,7 @@ namespace GOAP_S.UI
                 Vector2 mousePos = Event.current.mousePosition;
                 PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_EFFECT));
             }
-            //-----------------------------
+            //-------------------------
 
             GUI.DragWindow();
         }
@@ -354,7 +354,7 @@ namespace GOAP_S.UI
             Debug.LogWarning("Effect: " + target_effect_editor.target_property.A_key + " not found on remove!");
         }
 
-        //Get/Set Methods =================
+        //Get/Set Methods =============
         public ActionNode_GS target_action_node
         {
             get
