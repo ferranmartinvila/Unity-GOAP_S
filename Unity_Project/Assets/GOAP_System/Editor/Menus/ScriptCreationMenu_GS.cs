@@ -25,7 +25,6 @@ namespace GOAP_S.UI
         private int _node_index = 0; //
         private string _window_title = null;
         private string _new_script_name = "";
-        private string _new_script_folder = "";
         private string _new_script_full_path = null;
         private int _folder_dropdown_slot = -1;
         private int _folder_selected_index = -1;
@@ -209,7 +208,7 @@ namespace GOAP_S.UI
                             //Place the new action in the selected action node
                             NodeEditor_GS.Instance.selected_agent.action_nodes[_node_index].action = _new_script;
                             //Set action node editor action editor
-                            NodeEditor_GS.Instance.action_node_editors[_node_index].action_editor = new Action_GS_Editor(_new_script);
+                            NodeEditor_GS.Instance.action_node_editors[_node_index].action_editor = new Action_GS_Editor(NodeEditor_GS.Instance.action_node_editors[_node_index]);
                             //This dummy gameobject job is done, we can delete it
                             DestroyImmediate(gameObject);
                             return;

@@ -53,7 +53,7 @@ namespace GOAP_S.UI
             //Allocate action editor
             if (_target_action_node.action != null)
             {
-                _action_editor = new Action_GS_Editor(_target_action_node.action);
+                _action_editor = new Action_GS_Editor(this);
             }
         }
 

@@ -14,7 +14,6 @@ namespace GOAP_S.UI
         private bool edit_value = true; //True if target property uses value, false if uses a variable
         private Property_GS _target_property = null; //The property is this editor working with
         private ActionNode_GS_Editor _target_action_node_editor = null; //The node editor is this property editor showing
-        private Blackboard_GS _target_blackboard = null; //The blackboard is this editor working with
         //Edit fields
         private OperatorType[] _valid_operators = null; //Operators user can choose
         private int _selected_operator_index = -1; //Operator choosed by user index
@@ -31,8 +30,6 @@ namespace GOAP_S.UI
             _target_property = new_property;
             //Set target action node editor
             _target_action_node_editor = new_action_node_editor;
-            //Set target bb
-            _target_blackboard = new_bb;
             //Set property editor UI mode
             _property_UI_mode = new_ui_mode;
             //Allocate the valid operators

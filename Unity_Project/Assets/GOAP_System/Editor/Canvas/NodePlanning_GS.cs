@@ -70,7 +70,7 @@ namespace GOAP_S.UI
                 //Set new agent delegate
                 _selected_agent.on_agent_plan_change_delegate += () => UpdateAgentUI();
                 //Generate selected agent UI
-                GenerateAgentUI();
+                GenerateTargetAgentUI();
 
                 Repaint();
             }
@@ -223,7 +223,7 @@ namespace GOAP_S.UI
             _zoom_position = new Vector2(ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE * 0.5f, ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE * 0.5f);
         }
 
-        private void GenerateAgentUI()
+        private void GenerateTargetAgentUI()
         {
             //First reset current data
             _agent_behaviour_editor = null;
@@ -238,6 +238,12 @@ namespace GOAP_S.UI
 
         private void UpdateAgentUI()
         {
+            if(_agent_behaviour_editor == null)
+            {
+                GenerateTargetAgentUI();
+                return;
+            }
+
             //First reset current data
             _action_node_debuggers = null;
             _action_node_debuggers_num = 0;

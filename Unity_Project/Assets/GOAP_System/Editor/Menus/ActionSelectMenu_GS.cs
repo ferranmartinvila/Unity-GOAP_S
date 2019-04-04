@@ -64,7 +64,7 @@ namespace GOAP_S.UI
                     //Set the allocated class to the action node
                     _target_action_node.action = new_script;
                     //Set target action node editor action editor
-                    _target_action_node_editor.action_editor = new Action_GS_Editor(new_script);
+                    _target_action_node_editor.action_editor = new Action_GS_Editor(_target_action_node_editor);
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Repaint the node editor to update the UI

@@ -10,6 +10,7 @@ namespace GOAP_S.UI
     public class Action_GS_Editor
     {
         //Content fields
+        private ActionNode_GS_Editor _target_node_editor = null; //The node editor that contains this action editor
         private EditorUIMode _UI_mode = EditorUIMode.HIDE_STATE; //Swap between edit and set state, so the user can edit values or not
         private Action_GS _target_action = null; //Target action script
         private PropertyInfo[] _properties = null; //Non blocked properties array, bool is true if the property setter is defined
@@ -17,10 +18,12 @@ namespace GOAP_S.UI
         private object[] _values = null; //All the selected values (properties + fields)
 
         //Contructors =================
-        public Action_GS_Editor(Action_GS target)
+        public Action_GS_Editor(ActionNode_GS_Editor target)
         {
+            //Set target node
+            _target_node_editor = target;
             //Set target action
-            _target_action = target;
+            _target_action = _target_node_editor.target_action_node.action;
 
             //Temporal values list
             List<object> temp_value_list = new List<object>();
@@ -105,7 +108,7 @@ namespace GOAP_S.UI
 
         private void DrawHide()
         {
-            if (GUILayout.Button("Edit"))
+            if (GUILayout.Button("Configure Action"))
             {
                 ActionNode_GS_Editor[] action_nodes_editors = NodeEditor_GS.Instance.action_node_editors;
                 int num = NodeEditor_GS.Instance.action_node_editors_num;
@@ -126,9 +129,11 @@ namespace GOAP_S.UI
             object current_value = null;
 
             //Hide button
-            if (GUILayout.Button("Hide"))
+            if (GUILayout.Button("Hide Config"))
             {
                 _UI_mode = EditorUIMode.HIDE_STATE;
+                //Reset action node window to readapt it
+                _target_node_editor.target_action_node.window_size = Vector2.zero;
             }
 
             //Draw properties
