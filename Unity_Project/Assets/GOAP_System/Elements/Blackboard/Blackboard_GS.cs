@@ -5,13 +5,15 @@ using UnityEngine.SceneManagement;
 using GOAP_S.Planning;
 using GOAP_S.AI;
 using GOAP_S.Tools;
+using System;
 
 namespace GOAP_S.Blackboard
 {
+    [Serializable]
     public class Blackboard_GS
     {
         //Content fields
-        [System.NonSerialized] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
+        [NonSerialized] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
         [SerializeField] private string _id; //ID used for blackboard window
         [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>(); //Variables of the agent
 

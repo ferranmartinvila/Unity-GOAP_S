@@ -10,6 +10,7 @@ using GOAP_S.Tools;
 
 namespace GOAP_S.AI
 {
+    [Serializable]
     public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     {
         //Identification fields

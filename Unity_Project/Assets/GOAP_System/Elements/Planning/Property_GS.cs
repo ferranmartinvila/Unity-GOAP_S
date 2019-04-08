@@ -20,6 +20,7 @@ namespace GOAP_S.Planning
 
     }
 
+    [Serializable]
     public class Property_GS
     {
         //Content fields

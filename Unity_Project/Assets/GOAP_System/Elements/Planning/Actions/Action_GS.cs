@@ -13,7 +13,7 @@ namespace GOAP_S.Planning
     }
 
     //Actions have a custom class attribute usefull to detect action derived classes
-    [Action_Attribute_GS]
+    [Action_Attribute_GS, Serializable]
     public class Action_GS
     {
 

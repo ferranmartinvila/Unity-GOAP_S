@@ -5,6 +5,7 @@ using GOAP_S.AI;
 
 namespace GOAP_S.Blackboard
 {
+    [Serializable]
     public class BlackboardComp_GS : MonoBehaviour
     {
         //Content fields

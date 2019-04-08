@@ -5,6 +5,7 @@ using GOAP_S.Tools;
 
 namespace GOAP_S.Blackboard
 {
+    [Serializable]
     public class TVariable_GS<T> : Variable_GS
     {
         //Content fields

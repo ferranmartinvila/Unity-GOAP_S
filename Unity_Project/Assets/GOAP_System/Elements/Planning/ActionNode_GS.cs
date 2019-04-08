@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace GOAP_S.AI
 {
+    [Serializable]
     public class ActionNode_GS : ISerializationCallbackReceiver
     {
         //UI fields
