@@ -14,6 +14,8 @@ namespace GOAP_S.UI
         private string _variable_name = null; //New variable name
         VariableType _variable_type = VariableType._undefined_var_type; //New variable type
         static private object _variable_value = null; //New variable value
+        private bool _global_blackboard = false; //True if the new variable is for the global blackboard
+
         //Bind properties/fields
         private int _selected_index = -1;
         private string[] _paths;
@@ -21,8 +23,10 @@ namespace GOAP_S.UI
         private int _bind_dropdown_slot = -1;
 
         //Contructors =================
-        public VariableSelectMenu_GS()
+        public VariableSelectMenu_GS(bool global = false)
         {
+            //Set global
+            _global_blackboard = global;
             //Get dropdown slots
             _bind_dropdown_slot = ProTools.GetDropdownSlot();
         }
@@ -138,7 +142,17 @@ namespace GOAP_S.UI
                 if (!string.IsNullOrEmpty(_variable_name) && _variable_type != VariableType._undefined_var_type && _variable_value != null)
                 {
                     //Send info to the bb to generate the variable
-                    Variable_GS new_variable = NodeEditor_GS.Instance.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    Variable_GS new_variable = null;
+                    //Local case
+                    if (_global_blackboard == false)
+                    {
+                        new_variable = NodeEditor_GS.Instance.selected_agent.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);
+                    }
+                    //Global case
+                    else
+                    {
+                        new_variable = GlobalBlackboard_GS.blackboard.AddVariable(_variable_name, _variable_type, _variable_value);   
+                    }
 
                     //If add var return null is because the name is invalid(exists a variable with the same name)
                     if (new_variable != null)
@@ -150,7 +164,16 @@ namespace GOAP_S.UI
                             new_variable.BindField(_paths[_selected_index], null);
                         }
                         //Send the new variable to the blackboard editor to generate the variable editor
-                        NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
+                        //Local case
+                        if (_global_blackboard == false)
+                        {
+                            NodeEditor_GS.Instance.blackboard_editor.AddVariableEditor(new_variable);
+                        }
+                        //Global case
+                        else
+                        {
+                            GlobalBlackboard_GS_Editor.blackboard_editor.AddVariableEditor(new_variable);
+                        }
                         //Close this popup and updat bb window
                         editorWindow.Close();
                         NodeEditor_GS.Instance.Repaint();

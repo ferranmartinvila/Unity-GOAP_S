@@ -24,10 +24,13 @@ namespace GOAP_S.UI
             _variable_editors = new Variable_GS_Editor[ProTools.INITIAL_ARRAY_SIZE];
             //Generate variable editors with the existing variables
             _variable_editors_num = 0;
-            foreach (Variable_GS variable in target_bb.variables.Values)
+            if (target_bb != null)
             {
-                //Generate a variable editor
-                AddVariableEditor(variable);
+                foreach (Variable_GS variable in target_bb.variables.Values)
+                {
+                    //Generate a variable editor
+                    AddVariableEditor(variable);
+                }
             }
         }
 
@@ -40,9 +43,9 @@ namespace GOAP_S.UI
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
             GUILayout.EndVertical();
 
-            //Blit all the variables
+            //Blit all the local variables
             GUILayout.BeginVertical();
-            GUILayout.Label("Variables", UIConfig_GS.left_big_style);
+            GUILayout.Label("Local Variables", UIConfig_GS.left_big_style);
             for(int k = 0; k <_variable_editors_num; k++)
             { 
                 _variable_editors[k].DrawUI();
@@ -56,6 +59,31 @@ namespace GOAP_S.UI
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS());
+                }
+            }
+            
+            //Blit the global blackboard
+            GUILayout.BeginVertical();
+            GlobalBlackboard_GS_Editor.DrawShortUI();
+            GUILayout.EndVertical();
+        }
+
+        public void DrawShortUI()
+        {
+
+            GUILayout.Label("Global Variables", UIConfig_GS.left_big_style);
+            for (int k = 0; k < _variable_editors_num; k++)
+            {
+                _variable_editors[k].DrawUI();
+            }
+
+            //Button to add new variables
+            if (!Application.isPlaying)
+            {
+                if (GUILayout.Button("Add", GUILayout.Width(50)))
+                {
+                    Vector2 mousePos = Event.current.mousePosition;
+                    PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new VariableSelectMenu_GS(true));
                 }
             }
         }

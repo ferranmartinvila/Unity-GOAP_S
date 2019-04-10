@@ -14,10 +14,9 @@ namespace GOAP_S.Blackboard
     {
         //Content fields
         [NonSerialized] private Agent_GS _target_agent = null; //The agent is this blackboard pointing
-        [SerializeField] private string _id; //ID used for blackboard window
         [SerializeField] private Dictionary<string, Variable_GS> _variables = new Dictionary<string, Variable_GS>(); //Variables of the agent
 
-        //Constructors
+        //Constructors ================
         public Blackboard_GS(Agent_GS new_target_agent)
         {
             //The agent is this blackboard pointing

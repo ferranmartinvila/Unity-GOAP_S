@@ -27,7 +27,7 @@ namespace GOAP_S.AI
         [NonSerialized] private Queue<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
         //Callbacks
         public delegate void AgentCallbackFunction(); //Agent delegate used to provide a basic callback system for some events
-        [NonSerialized]public AgentCallbackFunction on_agent_plan_change_delegate; //Agent plan change event callback
+        [NonSerialized] public AgentCallbackFunction on_agent_plan_change_delegate; //Agent plan change event callback
         //Serialization fields
         [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
         [SerializeField] private string serialized_behaviour = null; //String where the agent behaviour is serialized
