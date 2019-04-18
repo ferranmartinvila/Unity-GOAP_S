@@ -55,21 +55,71 @@ namespace GOAP_S.Blackboard
             return new_variable;
         }
 
-        public bool RemoveVariable(string key)
+        public void RemoveVariable(string key, bool global)
         {
             Variable_GS find_var = null;
             //Variable found case
-            if (_variables.TryGetValue(key, out find_var))
+            if (_variables.TryGetValue(key, out find_var) == false)
             {
-                //Mark scene dirty
-                EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-
-                return _variables.Remove(key);
+                return;
             }
-            //Variable not found case
-            else
+
+            //Remove variable from blackboard
+            bool ret = _variables.Remove(key);
+
+            //Remove the variable planning instances(conditions and effects)
+            if ((ret == true || global == true) && _target_agent != null)
             {
-                return false;
+                RemoveVariablePlanning(key);
+            }
+
+            //Mark scene dirty
+            EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        }
+
+        public void RemoveVariablePlanning(string key)
+        {
+            //Remove the target variable from the agent planning
+            //Used when a blackboard variable is removed
+
+            //Iterate the agent action nodes
+            for (int k = 0; k < _target_agent.action_nodes_num; k++)
+            {
+                //Focused action node
+                ActionNode_GS target_node = _target_agent.action_nodes[k];
+                bool repaint = false;
+
+                //Iterate the action node conditions
+                for (int n = 0; n < target_node.conditions_num; n++)
+                {
+                    Property_GS target_condition = target_node.conditions[n];
+                    //Check if the condition uses the target variable
+                    if (string.Compare(key, target_condition.A_key) == 0 || string.Compare(key, target_condition.B_key) == 0)
+                    {
+                        //Delete the condition if the target variable is in
+                        target_node.RemoveCondition(target_condition);
+                        repaint = true;
+                    }
+                }
+
+                //Iterate the action node effects
+                for (int n = 0; n < target_node.effects_num; n++)
+                {
+                    Property_GS target_effect = target_node.effects[n];
+                    //Check if the effect uses the target variable
+                    if (string.Compare(key, target_effect.A_key) == 0 || string.Compare(key, target_effect.B_key) == 0)
+                    {
+                        //Delete the effect if the target variable is in
+                        target_node.RemoveEffect(target_effect);
+                        repaint = true;
+                    }
+                }
+
+                //Update node editor window
+                if (repaint)
+                {
+                    target_node.window_size = Vector2.zero;
+                }
             }
         }
 

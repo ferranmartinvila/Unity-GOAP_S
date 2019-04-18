@@ -12,9 +12,9 @@ namespace GOAP_S.UI
         [SerializeField] private static Blackboard_GS_Editor _blackboard_editor = null;
 
         //Loop Methods ================
-        public static void DrawShortUI()
+        public static void DrawGlobalUI()
         {
-            blackboard_editor.DrawShortUI();
+            blackboard_editor.DrawGlobalUI();
         }
 
         //Get/Set Methods =============

@@ -12,7 +12,15 @@ public class TestBehaviour : AgentBehaviour_GS
 
     public override void Update()
     {
-        SetGoal("damage", OperatorType._equal_equal, 5);
-        SetGoal("defence", OperatorType._equal_equal, 8);
+        SetGoal("in_place", OperatorType._equal_equal,true);
+        SetGoal("melon", OperatorType._equal_equal, 1);
+        SetGoal("sandia", OperatorType._equal_equal, 1);
+
+    }
+
+    public override void InActionUpdate()
+    {
+        //In idle
+        //Recalculate when needed?
     }
 }

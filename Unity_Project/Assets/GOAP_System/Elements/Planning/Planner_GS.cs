@@ -2,18 +2,20 @@
 using UnityEngine;
 using GOAP_S.AI;
 using System.Linq;
+using GOAP_S.Tools;
 
 namespace GOAP_S.Planning
 {
     public class Planner_GS
     {
         private int _id_number = 0;
+        private int _current_iterations = 0; //Iterations count, avoid infinite loop in impossible paths
 
         SortedDictionary<int, List<PlannerNode_GS>> _open = new SortedDictionary<int, List<PlannerNode_GS>>();
         SortedDictionary<int,PlannerNode_GS> _closed = new SortedDictionary<int, PlannerNode_GS>();
 
         //Planning Methods ================
-        public Queue<ActionNode_GS> GeneratePlan(Agent_GS agent)
+        public Stack<ActionNode_GS> GeneratePlan(Agent_GS agent)
         {
             //First get the world state states
             //Current
@@ -29,7 +31,7 @@ namespace GOAP_S.Planning
             if(start_goal_distance == 0)
             {
                 Debug.LogWarning("The current world state coincides with the goal world state: " + goal_world_state.name + " !");
-                return new Queue<ActionNode_GS>();
+                return new Stack<ActionNode_GS>();
             }
 
             //Allocate plan start node
@@ -41,6 +43,17 @@ namespace GOAP_S.Planning
             //Iterate open list till there are no nodes to check
             while(_open.Count > 0)
             {
+                //Check and update iterations count
+                if(ProTools.ITERATION_LIMIT < _current_iterations)
+                {
+                    Debug.LogWarning("Planning generation for agent: " + agent.name + " failed");
+                    break;
+                }
+                else
+                {
+                    _current_iterations += 1;
+                }
+
                 //Current closed node
                 PlannerNode_GS current_node = CloseNode();
 
@@ -48,9 +61,9 @@ namespace GOAP_S.Planning
                 if (current_node.resultant_world_state.DistanceTo(goal_world_state) == 0)
                 {
                     //Allocate a new queue of actions to store the plan
-                    Queue<ActionNode_GS> action_plan = new Queue<ActionNode_GS>();
-                    //First add the goal action
-                    action_plan.Enqueue(current_node.action);
+                    Stack<ActionNode_GS> action_plan = new Stack<ActionNode_GS>();
+                    //Enqueue the goal action 
+                    action_plan.Push(current_node.action);
                     //Iterate goal node "childs" to start node using the parent id
                     while (current_node.parent_id != 0)
                     {
@@ -60,9 +73,12 @@ namespace GOAP_S.Planning
                         if (current_node.action != null)
                         {
                             //Enqueue the new current node
-                            action_plan.Enqueue(current_node.action);
+                            action_plan.Push(current_node.action);
                         }
                     }
+
+                    //Flip the generated queue
+                    
                     //Return the generated actions queue
                     return action_plan;
                 }
@@ -111,7 +127,7 @@ namespace GOAP_S.Planning
             }
 
             //In no plan found case we return an empty plan
-            return new Queue<ActionNode_GS>();
+            return new Stack<ActionNode_GS>();
         }
 
         //Functionality Methods =======

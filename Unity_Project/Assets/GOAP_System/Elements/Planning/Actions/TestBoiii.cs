@@ -12,9 +12,9 @@ public class TestBoiii : Action_GS
     }
 
         //Called on the first action loop
-        public override bool ActionStart()
+        public override ACTION_RESULT ActionStart()
         {
-            return true;
+            return ACTION_RESULT.A_NEXT;
         }
 
         //Called on the action update
@@ -22,13 +22,13 @@ public class TestBoiii : Action_GS
         {
             target_obj.transform.position.Set(target_obj.transform.position.x + 0.5f, target_obj.transform.position.y, target_obj.transform.position.z);
 
-            return ACTION_RESULT.A_CONTINUE;
+            return ACTION_RESULT.A_NEXT;
         }
 
         //Called when the action ends correctly
-        public override void ActionEnd()
+        public override ACTION_RESULT ActionEnd()
         {
-
+            return ACTION_RESULT.A_NEXT;
         }
 
         /*

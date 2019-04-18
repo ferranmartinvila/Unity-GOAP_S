@@ -29,7 +29,14 @@ namespace GOAP_S.AI
 
         public virtual void Update()
         {
-            //Here we code the actions the agent should do depending of the results/state
+            //Idle 
+            //Here we code the actions that the agent should do depending of the results/state generated from the previous actions
+        }
+
+        public virtual void InActionUpdate()
+        {
+            //InAction
+            //Here we code the actions that the agent should do depending of the results/state generated from the previous actions
         }
 
         //Functionality Methods =======

@@ -127,10 +127,19 @@ namespace GOAP_S.UI
             {
                 if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
                 {
+                    bool global = _target_blackboard.target_agent == null;
+
                     //Add remove the current var method to accept menu delegates callback
-                    SecurityAcceptMenu_GS.on_accept_delegate += () => _target_blackboard.RemoveVariable(_target_variable.name);
+                    SecurityAcceptMenu_GS.on_accept_delegate += () => _target_blackboard.RemoveVariable(_target_variable.name, global);
                     //Add remove current var editor from blackboard editor to accept menu delegates calback
-                    SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(_target_variable.name);
+                    if (_target_blackboard == GlobalBlackboard_GS.blackboard)
+                    {
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => GlobalBlackboard_GS_Editor.blackboard_editor.RemoveVariableEditor(_target_variable.name);
+                    }
+                    else
+                    {
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(_target_variable.name);
+                    }
                     //Get mouse current position
                     Vector2 mousePos = Event.current.mousePosition;
                     //Open security accept menu on mouse position

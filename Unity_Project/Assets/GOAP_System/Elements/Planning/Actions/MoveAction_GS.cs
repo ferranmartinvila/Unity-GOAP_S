@@ -4,26 +4,38 @@ using GOAP_S.Planning;
 
 public class MoveAction_GS : Action_GS
 {
-    public GameObject target_obj = null;
+    //Fields
+    public float speed = 5.0f;
+    public Vector3 target_position = Vector3.zero;
+
+    private Vector3 direction_vector = Vector3.zero;
 
     //Called on the first action loop
-    public override bool ActionStart()
+    public override ACTION_RESULT ActionStart()
     {
-        return true;
+        direction_vector = target_position - agent.transform.position;
+        return ACTION_RESULT.A_NEXT;
     }
 
     //Called on the action update
     public override ACTION_RESULT ActionUpdate()
     {
-        target_obj.transform.position.Set(target_obj.transform.position.x + 0.5f, target_obj.transform.position.y, target_obj.transform.position.z);
+        agent.transform.position = new Vector3(agent.transform.position.x + direction_vector.x * speed * Time.deltaTime, agent.transform.position.y + direction_vector.y * speed * Time.deltaTime, agent.transform.position.z + direction_vector.z * speed * Time.deltaTime);
 
-        return ACTION_RESULT.A_CONTINUE;
+        if (Vector3.Distance(agent.transform.position, target_position) < 0.1f)
+        {
+            return ACTION_RESULT.A_NEXT;
+        }
+        else
+        {
+            return ACTION_RESULT.A_CURRENT;
+        }
     }
 
     //Called when the action ends correctly
-    public override void ActionEnd()
+    public override ACTION_RESULT ActionEnd()
     {
-        
+        return ACTION_RESULT.A_NEXT;
     }
 
     /*
@@ -46,5 +58,11 @@ public class MoveAction_GS : Action_GS
         }*/
 
         //EditorGUI.ObjectField(new Rect(10, 20, 100, 20), target_obj,typeof(GameObject));
+        GUILayout.BeginVertical();
+
+        GUILayout.Label("Direction: " + direction_vector);
+        GUILayout.Label("Distance: " + Vector3.Distance(agent.transform.position, target_position));
+
+        GUILayout.EndVertical();
     }
 }

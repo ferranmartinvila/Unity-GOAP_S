@@ -186,6 +186,91 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &911271903
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 911271904}
+  - component: {fileID: 911271907}
+  - component: {fileID: 911271906}
+  - component: {fileID: 911271905}
+  m_Layer: 0
+  m_Name: Cube
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &911271904
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 911271903}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1255048983}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &911271905
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 911271903}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &911271906
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 911271903}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &911271907
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 911271903}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1255048982
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,7 +297,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 911271904}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -241,9 +327,13 @@ MonoBehaviour:
   _name: un_named
   obj_refs: []
   serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
-  serialized_action_nodes: '[{"_window_rect":{"xMin":2012.864,"yMin":2108.045,"xMax":2229.864,"yMax":2421.045},"_id":"662c2b9c-dc5f-45e0-abdb-909fb0037fb8","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"defence\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":8,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test1\",\"_cost\":1,\"$type\":\"test1\"}"},{"_window_rect":{"xMin":2341.933,"yMin":2210.053,"xMax":2558.933,"yMax":2513.053},"_id":"a9855da4-3542-4f6c-b6cf-7fe4b4a8eb56","_name":"Action
-    Node","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"damage\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":5,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test2\",\"_cost\":1,\"$type\":\"test2\"}"},null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_variables":{"damage":{"_value":0,"_name":"damage","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"defence":{"_value":0,"_name":"defence","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+  serialized_action_nodes: '[{"_window_rect":{"xMin":2046.098,"yMin":2083.959,"xMax":2263.098,"yMax":2410.105},"_id":"b6f0236e-bc97-428c-82d1-c91ecb388a76","_name":"Move
+    To","_description":"","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"in_place\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"speed\":5.0,\"target_position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"_name\":\"MoveAction_GS\",\"_cost\":1,\"$type\":\"MoveAction_GS\"}"},{"_window_rect":{"xMin":2300.606,"yMin":2120.633,"xMax":2517.606,"yMax":2433.633},"_id":"54a626ce-09dd-4593-9862-a956a7c50465","_name":"Melon
+    Recolect","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"in_place\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"melon\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":1,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"null"},{"_window_rect":{"xMin":2566.622,"yMin":2170.486,"xMax":2783.622,"yMax":2483.486},"_id":"8a7a7b32-6bdb-4e1f-97bd-17cefa8142e2","_name":"Sandia
+    Recolect","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"melon\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":1,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"sandia\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":1,\"$type\":\"System.Int32\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"test2\",\"_cost\":1,\"$type\":\"test2\"}"},null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_variables":{"melon":{"_value":0,"_name":"melon","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"in_place":{"_value":false,"_name":"in_place","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"recolect_pos":{"_value":{"x":0.0,"y":0.0,"z":0.0},"_name":"recolect_pos","_object_value":{"x":5.0,"y":0.0,"z":5.0,"$type":"UnityEngine.Vector3"},"_type":"_vector3","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"idle_pos":{"_value":{"x":0.0,"y":0.0,"z":0.0},"_name":"idle_pos","_object_value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"_type":"_vector3","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"sandia":{"_value":0,"_name":"sandia","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'

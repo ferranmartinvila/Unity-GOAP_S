@@ -287,7 +287,7 @@ namespace GOAP_S.UI
                     else
                     {
                         //When property is found copy values in front of it a slot backwards
-                        for (int n = k; n < _condition_editors_num - 1; n++)
+                        for (int n = k; n < _condition_editors.Length - 1; n++)
                         {
                             _condition_editors[n] = _condition_editors[n + 1];
                         }
@@ -337,7 +337,7 @@ namespace GOAP_S.UI
                     else
                     {
                         //When property is found copy values in front of it a slot backwards
-                        for (int n = k; n < _effect_editors_num - 1; n++)
+                        for (int n = k; n < _effect_editors.Length - 1; n++)
                         {
                             _effect_editors[n] = _effect_editors[n + 1];
                         }
@@ -392,6 +392,38 @@ namespace GOAP_S.UI
             set
             {
                 _action_editor = value;
+            }
+        }
+
+        public Property_GS_Editor[] condition_editors
+        {
+            get
+            {
+                return _condition_editors;
+            }
+        }
+
+        public int condition_editors_num
+        {
+            get
+            {
+                return _condition_editors_num;
+            }
+        }
+
+        public Property_GS_Editor[] effect_editors
+        {
+            get
+            {
+                return _effect_editors;
+            }
+        }
+
+        public int effect_editors_num
+        {
+            get
+            {
+                return _effect_editors_num;
             }
         }
     }

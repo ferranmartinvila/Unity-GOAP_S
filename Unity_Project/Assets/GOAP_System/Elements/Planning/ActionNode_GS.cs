@@ -243,7 +243,7 @@ namespace GOAP_S.AI
                     else
                     {
                         //When property is found copy values in front of it a slot backwards
-                        for (int n = k; n < _conditions_num - 1; n++)
+                        for (int n = k; n < _conditions.Length - 1; n++)
                         {
                             _conditions[n] = _conditions[n + 1];
                         }
@@ -298,7 +298,7 @@ namespace GOAP_S.AI
                     else
                     {
                         //When property is found copy values in front of it a slot backwards
-                        for (int n = k; n < _effects_num - 1; n++)
+                        for (int n = k; n < _effects.Length - 1; n++)
                         {
                             _effects[n] = _effects[n + 1];
                         }

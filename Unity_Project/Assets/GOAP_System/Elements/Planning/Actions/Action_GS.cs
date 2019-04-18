@@ -19,32 +19,35 @@ namespace GOAP_S.Planning
 
         /*
         Actions have process state
-        This state basically for user information
+        This state is basically for user information
         */
         public enum ACTION_STATE
         {
-            A_IDLE,
+            A_IDLE = 0,
+            A_AWAKE,
             A_START,
             A_UPDATE,
             A_COMPLETE
         }
 
         /*
-        Action update return the state of the action process
-        ActionStart also uses this enum, 
-        so the user can check if the action can be executed with no problem
+        Action loop methods return the state of the action process
+        So the user can check if the action has been executed correctly
+        - Error: Error on loop method and action end. Ex. Update -> End
+        - Current: In the next iteration the action will execute the same current loop method. Ex. Update -> Update
+        - Next: In the next iteration the action will execute the next loop method. Ex. Awake -> Start
         */
         public enum ACTION_RESULT
         {
-            A_ERROR = 0,
-            A_CONTINUE = 1,
-            A_END = 2
+            A_ERROR = 0, //Action loop method
+            A_CURRENT,
+            A_NEXT
         }
 
         //Content fields
         [SerializeField] private string _name = "no_name";
         [SerializeField] private int _cost = 1;
-        [NonSerialized] private ACTION_STATE _action_state = ACTION_STATE.A_IDLE;
+        [NonSerialized] private ACTION_STATE _state = ACTION_STATE.A_IDLE;
         [NonSerialized] private Agent_GS _agent = null;
 
         //Constructors ================
@@ -56,27 +59,27 @@ namespace GOAP_S.Planning
 
         //Loop Methods ================
         //Action awake is called once at the app start or when the agent is spawned
-        public virtual bool ActionAwake()
+        public virtual ACTION_RESULT ActionAwake()
         {
-            return true;
+            return ACTION_RESULT.A_NEXT;
         }
 
         //Called on the first action loop
-        public virtual bool ActionStart()
+        public virtual ACTION_RESULT ActionStart()
         {
-            return true;
+            return ACTION_RESULT.A_NEXT;
         }
 
         //Called on the action update
         public virtual ACTION_RESULT ActionUpdate()
         {
-            return ACTION_RESULT.A_END;
+            return ACTION_RESULT.A_NEXT;
         }
 
         //Called when the action ends correctly
-        public virtual void ActionEnd()
+        public virtual ACTION_RESULT ActionEnd()
         {
-
+            return ACTION_RESULT.A_NEXT;
         }
 
         /*
@@ -86,14 +89,14 @@ namespace GOAP_S.Planning
         */
         public virtual void ActionBreak()
         {
-            _action_state = ACTION_STATE.A_COMPLETE;
+            _state = ACTION_STATE.A_COMPLETE;
         }
 
 
         //Blit action UI inside the action node
         public virtual void BlitUI()
         {
-          
+
         }
 
         //Get/Set Methods =================
@@ -121,6 +124,19 @@ namespace GOAP_S.Planning
                 _cost = value;
             }
         }
+
+        public ACTION_STATE state
+        {
+            get
+            {
+                return _state;
+            }
+            set
+            {
+                _state = value;
+            }
+        }
+
 
         [BlockedProperty_GS]
         public Blackboard_GS blackboard

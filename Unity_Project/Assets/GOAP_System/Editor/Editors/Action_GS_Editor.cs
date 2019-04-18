@@ -89,6 +89,8 @@ namespace GOAP_S.UI
                 case EditorUIMode.HIDE_STATE:
                     {
                         DrawHide();
+                        //Display custom action UI
+                        _target_action.BlitUI();
                     }
                     break;
                 case EditorUIMode.EDIT_STATE:
@@ -102,8 +104,6 @@ namespace GOAP_S.UI
                     }
                     break;
             }
-
-            _target_action.BlitUI();
         }
 
         private void DrawHide()
@@ -226,7 +226,7 @@ namespace GOAP_S.UI
                         //Set field input
                         if (current_value.Equals(_values[values_index]) == false)
                         {
-                            _fields[k].SetValue(_target_action, current_value);
+                            _fields[k].SetValue(_target_action, _values[values_index]);
                         }
                     }
                     GUILayout.EndHorizontal();

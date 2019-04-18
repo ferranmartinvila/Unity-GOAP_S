@@ -2,6 +2,7 @@
 using UnityEditor;
 using GOAP_S.Blackboard;
 using GOAP_S.Tools;
+using GOAP_S.Planning;
 
 namespace GOAP_S.UI
 {
@@ -64,11 +65,11 @@ namespace GOAP_S.UI
             
             //Blit the global blackboard
             GUILayout.BeginVertical();
-            GlobalBlackboard_GS_Editor.DrawShortUI();
+            GlobalBlackboard_GS_Editor.DrawGlobalUI();
             GUILayout.EndVertical();
         }
 
-        public void DrawShortUI()
+        public void DrawGlobalUI()
         {
 
             GUILayout.Label("Global Variables", UIConfig_GS.left_big_style);
@@ -113,6 +114,9 @@ namespace GOAP_S.UI
 
         public void RemoveVariableEditor(string name)
         {
+            int repaint = 0;
+
+            //Iterate variable editors
             for (int k = 0; k < _variable_editors_num; k++)
             {
                 if (_variable_editors[k].target_variable.name == name)
@@ -123,17 +127,72 @@ namespace GOAP_S.UI
                     }
                     else
                     {
-                        for (int i = k; i < _variable_editors_num - 1; i++)
+                        for (int i = k; i < _variable_editors.Length - 1; i++)
                         {
                             _variable_editors[i] = _variable_editors[i + 1];
                         }
                     }
                     //Update variable editors count
                     _variable_editors_num -= 1;
-                    //Repaint node editor window
-                    NodeEditor_GS.Instance.Repaint();
+
+                    repaint += 1;
                 }
             }
+
+            //Remove variable editor planning instances(conditions and effects)
+            if(RemoveVariableEditorPlanning(name) == true)
+            {
+                repaint += 1;
+            }
+
+            if (repaint > 0)
+            {
+                //Repaint node editor window
+                NodeEditor_GS.Instance.Repaint();
+            }
+        }
+
+        public bool RemoveVariableEditorPlanning(string key)
+        {
+            //Remove the target variable from the agent planning editors
+            //Used when a blackboard variable is removed
+
+            bool ret = false;
+            
+            //Iterate the agent action nodes
+            for (int k = 0; k < NodeEditor_GS.Instance.action_node_editors_num; k++)
+            {
+                //Focused action node
+                ActionNode_GS_Editor target_node = NodeEditor_GS.Instance.action_node_editors[k];
+
+                //Iterate the action node conditions
+                for (int n = 0; n < target_node.condition_editors_num; n++)
+                {
+                    Property_GS target_condition = target_node.condition_editors[n].target_property;
+                    //Check if the condition uses the target variable
+                    if (string.Compare(key, target_condition.A_key) == 0 || string.Compare(key, target_condition.B_key) == 0)
+                    {
+                        //Delete the condition if the target variable is in
+                        target_node.RemoveConditionEditor(target_node.condition_editors[n]);
+                        ret = true;
+                    }
+                }
+
+                //Iterate the action node effects
+                for (int n = 0; n < target_node.effect_editors_num; n++)
+                {
+                    Property_GS target_effect = target_node.effect_editors[n].target_property;
+                    //Check if the effect uses the target variable
+                    if (string.Compare(key, target_effect.A_key) == 0 || string.Compare(key, target_effect.B_key) == 0)
+                    {
+                        //Delete the effect if the target variable is in
+                        target_node.RemoveEffectEditor(target_node.effect_editors[n]);
+                        ret = true;
+                    }
+                }
+            }
+
+            return ret;
         }
 
         //Get/Set methods =============

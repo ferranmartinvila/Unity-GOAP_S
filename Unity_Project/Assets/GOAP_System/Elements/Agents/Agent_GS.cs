@@ -13,18 +13,29 @@ namespace GOAP_S.AI
     [Serializable]
     public class Agent_GS : MonoBehaviour, ISerializationCallbackReceiver
     {
+        /*
+         Agent state enum used to modify agent reactions depending of its state
+        */
+        public enum AGENT_STATE
+        {
+            AG_IDLE = 0,
+            AG_ACTION
+        }
+        
         //Identification fields
         [SerializeField] private string _name = "un_named"; //Agent name(usefull for the user to recognize the behaviours)
         [NonSerialized] private string _id = null; //Agent id used to generate world state and differentiate agents
-        [NonSerialized] private AgentBehaviour_GS _behaviour = null; //The behaviour is the agent using
         //Content fields
+        [NonSerialized] private AGENT_STATE _state = AGENT_STATE.AG_IDLE; //Current agent state
+        [NonSerialized] private AgentBehaviour_GS _behaviour = null; //The behaviour is the agent using
         [NonSerialized] private ActionNode_GS[] _action_nodes = null; //Action nodes array, serialized specially so unity call OnBefore and After methods and we create our custom serialization methods
         [NonSerialized] private int _action_nodes_num = 0; //The number of nodes placed in the array
         [NonSerialized] private Blackboard_GS _blackboard = null; //The blackboard is the agent using
         [NonSerialized] private BlackboardComp_GS _blackboard_component = null; //Inspector representation of the blackboard
         [NonSerialized] private WorldState_GS _goal_world_state = null; //Agent goal world state defined in the agent behaviour
         [NonSerialized] private Planner_GS _planner; //Class that holds the planning algorithm
-        [NonSerialized] private Queue<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
+        [NonSerialized] private Stack<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
+        [NonSerialized] private ActionNode_GS _current_action = null; //Current action from the plan in execution
         //Callbacks
         public delegate void AgentCallbackFunction(); //Agent delegate used to provide a basic callback system for some events
         [NonSerialized] public AgentCallbackFunction on_agent_plan_change_delegate; //Agent plan change event callback
@@ -40,7 +51,7 @@ namespace GOAP_S.AI
             //Allocate nodes array
             _action_nodes = new ActionNode_GS[ProTools.INITIAL_ARRAY_SIZE];
             //Allocate the current plan
-            _current_plan = new Queue<ActionNode_GS>();
+            _current_plan = new Stack<ActionNode_GS>();
         }
 
         //Loop Methods ====================
@@ -73,15 +84,95 @@ namespace GOAP_S.AI
 
         private void Update()
         {
-            if (_current_plan.Count == 0)
+            switch (_state)
             {
-                _behaviour.Update();
+                case AGENT_STATE.AG_IDLE:
+                    {
+                        if (_current_plan.Count == 0)
+                        {
+                            _behaviour.Update();
 
-                _current_plan = planner.GeneratePlan(this);
-                if (on_agent_plan_change_delegate != null)
-                {
-                    on_agent_plan_change_delegate();
-                }
+                            _current_plan = planner.GeneratePlan(this);
+                            if (on_agent_plan_change_delegate != null)
+                            {
+                                on_agent_plan_change_delegate();
+                            }
+                            //In avaliable plan case
+                            if (_current_plan.Count > 0)
+                            {
+                                //Agent state is setted to action state
+                                _state = AGENT_STATE.AG_ACTION;
+                                //Focus first plan action
+                                _current_action = _current_plan.Pop();
+                                //Awake the focused action
+                                _current_action.action.state = Action_GS.ACTION_STATE.A_AWAKE;
+                            }
+                        }
+                    }
+                    break;
+                case AGENT_STATE.AG_ACTION:
+                    {
+                        //Current action execution result
+                        Action_GS.ACTION_RESULT execution_result = Action_GS.ACTION_RESULT.A_ERROR;
+                        //Execute the current action
+                        switch (_current_action.action.state)
+                        {
+                            case Action_GS.ACTION_STATE.A_AWAKE:
+                                {
+                                    execution_result = _current_action.action.ActionAwake();
+                                }
+                                break;
+                            case Action_GS.ACTION_STATE.A_START:
+                                {
+                                    execution_result = _current_action.action.ActionStart();
+                                }
+                                break;
+                            case Action_GS.ACTION_STATE.A_UPDATE:
+                                {
+                                    //Execute behaviour in action update
+                                    _behaviour.InActionUpdate();
+
+                                    execution_result = _current_action.action.ActionUpdate();
+                                }
+                                break;
+                            case Action_GS.ACTION_STATE.A_COMPLETE:
+                                {
+                                    execution_result = _current_action.action.ActionEnd();
+                                    //Check if the action has been completed
+                                    if (execution_result == Action_GS.ACTION_RESULT.A_NEXT)
+                                    {
+                                        //Check current plan
+                                        if (_current_plan.Count > 0)
+                                        {
+                                            //Avaliable action case
+                                            _current_action = _current_plan.Pop();
+                                        }
+                                        else
+                                        {
+                                            //Plan completed case
+                                            _current_action = null;
+                                            _state = AGENT_STATE.AG_IDLE;
+                                            return;
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                        //React with the action result
+                        if (execution_result == Action_GS.ACTION_RESULT.A_NEXT)
+                        {
+                            _current_action.action.state += 1;
+                        }
+                        else if (execution_result == Action_GS.ACTION_RESULT.A_ERROR)
+                        {
+                            _current_action.action.ActionBreak();
+                            //In action error the plan is cancelled
+                            _current_action = null;
+                            _current_plan.Clear();
+                            _state = AGENT_STATE.AG_IDLE;
+                        }
+                    }
+                    break;
             }
         }
 
@@ -269,7 +360,7 @@ namespace GOAP_S.AI
             }
         }
 
-        public Queue<ActionNode_GS> current_plan
+        public Stack<ActionNode_GS> current_plan
         {
             get
             {
