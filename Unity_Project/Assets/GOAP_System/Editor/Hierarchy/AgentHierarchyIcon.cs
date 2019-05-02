@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using GOAP_S.AI;
 
 [InitializeOnLoad]
-public class AgentHierarchyIcon
+public sealed class AgentHierarchyIcon
 {
     //Content fields
     private static Texture2D _icon_texture = null; //Texture we use as agent hierarchy icon

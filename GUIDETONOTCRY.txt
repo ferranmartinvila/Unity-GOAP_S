@@ -1,4 +1,0 @@
-- Static blackboard: Static and independand blackboard with static values, agents can access it and modify it. 
-Serialization of this blackboard is a must and maybe for the moment it is only displayed with the current local blackboard editors.
-
-- Methods and conditions (*^_^) una florecilla!

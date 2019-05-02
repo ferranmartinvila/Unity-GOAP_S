@@ -13,6 +13,7 @@ namespace GOAP_S.UI
         //Content fields
         private ActionNode_GS_Editor _target_action_node_editor = null; //Focused action node editor
         private ActionNode_GS _target_action_node = null; //Focused action node
+
         //Selection fields
         private int _action_dropdown_slot = -1;
         private int _selected_action_index = -1;
@@ -20,9 +21,12 @@ namespace GOAP_S.UI
         //Constructors ================
         public ActionSelectMenu_GS(ActionNode_GS_Editor new_target_action_node_editor)
         {
-            //Focus the action node
-            _target_action_node_editor = new_target_action_node_editor;
-            _target_action_node = _target_action_node_editor.target_action_node;
+            if (new_target_action_node_editor != null)
+            {
+                //Focus the action node
+                _target_action_node_editor = new_target_action_node_editor;
+                _target_action_node = _target_action_node_editor.target_action_node;
+            }
             //Get dropdown slot for action select
             _action_dropdown_slot = ProTools.GetDropdownSlot();
         }
@@ -54,21 +58,44 @@ namespace GOAP_S.UI
                 ResourcesTool.action_scripts.TryGetValue(ResourcesTool.action_paths[_selected_action_index], out script);
                 //Allocate a class with the same type of script value
                 Action_GS new_script = ProTools.AllocateClass<Action_GS>(script);
-                //Check if the selected action is different to the node action
-                if (_target_action_node.action == null || _target_action_node.action.GetType() != new_script.GetType())
+                //Action node case
+                if (_target_action_node != null)
                 {
-                    //Set the class name to the new allocated action
-                    new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
-                    //Set the action target agent
-                    new_script.agent = NodeEditor_GS.Instance.selected_agent;
-                    //Set the allocated class to the action node
-                    _target_action_node.action = new_script;
-                    //Set target action node editor action editor
-                    _target_action_node_editor.action_editor = new Action_GS_Editor(_target_action_node_editor);
-                    //Mark scene dirty
-                    EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-                    //Repaint the node editor to update the UI
-                    NodeEditor_GS.Instance.Repaint();
+                    //Check if the selected action is different to the node action
+                    if (_target_action_node.action == null || _target_action_node.action.GetType() != new_script.GetType())
+                    {
+                        //Set the class name to the new allocated action
+                        new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
+                        //Set the action target agent
+                        new_script.agent = NodeEditor_GS.Instance.selected_agent;
+                        //Set the allocated class to the action node
+                        _target_action_node.action = new_script;
+                        //Set target action node editor action editor
+                        _target_action_node_editor.action_editor = new Action_GS_Editor(_target_action_node_editor);
+                        //Mark scene dirty
+                        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                        //Repaint the node editor to update the UI
+                        NodeEditor_GS.Instance.Repaint();
+                    }
+                }
+                //Agent idle action case 
+                else
+                {
+                    Agent_GS target_agent = NodeEditor_GS.Instance.selected_agent;
+                    //Check if the selected agent is different to the agent idle action
+                    if (target_agent.idle_action == null || target_agent.idle_action.GetType() != new_script.GetType())
+                    {
+                        //Set the class name to the new allocated action
+                        new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
+                        //Set the action target agent
+                        new_script.agent = NodeEditor_GS.Instance.selected_agent;
+                        //Set the agent idle action
+                        target_agent.idle_action = new_script;
+                        //Mark scene dirty
+                        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                        //Repaint the node editor to update the UI
+                        NodePlanning_GS.Instance.Repaint();
+                    }
                 }
                 //Close the pop window at the end of the process
                 editorWindow.Close();

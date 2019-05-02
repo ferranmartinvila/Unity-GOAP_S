@@ -78,12 +78,10 @@ namespace GOAP_S.UI
                             _display_paths[k] = _paths[k].Replace('.', '/');
                         }
                         //Generate fields paths
-                        int fields_k = 0; //Index to iterate fields info array
-                        for (int k = _properties_info.Length; k < _properties_info.Length + _fields_info.Length; k++)
+                        for (int k = _properties_info.Length, fields_k = 0; k < _properties_info.Length + _fields_info.Length; k++, fields_k++)
                         {
                             _paths[k] = string.Format("{0}.{1}", _fields_info[fields_k].ReflectedType.FullName, _fields_info[fields_k].Name);
                             _display_paths[k] = _paths[k].Replace('.', '/');
-                            fields_k += 1;//Update fields index
                         }
                     }
 

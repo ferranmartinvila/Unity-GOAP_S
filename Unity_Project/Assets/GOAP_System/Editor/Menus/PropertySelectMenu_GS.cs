@@ -2,6 +2,7 @@
 using UnityEditor;
 using GOAP_S.Tools;
 using GOAP_S.Planning;
+using GOAP_S.Blackboard;
 
 namespace GOAP_S.UI
 {
@@ -12,7 +13,8 @@ namespace GOAP_S.UI
         private string _menu_title = null; //Condition Select or Effect Select
         private ActionNode_GS_Editor _target_action_node_editor = null; //Focused node action
         //Variable A fields
-        private string[] _A_variable_keys = null; //Avaliable variables in the target blackboard
+        private string[] _A_variable_keys = null; //Avaliable variables in the target and global blackboard
+        private string[] _original_A_variable_keys = null; //A keys without prefix
         private int prev_selected_variable_index = -1; //To check variable type change
         private VariableType _selected_variable_type = VariableType._undefined_var_type; //Selected variable type
         private int _selected_A_key_index = -1; //Selected A key dropdown index
@@ -20,10 +22,11 @@ namespace GOAP_S.UI
         private OperatorType[] _valid_operators = null; //Valid operators in relation of the variable type
         private int _selected_operator_index = -1; //Operator selected by user in dropdown index
         //Variable B fields
-        private int _value_or_key = 0; //1 = value / 2 = key
+        private short _value_or_key = 0; //1 = value / 2 = key
         private object _selected_value = null; //Selected in property using value case
         private int _selected_B_key_index = -1; //Selected B key in property using variable case
         private string[] _B_variable_keys = null; //Avaliable B keys (variable with the same variable type of A in blackboard)
+        private string[] _original_B_variable_keys = null; //B keys without prefix
         //Dropdowns slots
         private int _A_key_dropdown_slot = -1; //A key dropdown slot
         private int _operator_dropdown_slot = -1; //Operator dropdown slot
@@ -47,8 +50,27 @@ namespace GOAP_S.UI
             }
             //Set the action node is this menu working with
             _target_action_node_editor = new_target_action_node_editor;
-            //Get blackboard variables
-            _A_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
+            
+            //Get local blackboard variables keys
+            string[] local_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
+            //Get global blackboard variables keys
+            string[] global_keys = GlobalBlackboard_GS.blackboard.GetKeys();
+            //Allocate string array to store all the keys
+            _A_variable_keys = new string[local_keys.Length + global_keys.Length];
+            _original_A_variable_keys = new string[local_keys.Length + global_keys.Length];
+            //Add the local keys with a prefix for the dropdown
+            for(int k = 0; k < local_keys.Length; k++)
+            {
+                _A_variable_keys[k] = "Local/" + local_keys[k];
+                _original_A_variable_keys[k] = local_keys[k];
+            }
+            //Add the global keys with a prefix for the dropdown
+            for(int k = local_keys.Length, i = 0; k < _A_variable_keys.Length; k++, i++)
+            {
+                _A_variable_keys[k] = "Global/" + global_keys[i];
+                _original_A_variable_keys[k] = global_keys[i];
+            }
+
             //Get dropdown slots
             _A_key_dropdown_slot = ProTools.GetDropdownSlot();
             _operator_dropdown_slot = ProTools.GetDropdownSlot();
@@ -86,7 +108,17 @@ namespace GOAP_S.UI
                 if (_selected_A_key_index != -1)
                 {
                     //If the selected index is valid we get the variable type
-                    _selected_variable_type = NodeEditor_GS.Instance.selected_agent.blackboard.variables[_A_variable_keys[_selected_A_key_index]].type;
+                    if(_selected_A_key_index + 1 > NodeEditor_GS.Instance.selected_agent.blackboard.variables.Count)
+                    {
+                        //Global variable case
+                        _selected_variable_type = GlobalBlackboard_GS.blackboard.variables[_original_A_variable_keys[_selected_A_key_index]].type;
+                    }
+                    else
+                    {
+                        //Local variable case
+                        _selected_variable_type = NodeEditor_GS.Instance.selected_agent.blackboard.variables[_original_A_variable_keys[_selected_A_key_index]].type;
+                    }
+                    
                     //Then we can allocate the property value with the variable type
                     ProTools.AllocateFromVariableType(_selected_variable_type, ref _selected_value);
                     //Get valid operators
@@ -103,8 +135,27 @@ namespace GOAP_S.UI
                     }
                     //Reset operator selected
                     _selected_operator_index = -1;
-                    //Get variables in the blackboard with the same type
-                    _B_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_selected_variable_type);
+
+                    //Get local blackboard variables keys with the same type
+                    string[] local_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_selected_variable_type);
+                    //Get global blackboard variables keys with the same type
+                    string[] global_keys = GlobalBlackboard_GS.blackboard.GetKeysByVariableType(_selected_variable_type);
+                    //Allocate string array to store all the keys
+                    _B_variable_keys = new string[local_keys.Length + global_keys.Length];
+                    _original_B_variable_keys = new string[local_keys.Length + global_keys.Length];
+                    //Add the local keys with a prefix for the dropdown
+                    for (int k = 0; k < local_keys.Length; k++)
+                    {
+                        _B_variable_keys[k] = "Local/" + local_keys[k];
+                        _original_B_variable_keys[k] = local_keys[k];
+                    }
+                    //Add the global keys with a prefix for the dropdown
+                    for (int k = local_keys.Length, i = 0; k < _B_variable_keys.Length; k++, i++)
+                    {
+                        _B_variable_keys[k] = "Global/" + global_keys[i];
+                        _original_B_variable_keys[k] = global_keys[i];
+                    }
+                    
                     //Reset B key selected
                     _selected_B_key_index = -1;
                 }
@@ -198,7 +249,7 @@ namespace GOAP_S.UI
                     //First allocate the property class
                     Property_GS new_property = new Property_GS();
                     //Set A key
-                    new_property.A_key = _A_variable_keys[_selected_A_key_index];
+                    new_property.A_key = _original_A_variable_keys[_selected_A_key_index];
                     //Set variable type
                     new_property.variable_type = _selected_variable_type;
                     //Set operator type
@@ -206,7 +257,7 @@ namespace GOAP_S.UI
                     //Set value or key in property B part
                     if(_value_or_key == 2)
                     {
-                        new_property.B_key = _B_variable_keys[_selected_B_key_index];
+                        new_property.B_key = _original_B_variable_keys[_selected_B_key_index];
                     }
                     else
                     {

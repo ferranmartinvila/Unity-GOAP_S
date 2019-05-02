@@ -13,8 +13,8 @@ public class TestBehaviour : AgentBehaviour_GS
     public override void Update()
     {
         SetGoal("in_place", OperatorType._equal_equal,true);
-        SetGoal("melon", OperatorType._equal_equal, 1);
-        SetGoal("sandia", OperatorType._equal_equal, 1);
+        SetGoal("damage", OperatorType._equal_equal, 1);
+        SetGoal("speed", OperatorType._equal_equal, 1);
 
     }
 

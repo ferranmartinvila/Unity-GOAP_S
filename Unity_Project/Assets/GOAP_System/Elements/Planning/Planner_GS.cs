@@ -37,6 +37,10 @@ namespace GOAP_S.Planning
             //Allocate plan start node
             PlannerNode_GS start_node = new PlannerNode_GS(0, start_goal_distance, new_id_number, 0, current_world_state, null);
 
+            //Clear open and close dictionaries
+            _open.Clear();
+            _closed.Clear();
+
             //Add start node to the open list
             _open.Add(start_node.f, new List<PlannerNode_GS> { start_node });
 

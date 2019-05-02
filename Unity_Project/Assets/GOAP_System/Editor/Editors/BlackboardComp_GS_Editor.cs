@@ -23,6 +23,7 @@ namespace GOAP_S.UI
 
             GUILayout.BeginVertical();
             //Display agent blackboard
+            GUILayout.Label("Local Variables", UIConfig_GS.left_big_style);
             DisplayBlackboardVariables(target_blackboard);
             //Display global blackboard
             GUILayout.Label("Global Variables", UIConfig_GS.left_big_style);
@@ -31,7 +32,7 @@ namespace GOAP_S.UI
             GUILayout.EndVertical();
         }
 
-        private void DisplayBlackboardVariables(Blackboard_GS target_blackboard)
+        protected void DisplayBlackboardVariables(Blackboard_GS target_blackboard)
         {
             foreach (Variable_GS variable in target_blackboard.variables.Values)
             {

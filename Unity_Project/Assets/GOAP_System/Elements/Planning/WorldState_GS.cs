@@ -8,7 +8,12 @@ namespace GOAP_S.Planning
     public class WorldState_GS
     {
         private string _name = null; //Name to differentiate world states/goals
-        private Dictionary<string, Property_GS> _world_state = null; //Properties that define the world state
+
+        private Dictionary<string, Property_GS> _world_state = null;
+
+
+        
+        //Properties that define the world state
 
         //Constructors ====================
         public WorldState_GS()

@@ -36,6 +36,7 @@ namespace GOAP_S.AI
         [NonSerialized] private Planner_GS _planner; //Class that holds the planning algorithm
         [NonSerialized] private Stack<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
         [NonSerialized] private ActionNode_GS _current_action = null; //Current action from the plan in execution
+        [NonSerialized] private Action_GS _idle_action = null; //Action executed when the agent is in idle state
         //Callbacks
         public delegate void AgentCallbackFunction(); //Agent delegate used to provide a basic callback system for some events
         [NonSerialized] public AgentCallbackFunction on_agent_plan_change_delegate; //Agent plan change event callback
@@ -44,7 +45,8 @@ namespace GOAP_S.AI
         [SerializeField] private string serialized_behaviour = null; //String where the agent behaviour is serialized
         [SerializeField] private string serialized_action_nodes = null; //String where the action nodes are serialized
         [SerializeField] private string serialized_blackboard = null; //String where the blackboard is serialized
-        
+        [SerializeField] private string serialized_idle_action = null; //String where the idle action is serialized
+
         //Constructors ====================
         public Agent_GS()
         {
@@ -84,21 +86,44 @@ namespace GOAP_S.AI
 
         private void Update()
         {
+            //Switch between agent idle and action state
             switch (_state)
             {
                 case AGENT_STATE.AG_IDLE:
                     {
                         if (_current_plan.Count == 0)
                         {
+                            //The behaviour basically defines the goal world state
                             _behaviour.Update();
 
+                            //Generate the plan
                             _current_plan = planner.GeneratePlan(this);
-                            if (on_agent_plan_change_delegate != null)
-                            {
-                                on_agent_plan_change_delegate();
-                            }
+                            
                             //In avaliable plan case
                             if (_current_plan.Count > 0)
+                            {
+                                if (on_agent_plan_change_delegate != null)
+                                {
+                                    on_agent_plan_change_delegate();
+                                }
+                            }
+                            //In no action to execute case we execute the agent idle action
+                            else
+                            {
+                                _idle_action.Execute();
+                                //At this point the idle action es exectued in an endless update
+                                if(_idle_action.state > Action_GS.ACTION_STATE.A_UPDATE)
+                                {
+                                    _idle_action.state = Action_GS.ACTION_STATE.A_UPDATE;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //We need to finish the idle action
+                            _idle_action.Execute();
+                            //WHen the idle action ends we can execute the agent plan
+                            if (_idle_action.state == Action_GS.ACTION_STATE.A_COMPLETE)
                             {
                                 //Agent state is setted to action state
                                 _state = AGENT_STATE.AG_ACTION;
@@ -336,6 +361,18 @@ namespace GOAP_S.AI
             }
         }
 
+        public Action_GS idle_action
+        {
+            get
+            {
+                return _idle_action;
+            }
+            set
+            {
+                _idle_action = value;
+            }
+        }
+
         public WorldState_GS goal_world_state
         {
             get
@@ -376,11 +413,19 @@ namespace GOAP_S.AI
             //Serialize action nodes
             serialized_action_nodes = Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
             //Serialize blackboard
-            serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
+            if (blackboard != null)
+            {
+                serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
+            }
             //Serialize behaviour
             if(_behaviour != null)
             {
                 serialized_behaviour = Serialization.SerializationManager.Serialize(_behaviour, typeof(AgentBehaviour_GS), obj_refs);
+            }
+            //Serialize idle action
+            if(_idle_action != null)
+            {
+                serialized_idle_action = Serialization.SerializationManager.Serialize(_idle_action, typeof(Action_GS), obj_refs);
             }
         }
 
@@ -423,6 +468,17 @@ namespace GOAP_S.AI
                 //If serialization string is not null lets deserialize the behaviour
                 _behaviour = (AgentBehaviour_GS)Serialization.SerializationManager.Deserialize(typeof(AgentBehaviour_GS), serialized_behaviour, obj_refs);
                 _behaviour.agent = this;
+            }
+            //Deserialize idle action
+            if(string.IsNullOrEmpty(serialized_idle_action))
+            {
+                //If serialization srtring is null idle action is null
+                _idle_action = null;
+            }
+            else
+            {
+                //If serialization string is not null lets deserialize the idle action
+                _idle_action = (Action_GS)Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_idle_action, obj_refs);
             }
         }
     }

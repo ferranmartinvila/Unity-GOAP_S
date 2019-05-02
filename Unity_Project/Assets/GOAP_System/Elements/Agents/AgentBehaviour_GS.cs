@@ -72,7 +72,6 @@ namespace GOAP_S.AI
                 agent.goal_world_state.SetGoal(variable_name, new Property_GS(variable_name, variable_value.GetType().ToVariableType(), operator_type, variable_value));
             }
         }
-
         protected void RemoveGoal(string variable_name)
         {
             agent.goal_world_state.RemoveGoal(variable_name);
