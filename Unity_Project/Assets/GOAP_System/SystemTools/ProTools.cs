@@ -194,8 +194,8 @@ namespace GOAP_S.Tools
             }
 
             //Collect components properties that match with the target type
-            Component[] agent_components = target.GetComponents(typeof(Component));
-            foreach (Component comp in agent_components)
+            Component[] object_components = target.GetComponents(typeof(Component));
+            foreach (Component comp in object_components)
             {
                 PropertyInfo[] comp_properties = comp.GetType().GetProperties();
                 foreach (PropertyInfo comp_property_info in comp_properties)
@@ -243,6 +243,99 @@ namespace GOAP_S.Tools
             return fields_list.ToArray();
         }
 
+        //Methods Methods =======================
+        public static MethodInfo[] FindConcreteGameObjectMethods(GameObject target_object, Type target_return_type)
+        {
+            //Allocate the methods list
+            List<MethodInfo> methods_list = new List<MethodInfo>();
+
+            //Collect game object methods
+            foreach(MethodInfo method_info in typeof(GameObject).GetMethods())
+            {
+                //Methods with the same return type as the target are stored in the methods list
+                if(method_info.ReturnType == target_return_type)
+                {
+                    methods_list.Add(method_info);
+                }
+            }
+
+            //Collect components methods
+            Component[] object_components = target_object.GetComponents(typeof(Component));
+            foreach (Component comp in object_components)
+            {
+                MethodInfo[] comp_methods = comp.GetType().GetMethods();
+                foreach(MethodInfo comp_method in comp_methods)
+                {
+                    //Methods with the same return type as the target are stored in the methods list
+                    if (comp_method.ReturnType == target_return_type)
+                    {
+                        methods_list.Add(comp_method);
+                    }
+                }
+            }
+
+            //Return the list converted to array
+            return methods_list.ToArray();
+        }
+
+        public static MethodInfo [] FindConcreteAgentMethods(AI.Agent_GS target_agent, Type target_return_type)
+        {
+            //Allocate the methods list
+            List<MethodInfo> methods_list = new List<MethodInfo>();
+
+            //Get action nodes methods
+            for (int k = 0; k < target_agent.action_nodes_num; k++)
+            {
+                //Check action node action
+                Planning.Action_GS node_action = target_agent.action_nodes[k].action;
+                if (node_action != null)
+                {
+                    //Get action methods
+                    MethodInfo[] action_methods = node_action.GetType().GetMethods();
+                    foreach(MethodInfo action_method in action_methods)
+                    {
+                        //Methods with the same return type as the target are stored in the methods list
+                        if (action_method.ReturnType == target_return_type)
+                        {
+                            methods_list.Add(action_method);
+                        }
+                    }
+                }
+            }
+
+            //Get behaviour methods
+            if(target_agent.behaviour != null)
+            {
+                MethodInfo[] behaviour_methods = target_agent.behaviour.GetType().GetMethods();
+                foreach(MethodInfo behaviour_method in behaviour_methods)
+                {
+                    //Methods with the same return type as the target are stored in the methods list
+                    if (behaviour_method.ReturnType == target_return_type)
+                    {
+                        methods_list.Add(behaviour_method);
+                    }
+                }
+            }
+            
+            //Get idle action methods
+            if(target_agent.idle_action != null)
+            {
+                MethodInfo[] idle_action_methods = target_agent.idle_action.GetType().GetMethods();
+                foreach(MethodInfo idle_action_method in idle_action_methods)
+                {
+                    //Methods with the same return type as the target are stored in the methods list
+                    if(idle_action_method.ReturnType == target_return_type)
+                    {
+                        methods_list.Add(idle_action_method);
+                    }
+                }
+            }
+
+            //Return the list converted to array
+            return methods_list.ToArray();
+        }
+
+        //Types Methods =========================
         public static void AllocateFromVariableType(VariableType variable_type, ref object value)
         {
             //Here we basically allocate diferent elements depending of the variable type and set the allocated field to the variable value
@@ -304,10 +397,9 @@ namespace GOAP_S.Tools
             }
         }
 
-        //Types Methods =========================
         private static Dictionary<string, System.Type> system_type_map = new Dictionary<string, System.Type>();
 
-        //Get all systme types in assemblies ====
+        //Get all system types in assemblies ====
         public static System.Type[] GetAllSystemTypes()
         {
             //Allocate types list

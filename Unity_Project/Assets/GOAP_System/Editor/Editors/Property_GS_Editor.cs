@@ -94,10 +94,10 @@ namespace GOAP_S.UI
             }
 
             //A key label
-            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(110.0f));
 
             //Operator label
-            GUILayout.Label(" " + _target_property.operator_type.ToShortString() + " ", GUILayout.MaxWidth(30.0f));
+            GUILayout.Label(" " + _target_property.operator_type.ToShortString() + " ", GUILayout.MaxWidth(20.0f));
 
             //B value label
             if(string.IsNullOrEmpty(_target_property.B_key))

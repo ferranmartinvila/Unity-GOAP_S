@@ -410,52 +410,90 @@ namespace GOAP_S.AI
         {
             //Allocate object references list
             obj_refs = new List<UnityEngine.Object>();
+            
             //Serialize action nodes
-            serialized_action_nodes = Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
+            if (_action_nodes != null)
+            {
+                serialized_action_nodes = Serialization.SerializationManager.Serialize(_action_nodes, typeof(ActionNode_GS[]), obj_refs);
+            }
+            else
+            {
+                serialized_action_nodes = null;
+            }
+
             //Serialize blackboard
-            if (blackboard != null)
+            if (_blackboard != null)
             {
                 serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
             }
+            else
+            {
+                serialized_blackboard = null;
+            }
+
             //Serialize behaviour
             if(_behaviour != null)
             {
                 serialized_behaviour = Serialization.SerializationManager.Serialize(_behaviour, typeof(AgentBehaviour_GS), obj_refs);
             }
+            else
+            {
+                serialized_behaviour = null;
+            }
+
             //Serialize idle action
             if(_idle_action != null)
             {
                 serialized_idle_action = Serialization.SerializationManager.Serialize(_idle_action, typeof(Action_GS), obj_refs);
+            }
+            else
+            {
+                serialized_idle_action = null;
             }
         }
 
         public void OnAfterDeserialize() //Deserialize
         {
             //Deserialize action nodes
-            _action_nodes = (ActionNode_GS[])Serialization.SerializationManager.Deserialize(typeof(ActionNode_GS[]), serialized_action_nodes, obj_refs);
-            //Count nodes
-            for (int k = 0; k < _action_nodes.Length; k++)
+            if (string.IsNullOrEmpty(serialized_action_nodes))
             {
-                if (_action_nodes[k] != null)
+                _action_nodes = new ActionNode_GS[ProTools.INITIAL_ARRAY_SIZE];
+                _action_nodes_num = 0;
+            }
+            else
+            { 
+                _action_nodes = (ActionNode_GS[])Serialization.SerializationManager.Deserialize(typeof(ActionNode_GS[]), serialized_action_nodes, obj_refs);
+                //Count nodes
+                for (int k = 0; k < _action_nodes.Length; k++)
                 {
-                    _action_nodes_num++;
-                    //Set action node agent
-                    _action_nodes[k].agent = this;
-                    //If the action node have an action set the action agent
-                    if (_action_nodes[k].action != null)
+                    if (_action_nodes[k] != null)
                     {
-                        _action_nodes[k].action.agent = this;
+                        _action_nodes_num++;
+                        //Set action node agent
+                        _action_nodes[k].agent = this;
+                        //If the action node have an action set the action agent
+                        if (_action_nodes[k].action != null)
+                        {
+                            _action_nodes[k].action.agent = this;
+                        }
                     }
                 }
             }
 
             //Deserialize blackboard
-            _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
-            if (_blackboard == null)
+            if (string.IsNullOrEmpty(serialized_blackboard))
             {
                 _blackboard = new Blackboard_GS(this);
             }
-            _blackboard.target_agent = this;
+            else
+            {
+                _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+                if (_blackboard == null)
+                {
+                    _blackboard = new Blackboard_GS(this);
+                }
+                _blackboard.target_agent = this;
+            }
 
             //Deserialize behaviour
             if(string.IsNullOrEmpty(serialized_behaviour))
@@ -469,6 +507,7 @@ namespace GOAP_S.AI
                 _behaviour = (AgentBehaviour_GS)Serialization.SerializationManager.Deserialize(typeof(AgentBehaviour_GS), serialized_behaviour, obj_refs);
                 _behaviour.agent = this;
             }
+
             //Deserialize idle action
             if(string.IsNullOrEmpty(serialized_idle_action))
             {

@@ -38,10 +38,17 @@ namespace GOAP_S.Blackboard
         public void OnAfterDeserialize()
         {
             //Deserialize blackboard
-            _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
-            if (_blackboard == null)
+            if (string.IsNullOrEmpty(serialized_blackboard))
             {
                 _blackboard = new Blackboard_GS(null);
+            }
+            else
+            {
+                _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+                if (_blackboard == null)
+                {
+                    _blackboard = new Blackboard_GS(null);
+                }
             }
         }
     }

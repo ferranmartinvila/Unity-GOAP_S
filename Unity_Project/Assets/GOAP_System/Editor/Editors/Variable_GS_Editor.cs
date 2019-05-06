@@ -14,10 +14,16 @@ namespace GOAP_S.UI
         //State fields
         private EditorUIMode _UI_mode = EditorUIMode.SET_STATE;
         private string new_name = null;
-        private int _selected_index = -1;
-        private string[] _paths;
-        private string[] _display_paths;
-        private int _bind_dropdown_slot = -1;
+
+        private int _variables_selected_index = -1;
+        private string[] _variables_paths = null;
+        private string[] _variables_display_paths = null;
+        private int _variable_bind_dropdown_slot = -1;
+
+        private int _methods_selected_index = -1;
+        private string[] _methods_paths = null;
+        private string[] _methods_display_paths = null;
+        private int _method_bind_dropdown_slot = -1;
 
         //Constructors ====================
         public Variable_GS_Editor(Variable_GS new_variable, Blackboard_GS new_bb)
@@ -60,8 +66,8 @@ namespace GOAP_S.UI
                     new_name = _target_variable.name;
 
                     //Generate bind options
-                    //First check if are already generated
-                    if (_paths == null)
+                    //Generate variables paths and display paths
+                    if (_variables_paths == null)
                     {
                         //Get all the properties in the agent gameobject
                         PropertyInfo[] _properties_info = ProTools.FindConcretePropertiesInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _target_variable.system_type);
@@ -69,24 +75,34 @@ namespace GOAP_S.UI
                         FieldInfo[] _fields_info = ProTools.FindConcreteFieldsInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _target_variable.system_type);
 
                         //Allocate strings arrays
-                        _paths = new string[_properties_info.Length + _fields_info.Length];
-                        _display_paths = new string[_properties_info.Length + _fields_info.Length];
+                        _variables_paths = new string[_properties_info.Length + _fields_info.Length];
+                        _variables_display_paths = new string[_properties_info.Length + _fields_info.Length];
                         //Generate properties paths
                         for (int k = 0; k < _properties_info.Length; k++)
                         {
-                            _paths[k] = string.Format("{0}.{1}", _properties_info[k].ReflectedType.FullName, _properties_info[k].Name);
-                            _display_paths[k] = _paths[k].Replace('.', '/');
+                            _variables_paths[k] = string.Format("{0}.{1}", _properties_info[k].ReflectedType.FullName, _properties_info[k].Name);
+                            _variables_display_paths[k] = _variables_paths[k].Replace('.', '/');
                         }
                         //Generate fields paths
                         for (int k = _properties_info.Length, fields_k = 0; k < _properties_info.Length + _fields_info.Length; k++, fields_k++)
                         {
-                            _paths[k] = string.Format("{0}.{1}", _fields_info[fields_k].ReflectedType.FullName, _fields_info[fields_k].Name);
-                            _display_paths[k] = _paths[k].Replace('.', '/');
+                            _variables_paths[k] = string.Format("{0}.{1}", _fields_info[fields_k].ReflectedType.FullName, _fields_info[fields_k].Name);
+                            _variables_display_paths[k] = _variables_paths[k].Replace('.', '/');
                         }
                     }
+                    //Generate methods paths and display paths
+                    if(_methods_paths == null)
+                    {
+                        //Get all the methods in the agent gameobject
+                        MethodInfo[] gameobject_methods = ProTools.FindConcreteGameObjectMethods(NodeEditor_GS.Instance.selected_agent.gameObject, _target_variable.system_type);
 
-                    //Get dropdown slot
-                    _bind_dropdown_slot = ProTools.GetDropdownSlot();
+                        //Get all the methods in the agent logic(actions, behaviour)
+
+                    }
+
+                    //Get dropdown slots
+                    _variable_bind_dropdown_slot = ProTools.GetDropdownSlot();
+                    _method_bind_dropdown_slot = ProTools.GetDropdownSlot();
                 }
             }
 
@@ -94,7 +110,7 @@ namespace GOAP_S.UI
             GUILayout.Label(_target_variable.type.ToShortString(), UIConfig_GS.left_bold_style, GUILayout.MaxWidth(60.0f));
 
             //Show variable name
-            GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(80.0f));
+            GUILayout.Label(_target_variable.name, GUILayout.MaxWidth(110.0f));
 
             //Show variable value
             //Non binded variable case
@@ -177,7 +193,7 @@ namespace GOAP_S.UI
                     }
                 }
                 //Free dropdown slot
-                ProTools.FreeDropdownSlot(_bind_dropdown_slot);
+                ProTools.FreeDropdownSlot(_variable_bind_dropdown_slot);
 
                 return;
             }
@@ -219,31 +235,42 @@ namespace GOAP_S.UI
                 //Free space margin
                 GUILayout.FlexibleSpace();
 
-                //Generate bind selection dropdown
-                ProTools.GenerateButtonDropdownMenu(ref _selected_index, _display_paths, "Bind", false, 40.0f, _bind_dropdown_slot);
+                //Generate variable bind selection dropdown
+                ProTools.GenerateButtonDropdownMenu(ref _variables_selected_index, _variables_display_paths, "V", false, 40.0f, _variable_bind_dropdown_slot);
+
+                //Generate method bind selection dropdown
+                ProTools.GenerateButtonDropdownMenu(ref _methods_selected_index, _methods_display_paths, "M", false, 40.0f, _method_bind_dropdown_slot);
 
                 //Check if the variable has been binded, so a path index has been set
-                if (!target_variable.is_binded && _selected_index != -1)
-                {
-                    //Bind variable to the new field using the selected path
-                    EditorApplication.delayCall += () => _target_variable.BindField(_paths[_selected_index], null);
-                }
+                if (!target_variable.is_binded)
+                    if (_variables_selected_index != -1)
+                    {
+                        //Bind variable to the new field using the selected path
+                        EditorApplication.delayCall += () => _target_variable.BindField(_variables_paths[_variables_selected_index], null);
+                    }
+                    else if (_methods_selected_index != -1)
+                    {
+                        //Bind the variable to the new method using the selected path
+                        
+                    }
             }
             else
             {
                 //Show current bind
-                GUILayout.Label(_target_variable.display_field_short_path,GUILayout.MaxWidth(90.0f));
+                GUILayout.Label(_target_variable.display_field_short_path, GUILayout.MaxWidth(90.0f));
 
                 //Free space margin
                 GUILayout.FlexibleSpace();
 
                 //UnBind button
-                if (GUILayout.Button("UnBind",GUILayout.MaxWidth(50.0f)))
+                if (GUILayout.Button("UnBind", GUILayout.MaxWidth(50.0f)))
                 {
                     //Unbind varaible resetting  getter/setter and field path
                     _target_variable.UnbindField();
-                    //Reset path index in the dropdown
-                    _selected_index = -1;
+                    //Reset path index in the variables dropdown
+                    _variables_selected_index = -1;
+                    //Reset path index in the methods dropdown
+                    _methods_selected_index = -1;
                 }
             }
             GUILayout.EndHorizontal();

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable
+
 namespace FullSerializer {
     partial class fsConverterRegistrar {
         public static Internal.DirectConverters.Keyframe_DirectConverter Register_Keyframe_DirectConverter;
@@ -54,4 +56,7 @@ namespace FullSerializer.Internal.DirectConverters {
         }
     }
 }
+
+#pragma warning restore
+
 #endif

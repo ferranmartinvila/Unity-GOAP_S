@@ -347,38 +347,89 @@ namespace GOAP_S.AI
         {
             //Allocate object references list
             _obj_refs = new List<UnityEngine.Object>();
+
             //Serialize conditions set
-            serialized_conditions = Serialization.SerializationManager.Serialize(_conditions, typeof(Property_GS[]), _obj_refs);
+            if (_conditions != null)
+            {
+                serialized_conditions = Serialization.SerializationManager.Serialize(_conditions, typeof(Property_GS[]), _obj_refs);
+            }
+            else
+            {
+                serialized_conditions = null;
+            }
+
             //Serialize effects set
-            serialized_effects = Serialization.SerializationManager.Serialize(_effects, typeof(Property_GS[]), _obj_refs);
+            if (_effects != null)
+            {
+                serialized_effects = Serialization.SerializationManager.Serialize(_effects, typeof(Property_GS[]), _obj_refs);
+            }
+            else
+            {
+                serialized_effects = null;
+            }
+
             //Serialize the action set
-            serialized_action = Serialization.SerializationManager.Serialize(action, typeof(Action_GS), _obj_refs);
+            if (_action != null)
+            {
+                serialized_action = Serialization.SerializationManager.Serialize(action, typeof(Action_GS), _obj_refs);
+            }
+            else
+            {
+                serialized_action = null;
+            }
         }
 
         public void OnAfterDeserialize()
         {
+
             //Deserialize conditions
-            _conditions = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_conditions, _obj_refs);
-            //Count conditions
-            for (int k = 0; k < _conditions.Length; k++)
+            if (string.IsNullOrEmpty(serialized_conditions))
             {
-                if (_conditions[k] != null)
+                _conditions = new Property_GS[ProTools.INITIAL_ARRAY_SIZE];
+                _conditions_num = 0;
+            }
+            else
+            {
+                _conditions = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_conditions, _obj_refs);
+                //Count conditions
+                for (int k = 0; k < _conditions.Length; k++)
                 {
-                    _conditions_num++;
+                    if (_conditions[k] != null)
+                    {
+                        _conditions_num++;
+                    }
                 }
             }
+
             //Deserialize effects
-            _effects = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_effects, _obj_refs);
-            //Count effects
-            for (int k = 0; k < _effects.Length; k++)
+            if (string.IsNullOrEmpty(serialized_effects))
             {
-                if(_effects[k] != null)
+                _effects = new Property_GS[ProTools.INITIAL_ARRAY_SIZE];
+                _effects_num = 0;
+            }
+            else
+            {
+                _effects = (Property_GS[])Serialization.SerializationManager.Deserialize(typeof(Property_GS[]), serialized_effects, _obj_refs);
+                //Count effects
+                for (int k = 0; k < _effects.Length; k++)
                 {
-                    _effects_num++;
+                    if (_effects[k] != null)
+                    {
+                        _effects_num++;
+                    }
                 }
             }
+
             //Deserialize the action
-            action = (Action_GS)Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, _obj_refs);
+            if (string.IsNullOrEmpty(serialized_action))
+            {
+                _action = null;
+            }
+            else
+            {
+                _action = (Action_GS)Serialization.SerializationManager.Deserialize(typeof(Action_GS), serialized_action, _obj_refs);
+            }
+            
         }
     }
 }
