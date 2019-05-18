@@ -65,4 +65,14 @@ public class MoveAction_GS : Action_GS
 
         GUILayout.EndVertical();
     }
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public float GetTest(int k, int js, int ds, float j, string d)
+    {
+        return k;
+    }
 }

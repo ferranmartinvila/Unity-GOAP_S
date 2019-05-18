@@ -216,7 +216,7 @@ namespace GOAP_S.UI
             //Set a window title
             titleContent.text = "Planning";
             //Set window min size
-            minSize = new Vector2(800.0f, 500.0f);
+            minSize = new Vector2(ProTools.MIN_CANVAS_WIDTH, ProTools.MIN_CANVAS_HEIGHT);
             //Set canvas size
             _canvas_size = new Vector2(ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE, ProTools.BEHAVIOUR_EDITOR_CANVAS_SIZE);
             //Set canvas camera initial position

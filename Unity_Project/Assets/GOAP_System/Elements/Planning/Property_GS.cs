@@ -27,6 +27,7 @@ namespace GOAP_S.Planning
         [SerializeField] private VariableType _variable_type = VariableType._undefined_var_type; //Variable type we are working with in this condition
         [SerializeField] private string _A_key = null; //A Property key, the key of the first property in the condition
         [SerializeField] private OperatorType _operator = OperatorType._undefined_operator; //Condition operator
+        [SerializeField] private bool _global_B_key = false; //True if the B variable is global, false if is local
         [SerializeField] private string _B_key = null; //B Property key, the key of the second property in the condition
         [SerializeField] private object _value = null; //B value, value that we compare with the A Property value
 

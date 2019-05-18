@@ -16,11 +16,8 @@ namespace GOAP_S.UI
         private ActionNode_GS_Editor _target_action_node_editor = null; //The node editor is this property editor showing
         //Edit fields
         private OperatorType[] _valid_operators = null; //Operators user can choose
-        private int _selected_operator_index = -1; //Operator choosed by user index
-        private string[] _B_variable_keys = null; //Variables user can choose
-        private int _selected_B_key_index = -1; //Variable choosed by user index
-        private int _operator_dropdown_slot = -1; //Valid operators dropdown slot
-        private int _variable_dropdown_slot = -1; //Valid variables dropdown slot
+        ProTools.DropDownData_GS _operator_dropdown = null; //Operador dropdown data
+        ProTools.DropDownData_GS _B_variable_dropdown = null; //B variable dropdown data
         private object value = null; //Value selected by user in property using value case
 
         //Constructors
@@ -41,8 +38,6 @@ namespace GOAP_S.UI
             {
                 _valid_operators = _target_property.variable_type.GetValidActiveOperatorTypes();
             }
-            //Get variables in the blackboard with the same type
-            _B_variable_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_target_property.variable_type);
             //Check if the target property has a B key to adapt UI
             edit_value = string.IsNullOrEmpty(_target_property.B_key);
         }
@@ -71,22 +66,58 @@ namespace GOAP_S.UI
             {
                 if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
                 {
-                    //Change UI mode
-                    _UI_mode = EditorUIMode.EDIT_STATE;
-                    //Get dropdown slots
-                    _operator_dropdown_slot = ProTools.GetDropdownSlot();
-                    _variable_dropdown_slot = ProTools.GetDropdownSlot();
                     //Initialize value
                     value = _target_property.value;
+                    //Change UI mode
+                    _UI_mode = EditorUIMode.EDIT_STATE;
+                    //Allocate B var dropdown
+                    _B_variable_dropdown = new ProTools.DropDownData_GS();
+                    //Allocate operator dropdown
+                    _operator_dropdown = new ProTools.DropDownData_GS();
+                    
+                    //Get dropdown slots
+                    _operator_dropdown.dropdown_slot = ProTools.GetDropdownSlot();
+                    _B_variable_dropdown.dropdown_slot = ProTools.GetDropdownSlot();
+                    
+                    //Generate operators dropdown data
+                    _operator_dropdown.paths = _valid_operators.ToShortStrings();
+                    for (int k = 0; k < _valid_operators.Length; k++)
+                    {
+                        if (_valid_operators[k] == _target_property.operator_type)
+                        {
+                            ProTools.SetDropdownIndex(_operator_dropdown.dropdown_slot, k);
+                            _operator_dropdown.selected_index = k;
+                        }
+                    }
+
+                    //Get local blackboard variables keys with the same type
+                    string[] local_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeysByVariableType(_target_property.variable_type);
+                    //Get global blackboard variables keys with the same type
+                    string[] global_keys = GlobalBlackboard_GS.blackboard.GetKeysByVariableType(_target_property.variable_type);
+                    
+                    //Generate paths
+                    _B_variable_dropdown.paths = new string[local_keys.Length + global_keys.Length];
+
+                    //Add the local keys with a prefix for the dropdown
+                    for (int k = 0; k < local_keys.Length; k++)
+                    {
+                        _B_variable_dropdown.paths[k] = "Local/" + local_keys[k];
+                    }
+                    //Add the global keys with a prefix for the dropdown
+                    for (int k = local_keys.Length, i = 0; k < _B_variable_dropdown.paths.Length; k++, i++)
+                    {
+                        _B_variable_dropdown.paths[k] = "Global/" + global_keys[i];
+                    }
+
                     //Search and set the already selected B key index
                     //Iterate avaliable B keys
-                    for (int k = 0; k < _B_variable_keys.Length; k++)
+                    for (int k = 0; k < _B_variable_dropdown.paths.Length; k++)
                     {
-                        if (string.Compare(_B_variable_keys[k], _target_property.B_key) == 0)
+                        if (string.Compare(_B_variable_dropdown.paths[k], _target_property.B_key) == 0)
                         {
                             //When key is found save index and break the iteration
-                            _selected_B_key_index = k;
-                            ProTools.SetDropdownIndex(_variable_dropdown_slot, _selected_B_key_index);
+                            ProTools.SetDropdownIndex(_B_variable_dropdown.dropdown_slot, k);
+                            _B_variable_dropdown.selected_index = k;
                             break;
                         }
                     }
@@ -94,21 +125,21 @@ namespace GOAP_S.UI
             }
 
             //A key label
-            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(110.0f));
+            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(200.0f), GUILayout.ExpandWidth(true));
 
             //Operator label
-            GUILayout.Label(" " + _target_property.operator_type.ToShortString() + " ", GUILayout.MaxWidth(20.0f));
+            GUILayout.Label(" " + _target_property.operator_type.ToShortString() + " ", GUILayout.MaxWidth(30.0f), GUILayout.ExpandWidth(true));
 
             //B value label
             if(string.IsNullOrEmpty(_target_property.B_key))
             {
                 //Value case
-                GUILayout.Label(_target_property.display_value, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
+                GUILayout.Label(_target_property.display_value, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(200.0f), GUILayout.ExpandWidth(true));
             }
             else
             {
                 //Variable case
-                GUILayout.Label(_target_property.B_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
+                GUILayout.Label(_target_property.B_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(200.0f), GUILayout.ExpandWidth(true));
             }
 
             //Delete button(hide on play)
@@ -158,8 +189,10 @@ namespace GOAP_S.UI
                 //Set input focus to null
                 GUI.FocusControl("null");
                 //Free dropdown slots
-                ProTools.FreeDropdownSlot(_operator_dropdown_slot);
-                ProTools.FreeDropdownSlot(_variable_dropdown_slot);
+                ProTools.FreeDropdownSlot(_operator_dropdown.dropdown_slot);
+                ProTools.FreeDropdownSlot(_B_variable_dropdown.dropdown_slot);
+                _operator_dropdown = null;
+                _B_variable_dropdown = null;
                 //Check B key
                 if(edit_value)
                 {
@@ -178,11 +211,11 @@ namespace GOAP_S.UI
             GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
 
             //Operator dropdown
-            ProTools.GenerateButtonDropdownMenu(ref _selected_operator_index, _valid_operators.ToShortStrings(), _target_property.operator_type.ToShortString(), true, 30.0f, _operator_dropdown_slot);
+            ProTools.GenerateButtonDropdownMenu(ref _operator_dropdown.selected_index, _operator_dropdown.paths,_operator_dropdown.paths[_operator_dropdown.selected_index], true, 30.0f, _operator_dropdown.dropdown_slot);
             //Check operator change
-            if (_selected_operator_index!= -1 && _valid_operators[_selected_operator_index] != _target_property.operator_type)
+            if (_operator_dropdown.selected_index != -1 && _valid_operators[_operator_dropdown.selected_index] != _target_property.operator_type)
             {
-                _target_property.operator_type = _valid_operators[_selected_operator_index];
+                _target_property.operator_type = _valid_operators[_operator_dropdown.selected_index];
             }
 
             //Value area
@@ -201,12 +234,12 @@ namespace GOAP_S.UI
             else
             {
                 //Generate enumerator popup with the avaliable B keys
-                ProTools.GenerateButtonDropdownMenu(ref _selected_B_key_index, _B_variable_keys, "Not Set", true, 80.0f, _variable_dropdown_slot);
+                ProTools.GenerateButtonDropdownMenu(ref _B_variable_dropdown.selected_index, _B_variable_dropdown.paths, "Not Set", _B_variable_dropdown.selected_index != -1, 80.0f, _B_variable_dropdown.dropdown_slot);
                 //Check B key change
-                if (_selected_B_key_index != -1 && string.Compare(_target_property.B_key,_B_variable_keys[_selected_B_key_index]) != 0)
+                if (_B_variable_dropdown.selected_index != -1 && string.Compare(_target_property.B_key, _B_variable_dropdown.paths[_B_variable_dropdown.selected_index]) != 0)
                 {
                     //Update B key on change
-                    _target_property.B_key = _B_variable_keys[_selected_B_key_index];
+                    _target_property.B_key = _B_variable_dropdown.paths[_B_variable_dropdown.selected_index];
                 }
 
                 //Change to value button

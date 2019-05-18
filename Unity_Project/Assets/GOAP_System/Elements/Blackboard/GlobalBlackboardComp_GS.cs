@@ -12,6 +12,24 @@ namespace GOAP_S.Blackboard
         [SerializeField] private string serialized_blackboard = null; //String where the blackboard is serialized
         [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
 
+        //Loop Methods ================
+        private void Awake()
+        {
+            //Initialize variables bindings
+            foreach (Variable_GS variable in blackboard.variables.Values)
+            {
+                //Init the current variable bind and the target game object is the blackboard container
+                if (variable.is_field_binded)
+                {
+                    variable.InitializeFieldBinding(gameObject);
+                }
+                else if (variable.is_method_binded)
+                {
+                    variable.InitializeMethodBinding(gameObject);
+                }
+            }
+        }
+
         //Get/Set Methods =============
         public Blackboard_GS blackboard
         {

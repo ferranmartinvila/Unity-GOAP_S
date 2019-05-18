@@ -222,8 +222,8 @@ Transform:
   m_Children:
   - {fileID: 626893199}
   - {fileID: 1464568730}
-  - {fileID: 1071115866}
   - {fileID: 1241226331}
+  - {fileID: 1071115866}
   - {fileID: 993293631}
   - {fileID: 717854292}
   m_Father: {fileID: 0}
@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2444ed4a457b1d54b82e72cae608a853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  serialized_blackboard: '{"_variables":{"max_energy":{"_value":0.0,"_name":"max_energy","_object_value":{"$content":200.0,"$type":"System.Single"},"_type":"_float","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
+  serialized_blackboard: '{"_variables":{"max_energy":{"_value":0.0,"_name":"max_energy","_object_value":{"$content":200.0,"$type":"System.Single"},"_type":"_float","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   obj_refs: []
 --- !u!4 &751968734
@@ -549,7 +549,7 @@ Transform:
   m_LocalScale: {x: 20, y: 1, z: 20}
   m_Children: []
   m_Father: {fileID: 159977633}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1241226332
 MeshCollider:
@@ -753,14 +753,12 @@ MonoBehaviour:
   _name: Recollector
   obj_refs: []
   serialized_behaviour: 
-  serialized_action_nodes: '[{"_window_rect":{"xMin":2088.726,"yMin":2010.335,"xMax":2320.213,"yMax":2287.335},"_id":"4c4617b6-0fa3-4300-905f-aee9f3cdf0d3","_name":"Find
-    Quarry","_description":"Looks for a quarry to mine","_obj_refs":[],"serialized_conditions":"[null,null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"avaliable_quarry\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_action":null},null,null,null,null,null,null,null,null,null]'
-  serialized_blackboard: '{"_variables":{"avaliable_quarry":{"_value":false,"_name":"avaliable_quarry","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"in_location":{"_value":false,"_name":"in_location","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"rocks":{"_value":0,"_name":"rocks","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"energy":{"_value":0.0,"_name":"energy","_object_value":{"$content":200.0,"$type":"System.Single"},"_type":"_float","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"target_location":{"_value":{"x":0.0,"y":0.0,"z":0.0},"_name":"target_location","_object_value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"_type":"_vector3","_field_path":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
-    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"}}}'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":2103.128,"yMin":2032.784,"xMax":2387.253,"yMax":2375.909},"_id":"4c4617b6-0fa3-4300-905f-aee9f3cdf0d3","_name":"Find
+    Quarry","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_float\",\"_A_key\":\"Global/max_energy\",\"_operator\":\"_equal_equal\",\"_global_B_key\":false,\"_B_key\":\"Local/rere\",\"_value\":null},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"avaliable_quarry\",\"_operator\":\"_is_equal\",\"_global_B_key\":false,\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"speed\":5.0,\"target_position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"_name\":\"MoveAction_GS\",\"_cost\":1,\"$type\":\"MoveAction_GS\"}"},null,null,null,null,null,null,null,null,null]'
+  serialized_blackboard: '{"_variables":{"test":{"_value":false,"_name":"test","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"rere":{"_value":0.0,"_name":"rere","_object_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_binded_field_path":null,"_binded_method_path":"Agent.MoveAction_GS.GetTest","_binded_method_input":[{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":"Global/max_energy","Value":null},{"Key":null,"Value":{"$content":"","$type":"System.String"}}],"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"yte":{"_value":0,"_name":"yte","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
   serialized_idle_action: 
 --- !u!1 &1603123650
 GameObject:

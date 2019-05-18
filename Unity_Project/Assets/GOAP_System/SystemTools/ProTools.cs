@@ -61,6 +61,8 @@ namespace GOAP_S.Tools
     public static class ProTools
     {
         //Defines ===============================
+        public const int MIN_CANVAS_WIDTH = 500;
+        public const int MIN_CANVAS_HEIGHT = 400;
         public const int NODE_EDITOR_CANVAS_SIZE = 4000;
         public const int BEHAVIOUR_EDITOR_CANVAS_SIZE = 2000;
         public const int BLACKBOARD_MARGIN = 350;
@@ -244,10 +246,10 @@ namespace GOAP_S.Tools
         }
 
         //Methods Methods =======================
-        public static MethodInfo[] FindConcreteGameObjectMethods(GameObject target_object, Type target_return_type)
+        public static KeyValuePair<MethodInfo, object>[] FindConcreteGameObjectMethods(GameObject target_object, Type target_return_type)
         {
             //Allocate the methods list
-            List<MethodInfo> methods_list = new List<MethodInfo>();
+            List<KeyValuePair<MethodInfo,object>> methods_list = new List<KeyValuePair<MethodInfo, object>>();
 
             //Collect game object methods
             foreach(MethodInfo method_info in typeof(GameObject).GetMethods())
@@ -255,7 +257,7 @@ namespace GOAP_S.Tools
                 //Methods with the same return type as the target are stored in the methods list
                 if(method_info.ReturnType == target_return_type)
                 {
-                    methods_list.Add(method_info);
+                    methods_list.Add(new KeyValuePair<MethodInfo, object>(method_info, target_object));
                 }
             }
 
@@ -269,7 +271,7 @@ namespace GOAP_S.Tools
                     //Methods with the same return type as the target are stored in the methods list
                     if (comp_method.ReturnType == target_return_type)
                     {
-                        methods_list.Add(comp_method);
+                        methods_list.Add(new KeyValuePair<MethodInfo, object>(comp_method, comp));
                     }
                 }
             }
@@ -278,10 +280,10 @@ namespace GOAP_S.Tools
             return methods_list.ToArray();
         }
 
-        public static MethodInfo [] FindConcreteAgentMethods(AI.Agent_GS target_agent, Type target_return_type)
+        public static KeyValuePair<MethodInfo, object>[] FindConcreteAgentMethods(AI.Agent_GS target_agent, Type target_return_type)
         {
             //Allocate the methods list
-            List<MethodInfo> methods_list = new List<MethodInfo>();
+            List<KeyValuePair<MethodInfo, object>> methods_list = new List<KeyValuePair<MethodInfo, object>>();
 
             //Get action nodes methods
             for (int k = 0; k < target_agent.action_nodes_num; k++)
@@ -297,7 +299,7 @@ namespace GOAP_S.Tools
                         //Methods with the same return type as the target are stored in the methods list
                         if (action_method.ReturnType == target_return_type)
                         {
-                            methods_list.Add(action_method);
+                            methods_list.Add(new KeyValuePair<MethodInfo, object>(action_method, node_action));
                         }
                     }
                 }
@@ -312,7 +314,7 @@ namespace GOAP_S.Tools
                     //Methods with the same return type as the target are stored in the methods list
                     if (behaviour_method.ReturnType == target_return_type)
                     {
-                        methods_list.Add(behaviour_method);
+                        methods_list.Add(new KeyValuePair<MethodInfo, object>(behaviour_method, target_agent.behaviour));
                     }
                 }
             }
@@ -326,7 +328,7 @@ namespace GOAP_S.Tools
                     //Methods with the same return type as the target are stored in the methods list
                     if(idle_action_method.ReturnType == target_return_type)
                     {
-                        methods_list.Add(idle_action_method);
+                        methods_list.Add(new KeyValuePair<MethodInfo, object>(idle_action_method, target_agent.idle_action));
                     }
                 }
             }
@@ -334,6 +336,50 @@ namespace GOAP_S.Tools
             //Return the list converted to array
             return methods_list.ToArray();
         }
+
+        public static KeyValuePair<MethodInfo,object> FindMethodFromPath(string method_path, Type target_return_type, GameObject target_object)
+        {
+            //Return method info
+            KeyValuePair<MethodInfo, object>[] methods_to_compare = null;
+            string[] method_path_parts = method_path.Split('.');
+            
+
+            //First check if the method is inside the gameobject or the agent logic
+            //Gameobject case
+            if (string.Compare("GameObject", method_path_parts[0]) == 0)
+            {
+                methods_to_compare = FindConcreteGameObjectMethods(target_object, target_return_type);
+            }
+            //Agent case
+            else if (string.Compare("Agent", method_path_parts[0]) == 0)
+            {
+                methods_to_compare = FindConcreteAgentMethods(target_object.GetComponent<AI.Agent_GS>(), target_return_type);
+            }
+            
+            //Iterate the collected methods
+            foreach (KeyValuePair<MethodInfo, object> method_data in methods_to_compare)
+            {
+                //Compare method name
+                if (string.Compare(method_data.Key.Name, method_path_parts[method_path_parts.Length - 1]) == 0)
+                {
+                    //Compare method script name
+                    string method_full_name = method_data.Key.ReflectedType.FullName;
+                    if(method_full_name.Contains('.'))
+                    {
+                        string[] parts = method_full_name.Split('.');
+                        method_full_name = parts[parts.Length - 1];
+                    }
+                    if (string.Compare(method_path_parts[method_path_parts.Length - 2], method_full_name) == 0)
+                    {
+                        return method_data;
+                    }
+                }
+            }
+
+            //Return null if the method is not found
+            return new KeyValuePair<MethodInfo, object>();
+        }
+
 
         //Types Methods =========================
         public static void AllocateFromVariableType(VariableType variable_type, ref object value)
@@ -451,6 +497,7 @@ namespace GOAP_S.Tools
             //No found type return
             return "undef";
         }
+
         public static VariableType ToVariableType(this string system_type)
         {
             switch(system_type)
@@ -596,6 +643,21 @@ namespace GOAP_S.Tools
             return system_type;
         }
 
+        public static string ToShortString(this System.Type type)
+        {
+            if (type == typeof(bool)) return "bool";
+            if (type == typeof(int)) return "int";
+            if (type == typeof(float) || type == typeof(double)) return "float";
+            if (type == typeof(char)) return "char";
+            if (type == typeof(string)) return "string";
+            if (type == typeof(Vector2)) return "vector2";
+            if (type == typeof(Vector3)) return "vector3";
+            if (type == typeof(Vector4)) return "vector4";
+
+            //No found type return
+            return "undef";
+        }
+
         //UI Generation Methods =================
         public static void ValueFieldByVariableType(VariableType variable_type, ref object value)
         {
@@ -657,12 +719,24 @@ namespace GOAP_S.Tools
                     break;
             }
         }
-        //Dropdowns system
+
+        //Dropdowns system ======================
+        //Dropdowns index
         private static int[] dropdown_select = new int[INITIAL_ARRAY_SIZE] { -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 };
+        
+        //Dropdown data class
+        public class DropDownData_GS
+        {
+            public int selected_index = -1;
+            public string[] paths = null;
+            public string[] display_paths = null;
+            public int dropdown_slot = -2;
+        }
+
         //Get dropdown slot method
         public static int GetDropdownSlot()
         {
-            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            for (int k = 0; k < dropdown_select.Length; k++)
             {
                 if (dropdown_select[k] == -2)
                 {
@@ -678,7 +752,7 @@ namespace GOAP_S.Tools
                 new_array[k] = -2;
             }
 
-            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            for (int k = 0; k < dropdown_select.Length; k++)
             {
                 new_array[k] = dropdown_select[k];
             }
@@ -687,6 +761,7 @@ namespace GOAP_S.Tools
 
             return GetDropdownSlot();
         }
+
         //Free dropdown slot method
         public static void FreeDropdownSlot(int index)
         {
@@ -696,23 +771,26 @@ namespace GOAP_S.Tools
                 dropdown_select[index] = -2;
             }
         }
+        
         //Free all dropdowns method
         public static void ResetDropdowns()
         {
-            for (int k = 0; k < INITIAL_ARRAY_SIZE; k++)
+            for (int k = 0; k < dropdown_select.Length; k++)
             {
                 dropdown_select[k] = -2;
             }
         }
+        
         //Set specific dropdown index method
         public static void SetDropdownIndex(int dropdown_id, int new_index)
         {
-            if (dropdown_id >= dropdown_select.Length)
+            if (dropdown_id >= dropdown_select.Length || dropdown_id < 0)
             {
                 Debug.LogError("You are trying to access a non allocated dropdown index!");
             }
             else dropdown_select[dropdown_id] = new_index;
         }
+
         //Generate dropdown UI method
         public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, float button_width, int dropdown_id)
         {

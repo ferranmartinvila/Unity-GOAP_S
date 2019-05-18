@@ -3,6 +3,7 @@ using System;
 using GOAP_S.Tools;
 using System.Reflection;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace GOAP_S.Blackboard
 {
@@ -18,16 +19,25 @@ namespace GOAP_S.Blackboard
         [SerializeField] protected VariableType _type = VariableType._undefined_var_type;
 
         //Bind fields
-        [SerializeField] protected string _field_path = null;
+        [SerializeField] protected string _binded_field_path = null;
+        [SerializeField] protected string _binded_method_path = null;
+        [SerializeField] protected KeyValuePair<string,object>[] _binded_method_input = null;
+
+        protected MethodInfo _binded_method_info = null;
+        protected object _binded_method_instance = null;
 
         //Actions
         private event Action<string> _OnNameChange; //Callback when variable name changes
         private event Action<string,object> _OnValueChange; //Callback when variable value changes
 
         //Bind methods
-        public abstract bool BindField(string field_path, GameObject target_obj);
+        public abstract bool BindField(string field_path);
+        public abstract bool InitializeFieldBinding(GameObject target_obj);
         public abstract void UnbindField();
-        public abstract bool InitializeBinding(GameObject target_obj);
+
+        public abstract bool BindMethod(string method_path);
+        public abstract bool InitializeMethodBinding(GameObject target_obj);
+        public abstract void UnbindMethod();
 
         //Contructors =====================
         public Variable_GS()
@@ -107,51 +117,102 @@ namespace GOAP_S.Blackboard
         //System type is defined in the TVariable class
         public abstract System.Type system_type { get; }
 
-        public bool is_binded
+        public bool is_field_binded
         {
             get
             {
-                return !string.IsNullOrEmpty(_field_path);
+                return !string.IsNullOrEmpty(_binded_field_path);
             }
         }
 
-        public string field_path
+        public bool is_method_binded
         {
             get
             {
-                return _field_path;
+                return !string.IsNullOrEmpty(_binded_method_path);
             }
         }
 
-        public string display_field_long_path
+        public string binded_field_path
+        {
+            get
+            {
+                return _binded_field_path;
+            }
+        }
+
+        public string binded_field_long_path
         {
             get
             {
                 //Returns null if there's no path
-                if (!is_binded)
+                if (!is_field_binded)
                 {
                     return null;
                 }
                 //Split path
-                string[] parts = _field_path.Split('.');
+                string[] parts = _binded_field_path.Split('.');
                 return (parts[parts.Length - 2] + "." + parts.Last());
             }
         }
 
-        public string display_field_short_path
+        public string binded_field_short_path
         {
             get
             {
                 //Returns null if there's no path
-                if (!is_binded)
+                if (!is_field_binded)
                 {
                     return null;
                 }
                 //Split path
-                string[] parts = _field_path.Split('.');
+                string[] parts = _binded_field_path.Split('.');
                 return ("." + parts.Last());
             }
         }
+
+        public string binded_method_path
+        {
+            get
+            {
+                return _binded_method_path;
+            }
+        }
+
+        public string binded_method_short_path
+        {
+            get
+            {
+                if(!is_method_binded)
+                {
+                    return null;
+                }
+                //Split path
+                string[] parts = _binded_method_path.Split('.');
+                return ("." + parts.Last());
+            }
+        }
+
+        public MethodInfo binded_method_info
+        {
+            get
+            {
+                return _binded_method_info;
+            }
+        }
+
+        public KeyValuePair<string,object>[] binded_method_input
+        {
+            get
+            {
+                return _binded_method_input;
+            }
+            set
+            {
+                _binded_method_input = value;
+            }
+        }
+
         //Actions =====================
         protected void OnValueChange(string name, object value)
         {

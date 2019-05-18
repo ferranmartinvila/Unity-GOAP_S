@@ -27,7 +27,14 @@ namespace GOAP_S.Blackboard
             foreach (Variable_GS variable in blackboard.variables.Values)
             {
                 //Init the current variable bind and the target game object is the blackboard container
-                variable.InitializeBinding(gameObject);
+                if (variable.is_field_binded)
+                {
+                    variable.InitializeFieldBinding(gameObject);
+                }
+                else if(variable.is_method_binded)
+                {
+                    variable.InitializeMethodBinding(gameObject);
+                }
             }
         }
 

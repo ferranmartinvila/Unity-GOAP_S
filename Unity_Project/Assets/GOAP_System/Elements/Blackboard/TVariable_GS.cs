@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using GOAP_S.Tools;
+using System.Collections.Generic;
 
 namespace GOAP_S.Blackboard
 {
@@ -73,41 +74,25 @@ namespace GOAP_S.Blackboard
         }
 
         //Bind Methods ================
-        public override bool BindField(string field_path, GameObject target_obj)
+        public override bool BindField(string field_path)
         {
-            //Check if the member info is info of a field or a property
-            /*if (!(field_info is FieldInfo) && !(field_info is PropertyInfo))
-            {
-                Debug.LogWarning("BindField ERROR: Member info non correct format.");
-                return false;
-            }*/
-
             //Get bind field path adding field full name and field name in dot between format
-            _field_path = field_path; // string.Format("{0}.{1}", field_info.ReflectedType.FullName, field_info.Name);
-
-            //If target GameObject is not null field bind is initialized
-            if(target_obj != null)
-            {
-                return InitializeBinding(target_obj);
-            }
+            _binded_field_path = field_path; 
 
             return true;
         }
 
-        public override bool InitializeBinding(GameObject target_obj)
+        public override bool InitializeFieldBinding(GameObject target_obj)
         {
-            //Check if the variable has a field path to bind
-            if (!is_binded) return false;
-
             //Reset getter/setter
             getter = null;
             setter = null;
 
-            int last_dot_index = _field_path.LastIndexOf('.');
+            int last_dot_index = _binded_field_path.LastIndexOf('.');
             //Get field type in string format
-            string type_string = _field_path.Substring(0, last_dot_index);
+            string type_string = _binded_field_path.Substring(0, last_dot_index);
             //Get field full name(what includes class inheritance)
-            string unformatted_field_path_string = _field_path.Substring(last_dot_index + 1);
+            string unformatted_field_path_string = _binded_field_path.Substring(last_dot_index + 1);
             //Search System.Type from type string
             System.Type field_type = type_string.ToSystemType();
 
@@ -223,9 +208,61 @@ namespace GOAP_S.Blackboard
         public override void UnbindField()
         {
             //Set bind data to null, so we basically reset the information about the binded field
-            _field_path = null;
+            _binded_field_path = null;
             getter = null;
             setter = null;
+        }
+
+        public override bool BindMethod(string method_path)
+        {
+            //Set the bind method path
+            _binded_method_path = method_path;
+            
+            return true;
+        }
+
+        public override bool InitializeMethodBinding(GameObject target_obj)
+        {
+            //Reset getter/setter
+            getter = null;
+            setter = null;
+
+            //Get the target method instance
+            KeyValuePair<MethodInfo, object> target_method = ProTools.FindMethodFromPath(_binded_method_path, system_type, target_obj);
+
+            //In null instance case the variable is unbind
+            if(target_method.Value == null)
+            {
+                UnbindMethod();
+                return false;
+            }
+
+            /*try //JIT
+            {
+                getter = target_method.Key.CreateDelegate<Func<T>>(target_method.Value);
+            }
+            catch //AOT*/
+
+            //Set method info
+            _binded_method_info = target_method.Key;
+            //Set method instance
+            _binded_method_instance = target_method.Value;
+            //Set getter
+            getter = () => { return (T)target_method.Key.Invoke(target_method.Value, null); };
+
+            return true;
+        }
+
+        public override void UnbindMethod()
+        {
+            //Set bind data to null, so we basically reset the information about the binded method
+            getter = null;
+            setter = null;
+            _binded_method_path = null;
+            _binded_method_info = null;
+            _binded_method_instance = null;
+            _binded_method_input = null;
+            _binded_method_input = null;
         }
     }
 }

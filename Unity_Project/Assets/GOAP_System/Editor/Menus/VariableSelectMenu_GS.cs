@@ -15,20 +15,18 @@ namespace GOAP_S.UI
         VariableType _variable_type = VariableType._undefined_var_type; //New variable type
         static private object _variable_value = null; //New variable value
         private bool _global_blackboard = false; //True if the new variable is for the global blackboard
-
-        //Bind properties/fields
-        private int _selected_index = -1;
-        private string[] _paths;
-        private string[] _display_paths;
-        private int _bind_dropdown_slot = -1;
-
+        //Bind fields
+        ProTools.DropDownData_GS _variable_dropdown_data;
+        
         //Contructors =================
         public VariableSelectMenu_GS(bool global = false)
         {
             //Set global
             _global_blackboard = global;
+            //Initialize the variable dropdown data
+            _variable_dropdown_data = new ProTools.DropDownData_GS();
             //Get dropdown slots
-            _bind_dropdown_slot = ProTools.GetDropdownSlot();
+            _variable_dropdown_data.dropdown_slot = ProTools.GetDropdownSlot();
         }
 
         //Loop Methods ================
@@ -67,20 +65,20 @@ namespace GOAP_S.UI
                 FieldInfo[] _fields_info = ProTools.FindConcreteFieldsInGameObject(NodeEditor_GS.Instance.selected_agent.gameObject, _variable_type.ToSystemType());
 
                 //Allocate strings arrays
-                _paths = new string[_properties_info.Length + _fields_info.Length];
-                _display_paths = new string[_properties_info.Length + _fields_info.Length];
+                _variable_dropdown_data.paths = new string[_properties_info.Length + _fields_info.Length];
+                _variable_dropdown_data.display_paths = new string[_properties_info.Length + _fields_info.Length];
                 //Generate properties paths
                 for(int k = 0; k < _properties_info.Length; k++)
                 {
-                    _paths[k] = string.Format("{0}.{1}", _properties_info[k].ReflectedType.FullName, _properties_info[k].Name);
-                    _display_paths[k] = _paths[k].Replace('.', '/');
+                    _variable_dropdown_data.paths[k] = string.Format("{0}.{1}", _properties_info[k].ReflectedType.FullName, _properties_info[k].Name);
+                    _variable_dropdown_data.display_paths[k] = _variable_dropdown_data.paths[k].Replace('.', '/');
                 }
                 //Generate fields paths
                 int fields_k = 0; //Index to iterate fields info array
                 for(int k = _properties_info.Length; k < _properties_info.Length + _fields_info.Length; k++)
                 {
-                    _paths[k] = string.Format("{0}.{1}", _fields_info[fields_k].ReflectedType.FullName, _fields_info[fields_k].Name);
-                    _display_paths[k] = _paths[k].Replace('.', '/');
+                    _variable_dropdown_data.paths[k] = string.Format("{0}.{1}", _fields_info[fields_k].ReflectedType.FullName, _fields_info[fields_k].Name);
+                    _variable_dropdown_data.display_paths[k] = _variable_dropdown_data.paths[k].Replace('.', '/');
                     fields_k += 1;//Update fields index
                 }
             }
@@ -92,7 +90,7 @@ namespace GOAP_S.UI
                 GUILayout.BeginVertical();
 
                 //Show variable value or info label if the variable is binded
-                if (_selected_index != -1)
+                if (_variable_dropdown_data.selected_index != -1)
                 {
                     GUILayout.Label("Value=" + bind_selected_display_path, UIConfig_GS.Instance.node_elements_style, GUILayout.ExpandWidth(true));
                 }
@@ -113,18 +111,17 @@ namespace GOAP_S.UI
                 //Bind variable
                 GUILayout.BeginHorizontal();
                 //Generate bind selection dropdown
-                ProTools.GenerateButtonDropdownMenu(ref _selected_index, _display_paths, "Bind", false, 90.0f, 0);
+                ProTools.GenerateButtonDropdownMenu(ref _variable_dropdown_data.selected_index, _variable_dropdown_data.display_paths, "Bind", false, 90.0f, 0);
                 //UnBind button
                 if (GUILayout.Button("UnBind"))
                 {
-                    _selected_index = -1;
-                    //Reset dropdowns tool
-                    ProTools.ResetDropdowns();
+                    //Reset variable dropdown
+                    ProTools.SetDropdownIndex(_variable_dropdown_data.dropdown_slot, -1);
                 }
                 GUILayout.EndHorizontal();
 
                 //Show selected bind path
-                if (_selected_index == -1) GUILayout.Label(bind_selected_display_path);
+                if (_variable_dropdown_data.selected_index == -1) GUILayout.Label(bind_selected_display_path);
 
                 GUILayout.EndVertical();
             }
@@ -158,10 +155,10 @@ namespace GOAP_S.UI
                     if (new_variable != null)
                     {
                         //Check if var have to be bind
-                        if (_selected_index != -1)
+                        if (_variable_dropdown_data.selected_index != -1)
                         {
                             //Bind new variable
-                            new_variable.BindField(_paths[_selected_index], null);
+                            new_variable.BindField(_variable_dropdown_data.paths[_variable_dropdown_data.selected_index]);
                         }
                         //Send the new variable to the blackboard editor to generate the variable editor
                         //Local case
@@ -196,7 +193,7 @@ namespace GOAP_S.UI
         public override void OnClose()
         {
             //Free dropdown slots
-            ProTools.FreeDropdownSlot(_bind_dropdown_slot);
+            ProTools.FreeDropdownSlot(_variable_dropdown_data.dropdown_slot);
         }
 
         //Get/Set methods =============
@@ -204,13 +201,13 @@ namespace GOAP_S.UI
         {
             get
             {
-                if (_selected_index == -1 || _selected_index > _paths.Length - 1)
+                if (_variable_dropdown_data.selected_index == -1 || _variable_dropdown_data.selected_index > _variable_dropdown_data.paths.Length - 1)
                 {
                     return "Property bind not set";
                 }
                 else
                 {
-                    string[] parts = _paths[_selected_index].Split('.');
+                    string[] parts = _variable_dropdown_data.paths[_variable_dropdown_data.selected_index].Split('.');
                     return ("." + parts.Last());
                 }
             }

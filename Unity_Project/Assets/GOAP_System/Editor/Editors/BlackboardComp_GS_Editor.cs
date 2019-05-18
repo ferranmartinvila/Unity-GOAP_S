@@ -44,13 +44,13 @@ namespace GOAP_S.UI
                 //Show variable name
                 GUILayout.Label(variable.name, GUILayout.MaxWidth(100.0f));
 
-                if (!variable.is_binded)
+                if (!variable.is_field_binded)
                 {
                     GUILayout.Label(variable.value.ToString(), GUILayout.MaxWidth(150.0f));
                 }
                 else
                 {
-                    GUILayout.Label(variable.display_field_short_path, GUILayout.MaxWidth(150.0f));
+                    GUILayout.Label(variable.binded_field_short_path, GUILayout.MaxWidth(150.0f));
                 }
 
                 //Free space margin

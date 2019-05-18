@@ -53,17 +53,21 @@ namespace GOAP_S.UI
             
             //Get local blackboard variables keys
             string[] local_keys = NodeEditor_GS.Instance.selected_agent.blackboard.GetKeys();
+            
             //Get global blackboard variables keys
             string[] global_keys = GlobalBlackboard_GS.blackboard.GetKeys();
+            
             //Allocate string array to store all the keys
             _A_variable_keys = new string[local_keys.Length + global_keys.Length];
             _original_A_variable_keys = new string[local_keys.Length + global_keys.Length];
+            
             //Add the local keys with a prefix for the dropdown
             for(int k = 0; k < local_keys.Length; k++)
             {
                 _A_variable_keys[k] = "Local/" + local_keys[k];
                 _original_A_variable_keys[k] = local_keys[k];
             }
+            
             //Add the global keys with a prefix for the dropdown
             for(int k = local_keys.Length, i = 0; k < _A_variable_keys.Length; k++, i++)
             {
@@ -249,7 +253,7 @@ namespace GOAP_S.UI
                     //First allocate the property class
                     Property_GS new_property = new Property_GS();
                     //Set A key
-                    new_property.A_key = _original_A_variable_keys[_selected_A_key_index];
+                    new_property.A_key = _A_variable_keys[_selected_A_key_index];
                     //Set variable type
                     new_property.variable_type = _selected_variable_type;
                     //Set operator type
@@ -257,7 +261,7 @@ namespace GOAP_S.UI
                     //Set value or key in property B part
                     if(_value_or_key == 2)
                     {
-                        new_property.B_key = _original_B_variable_keys[_selected_B_key_index];
+                        new_property.B_key = _B_variable_keys[_selected_B_key_index];
                     }
                     else
                     {
