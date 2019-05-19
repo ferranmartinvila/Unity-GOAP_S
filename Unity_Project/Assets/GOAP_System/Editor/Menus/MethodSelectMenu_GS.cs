@@ -160,7 +160,7 @@ namespace GOAP_S.UI
                     if (string.IsNullOrEmpty(_target_variable.binded_method_input[k].Key))
                     {
                         //Local object values are applied to the non binded method input parameters
-                        _target_variable.binded_method_input[k] = new KeyValuePair<string, object>(null, local_values[k]);
+                        _target_variable.binded_method_input[k] = new KeyValuePair<string, object>("", local_values[k]);
                     }
                 }
                 

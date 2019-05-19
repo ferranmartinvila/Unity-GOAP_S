@@ -73,6 +73,6 @@ public class MoveAction_GS : Action_GS
 
     public float GetTest(int k, int js, int ds, float j, string d)
     {
-        return k;
+        return j * k;
     }
 }

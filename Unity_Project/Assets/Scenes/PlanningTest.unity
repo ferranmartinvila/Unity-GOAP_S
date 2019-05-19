@@ -752,14 +752,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Recollector
   obj_refs: []
-  serialized_behaviour: 
-  serialized_action_nodes: '[{"_window_rect":{"xMin":2103.128,"yMin":2032.784,"xMax":2387.253,"yMax":2375.909},"_id":"4c4617b6-0fa3-4300-905f-aee9f3cdf0d3","_name":"Find
+  serialized_behaviour: '{"_name":"TestBehaviour","$type":"TestBehaviour"}'
+  serialized_action_nodes: '[{"_window_rect":{"xMin":2134.378,"yMin":2068.201,"xMax":2428.836,"yMax":2417.201},"_id":"4c4617b6-0fa3-4300-905f-aee9f3cdf0d3","_name":"Find
     Quarry","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_float\",\"_A_key\":\"Global/max_energy\",\"_operator\":\"_equal_equal\",\"_global_B_key\":false,\"_B_key\":\"Local/rere\",\"_value\":null},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"avaliable_quarry\",\"_operator\":\"_is_equal\",\"_global_B_key\":false,\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"}},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"speed\":5.0,\"target_position\":{\"x\":0.0,\"y\":0.0,\"z\":0.0},\"_name\":\"MoveAction_GS\",\"_cost\":1,\"$type\":\"MoveAction_GS\"}"},null,null,null,null,null,null,null,null,null]'
   serialized_blackboard: '{"_variables":{"test":{"_value":false,"_name":"test","_object_value":{"$content":false,"$type":"System.Boolean"},"_type":"_bool","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Boolean,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"rere":{"_value":0.0,"_name":"rere","_object_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_binded_field_path":null,"_binded_method_path":"Agent.MoveAction_GS.GetTest","_binded_method_input":[{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":null,"Value":{"$content":0,"$type":"System.Int32"}},{"Key":"Global/max_energy","Value":null},{"Key":null,"Value":{"$content":"","$type":"System.String"}}],"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"yte":{"_value":0,"_name":"yte","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"rere":{"_value":0.0,"_name":"rere","_object_value":{"$content":0.0,"$type":"System.Single"},"_type":"_float","_binded_field_path":null,"_binded_method_path":"Agent.MoveAction_GS.GetTest","_binded_method_input":[{"Key":"Local/yte","Value":null},{"Key":"","Value":{"$content":0,"$type":"System.Int32"}},{"Key":"","Value":{"$content":0,"$type":"System.Int32"}},{"Key":"Global/max_energy","Value":null},{"Key":"","Value":{"$content":"","$type":"System.String"}}],"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Single,
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"yte":{"_value":0,"_name":"yte","_object_value":{"$content":5,"$type":"System.Int32"},"_type":"_int","_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"}}}'
-  serialized_idle_action: 
+  serialized_idle_action: '{"speed":5.0,"target_position":{"x":0.0,"y":0.0,"z":0.0},"_name":"MoveAction_GS","_cost":1,"$type":"MoveAction_GS"}'
 --- !u!1 &1603123650
 GameObject:
   m_ObjectHideFlags: 0

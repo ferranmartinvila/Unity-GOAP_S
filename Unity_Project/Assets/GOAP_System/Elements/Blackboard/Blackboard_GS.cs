@@ -172,11 +172,26 @@ namespace GOAP_S.Blackboard
 
         public TVariable_GS<T> GetVariable<T>(string name)
         {
-            //First try to get variable by name in de dictionary
+            //First try to get variable by name in the dictionary
             try 
             {
                 //Return the variable casted to the real class and with the T type
                 return (TVariable_GS<T>)_variables[name];
+            }
+            catch
+            {
+                //If variable is not found we display a warning in console with the variable name
+                Debug.LogWarning("Variable:" + name + "not found!");
+                return null;
+            }
+        }
+
+        public Variable_GS GetObjectVariable(string name)
+        {
+            try
+            {
+                //Return the variable without no casts
+                return _variables[name];
             }
             catch
             {

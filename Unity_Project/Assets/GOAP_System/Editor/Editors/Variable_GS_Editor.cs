@@ -169,9 +169,10 @@ namespace GOAP_S.UI
                 //Generate UI field from type
                 ProTools.ValueFieldByVariableType(_target_variable.type, ref value);
                 //If value is different we update the variable value
-                if (value != _target_variable.object_value)
+                if (value.Equals(_target_variable.object_value) == false)
                 {
                     _target_variable.object_value = value;
+                    _target_variable.value = value;
                 };
             }
 
@@ -256,14 +257,14 @@ namespace GOAP_S.UI
                 //Generate UI field from type
                 ProTools.ValueFieldByVariableType(_target_variable.type, ref value);
                 //If value is different we update the variable value
-                if (value != _target_variable.object_value)
+                if (value.Equals(_target_variable.object_value) == false)
                 {
                     _target_variable.object_value = value;
+                    _target_variable.value = value;
                 }
             }
 
             ShowBindOptions();
-            
 
             GUILayout.EndHorizontal();
         }

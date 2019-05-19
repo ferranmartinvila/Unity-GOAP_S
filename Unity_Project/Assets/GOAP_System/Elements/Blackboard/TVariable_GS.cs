@@ -2,6 +2,7 @@
 using System;
 using System.Reflection;
 using GOAP_S.Tools;
+using GOAP_S.AI;
 using System.Collections.Generic;
 
 namespace GOAP_S.Blackboard
@@ -9,9 +10,6 @@ namespace GOAP_S.Blackboard
     [Serializable]
     public class TVariable_GS<T> : Variable_GS
     {
-        //Content fields
-        [SerializeField]private T _value = default(T);
-        
         //Delegates (pointers to methods)
         //Getter
         private Func<T> getter = null;
@@ -37,29 +35,45 @@ namespace GOAP_S.Blackboard
         {
             get
             {
-                //If the var is not binded it has its own value
-                if(getter == null)
-                {
-                    return _value;
-                }
-                //In the other case we return the value of the binded field
-                else
+                //Field binded case
+                if(is_field_binded)
                 {
                     return getter();
+                }
+                
+                //Method binded case
+                else if(is_method_binded)
+                {
+                    return (T)_binded_method_info.Invoke(_binded_method_instance, ProcessMethodInput());
+                }
+                
+                //No bind case
+                else
+                {
+                    return (T)_object_value;
                 }
             }
             set
             {
-                //Checl if the input value is the same as the var value
-                if (object.Equals(value, _value)) return;
+                //Check if the input value is the same as the var value
+                if (object.Equals(value, _object_value)) return;
+                
+                //Method binded variables can not be set
+                if(is_method_binded)
+                {
+                    Debug.LogError("The method binded variable: " + name + " can not be set!");
+                    return;
+                }
+
                 //Set var value
-                _value = value;
                 _object_value = value;
+                
                 //Set binded field value
                 if (setter != null)
                 {
                     setter(value);
                 }
+                
                 //Call value change delegate
                 OnValueChange(_name, value);
             }
@@ -233,24 +247,62 @@ namespace GOAP_S.Blackboard
             //In null instance case the variable is unbind
             if(target_method.Value == null)
             {
+                Debug.LogError("Binded method not found!");
+
                 UnbindMethod();
                 return false;
             }
-
-            /*try //JIT
-            {
-                getter = target_method.Key.CreateDelegate<Func<T>>(target_method.Value);
-            }
-            catch //AOT*/
 
             //Set method info
             _binded_method_info = target_method.Key;
             //Set method instance
             _binded_method_instance = target_method.Value;
-            //Set getter
-            getter = () => { return (T)target_method.Key.Invoke(target_method.Value, null); };
 
+            for (int k = 0; k < _binded_method_input.Length; k++)
+            {
+                //Current input info
+                KeyValuePair<string, object> input = _binded_method_input[k];
+
+                //Binded value case
+                if (string.IsNullOrEmpty(input.Key) == false)
+                {
+                    //Check if is a local or global variable
+                    //Global case
+                    string[] input_info = input.Key.Split('/'); //Input location and variable name
+                    if (string.Compare(input_info[0], "Global") == 0)
+                    {
+                        _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, GlobalBlackboard_GS.blackboard.GetObjectVariable(input_info[1]));
+                    }
+                    //Local case
+                    else
+                    {
+                        _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, target_obj.GetComponent<Agent_GS>().blackboard.GetObjectVariable(input_info[1]));
+                    }
+                }
+                //Not binded value case
+                else if (input.Value == null)
+                {
+                    Debug.LogError("The method bind process for the variable " + name + " has an input error in index " + k + " !");
+                }
+            }
             return true;
+        }
+
+        private object[] ProcessMethodInput()
+        {
+            object[] input = new object[_binded_method_input.Length];
+            for (int k = 0; k < input.Length; k++)
+            {
+                if(string.IsNullOrEmpty(_binded_method_input[k].Key) == false)
+                {
+                    input[k] = ((Variable_GS)_binded_method_input[k].Value).value;
+                }
+                else
+                {
+                    input[k] = _binded_method_input[k].Value;
+                }
+            }
+            return input;
         }
 
         public override void UnbindMethod()

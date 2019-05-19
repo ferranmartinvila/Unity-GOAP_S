@@ -64,7 +64,7 @@ namespace GOAP_S.UI
             //Edit button, swap between edit and show state(hide on play)
             if (!Application.isPlaying)
             {
-                if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
+                if (GUILayout.Button("O", GUILayout.Width(30), GUILayout.Height(20),GUILayout.ExpandWidth(false)))
                 {
                     //Initialize value
                     value = _target_property.value;
@@ -145,7 +145,7 @@ namespace GOAP_S.UI
             //Delete button(hide on play)
             if (!Application.isPlaying)
             {
-                if (GUILayout.Button(new GUIContent("X", "Remove"), GUILayout.MaxWidth(20.0f)))
+                if (GUILayout.Button(new GUIContent("X", "Remove"), GUILayout.MaxWidth(25.0f)))
                 {
                     //We need to check if the target property is a condition or an effect to delete it from the correct container
                     switch(_property_UI_mode)
@@ -182,7 +182,7 @@ namespace GOAP_S.UI
             GUILayout.BeginHorizontal();
 
             //Edit button, swap between edit and show state
-            if (GUILayout.Button("-", GUILayout.Width(20), GUILayout.Height(20)) || Application.isPlaying)
+            if (GUILayout.Button("-", GUILayout.Width(30), GUILayout.Height(20), GUILayout.ExpandWidth(false)) || Application.isPlaying)
             {
                 //Change UI mode
                 _UI_mode = EditorUIMode.SET_STATE;
@@ -208,7 +208,7 @@ namespace GOAP_S.UI
             }
 
             //A key label
-            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(60.0f));
+            GUILayout.Label(_target_property.A_key, UIConfig_GS.center_normal_style, GUILayout.MaxWidth(200.0f), GUILayout.ExpandWidth(true));
 
             //Operator dropdown
             ProTools.GenerateButtonDropdownMenu(ref _operator_dropdown.selected_index, _operator_dropdown.paths,_operator_dropdown.paths[_operator_dropdown.selected_index], true, 30.0f, _operator_dropdown.dropdown_slot);
