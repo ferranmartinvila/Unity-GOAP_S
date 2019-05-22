@@ -40,7 +40,8 @@ namespace GOAP_S.Planning
             Property_GS current_property = null;
             if (_world_state.TryGetValue(variable_name, out current_property))
             {
-                current_property.value = variable.value;
+                //Apply the target variable operation to the current property value
+                current_property.ApplyPropertyEffect(variable);
             }
             else
             {
@@ -67,10 +68,10 @@ namespace GOAP_S.Planning
             }
         }
 
-        public int DistanceTo(WorldState_GS target)
+        public float DistanceTo(WorldState_GS target)
         {
             //Summatory of all the variables distance
-            int total_distance = 0;
+            float total_distance = 0;
 
             //Get target world state properties
             Dictionary<string, Property_GS> target_properties = target.properties;
@@ -82,7 +83,7 @@ namespace GOAP_S.Planning
                 if (_world_state.TryGetValue(target_property.Key, out this_property))
                 {
                     //Check properties
-                    total_distance += this_property.DistanceTo(target_property.Value) == true ? 0 : 1;
+                    total_distance += this_property.DistanceTo(target_property.Value);
                 }
                 //If the property is not found the goal world state is not valid
                 else

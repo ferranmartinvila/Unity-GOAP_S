@@ -114,7 +114,10 @@ namespace GOAP_S.UI
                 int num = NodeEditor_GS.Instance.action_node_editors_num;
                 for (int k = 0; k < num; k++)
                 {
-                    action_nodes_editors[k].action_editor.Hide();
+                    if (action_nodes_editors[k].action_editor != null)
+                    {
+                        action_nodes_editors[k].action_editor.Hide();
+                    }
                 }
                 _UI_mode = EditorUIMode.EDIT_STATE;
             }
@@ -239,7 +242,7 @@ namespace GOAP_S.UI
             GUILayout.EndVertical();
         }
 
-        //FunctionalityMethods ========
+        //Functionality Methods =======
         public void Hide()
         {
             if(_UI_mode != EditorUIMode.HIDE_STATE)

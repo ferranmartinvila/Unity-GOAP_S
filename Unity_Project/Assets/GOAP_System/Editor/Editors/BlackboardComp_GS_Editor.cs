@@ -44,14 +44,21 @@ namespace GOAP_S.UI
                 //Show variable name
                 GUILayout.Label(variable.name, GUILayout.MaxWidth(100.0f));
 
-                if (!variable.is_field_binded)
-                {
-                    GUILayout.Label(variable.value.ToString(), GUILayout.MaxWidth(150.0f));
-                }
-                else
+                if (variable.is_field_binded)
                 {
                     GUILayout.Label(variable.binded_field_short_path, GUILayout.MaxWidth(150.0f));
                 }
+                else if(variable.is_method_binded)
+                {
+                    GUILayout.Label(variable.binded_method_short_path, GUILayout.MaxWidth(150.0f));
+                }
+                else
+                {
+                    GUILayout.Label(variable.value.ToString(), GUILayout.MaxWidth(150.0f));
+                }
+
+                //Variable planning value
+                GUILayout.Label(new GUIContent("Pv " + variable.planning_value, "Planning value of the variable. The planning generation algorithm priorizes goals that involve variables with higher planning values"), GUILayout.MaxWidth(40.0f));
 
                 //Free space margin
                 GUILayout.FlexibleSpace();
@@ -59,7 +66,7 @@ namespace GOAP_S.UI
                 //Delete variable button
                 if (!Application.isPlaying)
                 {
-                    if (GUILayout.Button("X", GUILayout.Width(20), GUILayout.Height(20)))
+                    if (GUILayout.Button(new GUIContent("X", "Delete this variable and all the conditions and effects that include it"), GUILayout.Width(20), GUILayout.Height(20)))
                     {
                         //Check if the target variable is global or local
                         bool global = target_blackboard.target_agent == null;
@@ -77,13 +84,13 @@ namespace GOAP_S.UI
                                 SecurityAcceptMenu_GS.on_accept_delegate += () => agent.blackboard.RemoveVariable(variable.name, global);
                             }
                             //Add delete editor for the global blackboard editor
-                            SecurityAcceptMenu_GS.on_accept_delegate += () => GlobalBlackboard_GS_Editor.blackboard_editor.RemoveVariableEditor(variable.name);
+                            SecurityAcceptMenu_GS.on_accept_delegate += () => GlobalBlackboard_GS_Editor.blackboard_editor.RemoveVariableEditor(variable.name, global);
                         }
                         else
                         {
                             //Add remove current var editor from local blackboard editor to accept menu delegates calback
                             SecurityAcceptMenu_GS.on_accept_delegate += () => target_blackboard.RemoveVariable(variable.name, global);
-                            SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(variable.name);
+                            SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(variable.name, global);
                         }
                         //Get mouse current position
                         Vector2 mousePos = Event.current.mousePosition;

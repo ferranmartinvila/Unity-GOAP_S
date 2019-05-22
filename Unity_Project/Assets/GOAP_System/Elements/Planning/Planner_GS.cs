@@ -11,8 +11,8 @@ namespace GOAP_S.Planning
         private int _id_number = 0;
         private int _current_iterations = 0; //Iterations count, avoid infinite loop in impossible paths
 
-        SortedDictionary<int, List<PlannerNode_GS>> _open = new SortedDictionary<int, List<PlannerNode_GS>>();
-        SortedDictionary<int,PlannerNode_GS> _closed = new SortedDictionary<int, PlannerNode_GS>();
+        SortedDictionary<float, List<PlannerNode_GS>> _open = new SortedDictionary<float, List<PlannerNode_GS>>();
+        SortedDictionary<float,PlannerNode_GS> _closed = new SortedDictionary<float, PlannerNode_GS>();
 
         //Planning Methods ================
         public Stack<ActionNode_GS> GeneratePlan(Agent_GS agent)
@@ -27,8 +27,8 @@ namespace GOAP_S.Planning
             goal_world_state.MixGoals(agent.goal_world_state);
             
             //Check if the current world state and the goal world state coincide
-            int start_goal_distance = current_world_state.DistanceTo(goal_world_state);
-            if(start_goal_distance == 0)
+            float start_goal_distance = current_world_state.DistanceTo(goal_world_state);
+            if(start_goal_distance < ProTools.MIN_PROPERTY_DISTANCE)
             {
                 Debug.LogWarning("The current world state coincides with the goal world state: " + goal_world_state.name + " !");
                 return new Stack<ActionNode_GS>();
@@ -62,7 +62,10 @@ namespace GOAP_S.Planning
                 PlannerNode_GS current_node = CloseNode();
 
                 //Check if the resultant world state of the current node is the goal world state
-                if (current_node.resultant_world_state.DistanceTo(goal_world_state) == 0)
+                float val = current_node.resultant_world_state.DistanceTo(goal_world_state);
+                Debug.Log(val);
+
+                if (current_node.resultant_world_state.DistanceTo(goal_world_state) < ProTools.MIN_PROPERTY_DISTANCE)
                 {
                     //Allocate a new queue of actions to store the plan
                     Stack<ActionNode_GS> action_plan = new Stack<ActionNode_GS>();
@@ -113,6 +116,7 @@ namespace GOAP_S.Planning
                             //The old node is better than this new one
                             continue;
                         }
+
                         //The new node is better than the old, lets update the node data
                         in_open_node.parent_id = current_node.id;
                         in_open_node.g = current_node.g + scoped_action.action_cost;
@@ -181,7 +185,7 @@ namespace GOAP_S.Planning
         private bool IsInOpen(WorldState_GS target, out PlannerNode_GS found)
         {
             //Iterate all the open nodes and check if anyone has the target world state as resultant world state
-            foreach(KeyValuePair<int,List<PlannerNode_GS>> open_pair in _open)
+            foreach(KeyValuePair<float,List<PlannerNode_GS>> open_pair in _open)
             {
                 foreach(PlannerNode_GS open_node in open_pair.Value)
                 {
@@ -199,7 +203,7 @@ namespace GOAP_S.Planning
         private bool IsInClosed(WorldState_GS target)
         {
             //Iterate all the closed nodes and check if anyone has the target world state as resultant world state
-            foreach (KeyValuePair<int, PlannerNode_GS> closed_pair in _closed)
+            foreach (KeyValuePair<float, PlannerNode_GS> closed_pair in _closed)
             {
                 if(closed_pair.Value.resultant_world_state.DistanceTo(target) == 0)
                 {

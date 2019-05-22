@@ -119,15 +119,20 @@ namespace GOAP_S.UI
             //Mark the beginning area of the popup windows
             BeginWindows();
 
-            //Draw action nodes debuggers
-            for(int k = 0; k < _action_node_debuggers_num; k++)
+            if (_action_node_debuggers == null)
             {
-                //Focus action node
-                ActionNode_GS node = _selected_agent.action_nodes[k];
-                //Focus action node debugger
-                ActionNode_GS_Debugger node_debugger = _action_node_debuggers[k];
-                //Show node debugger window
-                GUILayout.Window(node.id, new Rect(400.0f + 200.0f * k, 400.0f, 100.0f, 100.0f), node_debugger.DrawUI, node.name, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                GenerateTargetAgentUI();
+            }
+            else
+            {
+                //Draw action nodes debuggers
+                int i = 0;
+                foreach (ActionNode_GS_Debugger debugger in _action_node_debuggers)
+                {
+                    //Show node debugger window
+                    GUILayout.Window(debugger.window_uuid, new Rect(50.0f * i, 400.0f, 100.0f, 100.0f), debugger.DrawUI, debugger.target_action_node.name, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                    i++;
+                }
             }
 
             //Reset matrix to keep behaviour window and agent name scale 
@@ -136,11 +141,19 @@ namespace GOAP_S.UI
             //Selected agent name in zoom position coords
             GUI.Label(new Rect(_zoom_position.x + position.width * 0.5f, _zoom_position.y, 200.0f, 30.0f), "Agent: " + _selected_agent.name, UIConfig_GS.center_big_white_style);
 
-            //Update behaviour window to simulate static position
-            _agent_behaviour_editor.window_position = _zoom_position;
-            //Draw agent behaviour editor
-            GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-            
+            //Selection change can set the agent behaviour to null
+            if (_agent_behaviour_editor == null)
+            {
+                UpdateAgentUI();
+            }
+            else
+            {
+                //Update behaviour window to simulate static position
+                _agent_behaviour_editor.window_position = _zoom_position;
+
+                //Draw agent behaviour editor
+                GUILayout.Window(_agent_behaviour_editor.id, _agent_behaviour_editor.window, _agent_behaviour_editor.DrawUI, "Behaviour", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            }
             //End area of popup windows
             EndWindows();
 
@@ -250,8 +263,12 @@ namespace GOAP_S.UI
 
             //Check agent current plan
             ActionNode_GS [] plan = _selected_agent.current_plan.ToArray();
-            if(plan == null || plan.Length == 0)
+            if (plan == null || plan.Length == 0)
             {
+                //Reset debug data
+                _action_node_debuggers =  new ActionNode_GS_Debugger[0];
+                _action_node_debuggers_num = 0;
+
                 return;
             }
 

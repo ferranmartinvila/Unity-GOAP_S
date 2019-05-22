@@ -319,7 +319,7 @@ namespace GOAP_S.AI
         {
             for(int k = 0; k < _conditions_num; k++)
             {
-                if(_conditions[k].DistanceTo(current.GetProperty(_conditions[k].A_key)) == false)
+                if(current.GetProperty(_conditions[k].A_key).DistanceTo(_conditions[k]) > ProTools.MIN_PROPERTY_DISTANCE)
                 {
                     //If one current world state property does not fit in the action conditions return false
                     return false;

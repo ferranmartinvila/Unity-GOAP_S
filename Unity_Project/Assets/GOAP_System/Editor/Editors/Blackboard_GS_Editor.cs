@@ -112,14 +112,14 @@ namespace GOAP_S.UI
             _variable_editors_num += 1;
         }
 
-        public void RemoveVariableEditor(string name)
+        public void RemoveVariableEditor(string name, bool global)
         {
             int repaint = 0;
 
             //Iterate variable editors
             for (int k = 0; k < _variable_editors_num; k++)
             {
-                if (_variable_editors[k].target_variable.name == name)
+                if (string.Compare(_variable_editors[k].target_variable.name, name) == 0)
                 {
                     if (k == _variable_editors.Length - 1)
                     {
@@ -127,7 +127,7 @@ namespace GOAP_S.UI
                     }
                     else
                     {
-                        for (int i = k; i < _variable_editors.Length - 1; i++)
+                        for (int i = k; i < _variable_editors_num - 1; i++)
                         {
                             _variable_editors[i] = _variable_editors[i + 1];
                         }
@@ -140,7 +140,8 @@ namespace GOAP_S.UI
             }
 
             //Remove variable editor planning instances(conditions and effects)
-            if(RemoveVariableEditorPlanning(name) == true)
+            string location_key = global ? "Global/" + name : "Local/" + name;
+            if(RemoveVariableEditorPlanning(location_key) == true)
             {
                 repaint += 1;
             }

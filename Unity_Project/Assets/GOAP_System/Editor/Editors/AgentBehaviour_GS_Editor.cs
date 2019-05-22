@@ -34,7 +34,7 @@ namespace GOAP_S.UI
             {
                 GUILayout.Label("No Behaviour", UIConfig_GS.center_big_white_style);
                 //Behaviour select button
-                if (GUILayout.Button("Set Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button(new GUIContent("Set Behaviour","Choose a behaviour script from the assets"), UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new BehaviourSelectMenu_GS(_target_agent));
@@ -51,14 +51,14 @@ namespace GOAP_S.UI
                 GUILayout.EndHorizontal();
 
                 //Behaviour select button
-                if (GUILayout.Button("Change Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button(new GUIContent("Change Behaviour", "Choose a behaviour script from the assets"), UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     Vector2 mousePos = Event.current.mousePosition;
                     PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new BehaviourSelectMenu_GS(_target_agent));
                 }
 
                 //Behaviour edit button
-                if (GUILayout.Button("Edit Behaviour", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button(new GUIContent("Edit Behaviour", "Open the currently selected behaviour script with the code editor"), UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
                 {
                     ProTools.OpenScriptEditor(_target_agent.behaviour.GetType());
                 }
@@ -68,7 +68,7 @@ namespace GOAP_S.UI
             GUILayout.BeginVertical();
             GUILayout.Space(10);
             //Idle action title
-            GUILayout.Label("Idle Action", UIConfig_GS.center_big_style);
+            GUILayout.Label(new GUIContent("Idle Action", "Action that will be executed when there is no planning action to execute"), UIConfig_GS.center_big_style);
             //Line separator
             GUILayout.Space(-5);
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);

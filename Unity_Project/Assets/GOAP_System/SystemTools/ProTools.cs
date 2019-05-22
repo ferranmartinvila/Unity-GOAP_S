@@ -51,11 +51,11 @@ namespace GOAP_S.Tools
         _minus_equal
     }
 
-    public enum ConditionerType
+    public enum VariableLocation
     {
-        _undefined_conditioner = 0,
-        _and,
-        _or
+        _undefined_location = 0,
+        _local,
+        _global
     }
 
     public static class ProTools
@@ -69,6 +69,7 @@ namespace GOAP_S.Tools
         public const int INITIAL_ARRAY_SIZE = 10;
         public const int TRIES_LIMIT = 4;
         public const int ITERATION_LIMIT = 300;
+        public const float MIN_PROPERTY_DISTANCE = 0.00001f;
 
         //Assemblies ============================
         private static List<Assembly> _assemblies = null;
@@ -472,7 +473,11 @@ namespace GOAP_S.Tools
                 case VariableType._vector2: return typeof(Vector2);
                 case VariableType._vector3: return typeof(Vector3);
                 case VariableType._vector4: return typeof(Vector4);
-                    // TODO case VariableType._enum:        return typeof(enum);
+                case VariableType._enum:
+                    {
+                        Debug.Log("Enum type to variable type is not supported!");
+                    }
+                    break;
             }
 
             //No found type return
@@ -491,7 +496,7 @@ namespace GOAP_S.Tools
                 case VariableType._vector2: return "vector2";
                 case VariableType._vector3: return "vector3";
                 case VariableType._vector4: return "vector4";
-                    // TODO case VariableType._enum:        return typeof(enum);
+                case VariableType._enum: return "enum";
             }
 
             //No found type return
@@ -526,6 +531,8 @@ namespace GOAP_S.Tools
             if (type == typeof(Vector2)) return VariableType._vector2;
             if (type == typeof(Vector3)) return VariableType._vector3;
             if (type == typeof(Vector4)) return VariableType._vector4;
+            if (type.IsEnum) return VariableType._enum;
+
             return VariableType._undefined_var_type;
         }
 
@@ -541,7 +548,11 @@ namespace GOAP_S.Tools
                 case VariableType._vector2:
                 case VariableType._vector3:
                 case VariableType._vector4: return new OperatorType[] { OperatorType._equal_equal, OperatorType._different, OperatorType._smaller, OperatorType._smaller_or_equal, OperatorType._bigger, OperatorType._bigger_or_equal };
-                    // TODO case VariableType._enum:        return typeof(enum);
+                case VariableType._enum:
+                    {
+                        Debug.Log("Enum perations are not supported!");
+                    }
+                    break;
             }
 
             //No found type return
@@ -553,14 +564,18 @@ namespace GOAP_S.Tools
             switch (variable_type)
             {
                 case VariableType._string:
-                case VariableType._bool: return new OperatorType[] { OperatorType._is_equal, OperatorType._different };
+                case VariableType._bool: return new OperatorType[] { OperatorType._is_equal };
                 case VariableType._int:
                 case VariableType._float:
                 case VariableType._char:
                 case VariableType._vector2:
                 case VariableType._vector3:
                 case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal, OperatorType._different };
-                    // TODO case VariableType._enum:        return typeof(enum);
+                case VariableType._enum:
+                    {
+                        Debug.Log("Enum perations are not supported!");
+                    }
+                    break;
             }
 
             //No found type return
@@ -715,6 +730,11 @@ namespace GOAP_S.Tools
                     {
                         //Value field
                         value = EditorGUILayout.Vector4Field("", (Vector4)value, GUILayout.MaxWidth(150.0f));
+                    }
+                    break;
+                case VariableType._enum:
+                    {
+                        GUILayout.Label(value.ToString(), GUILayout.MaxWidth(150.0f), GUILayout.ExpandWidth(true));
                     }
                     break;
             }

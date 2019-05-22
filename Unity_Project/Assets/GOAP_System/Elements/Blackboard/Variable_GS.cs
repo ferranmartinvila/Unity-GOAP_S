@@ -17,6 +17,7 @@ namespace GOAP_S.Blackboard
         [SerializeField] protected string _name = null;
         [SerializeField] protected object _object_value = null;
         [SerializeField] protected VariableType _type = VariableType._undefined_var_type;
+        [SerializeField] protected float _planning_value = 1.0f;
 
         //Bind fields
         [SerializeField] protected string _binded_field_path = null;
@@ -74,6 +75,18 @@ namespace GOAP_S.Blackboard
                         _OnNameChange(_name);
                     }
                 }
+            }
+        }
+
+        public float planning_value
+        {
+            get
+            {
+                return _planning_value;
+            }
+            set
+            {
+                _planning_value = value;
             }
         }
 

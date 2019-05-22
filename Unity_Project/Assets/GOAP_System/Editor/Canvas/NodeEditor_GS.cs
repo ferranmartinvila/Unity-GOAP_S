@@ -132,10 +132,19 @@ namespace GOAP_S.UI
 
             //Reset matrix to keep blackboard window scale 
             GUI.matrix = Matrix4x4.identity;
-            //Update blackboard window to simulate static position
-            _blackboard_editor.window_position = new Vector2(_zoom_position.x + position.width - ProTools.BLACKBOARD_MARGIN, 0 + _zoom_position.y);
-            //Display blackboard window
-            GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            
+            //Selection change can generate null blackboard
+            if (_blackboard_editor == null)
+            {
+                GenerateTargetAgentUI();
+            }
+            else
+            {
+                //Update blackboard window to simulate static position
+                _blackboard_editor.window_position = new Vector2(_zoom_position.x + position.width - ProTools.BLACKBOARD_MARGIN, 0 + _zoom_position.y);
+                //Display blackboard window
+                GUILayout.Window(_blackboard_editor.id, _blackboard_editor.window, _blackboard_editor.DrawUI, "Blackboard", UIConfig_GS.canvas_window_style, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+            }
 
             //End area of popup windows
             EndWindows();

@@ -22,14 +22,14 @@ namespace GOAP_S.UI
             ((Agent_GS)target).name = EditorGUILayout.TextField("Name", ((Agent_GS)target).name);
 
             //Editor Button
-            if (GUILayout.Button("Open Editor"))
+            if (GUILayout.Button(new GUIContent("Open Editor","Open the node editor to generate the avaliable action set for the selected agent")))
             {
                 //Open the editor menu in the desired path (no spaces in the path)
                 EditorApplication.ExecuteMenuItem("Tools/GOAP/Node Editor");
             }
 
             //Planning Button
-            if (GUILayout.Button("Open Planning"))
+            if (GUILayout.Button(new GUIContent("Open Planning", "Open the planning editor to select the agent behaviour and visualize it during the execution")))
             {
                 //Open the editor menu in the desired path (no spaces in the path)
                 EditorApplication.ExecuteMenuItem("Tools/GOAP/Selected Agent/Show Planning");
@@ -37,7 +37,7 @@ namespace GOAP_S.UI
 
             //Remove button
             GUI.backgroundColor = new Color(1.0f, 0.2f, 0.2f, 1.0f);
-            if (GUILayout.Button("Remove Agent", GUILayout.ExpandWidth(true)))
+            if (GUILayout.Button(new GUIContent("Remove Agent", "Permanently delete this agent"), GUILayout.ExpandWidth(true)))
             {
                 //Add remove this agent to accept menu delegates callback
                 SecurityAcceptMenu_GS.on_accept_delegate += () => DestroyImmediate((Agent_GS)target);

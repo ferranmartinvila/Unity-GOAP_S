@@ -11,13 +11,13 @@ namespace GOAP_S.Planning
         //Content fields
         int _id = 0; //This node id
         int _parent_id = 0; //Parent node id
-        int _g = 0; //Cost of getting to this node from start node
-        int _h = 0; //Distance from current node to the goal
+        float _g = 0; //Cost of getting to this node from start node
+        float _h = 0; //Distance from current node to the goal
         WorldState_GS _resultant_world_state = null; //Resultant world state after this node action 
         ActionNode_GS _action = null; //Node Action 
 
         //Constructors ================
-        public PlannerNode_GS(int node_g, int node_h, int node_id, int parent_node_id, WorldState_GS resultant_ws, ActionNode_GS node_action)
+        public PlannerNode_GS(float node_g, float node_h, int node_id, int parent_node_id, WorldState_GS resultant_ws, ActionNode_GS node_action)
         {
             _g = node_g;
             _h = node_h;
@@ -31,7 +31,7 @@ namespace GOAP_S.Planning
 
 
         //Get/Set Methods =============
-        public int f
+        public float f
         {
             get
             {
@@ -39,7 +39,7 @@ namespace GOAP_S.Planning
             }
         }
 
-        public int g
+        public float g
         {
             get
             {
@@ -51,7 +51,7 @@ namespace GOAP_S.Planning
             }
         }
 
-        public int h
+        public float h
         {
             get
             {

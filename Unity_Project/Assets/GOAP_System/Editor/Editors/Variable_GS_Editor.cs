@@ -171,13 +171,13 @@ namespace GOAP_S.UI
                 //If value is different we update the variable value
                 if (value.Equals(_target_variable.object_value) == false)
                 {
-                    _target_variable.object_value = value;
                     _target_variable.value = value;
                 };
             }
 
-            //Free space margin
-            GUILayout.FlexibleSpace();
+            //Variable planning value
+            GUILayout.Label("Pv", GUILayout.MaxWidth(20));
+            _target_variable.planning_value = EditorGUILayout.FloatField((float)_target_variable.planning_value, GUILayout.MaxWidth(20.0f));
 
             //Remove button
             if (!Application.isPlaying)
@@ -191,11 +191,11 @@ namespace GOAP_S.UI
                     //Add remove current var editor from blackboard editor to accept menu delegates calback
                     if (_target_blackboard == GlobalBlackboard_GS.blackboard)
                     {
-                        SecurityAcceptMenu_GS.on_accept_delegate += () => GlobalBlackboard_GS_Editor.blackboard_editor.RemoveVariableEditor(_target_variable.name);
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => GlobalBlackboard_GS_Editor.blackboard_editor.RemoveVariableEditor(_target_variable.name, global);
                     }
                     else
                     {
-                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(_target_variable.name);
+                        SecurityAcceptMenu_GS.on_accept_delegate += () => NodeEditor_GS.Instance.blackboard_editor.RemoveVariableEditor(_target_variable.name, global);
                     }
                     //Get mouse current position
                     Vector2 mousePos = Event.current.mousePosition;
@@ -259,7 +259,6 @@ namespace GOAP_S.UI
                 //If value is different we update the variable value
                 if (value.Equals(_target_variable.object_value) == false)
                 {
-                    _target_variable.object_value = value;
                     _target_variable.value = value;
                 }
             }

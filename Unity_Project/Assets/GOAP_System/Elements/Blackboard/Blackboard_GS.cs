@@ -70,7 +70,8 @@ namespace GOAP_S.Blackboard
             //Remove the variable planning instances(conditions and effects)
             if ((ret == true || global == true) && _target_agent != null)
             {
-                RemoveVariablePlanning(key);
+                //Remove all the planning properties that use the target variable
+                RemoveVariablePlanning((global ? "Global/" : "Local/") + key);
             }
 
             //Mark scene dirty
@@ -135,13 +136,16 @@ namespace GOAP_S.Blackboard
             //First allocate a hashset of properties
             WorldState_GS world_state = new WorldState_GS();
 
+            //Bool to generate the local/global prefix
+            bool global = this == GlobalBlackboard_GS.blackboard;
+
             //Iterate all variables and generate a propery from them
             foreach(Variable_GS variable in variables.Values)
             {
                 //Generate world property
-                Property_GS property = new Property_GS(variable.name, variable.type, OperatorType._is_equal, variable.object_value);
+                Property_GS property = new Property_GS(global ? "Global/" : "Local/" + variable.name, variable.type, OperatorType._is_equal, variable.object_value, variable.planning_value);
                 //Add the generated property in the current world state
-                world_state.SetGoal(variable.name, property);
+                world_state.SetGoal(global ? "Global/" : "Local/" + variable.name, property);
             }
 
             //Finally return the generated hashset
