@@ -25,6 +25,7 @@ namespace GOAP_S.UI
         static private GUIStyle _center_big_style = null;
         static private GUIStyle _center_big_white_style = null;
         static private GUIStyle _left_bold_red_style = null;
+        static private GUISkin _debug_node_skin = null;
 
         //Static instance of this class
         private static UIConfig_GS _Instance;
@@ -257,6 +258,19 @@ namespace GOAP_S.UI
                     _left_bold_red_style.normal.textColor = new Color(1.0f, 0.0f, 0.0f);
                 }
                 return _left_bold_red_style;
+            }
+        }
+
+        public static GUISkin debug_node_skin
+        {
+            get
+            {
+                if(_debug_node_skin == null)
+                {
+                    _debug_node_skin = new GUISkin();
+                    _debug_node_skin.window = new GUIStyle("HelpBox");
+                }
+                return _debug_node_skin;
             }
         }
     }

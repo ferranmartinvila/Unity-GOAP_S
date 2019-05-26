@@ -24,7 +24,6 @@ namespace GOAP_S.Planning
         public enum ACTION_STATE
         {
             A_IDLE = 0,
-            A_AWAKE,
             A_START,
             A_UPDATE,
             A_COMPLETE
@@ -58,10 +57,13 @@ namespace GOAP_S.Planning
         }
 
         //Loop Methods ================
-        //Action awake is called once at the app start or when the agent is spawned
-        public virtual ACTION_RESULT ActionAwake()
+        //Action awake is called once at the plan start
+        public virtual bool ActionAwake()
         {
-            return ACTION_RESULT.A_NEXT;
+            //Set action state to start
+            _state = ACTION_STATE.A_START;
+
+            return true;
         }
 
         //Called on the first action loop
@@ -100,11 +102,6 @@ namespace GOAP_S.Planning
             //Execute the current action
             switch (_state)
             {
-                case Action_GS.ACTION_STATE.A_AWAKE:
-                    {
-                        execution_result = ActionAwake();
-                    }
-                    break;
                 case Action_GS.ACTION_STATE.A_START:
                     {
                         execution_result = ActionStart();
@@ -137,6 +134,11 @@ namespace GOAP_S.Planning
 
         //Blit action UI inside the action node
         public virtual void BlitUI()
+        {
+
+        }
+        //Blit action debug info in the planning UI
+        public virtual void BlitDebugUI()
         {
 
         }

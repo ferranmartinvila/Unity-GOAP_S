@@ -126,13 +126,51 @@ namespace GOAP_S.UI
             else
             {
                 //Draw action nodes debuggers
-                int i = 0;
-                foreach (ActionNode_GS_Debugger debugger in _action_node_debuggers)
+                Color prev_color = GUI.color;
+                GUISkin prev_skin = GUI.skin;
+                GUI.skin = UIConfig_GS.debug_node_skin;
+                Vector2 prev_middle_right = new Vector2();
+
+                for (int i = 0 , y = 0; y < 18 && i < _action_node_debuggers.Length; y++)
                 {
-                    //Show node debugger window
-                    GUILayout.Window(debugger.window_uuid, new Rect(50.0f * i, 400.0f, 100.0f, 100.0f), debugger.DrawUI, debugger.target_action_node.name, GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
-                    i++;
+                    for (int x = 0; x < 10 && i < _action_node_debuggers.Length; x++, i++)
+                    {
+                        //Change window color depending of the state 
+                        switch (_action_node_debuggers[i].target_action_node.action.state)
+                        {
+                            case Planning.Action_GS.ACTION_STATE.A_IDLE: GUI.color = new Color(0.2f, 0.2f, 0.2f, 1.0f); break;
+                            case Planning.Action_GS.ACTION_STATE.A_START: GUI.color = new Color(0.6f, 1.0f, 0.4f, 1.0f); break;
+                            case Planning.Action_GS.ACTION_STATE.A_UPDATE: GUI.color = new Color(0.0f, 0.7f, 1.0f, 1.0f); break;
+                            case Planning.Action_GS.ACTION_STATE.A_COMPLETE: GUI.color = new Color(0.0f, 1.0f, 0.2f, 1.0f); break;
+                        }
+
+                        //Show node debugger window
+                        Rect cur_window_rect = GUILayout.Window(_action_node_debuggers[i].window_uuid, new Rect(300.0f + 150.0f * x, 100.0f + 150.0f * y, 100.0f, 100.0f), _action_node_debuggers[i].DrawUI, "", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+
+                        //Draw node connection
+                        if (prev_middle_right != Vector2.zero)
+                        {
+                            Vector2 rect_middle_left = cur_window_rect.MiddleLeft();
+                            if (y > x && x == 0)
+                            {
+                                Handles.DrawBezier(prev_middle_right, prev_middle_right + new Vector2(0.0f, 75.0f), prev_middle_right + new Vector2(50.0f, 0.0f), prev_middle_right + new Vector2(50.0f, 75.0f), Color.black, null, 2.0f);
+                                Handles.DrawBezier(prev_middle_right + new Vector2(0.0f, 75.0f), rect_middle_left - new Vector2(0.0f, 75.0f), prev_middle_right + new Vector2(0.0f, 75.0f), rect_middle_left - new Vector2(0.0f, 75.0f), Color.black, null, 2.0f);
+                                Handles.DrawBezier(rect_middle_left, rect_middle_left - new Vector2(0.0f, 75.0f), rect_middle_left - new Vector2(50.0f, 0.0f), rect_middle_left - new Vector2(50.0f, 75.0f), Color.black, null, 2.0f);
+                            }
+                            else
+                            {
+                                Handles.DrawBezier(prev_middle_right, rect_middle_left, prev_middle_right, rect_middle_left, Color.black, null, 2.0f);
+                            }
+                            //Draw arrow shape
+                            Handles.DrawBezier(rect_middle_left, rect_middle_left + new Vector2(-5.0f, 5.0f), rect_middle_left, rect_middle_left + new Vector2(-5.0f, 5.0f), Color.black, null, 2.0f);
+                            Handles.DrawBezier(rect_middle_left, rect_middle_left + new Vector2(-5.0f, -5.0f), rect_middle_left, rect_middle_left + new Vector2(-5.0f, -5.0f), Color.black, null, 2.0f);
+                        }
+                        prev_middle_right = cur_window_rect.MiddleRight();
+                    }
                 }
+
+                GUI.skin = prev_skin;
+                GUI.color = prev_color;
             }
 
             //Reset matrix to keep behaviour window and agent name scale 
@@ -181,7 +219,7 @@ namespace GOAP_S.UI
                     //Get mouse pos
                     Vector2 _mouse_pos = Event.current.mousePosition;
                     //Show empty node editor popup menu
-                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));
+                    PopupWindow.Show(new Rect(_mouse_pos.x, _mouse_pos.y, 0, 0), new EmptyCanvasPopMenu_GS(this));                    
                 }
             }
         }
@@ -295,7 +333,7 @@ namespace GOAP_S.UI
                 if (_back_texture == null)
                 {
                     _back_texture = new Texture2D(1, 1, TextureFormat.RGBA32, false);
-                    _back_texture.SetPixel(0, 0, new Color(0.15f, 0.15f, 0.15f));
+                    _back_texture.SetPixel(0, 0, new Color(0.5f, 0.5f, 0.5f));
                     _back_texture.Apply();
                 }
                 return _back_texture;

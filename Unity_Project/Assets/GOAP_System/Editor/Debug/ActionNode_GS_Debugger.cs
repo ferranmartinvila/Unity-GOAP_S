@@ -21,7 +21,12 @@ namespace GOAP_S.UI
         //Loop Methods ================
         public void DrawUI(int id)
         {
+            //Action node name
+            GUILayout.Label(_target_action_node.name);
+            //Action name
             GUILayout.Label(_target_action_node.action.name);
+            //Draw aciton debug info
+            _target_action_node.action.BlitDebugUI();
         }
 
         //Get/Set Methods =============

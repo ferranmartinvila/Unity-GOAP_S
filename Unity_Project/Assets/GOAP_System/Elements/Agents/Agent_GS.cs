@@ -70,15 +70,18 @@ namespace GOAP_S.AI
         private void Start()
         {
             //First check if this agent have a defined behaviour
-            if(_behaviour != null)
+            if(_behaviour != null && _idle_action != null)
             {
                 //Start the behaviour
+                _behaviour.agent = this;
                 _behaviour.Start();
+                _idle_action.agent = this;
+                _idle_action.ActionAwake();
             }
             else
             {
                 //Alert message
-                Debug.LogError("Agent: " + _name + " behaviour is null!");
+                Debug.LogError("Agent: " + _name + " behaviour or idle action is null!");
                 //In null case the agent is disabled
                 enabled = false;
             }
@@ -98,7 +101,7 @@ namespace GOAP_S.AI
 
                             //Generate the plan
                             _current_plan = planner.GeneratePlan(this);
-                            
+
                             //In avaliable plan case
                             if (_current_plan.Count > 0)
                             {
@@ -111,8 +114,8 @@ namespace GOAP_S.AI
                             else
                             {
                                 _idle_action.Execute();
-                                //At this point the idle action es exectued in an endless update
-                                if(_idle_action.state > Action_GS.ACTION_STATE.A_UPDATE)
+                                //At this point the idle action is exectued in an endless update
+                                if (_idle_action.state > Action_GS.ACTION_STATE.A_UPDATE)
                                 {
                                     _idle_action.state = Action_GS.ACTION_STATE.A_UPDATE;
                                 }
@@ -122,15 +125,23 @@ namespace GOAP_S.AI
                         {
                             //We need to finish the idle action
                             _idle_action.Execute();
+
                             //WHen the idle action ends we can execute the agent plan
                             if (_idle_action.state == Action_GS.ACTION_STATE.A_COMPLETE)
                             {
                                 //Agent state is setted to action state
                                 _state = AGENT_STATE.AG_ACTION;
+
+                                //Awake all the plan actions
+                                ActionNode_GS[] plan_actions = _current_plan.ToArray();
+                                foreach (ActionNode_GS action_node in plan_actions)
+                                {
+                                    action_node.action.ActionAwake();
+                                }
+
                                 //Focus first plan action
                                 _current_action = _current_plan.Pop();
-                                //Awake the focused action
-                                _current_action.action.state = Action_GS.ACTION_STATE.A_AWAKE;
+                                _current_action.agent = this;
                             }
                         }
                     }
@@ -138,59 +149,28 @@ namespace GOAP_S.AI
                 case AGENT_STATE.AG_ACTION:
                     {
                         //Current action execution result
-                        Action_GS.ACTION_RESULT execution_result = Action_GS.ACTION_RESULT.A_ERROR;
-                        //Execute the current action
-                        switch (_current_action.action.state)
-                        {
-                            case Action_GS.ACTION_STATE.A_AWAKE:
-                                {
-                                    execution_result = _current_action.action.ActionAwake();
-                                }
-                                break;
-                            case Action_GS.ACTION_STATE.A_START:
-                                {
-                                    execution_result = _current_action.action.ActionStart();
-                                }
-                                break;
-                            case Action_GS.ACTION_STATE.A_UPDATE:
-                                {
-                                    //Execute behaviour in action update
-                                    _behaviour.InActionUpdate();
+                        Action_GS.ACTION_RESULT execution_result = _current_action.action.Execute();
 
-                                    execution_result = _current_action.action.ActionUpdate();
-                                }
-                                break;
-                            case Action_GS.ACTION_STATE.A_COMPLETE:
-                                {
-                                    execution_result = _current_action.action.ActionEnd();
-                                    //Check if the action has been completed
-                                    if (execution_result == Action_GS.ACTION_RESULT.A_NEXT)
-                                    {
-                                        //Check current plan
-                                        if (_current_plan.Count > 0)
-                                        {
-                                            //Avaliable action case
-                                            _current_action = _current_plan.Pop();
-                                        }
-                                        else
-                                        {
-                                            //Plan completed case
-                                            _current_action = null;
-                                            _state = AGENT_STATE.AG_IDLE;
-                                            return;
-                                        }
-                                    }
-                                }
-                                break;
-                        }
                         //React with the action result
-                        if (execution_result == Action_GS.ACTION_RESULT.A_NEXT)
+                        if (execution_result == Action_GS.ACTION_RESULT.A_NEXT && _current_action.action.state == Action_GS.ACTION_STATE.A_COMPLETE)
                         {
-                            _current_action.action.state += 1;
+                            //Check current plan
+                            if (_current_plan.Count > 0)
+                            {
+                                //Avaliable action case
+                                _current_action = _current_plan.Pop();
+                                _current_action.agent = this;
+                            }
+                            else
+                            {
+                                //Plan completed case
+                                _current_action = null;
+                                _state = AGENT_STATE.AG_IDLE;
+                                return;
+                            }
                         }
                         else if (execution_result == Action_GS.ACTION_RESULT.A_ERROR)
                         {
-                            _current_action.action.ActionBreak();
                             //In action error the plan is cancelled
                             _current_action = null;
                             _current_plan.Clear();

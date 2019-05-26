@@ -203,8 +203,6 @@ namespace GOAP_S.UI
                             Planning.Action_GS _new_script = ProTools.AllocateClass<Planning.Action_GS>(script);
                             //Set new script name
                             _new_script.name = _script_full_path.PathToName();
-                            //Set new script agent 
-                            _new_script.agent = NodeEditor_GS.Instance.selected_agent;
                             //Place the new action in the selected action node
                             NodeEditor_GS.Instance.selected_agent.action_nodes[_node_index].action = _new_script;
                             //Set action node editor action editor
@@ -223,8 +221,6 @@ namespace GOAP_S.UI
                             AI.AgentBehaviour_GS _new_script = ProTools.AllocateClass<AI.AgentBehaviour_GS>(script);
                             //Set new script name
                             _new_script.name = _script_full_path.PathToName();
-                            //Set new script agent 
-                            _new_script.agent = NodeEditor_GS.Instance.selected_agent;
                             //Place the new action in the selected action node
                             NodeEditor_GS.Instance.selected_agent.behaviour = _new_script;
                             //Update node planning canvas

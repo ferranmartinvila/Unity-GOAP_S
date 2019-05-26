@@ -894,6 +894,16 @@ namespace GOAP_S.Tools
             return new Vector2(rect.xMin, rect.yMin);
         }
 
+        public static Vector2 MiddleLeft(this Rect rect)
+        {
+            return new Vector2(rect.xMin, rect.yMin + (rect.height * 0.5f));
+        }
+
+        public static Vector2 MiddleRight(this Rect rect)
+        {
+            return new Vector2(rect.xMax, rect.yMin + (rect.height * 0.5f));
+        }
+
         //Extra Methods =========================
         //Change key in a dictionary
         public static void RenameKey<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey original_key, TKey new_key)

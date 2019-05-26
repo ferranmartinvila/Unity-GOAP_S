@@ -38,6 +38,20 @@ namespace GOAP_S.AI
             _effects = new Property_GS[ProTools.INITIAL_ARRAY_SIZE];
         }
 
+        public ActionNode_GS(ActionNode_GS copy)
+        {
+            _window_rect = copy._window_rect;
+            _id = copy._id;
+            _name = copy._name;
+            _description = copy._description;
+            _conditions = copy._conditions;
+            _conditions_num = copy._conditions_num;
+            _effects = copy._effects;
+            _effects_num = copy._effects_num;
+            //_action = new Action_GS(copy._action);
+            _agent = copy._agent;
+        }
+
         //Loop Methods ================
         public void Start()
         {
