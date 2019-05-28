@@ -301,6 +301,7 @@ namespace GOAP_S.UI
 
             //Check agent current plan
             ActionNode_GS [] plan = _selected_agent.current_plan.ToArray();
+            ActionNode_GS[] completed_plan = _selected_agent.popped_actions.ToArray();
             if (plan == null || plan.Length == 0)
             {
                 //Reset debug data
@@ -312,13 +313,21 @@ namespace GOAP_S.UI
 
             //In valid plan case generate the plan debugger
             //Allocate node debuggers array
-            _action_node_debuggers = new ActionNode_GS_Debugger[plan.Length];
-            _action_node_debuggers_num = plan.Length;
-            //Iterate plan nodes
-            for(int k = 0; k < _action_node_debuggers_num; k++)
+            _action_node_debuggers = new ActionNode_GS_Debugger[plan.Length + completed_plan.Length];
+            _action_node_debuggers_num = plan.Length + completed_plan.Length;
+            //Iterate completed plan nodes
+            for(int k = 0; k < completed_plan.Length; k++)
             {
                 //Generate plan action debugger
-                ActionNode_GS_Debugger node_debugger = new ActionNode_GS_Debugger(plan[k]);
+                ActionNode_GS_Debugger node_debugger = new ActionNode_GS_Debugger(completed_plan[k]);
+                //Add the new debugger to the array
+                _action_node_debuggers[k] = node_debugger;
+            }
+            //Iterate plan nodes
+            for (int k = completed_plan.Length; k < _action_node_debuggers_num; k++)
+            {
+                //Generate plan action debugger
+                ActionNode_GS_Debugger node_debugger = new ActionNode_GS_Debugger(plan[k - completed_plan.Length]);
                 //Add the new debugger to the array
                 _action_node_debuggers[k] = node_debugger;
             }

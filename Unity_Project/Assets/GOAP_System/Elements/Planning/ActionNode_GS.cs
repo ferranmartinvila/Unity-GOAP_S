@@ -48,7 +48,8 @@ namespace GOAP_S.AI
             _conditions_num = copy._conditions_num;
             _effects = copy._effects;
             _effects_num = copy._effects_num;
-            //_action = new Action_GS(copy._action);
+            _action = (Action_GS)Activator.CreateInstance(copy._action.GetType());
+            _action.CopyValues(copy._action);
             _agent = copy._agent;
         }
 

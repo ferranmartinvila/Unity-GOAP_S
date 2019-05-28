@@ -267,7 +267,7 @@ namespace GOAP_S.UI
             {
                 if(_debug_node_skin == null)
                 {
-                    _debug_node_skin = new GUISkin();
+                    _debug_node_skin = (GUISkin)ScriptableObject.CreateInstance("GUISkin");
                     _debug_node_skin.window = new GUIStyle("HelpBox");
                 }
                 return _debug_node_skin;

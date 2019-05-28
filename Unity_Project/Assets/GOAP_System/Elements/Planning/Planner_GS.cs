@@ -63,14 +63,13 @@ namespace GOAP_S.Planning
 
                 //Check if the resultant world state of the current node is the goal world state
                 float val = current_node.resultant_world_state.DistanceTo(goal_world_state);
-                Debug.Log(val);
 
                 if (current_node.resultant_world_state.DistanceTo(goal_world_state) < ProTools.MIN_PROPERTY_DISTANCE)
                 {
                     //Allocate a new queue of actions to store the plan
                     Stack<ActionNode_GS> action_plan = new Stack<ActionNode_GS>();
                     //Enqueue the goal action 
-                    action_plan.Push(current_node.action);
+                    action_plan.Push(new ActionNode_GS(current_node.action));
                     //Iterate goal node "childs" to start node using the parent id
                     while (current_node.parent_id != 0)
                     {
@@ -80,7 +79,7 @@ namespace GOAP_S.Planning
                         if (current_node.action != null)
                         {
                             //Enqueue the new current node
-                            action_plan.Push(current_node.action);
+                            action_plan.Push(new ActionNode_GS(current_node.action));
                         }
                     }
 

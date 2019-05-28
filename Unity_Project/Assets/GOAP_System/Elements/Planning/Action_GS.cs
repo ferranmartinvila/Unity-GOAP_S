@@ -44,16 +44,24 @@ namespace GOAP_S.Planning
         }
 
         //Content fields
-        [SerializeField] private string _name = "no_name";
-        [SerializeField] private int _cost = 1;
-        [NonSerialized] private ACTION_STATE _state = ACTION_STATE.A_IDLE;
-        [NonSerialized] private Agent_GS _agent = null;
+        [SerializeField] protected string _name = "no_name";
+        [SerializeField] protected int _cost = 1;
+        [NonSerialized] protected ACTION_STATE _state = ACTION_STATE.A_IDLE;
+        [NonSerialized] protected Agent_GS _agent = null;
 
         //Constructors ================
         public Action_GS()
         {
             //Set action target agent to null
             _agent = null;
+        }
+
+        public virtual void CopyValues(Action_GS copy)
+        {
+            _agent = copy._agent;
+            _name = copy._name;
+            _cost = copy._cost;
+            _state = copy._state;
         }
 
         //Loop Methods ================
@@ -140,7 +148,7 @@ namespace GOAP_S.Planning
         //Blit action debug info in the planning UI
         public virtual void BlitDebugUI()
         {
-
+            GUILayout.Label(_state.ToString());
         }
 
         //Get/Set Methods =================

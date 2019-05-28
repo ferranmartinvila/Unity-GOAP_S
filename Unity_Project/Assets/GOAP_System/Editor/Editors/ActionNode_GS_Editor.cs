@@ -166,8 +166,9 @@ namespace GOAP_S.UI
             //Condition add button
             if (GUILayout.Button("Add Condition", UIConfig_GS.Instance.node_selection_buttons_style, GUILayout.Width(150), GUILayout.Height(20), GUILayout.ExpandWidth(true)))
             {
-                Vector2 mousePos = Event.current.mousePosition;
-                PopupWindow.Show(new Rect(mousePos.x, mousePos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_CONDITION));
+                Vector2 mouse_pos = Event.current.mousePosition;
+                mouse_pos = NodeEditor_GS.Instance.ZoomCoordsToScreenCoords(mouse_pos);
+                PopupWindow.Show(new Rect(mouse_pos.x, mouse_pos.y, 0, 0), new PropertySelectMenu_GS(this, PropertyUIMode.IS_CONDITION));
             }
             //-------------------------
 
@@ -220,6 +221,8 @@ namespace GOAP_S.UI
                     _target_action_node.action = null;
                     //Set action editor to null
                     _action_editor = null;
+                    //Resize node window
+                    _target_action_node.window_size = Vector2.zero;
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                 }
@@ -294,6 +297,8 @@ namespace GOAP_S.UI
                     }
                     //Update condition editors count
                     _condition_editors_num -= 1;
+                    //Reset window size
+                    _target_action_node.window_size = Vector2.zero;
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Job is done we dont need to continue the iteration
@@ -344,6 +349,8 @@ namespace GOAP_S.UI
                     }
                     //Update effect editors count
                     _effect_editors_num -= 1;
+                    //Reset window size
+                    _target_action_node.window_size = Vector2.zero;
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
                     //Job is done we dont need to continue the iteration

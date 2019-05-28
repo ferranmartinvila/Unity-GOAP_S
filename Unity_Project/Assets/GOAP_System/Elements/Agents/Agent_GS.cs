@@ -35,6 +35,7 @@ namespace GOAP_S.AI
         [NonSerialized] private WorldState_GS _goal_world_state = null; //Agent goal world state defined in the agent behaviour
         [NonSerialized] private Planner_GS _planner; //Class that holds the planning algorithm
         [NonSerialized] private Stack<ActionNode_GS> _current_plan = null; //Current actions plan generated from the goal world state
+        [NonSerialized] private List<ActionNode_GS> _popped_actions = null; //List with the already completed actions from the current plan
         [NonSerialized] private ActionNode_GS _current_action = null; //Current action from the plan in execution
         [NonSerialized] private Action_GS _idle_action = null; //Action executed when the agent is in idle state
         //Callbacks
@@ -54,6 +55,8 @@ namespace GOAP_S.AI
             _action_nodes = new ActionNode_GS[ProTools.INITIAL_ARRAY_SIZE];
             //Allocate the current plan
             _current_plan = new Stack<ActionNode_GS>();
+            //Allocate the poped actions list
+            _popped_actions = new List<ActionNode_GS>();
         }
 
         //Loop Methods ====================
@@ -142,6 +145,7 @@ namespace GOAP_S.AI
                                 //Focus first plan action
                                 _current_action = _current_plan.Pop();
                                 _current_action.agent = this;
+                                _popped_actions.Add(_current_action);
                             }
                         }
                     }
@@ -160,11 +164,14 @@ namespace GOAP_S.AI
                                 //Avaliable action case
                                 _current_action = _current_plan.Pop();
                                 _current_action.agent = this;
+                                _popped_actions.Add(_current_action);
                             }
                             else
                             {
                                 //Plan completed case
                                 _current_action = null;
+                                _current_plan.Clear();
+                                _popped_actions.Clear();
                                 _state = AGENT_STATE.AG_IDLE;
                                 return;
                             }
@@ -382,6 +389,14 @@ namespace GOAP_S.AI
             get
             {
                 return _current_plan;
+            }
+        }
+
+        public List<ActionNode_GS> popped_actions
+        {
+            get
+            {
+                return _popped_actions;
             }
         }
 
