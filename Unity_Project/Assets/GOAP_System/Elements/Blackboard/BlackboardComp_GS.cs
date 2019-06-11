@@ -36,6 +36,9 @@ namespace GOAP_S.Blackboard
                     variable.InitializeMethodBinding(gameObject);
                 }
             }
+
+            //Initialize properties bindings
+            _target_agent.InitializePlanProperties();
         }
 
         //Get/set Methods =============

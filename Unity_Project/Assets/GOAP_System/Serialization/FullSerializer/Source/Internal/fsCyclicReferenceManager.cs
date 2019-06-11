@@ -48,7 +48,8 @@ namespace FullSerializer.Internal {
         }
 
         public object GetReferenceObject(int id) {
-            if (_marked.ContainsKey(id) == false) {
+            if (_marked.ContainsKey(id) == false)
+            {
                 throw new InvalidOperationException("Internal Deserialization Error - Object " +
                     "definition has not been encountered for object with id=" + id +
                     "; have you reordered or modified the serialized data? If this is an issue " +

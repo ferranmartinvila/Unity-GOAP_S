@@ -258,31 +258,42 @@ namespace GOAP_S.Blackboard
             //Set method instance
             _binded_method_instance = target_method.Value;
 
-            for (int k = 0; k < _binded_method_input.Length; k++)
+            if (_binded_method_input == null)
             {
-                //Current input info
-                KeyValuePair<string, object> input = _binded_method_input[k];
-
-                //Binded value case
-                if (string.IsNullOrEmpty(input.Key) == false)
+                _binded_method_input = new KeyValuePair<string, object>[0];
+                if(_binded_method_info.GetParameters().Length > 0)
                 {
-                    //Check if is a local or global variable
-                    //Global case
-                    string[] input_info = input.Key.Split('/'); //Input location and variable name
-                    if (string.Compare(input_info[0], "Global") == 0)
-                    {
-                        _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, GlobalBlackboard_GS.blackboard.GetObjectVariable(input_info[1]));
-                    }
-                    //Local case
-                    else
-                    {
-                        _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, target_obj.GetComponent<Agent_GS>().blackboard.GetObjectVariable(input_info[1]));
-                    }
+                    Debug.LogError("The method binding " + _binded_method_info.Name + "needs input definition!");
                 }
-                //Not binded value case
-                else if (input.Value == null)
+            }
+            else
+            {
+                for (int k = 0; k < _binded_method_input.Length; k++)
                 {
-                    Debug.LogError("The method bind process for the variable " + name + " has an input error in index " + k + " !");
+                    //Current input info
+                    KeyValuePair<string, object> input = _binded_method_input[k];
+
+                    //Binded value case
+                    if (string.IsNullOrEmpty(input.Key) == false)
+                    {
+                        //Check if is a local or global variable
+                        //Global case
+                        string[] input_info = input.Key.Split('/'); //Input location and variable name
+                        if (string.Compare(input_info[0], "Global") == 0)
+                        {
+                            _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, GlobalBlackboard_GS.blackboard.GetObjectVariable(input_info[1]));
+                        }
+                        //Local case
+                        else
+                        {
+                            _binded_method_input[k] = new KeyValuePair<string, object>(_binded_method_input[k].Key, target_obj.GetComponent<Agent_GS>().blackboard.GetObjectVariable(input_info[1]));
+                        }
+                    }
+                    //Not binded value case
+                    else if (input.Value == null)
+                    {
+                        Debug.LogError("The method bind process for the variable " + name + " has an input error in index " + k + " !");
+                    }
                 }
             }
             return true;

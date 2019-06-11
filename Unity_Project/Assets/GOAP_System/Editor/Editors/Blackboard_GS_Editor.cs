@@ -102,6 +102,7 @@ namespace GOAP_S.UI
                 {
                     new_array[k] = _variable_editors[k];
                 }
+                _variable_editors = new_array;
             }
 
             //Generate new variable editor

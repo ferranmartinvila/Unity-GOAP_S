@@ -267,6 +267,10 @@ namespace GOAP_S.UI
 
         private void AddConditionEditor(Property_GS condition)
         {
+            if (condition == null)
+            {
+                return;
+            }
             //Generate an editor for the new condition
             Property_GS_Editor property_editor = new Property_GS_Editor(condition, this, _target_action_node.agent.blackboard, PropertyUIMode.IS_CONDITION);
             //Add the editor to the correct array
@@ -319,6 +323,11 @@ namespace GOAP_S.UI
 
         private void AddEffectEditor(Property_GS effect)
         {
+            if(effect == null)
+            {
+                return;
+            }
+
             //Generate an editor for the new condition
             Property_GS_Editor property_editor = new Property_GS_Editor(effect, this, _target_action_node.agent.blackboard, PropertyUIMode.IS_EFFECT);
             //Add the editor to the correct array

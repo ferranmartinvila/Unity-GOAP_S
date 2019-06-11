@@ -43,7 +43,16 @@ namespace GOAP_S.AI
         protected void SetGoal(string variable_name, OperatorType operator_type, object variable_value, VariableLocation location = VariableLocation._local)
         {
             //First check if the variable exists in the current world state
-            Variable_GS target_variable = _agent.blackboard.GetObjectVariable(variable_name);
+            Variable_GS target_variable = null;
+            if (location == VariableLocation._local)
+            {
+                target_variable = _agent.blackboard.GetObjectVariable(variable_name);
+            }
+            else
+            {
+                target_variable = GlobalBlackboard_GS.blackboard.GetObjectVariable(variable_name);
+            }
+
             if (target_variable == null)
             {
                 //In null case goal set is cancelled

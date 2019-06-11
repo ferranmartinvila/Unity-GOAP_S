@@ -3,6 +3,7 @@ using UnityEngine;
 using GOAP_S.AI;
 using System.Linq;
 using GOAP_S.Tools;
+using GOAP_S.Blackboard;
 
 namespace GOAP_S.Planning
 {
@@ -20,6 +21,9 @@ namespace GOAP_S.Planning
             //First get the world state states
             //Current
             WorldState_GS current_world_state = agent.blackboard.GenerateWorldState();
+            WorldState_GS current_global_world_state = GlobalBlackboard_GS.blackboard.GenerateWorldState();
+            current_world_state.MixGoals(current_global_world_state);
+
             //Goal
             //Get current as base world state
             WorldState_GS goal_world_state = new WorldState_GS(current_world_state);
@@ -62,8 +66,6 @@ namespace GOAP_S.Planning
                 PlannerNode_GS current_node = CloseNode();
 
                 //Check if the resultant world state of the current node is the goal world state
-                float val = current_node.resultant_world_state.DistanceTo(goal_world_state);
-
                 if (current_node.resultant_world_state.DistanceTo(goal_world_state) < ProTools.MIN_PROPERTY_DISTANCE)
                 {
                     //Allocate a new queue of actions to store the plan
@@ -92,6 +94,11 @@ namespace GOAP_S.Planning
                 //Iterate all the avaliable actions
                 for (int k = 0; k < agent.action_nodes_num; k++)
                 {
+                    if(agent.action_nodes[k].action == null)
+                    {
+                        continue;
+                    }
+
                     //Scoped action
                     ActionNode_GS scoped_action = agent.action_nodes[k];
 
@@ -188,7 +195,7 @@ namespace GOAP_S.Planning
             {
                 foreach(PlannerNode_GS open_node in open_pair.Value)
                 {
-                    if(open_node.resultant_world_state.DistanceTo(target) == 0)
+                    if (open_node.resultant_world_state.DistanceTo(target, true) == 0)
                     {
                         found = open_node;
                         return true;

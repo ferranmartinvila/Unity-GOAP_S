@@ -692,11 +692,13 @@ namespace FullSerializer {
             // time we encounter an object it'll always be the definition. Any times after that
             // it will be a reference. Because of this, if we encounter a reference then we
             // will have *always* already encountered the definition for it.
-            if (IsObjectReference(data)) {
-                int refId = int.Parse(data.AsDictionary[Key_ObjectReference].AsString);
+            if (IsObjectReference(data))
+            {
+                UnityEngine.Debug.LogError("dasda!!DAS");
+                /*int refId = int.Parse(data.AsDictionary[Key_ObjectReference].AsString);
                 result = _references.GetReferenceObject(refId);
                 processors = GetProcessors(result.GetType());
-                return fsResult.Success;
+                return fsResult.Success;*/
             }
 
             return InternalDeserialize_2_Version(overrideConverterType, data, storageType, ref result, out processors);

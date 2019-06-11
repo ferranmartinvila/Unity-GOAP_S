@@ -10,7 +10,7 @@ namespace GOAP_S.Blackboard
         //Content fields
         [NonSerialized] private static Blackboard_GS _blackboard = null;
         [SerializeField] private string serialized_blackboard = null; //String where the blackboard is serialized
-        [SerializeField] private List<UnityEngine.Object> obj_refs = null; //List that contains the references to the objects serialized
+        [SerializeField] private List<UnityEngine.Object> b_obj_refs = null; //List that contains the references to the objects serialized
 
         //Loop Methods ================
         private void Awake()
@@ -49,7 +49,11 @@ namespace GOAP_S.Blackboard
             //Serialize blackboard
             if (blackboard != null)
             {
-                serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), obj_refs);
+                serialized_blackboard = Serialization.SerializationManager.Serialize(_blackboard, typeof(Blackboard_GS), b_obj_refs);
+            }
+            else
+            {
+                serialized_blackboard = null;
             }
         }
 
@@ -62,7 +66,7 @@ namespace GOAP_S.Blackboard
             }
             else
             {
-                _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, obj_refs);
+                _blackboard = (Blackboard_GS)Serialization.SerializationManager.Deserialize(typeof(Blackboard_GS), serialized_blackboard, b_obj_refs);
                 if (_blackboard == null)
                 {
                     _blackboard = new Blackboard_GS(null);

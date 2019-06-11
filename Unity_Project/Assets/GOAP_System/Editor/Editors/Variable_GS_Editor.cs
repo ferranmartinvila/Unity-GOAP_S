@@ -59,7 +59,7 @@ namespace GOAP_S.UI
             //Edit button, swap between edit and show state(hide on play)
             if (!Application.isPlaying)
             {
-                if (GUILayout.Button("O", GUILayout.Width(20), GUILayout.Height(20)))
+                if (GUILayout.Button(new GUIContent("O","Change variable editor to edit mode"), GUILayout.Width(20), GUILayout.Height(20)))
                 {
                     //Change UI mode
                     _UI_mode = EditorUIMode.EDIT_STATE;

@@ -65,7 +65,7 @@ namespace GOAP_S.Tools
         public const int MIN_CANVAS_HEIGHT = 400;
         public const int NODE_EDITOR_CANVAS_SIZE = 4000;
         public const int BEHAVIOUR_EDITOR_CANVAS_SIZE = 2000;
-        public const int BLACKBOARD_MARGIN = 350;
+        public const int BLACKBOARD_MARGIN = 400;
         public const int INITIAL_ARRAY_SIZE = 10;
         public const int TRIES_LIMIT = 4;
         public const int ITERATION_LIMIT = 300;
@@ -570,7 +570,7 @@ namespace GOAP_S.Tools
                 case VariableType._char:
                 case VariableType._vector2:
                 case VariableType._vector3:
-                case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal, OperatorType._different };
+                case VariableType._vector4: return new OperatorType[] { OperatorType._plus_equal, OperatorType._minus_equal, OperatorType._is_equal };
                 case VariableType._enum:
                     {
                         Debug.Log("Enum perations are not supported!");

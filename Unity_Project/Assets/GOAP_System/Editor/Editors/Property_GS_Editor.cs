@@ -240,6 +240,16 @@ namespace GOAP_S.UI
                 {
                     //Update B key on change
                     _target_property.B_key = _B_variable_dropdown.paths[_B_variable_dropdown.selected_index];
+                    //Set value as B variable
+                    string[] B_key_info = _target_property.B_key.Split('/');
+                    if (string.Compare(B_key_info[0], "Global") == 0)
+                    {
+                        _target_property.value = GlobalBlackboard_GS.blackboard.GetObjectVariable(B_key_info[1]);
+                    }
+                    else
+                    {
+                        _target_property.value = NodeEditor_GS.Instance.selected_agent.blackboard.GetObjectVariable(B_key_info[1]);
+                    }
                 }
 
                 //Change to value button

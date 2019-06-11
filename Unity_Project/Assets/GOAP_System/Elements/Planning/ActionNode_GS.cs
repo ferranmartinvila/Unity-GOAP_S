@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using GOAP_S.Tools;
 using GOAP_S.Planning;
+using GOAP_S.Blackboard;
 using System.Collections.Generic;
 
 namespace GOAP_S.AI
@@ -334,7 +335,7 @@ namespace GOAP_S.AI
         {
             for(int k = 0; k < _conditions_num; k++)
             {
-                if(current.GetProperty(_conditions[k].A_key).DistanceTo(_conditions[k]) > ProTools.MIN_PROPERTY_DISTANCE)
+                if (current.GetProperty(_conditions[k].A_key).DistanceTo(_conditions[k], true) > ProTools.MIN_PROPERTY_DISTANCE)
                 {
                     //If one current world state property does not fit in the action conditions return false
                     return false;
@@ -355,6 +356,27 @@ namespace GOAP_S.AI
             }
             //Return the resultant world state
             return new_world_state;
+        }
+
+        public bool ApplyActionNodeEffects()
+        {
+            //Apply all the action node effects to the local and global blackboards
+            for (int k = 0; k < _effects_num; k++)
+            {
+                string[] A_key_info = _effects[k].A_key.Split('/'); //Input location and variable name
+                if (string.Compare(A_key_info[0], "Global") == 0)
+                {
+                    //Global variable case
+                    GlobalBlackboard_GS.blackboard.SetObjectVariable(A_key_info[1], _effects[k].value);
+                }
+                else
+                {
+                    //Local variable case
+                    agent.blackboard.SetObjectVariable(A_key_info[1], _effects[k].value);
+                }
+                    
+            }
+            return true;
         }
 
         //Serialization Methods =======
@@ -396,6 +418,8 @@ namespace GOAP_S.AI
 
         public void OnAfterDeserialize()
         {
+            _conditions_num = 0;
+            _effects_num = 0;
 
             //Deserialize conditions
             if (string.IsNullOrEmpty(serialized_conditions))

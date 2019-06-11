@@ -143,9 +143,9 @@ namespace GOAP_S.Blackboard
             foreach(Variable_GS variable in variables.Values)
             {
                 //Generate world property
-                Property_GS property = new Property_GS(global ? "Global/" : "Local/" + variable.name, variable.type, OperatorType._is_equal, variable.object_value, variable.planning_value);
+                Property_GS property = new Property_GS((global ? "Global/" : "Local/") + variable.name, variable.type, OperatorType._is_equal, variable.object_value, variable.planning_value);
                 //Add the generated property in the current world state
-                world_state.SetGoal(global ? "Global/" : "Local/" + variable.name, property);
+                world_state.SetGoal((global ? "Global/" : "Local/") + variable.name, property);
             }
 
             //Finally return the generated hashset
@@ -200,7 +200,7 @@ namespace GOAP_S.Blackboard
             catch
             {
                 //If variable is not found we display a warning in console with the variable name
-                Debug.LogWarning("Variable:" + name + "not found!");
+                Debug.LogWarning("Variable:" + name + " not found!");
                 return null;
             }
         }
@@ -214,6 +214,29 @@ namespace GOAP_S.Blackboard
                 _variables[name].value = value;
                 //Return the resulting variable
                 return (TVariable_GS<T>)_variables[name];
+            }
+            catch
+            {
+                //If variable is not found we display a warning in console with the variable name
+                Debug.LogWarning("Variable:" + name + "not found!");
+                return null;
+            }
+        }
+
+        public Variable_GS SetObjectVariable(string name, object value)
+        {
+            //First try to get variable by name in de dictionary
+            try
+            {
+                //Set variable value
+                _variables[name].value = value;
+                //Binded variable alert
+                if (_variables[name].is_field_binded || _variables[name].is_method_binded)
+                {
+                    Debug.LogWarning("You are changing the object value of an already binded variable!");
+                }
+                //Return the resulting variable
+                return _variables[name];
             }
             catch
             {

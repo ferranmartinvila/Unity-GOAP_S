@@ -262,6 +262,16 @@ namespace GOAP_S.UI
                     if(_value_or_key == 2)
                     {
                         new_property.B_key = _B_variable_keys[_selected_B_key_index];
+                        //Set value as B variable
+                        string[] B_key_info = new_property.B_key.Split('/');
+                        if (string.Compare(B_key_info[0], "Global") == 0)
+                        {
+                            new_property.value = GlobalBlackboard_GS.blackboard.GetObjectVariable(B_key_info[1]);
+                        }
+                        else
+                        {
+                            new_property.value = NodeEditor_GS.Instance.selected_agent.blackboard.GetObjectVariable(B_key_info[1]);
+                        }
                     }
                     else
                     {

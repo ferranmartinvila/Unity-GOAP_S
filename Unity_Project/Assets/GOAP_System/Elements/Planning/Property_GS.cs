@@ -3,6 +3,8 @@ using UnityEngine;
 using GOAP_S.Tools;
 using System.Runtime.CompilerServices;
 using System.Reflection;
+using GOAP_S.Blackboard;
+using GOAP_S.AI;
 
 namespace GOAP_S.Planning
 {
@@ -30,7 +32,7 @@ namespace GOAP_S.Planning
         [SerializeField] private string _B_key = null; //B Property key, the key of the second property in the condition
         [SerializeField] private object _value = null; //B value, value that we compare with the A Property value
         [SerializeField] private float _planning_value = 1.0f; //Property value used to calculate distances between properties during the path generation
-
+        
         //Constructors ================
         public Property_GS()
         {
@@ -44,6 +46,7 @@ namespace GOAP_S.Planning
             _operator = copy.operator_type;
             _B_key = copy.B_key;
             _value = copy.value;
+            _planning_value = copy._planning_value;
         }
 
         //Used to generate properties form bb variables
@@ -58,7 +61,7 @@ namespace GOAP_S.Planning
         }
 
         //Planning Methods ============
-        public float DistanceTo(Property_GS target_property)
+        public float DistanceTo(Property_GS target_property, bool no_dist = false)
         {
             //Check if the target properties have the same variable type
             if (_variable_type != target_property.variable_type)
@@ -76,14 +79,14 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._string: return string.Compare((string)_value, (string)target_property.value) * _planning_value;
-                            case VariableType._bool: return ((bool)_value == (bool)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._char: return ((char)_value == (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * _planning_value;
-                            case VariableType._float: return ((float)_value == (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * _planning_value;
-                            case VariableType._int: return ((int)_value == (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * _planning_value;
-                            case VariableType._vector2: return ((Vector2)_value == (Vector2)target_property.value ? 0.0f : Vector2.Distance((Vector2)_value, (Vector2)target_property.value)) * _planning_value;
-                            case VariableType._vector3: return ((Vector3)_value == (Vector3)target_property.value ? 0.0f : Vector3.Distance((Vector3)_value, (Vector3)target_property.value)) * _planning_value;
-                            case VariableType._vector4: return ((Vector4)_value == (Vector4)target_property.value ? 0.0f : Vector4.Distance((Vector4)_value, (Vector4)target_property.value)) * _planning_value;
+                            case VariableType._string: return string.Compare((string)_value, (string)target_property.value) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._bool: return ((bool)_value == (bool)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._char: return ((char)_value == (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value == (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)_value == (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return ((Vector2)_value == (Vector2)target_property.value ? 0.0f : Vector2.Distance((Vector2)_value, (Vector2)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return ((Vector3)_value == (Vector3)target_property.value ? 0.0f : Vector3.Distance((Vector3)_value, (Vector3)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return ((Vector4)_value == (Vector4)target_property.value ? 0.0f : Vector4.Distance((Vector4)_value, (Vector4)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -91,14 +94,14 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._string: return (string.Compare((string)_value, (string)target_property.value) != 0 ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._bool: return ((bool)_value != (bool)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._char: return ((char)_value != (char)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._float: return ((float)_value != (float)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._int: return ((int)_value != (int)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._vector2: return ((Vector2)_value != (Vector2)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._vector3: return ((Vector3)_value != (Vector3)target_property.value ? 0.0f : 1.0f) * _planning_value;
-                            case VariableType._vector4: return ((Vector4)_value != (Vector4)target_property.value ? 0.0f : 1.0f) * _planning_value;
+                            case VariableType._string: return (string.Compare((string)_value, (string)target_property.value) != 0 ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._bool: return ((bool)_value != (bool)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._char: return ((char)_value != (char)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value != (float)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)_value != (int)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return ((Vector2)_value != (Vector2)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return ((Vector3)value != (Vector3)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return ((Vector4)_value != (Vector4)target_property.value ? 0.0f : 1.0f) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -106,12 +109,12 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._char: return ((char)_value > (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * _planning_value;
-                            case VariableType._float: return ((float)_value > (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * _planning_value;
-                            case VariableType._int: return ((int)_value > (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * _planning_value;
-                            case VariableType._vector2: return (((Vector2)_value).magnitude > ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector3: return (((Vector3)_value).magnitude > ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector4: return (((Vector4)_value).magnitude > ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * _planning_value;
+                            case VariableType._char: return ((char)_value > (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value > (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)value > (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value) <= 0 ? 1 : Mathf.Abs((int)_value - (int)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return (((Vector2)_value).magnitude > ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return (((Vector3)_value).magnitude > ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return (((Vector4)_value).magnitude > ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -119,12 +122,12 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._char: return ((char)_value >= (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * _planning_value;
-                            case VariableType._float: return ((float)_value >= (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * _planning_value;
-                            case VariableType._int: return ((int)_value >= (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * _planning_value;
-                            case VariableType._vector2: return (((Vector2)_value).magnitude >= ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector3: return (((Vector3)_value).magnitude >= ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector4: return (((Vector4)_value).magnitude >= ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * _planning_value;
+                            case VariableType._char: return ((char)_value >= (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value >= (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)_value >= (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return (((Vector2)_value).magnitude >= ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return (((Vector3)_value).magnitude >= ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return (((Vector4)_value).magnitude >= ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -132,12 +135,12 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._char: return ((char)_value < (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * _planning_value;
-                            case VariableType._float: return ((float)_value < (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * _planning_value;
-                            case VariableType._int: return ((int)_value < (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * _planning_value;
-                            case VariableType._vector2: return (((Vector2)_value).magnitude < ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector3: return (((Vector3)_value).magnitude < ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector4: return (((Vector4)_value).magnitude < ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * _planning_value;
+                            case VariableType._char: return ((char)_value < (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value < (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)_value < (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return (((Vector2)_value).magnitude < ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return (((Vector3)_value).magnitude < ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return (((Vector4)_value).magnitude < ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -145,12 +148,12 @@ namespace GOAP_S.Planning
                     {
                         switch (_variable_type)
                         {
-                            case VariableType._char: return ((char)_value <= (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * _planning_value;
-                            case VariableType._float: return ((float)_value <= (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * _planning_value;
-                            case VariableType._int: return ((int)_value <= (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * _planning_value;
-                            case VariableType._vector2: return (((Vector2)_value).magnitude <= ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector3: return (((Vector3)_value).magnitude <= ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * _planning_value;
-                            case VariableType._vector4: return (((Vector4)_value).magnitude <= ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * _planning_value;
+                            case VariableType._char: return ((char)_value <= (char)target_property.value ? 0.0f : Mathf.Abs((char)_value - (char)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._float: return ((float)_value <= (float)target_property.value ? 0.0f : Mathf.Abs((float)_value - (float)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._int: return ((int)_value <= (int)target_property.value ? 0.0f : Mathf.Abs((int)_value - (int)target_property.value)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector2: return (((Vector2)_value).magnitude <= ((Vector2)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector2)_value).magnitude - ((Vector2)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector3: return (((Vector3)_value).magnitude <= ((Vector3)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector3)_value).magnitude - ((Vector3)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
+                            case VariableType._vector4: return (((Vector4)_value).magnitude <= ((Vector4)target_property.value).magnitude ? 0.0f : Mathf.Abs(((Vector4)_value).magnitude - ((Vector4)target_property.value).magnitude)) * (no_dist == true ? 1.0f : _planning_value);
                         }
                     }
                     break;
@@ -164,10 +167,20 @@ namespace GOAP_S.Planning
         {
             switch (target.operator_type)
             {
-                case OperatorType._is_equal:
                 case OperatorType._equal_equal:
                     {
-                        _value = target.value;
+                        Debug.LogError("UEP!");
+
+                        operator_type = target.operator_type;
+                        value = target.value;
+                    }
+                    break;
+                case OperatorType._is_equal:
+                case OperatorType._bigger_or_equal:
+                case OperatorType._smaller_or_equal:
+                    {
+                        operator_type = target.operator_type;
+                        value = target.value;
                     }
                     break;
                 case OperatorType._minus_equal:
@@ -252,7 +265,14 @@ namespace GOAP_S.Planning
         {
             get
             {
-                return _value;
+                if (string.IsNullOrEmpty(_B_key))
+                {
+                    return _value;
+                }
+                else
+                {
+                    return ((Variable_GS)_value).value;
+                }
             }
             set
             {

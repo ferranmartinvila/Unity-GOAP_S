@@ -68,7 +68,7 @@ namespace GOAP_S.Planning
             }
         }
 
-        public float DistanceTo(WorldState_GS target)
+        public float DistanceTo(WorldState_GS target, bool no_dist = false)
         {
             //Summatory of all the variables distance
             float total_distance = 0;
@@ -83,7 +83,7 @@ namespace GOAP_S.Planning
                 if (_world_state.TryGetValue(target_property.Key, out this_property))
                 {
                     //Check properties
-                    total_distance += this_property.DistanceTo(target_property.Value);
+                    total_distance += this_property.DistanceTo(target_property.Value, no_dist);
                 }
                 //If the property is not found the goal world state is not valid
                 else

@@ -68,6 +68,8 @@ namespace GOAP_S.UI
                         new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
                         //Set the allocated class to the action node
                         _target_action_node.action = new_script;
+                        //Set new action agent
+                        new_script.agent = _target_action_node.agent;
                         //Set target action node editor action editor
                         _target_action_node_editor.action_editor = new Action_GS_Editor(_target_action_node_editor);
                         //Mark scene dirty
@@ -85,6 +87,8 @@ namespace GOAP_S.UI
                     {
                         //Set the class name to the new allocated action
                         new_script.name = ResourcesTool.action_paths[_selected_action_index].PathToName();
+                        //Set new action agent
+                        new_script.agent = NodeEditor_GS.Instance.selected_agent;
                         //Set the agent idle action
                         target_agent.idle_action = new_script;
                         //Mark scene dirty

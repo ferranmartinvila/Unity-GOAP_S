@@ -13,14 +13,15 @@ public class MoveAction_GS : Action_GS
     //Called on the first action loop
     public override ACTION_RESULT ActionStart()
     {
-        direction_vector = target_position - agent.transform.position;
+        direction_vector = Vector3.Normalize(target_position - agent.transform.position);
+
         return ACTION_RESULT.A_NEXT;
     }
 
     //Called on the action update
     public override ACTION_RESULT ActionUpdate()
     {
-        agent.transform.position = new Vector3(agent.transform.position.x + direction_vector.x * speed * Time.deltaTime, agent.transform.position.y + direction_vector.y * speed * Time.deltaTime, agent.transform.position.z + direction_vector.z * speed * Time.deltaTime);
+        agent.transform.position += direction_vector * speed * Time.deltaTime;
 
         if (Vector3.Distance(agent.transform.position, target_position) < 0.1f)
         {
@@ -61,7 +62,7 @@ public class MoveAction_GS : Action_GS
         GUILayout.BeginVertical();
 
         GUILayout.Label("Direction: " + direction_vector);
-        GUILayout.Label("Distance: " + Vector3.Distance(agent.transform.position, target_position));
+        //GUILayout.Label("Distance: " + Vector3.Distance(agent.transform.position, target_position));
 
         GUILayout.EndVertical();
     }
