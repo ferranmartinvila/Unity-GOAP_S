@@ -33,10 +33,11 @@ namespace GOAP_S.AI
             //Here we code the actions that the agent should do depending of the results/state generated from the previous actions
         }
 
-        public virtual void InActionUpdate()
+        public virtual bool InActionUpdate(Action_GS.ACTION_RESULT current_action_result, Action_GS.ACTION_STATE current_action_state)
         {
             //InAction
             //Here we code the actions that the agent should do depending of the results/state generated from the previous actions
+            return true;
         }
 
         //Functionality Methods =======

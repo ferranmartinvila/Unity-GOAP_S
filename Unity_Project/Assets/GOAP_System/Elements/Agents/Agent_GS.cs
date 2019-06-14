@@ -155,6 +155,12 @@ namespace GOAP_S.AI
                         //Current action execution result
                         Action_GS.ACTION_RESULT execution_result = _current_action.action.Execute();
 
+                        //Behaviour in action update
+                        if(_behaviour.InActionUpdate(execution_result, _current_action.action.state) == false)
+                        {
+                            execution_result = Action_GS.ACTION_RESULT.A_ERROR;
+                        }
+
                         //React with the action result
                         if (execution_result == Action_GS.ACTION_RESULT.A_NEXT && _current_action.action.state == Action_GS.ACTION_STATE.A_COMPLETE)
                         {
@@ -189,6 +195,14 @@ namespace GOAP_S.AI
                     }
                     break;
             }
+        }
+
+        public void StopPlan()
+        {
+            _current_action = null;
+            _current_plan.Clear();
+            _popped_actions.Clear();
+            _state = AGENT_STATE.AG_IDLE;
         }
 
         //Planning Methods ================
@@ -430,6 +444,14 @@ namespace GOAP_S.AI
             get
             {
                 return _current_plan;
+            }
+        }
+
+        public ActionNode_GS current_action
+        {
+            get
+            {
+                return _current_action;
             }
         }
 

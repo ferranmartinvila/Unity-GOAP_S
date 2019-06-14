@@ -366,13 +366,21 @@ namespace GOAP_S.AI
                 string[] A_key_info = _effects[k].A_key.Split('/'); //Input location and variable name
                 if (string.Compare(A_key_info[0], "Global") == 0)
                 {
+                    //Generate a temporal property in order to apply the effect operation on the current blackboard value and not overwrite it
+                    Property_GS temp = new Property_GS(_effects[k].A_key, _effects[k].variable_type, _effects[k].operator_type, GlobalBlackboard_GS.blackboard.GetObjectVariable(A_key_info[1]).value, 0.0f);
+                    temp.ApplyPropertyEffect(_effects[k]);
+
                     //Global variable case
-                    GlobalBlackboard_GS.blackboard.SetObjectVariable(A_key_info[1], _effects[k].value);
+                    GlobalBlackboard_GS.blackboard.SetObjectVariable(A_key_info[1], temp.value);
                 }
                 else
                 {
+                    //Generate a temporal property in order to apply the effect operation on the current blackboard value and not overwrite it
+                    Property_GS temp = new Property_GS(_effects[k].A_key, _effects[k].variable_type, _effects[k].operator_type, agent.blackboard.GetObjectVariable(A_key_info[1]).value, 0.0f);
+                    temp.ApplyPropertyEffect(_effects[k]);
+
                     //Local variable case
-                    agent.blackboard.SetObjectVariable(A_key_info[1], _effects[k].value);
+                    agent.blackboard.SetObjectVariable(A_key_info[1], temp.value);
                 }
                     
             }

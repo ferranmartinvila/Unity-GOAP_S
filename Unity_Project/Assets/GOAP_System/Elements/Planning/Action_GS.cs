@@ -210,5 +210,14 @@ namespace GOAP_S.Planning
                 _agent = value;
             }
         }
+
+        [BlockedProperty_GS]
+        public Blackboard_GS global_blackboard
+        {
+            get
+            {
+                return GlobalBlackboard_GS.blackboard;
+            }
+        }
     }
 }

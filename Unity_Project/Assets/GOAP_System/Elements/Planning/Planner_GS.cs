@@ -44,6 +44,8 @@ namespace GOAP_S.Planning
             //Clear open and close dictionaries
             _open.Clear();
             _closed.Clear();
+            //Reset iterations count
+            _current_iterations = 0;
 
             //Add start node to the open list
             _open.Add(start_node.f, new List<PlannerNode_GS> { start_node });

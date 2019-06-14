@@ -12,6 +12,9 @@ namespace GOAP_S.UI
         private AgentBehaviour_GS_Editor _agent_behaviour_editor = null; //Editor of the focused agent blackboard
         private ActionNode_GS_Debugger[] _action_node_debuggers = null; //Array with all the target agent path action nodes debuggers
         private int _action_node_debuggers_num = 0; //Num of action node debuggers
+        //Config fields
+        private float refresh_rate = 0.5f;
+        private float timer = 0.0f;
 
         //Static instance of this class
         private static NodePlanning_GS _Instance;
@@ -203,6 +206,17 @@ namespace GOAP_S.UI
 
             //Handle input
             HandleInput();
+        }
+
+        private void Update()
+        {
+            //Screen refresh
+            timer += Time.deltaTime;
+            if (timer > refresh_rate)
+            {
+                timer = 0.0f;
+                Repaint();
+            }
         }
 
         protected override void HandleNoAgentInput()

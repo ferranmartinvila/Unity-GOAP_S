@@ -41,7 +41,21 @@ namespace GOAP_S.Planning
             if (_world_state.TryGetValue(variable_name, out current_property))
             {
                 //Apply the target variable operation to the current property value
-                current_property.ApplyPropertyEffect(variable);
+                //If the variable is linked we get the current world value
+                Property_GS cur_target_property = null;
+                if (string.IsNullOrEmpty(variable.B_key) == false)
+                {
+                    _world_state.TryGetValue(variable.B_key, out cur_target_property);
+                    cur_target_property.operator_type = variable.operator_type;
+                }
+                if (cur_target_property == null)
+                {
+                    current_property.ApplyPropertyEffect(variable);
+                }
+                else
+                {
+                    current_property.ApplyPropertyEffect(cur_target_property);
+                }
             }
             else
             {

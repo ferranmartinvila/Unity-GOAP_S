@@ -4,7 +4,22 @@ using GOAP_S.Planning;
 
 public class MoveAction_GS : Action_GS
 {
-    //Fields
+    public float time = 0.2f;
+    private float timer = 0.0f;
+
+    public override ACTION_RESULT ActionUpdate()
+    {
+        Debug.Log(agent.name);
+
+        timer += Time.deltaTime;
+        if (timer > time)
+        {
+            return ACTION_RESULT.A_NEXT;
+        }
+
+        return ACTION_RESULT.A_CURRENT;
+    }
+    /*//Fields
     public float speed = 5.0f;
     public Vector3 target_position = Vector3.zero;
 
@@ -39,11 +54,11 @@ public class MoveAction_GS : Action_GS
         return ACTION_RESULT.A_NEXT;
     }
 
-    /*
-    Called when the action process ends with errors
-    When an action ends with errors the agent dont look for the next action connected with this
-    The actions path is recalculed from the start action node
-    */
+    
+    //Called when the action process ends with errors
+    //When an action ends with errors the agent dont look for the next action connected with this
+    //The actions path is recalculed from the start action node
+    
     public override void ActionBreak()
     {
 
@@ -56,7 +71,7 @@ public class MoveAction_GS : Action_GS
         if (Event.current.commandName == "ObjectSelectorClosed")
         {
             Debug.Log(EditorGUIUtility.GetObjectPickerObject());
-        }*/
+        }
 
         //EditorGUI.ObjectField(new Rect(10, 20, 100, 20), target_obj,typeof(GameObject));
         GUILayout.BeginVertical();
@@ -75,5 +90,5 @@ public class MoveAction_GS : Action_GS
     public float GetTest(int k, int js, int ds, float j, string d)
     {
         return j * k;
-    }
+    }*/
 }
