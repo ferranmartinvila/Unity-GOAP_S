@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+# endif
 using GOAP_S.Planning;
 using GOAP_S.AI;
 using GOAP_S.Tools;
@@ -49,8 +51,10 @@ namespace GOAP_S.Blackboard
             //Add the new var to the bb list
             _variables.Add(new_variable.name, new_variable);
 
+            #if UNITY_EDITOR
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            #endif
 
             return new_variable;
         }
@@ -74,8 +78,10 @@ namespace GOAP_S.Blackboard
                 RemoveVariablePlanning((global ? "Global/" : "Local/") + key);
             }
 
+            #if UNITY_EDITOR
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            #endif
         }
 
         public void RemoveVariablePlanning(string key)

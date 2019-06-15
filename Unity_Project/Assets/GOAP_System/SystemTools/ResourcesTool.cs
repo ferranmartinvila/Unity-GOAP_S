@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using GOAP_S.Planning;
@@ -7,7 +6,9 @@ using GOAP_S.AI;
 
 namespace GOAP_S.Tools
 {
+    #if UNITY_EDITOR
     [InitializeOnLoad]
+    #endif
     public sealed class ResourcesTool
     {
         //Content fields
@@ -21,15 +22,18 @@ namespace GOAP_S.Tools
         //Constructors ================
         static ResourcesTool()
         {
+            #if UNITY_EDITOR
             //Get action and agent behaviour scripts in the current project
             ListScripts();
             //List all assets folder
             _assets_folders = ListFoldersIn("Assets").ToArray();
+            #endif
         }
 
         //Functionality Methods =======
         private static void ListScripts()
         {
+            #if UNITY_EDITOR
             //First check dictionaries allocation
             if (_action_scripts == null)
             {
@@ -93,10 +97,13 @@ namespace GOAP_S.Tools
             //Generate agent behaviour scripts paths
             _behaviour_paths = new string[_agent_behaviour_scripts.Count];
             _agent_behaviour_scripts.Keys.CopyTo(_behaviour_paths, 0);
+
+            #endif
         }
 
         private static List<string> ListFoldersIn(string target_folder)
         {
+            #if UNITY_EDITOR
             List<string> folders_list = new List<string>();
             string[] folders = AssetDatabase.GetSubFolders(target_folder);
             
@@ -110,6 +117,9 @@ namespace GOAP_S.Tools
                 }
             }
             return folders_list;
+            #else 
+            return null;
+            #endif
         }
 
         //Get/Set Methods =============

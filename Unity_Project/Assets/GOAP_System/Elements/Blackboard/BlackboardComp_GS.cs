@@ -66,8 +66,10 @@ namespace GOAP_S.Blackboard
                     _target_agent = this.GetComponent<Agent_GS>();
                     if (_target_agent == null)
                     {
+                        #if UNITY_EDITOR
                         //If agent is null blackboard can't exist
                         EditorApplication.delayCall += () => DestroyImmediate(this);
+                        #endif
                     }
                 }
                 return _target_agent;

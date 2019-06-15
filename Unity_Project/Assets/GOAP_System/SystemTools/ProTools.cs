@@ -94,16 +94,21 @@ namespace GOAP_S.Tools
 
         public static T AllocateClass<T>(this object myobj)
         {
+            #if UNITY_EDITOR
             //Get the class to allocate type
             System.Type class_ty = ((MonoScript)myobj).GetClass();
             //Instantiate a class of type class_ty
             object x = System.Activator.CreateInstance(class_ty, false);
             //Return the allocated class casted to type T
             return (T)x;
+            #else
+            return default(T);
+            #endif
         }
 
         public static List<T> FindAssetsByType<T>() where T : UnityEngine.Object
         {
+            #if UNITY_EDITOR
             List<T> assets = new List<T>();
             //Get all the assets GUID
             string[] guids = AssetDatabase.FindAssets(null, new[] { "Assets" });
@@ -121,10 +126,14 @@ namespace GOAP_S.Tools
                 }
             }
             return assets;
+            #else
+            return null;
+            #endif
         }
 
         public static T FindAssetByPath<T>(string path) where T : UnityEngine.Object
         {
+            #if UNITY_EDITOR
             string[] guids = AssetDatabase.FindAssets(null, path.Split('\\'));
 
             if (guids.Length == 0 || guids.Length > 1)
@@ -137,6 +146,9 @@ namespace GOAP_S.Tools
             T asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
 
             return asset;
+            #else
+            return null;
+            #endif
         }
 
         //Properties Methods ====================
@@ -676,6 +688,7 @@ namespace GOAP_S.Tools
         //UI Generation Methods =================
         public static void ValueFieldByVariableType(VariableType variable_type, ref object value)
         {
+            #if UNITY_EDITOR
             //Generate an input field adapted to the type of the variable
             switch (variable_type)
             {
@@ -738,6 +751,7 @@ namespace GOAP_S.Tools
                     }
                     break;
             }
+            #endif
         }
 
         //Dropdowns system ======================
@@ -814,6 +828,7 @@ namespace GOAP_S.Tools
         //Generate dropdown UI method
         public static void GenerateButtonDropdownMenu(ref int index, string[] options, string button_string, bool show_selection, float button_width, int dropdown_id)
         {
+            #if UNITY_EDITOR
             if (GUILayout.Button(dropdown_select[dropdown_id] != -1 && show_selection ? options[dropdown_select[dropdown_id]] : button_string, GUILayout.MaxWidth(button_width)))
             {
                 GenericMenu dropdown = new GenericMenu();
@@ -833,10 +848,13 @@ namespace GOAP_S.Tools
                 dropdown.ShowAsContext(); //finally show the dropdown
             }
             index = dropdown_select[dropdown_id];
+            #endif
         }
 
         public static bool OpenScriptEditor(System.Type target_type)
         {
+            #if UNITY_EDITOR
+
             //Get asset path by adding folder and type
             string[] file_names = Directory.GetFiles(Application.dataPath, target_type.ToString() + ".cs", SearchOption.AllDirectories);
             //Check if there's more than one asset or no asset, in both cases the result is negative
@@ -854,6 +872,10 @@ namespace GOAP_S.Tools
                 UnityEditorInternal.InternalEditorUtility.OpenFileAtLineExternal(final_file_name, 1);
                 return true;
             }
+            
+            #else
+            return false;
+            #endif
         }
 
         //Path Methods ==========================

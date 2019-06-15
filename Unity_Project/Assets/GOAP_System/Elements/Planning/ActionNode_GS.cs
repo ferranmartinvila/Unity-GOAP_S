@@ -1,6 +1,8 @@
 ﻿using System;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+# endif
 using UnityEngine;
 using GOAP_S.Tools;
 using GOAP_S.Planning;
@@ -240,8 +242,11 @@ namespace GOAP_S.AI
             _conditions[_conditions_num] = new_condition;
             //Update conditions count
             _conditions_num += 1;
+            
+            #if UNITY_EDITOR
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            #endif
         }
 
         public void RemoveCondition(Property_GS target_condition)
@@ -266,8 +271,11 @@ namespace GOAP_S.AI
                     }
                     //Update conditions count
                     _conditions_num -= 1;
+
+                    #if UNITY_EDITOR
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    #endif
                     //Job is done we dont need to continue the iteration
                     return;
                 }
@@ -294,9 +302,11 @@ namespace GOAP_S.AI
             _effects[_effects_num] = new_effect;
             //Update effects count
             _effects_num += 1;
+
+            #if UNITY_EDITOR
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-
+            #endif
         }
 
         public void RemoveEffect(Property_GS target_effect)
@@ -321,8 +331,12 @@ namespace GOAP_S.AI
                     }
                     //Update effects count
                     _effects_num -= 1;
+
+                    #if UNITY_EDITOR
                     //Mark scene dirty
                     EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+                    #endif
+
                     //Job is done we dont need to continue the iteration
                     return;
                 }

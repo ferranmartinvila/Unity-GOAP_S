@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEditor;
+#if UNITY_EDITOR
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
+# endif
 using System;
 using System.Collections.Generic;
 using GOAP_S.Blackboard;
@@ -65,8 +67,10 @@ namespace GOAP_S.AI
             //Check if the agent have a blackboard
             if (_blackboard == null)
             {
+                #if UNITY_EDITOR
                 //If not generate one for him
                 EditorApplication.delayCall += () => _blackboard = blackboard;
+                #endif
             }
         }
 
@@ -217,8 +221,11 @@ namespace GOAP_S.AI
                 _action_nodes[k] = null;
             }
             _action_nodes_num = 0;
+
+            #if UNITY_EDITOR
             //Mark scene drity
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            #endif
         }
 
         public ActionNode_GS AddActionNode(Vector2 position)
@@ -244,8 +251,11 @@ namespace GOAP_S.AI
             _action_nodes[_action_nodes_num] = new_node;
             //Add node count
             _action_nodes_num += 1;
+
+            #if UNITY_EDITOR
             //Mark scene dirty
             EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+            #endif
 
             return new_node;
         }
