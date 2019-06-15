@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using GOAP_S.Planning;
 
 public class StoreResourcesAction_GS : Action_GS
@@ -10,11 +8,20 @@ public class StoreResourcesAction_GS : Action_GS
 
     public override ACTION_RESULT ActionUpdate()
     {
-        Debug.Log(agent.name);
-
         timer += Time.deltaTime;
         if (timer > time)
         {
+            RecollectorBehaviour agent_behaviour = ((RecollectorBehaviour)agent.behaviour);
+
+            agent_behaviour.going_for_diamond = false;
+            agent_behaviour.going_for_rock = false;
+
+            if(agent_behaviour.targeted_slot != null)
+            {
+                agent_behaviour.targeted_slot.slot_available = true;
+                agent_behaviour.targeted_slot = null;
+            }
+
             return ACTION_RESULT.A_NEXT;
         }
 

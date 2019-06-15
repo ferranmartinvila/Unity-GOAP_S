@@ -106,7 +106,6 @@ namespace GOAP_S.UI
             Debug.Log(zoom_coords);
             Debug.Log(_current_zoom);
             return zoom_coords * _current_zoom;
-            return new Vector2(_zoom_position.x + ((zoom_coords.x - position.position.x) / _current_zoom), _zoom_position.y + ((zoom_coords.y - position.position.y) / _current_zoom));
         }
 
         protected void ClampZoomPosition(Vector2 delta)

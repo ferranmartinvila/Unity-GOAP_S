@@ -182,6 +182,11 @@ namespace GOAP_S.AI
                                 _current_plan.Clear();
                                 _popped_actions.Clear();
                                 _state = AGENT_STATE.AG_IDLE;
+
+                                if (on_agent_plan_change_delegate != null)
+                                {
+                                    on_agent_plan_change_delegate();
+                                }
                                 return;
                             }
                         }
@@ -190,19 +195,17 @@ namespace GOAP_S.AI
                             //In action error the plan is cancelled
                             _current_action = null;
                             _current_plan.Clear();
+                            _popped_actions.Clear();
                             _state = AGENT_STATE.AG_IDLE;
+
+                            if (on_agent_plan_change_delegate != null)
+                            {
+                                on_agent_plan_change_delegate();
+                            }
                         }
                     }
                     break;
             }
-        }
-
-        public void StopPlan()
-        {
-            _current_action = null;
-            _current_plan.Clear();
-            _popped_actions.Clear();
-            _state = AGENT_STATE.AG_IDLE;
         }
 
         //Planning Methods ================

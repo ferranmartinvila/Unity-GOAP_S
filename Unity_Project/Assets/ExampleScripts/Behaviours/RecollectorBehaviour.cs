@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class RecollectorBehaviour : AgentBehaviour_GS
 {
-    private bool going_for_rock = false;
-    private bool going_for_diamond = false;
+    public bool going_for_rock = false;
+    public bool going_for_diamond = false;
+    public SlotManager targeted_slot = null;
 
     public override void Update()
     {
@@ -31,6 +32,9 @@ public class RecollectorBehaviour : AgentBehaviour_GS
                 blackboard.SetVariable<int>("rock", 0);
                 blackboard.SetVariable<Vector3>("target_position", new Vector3(0.0f, 0.0f, 0.0f));
                 blackboard.SetVariable<bool>("in_pos", false);
+                going_for_rock = false;
+                targeted_slot.slot_available = true;
+                targeted_slot = null;
 
                 return false;
             }
@@ -43,6 +47,13 @@ public class RecollectorBehaviour : AgentBehaviour_GS
                 blackboard.SetVariable<int>("diamond", 0);
                 blackboard.SetVariable<Vector3>("target_position", new Vector3(0.0f, 0.0f, 0.0f));
                 blackboard.SetVariable<bool>("in_pos", false);
+                going_for_diamond = false;
+
+                if (targeted_slot != null)
+                {
+                    targeted_slot.slot_available = true;
+                    targeted_slot = null;
+                }
 
                 return false;
             }

@@ -64,7 +64,7 @@ namespace GOAP_S.Tools
         public const int MIN_CANVAS_WIDTH = 500;
         public const int MIN_CANVAS_HEIGHT = 400;
         public const int NODE_EDITOR_CANVAS_SIZE = 4000;
-        public const int BEHAVIOUR_EDITOR_CANVAS_SIZE = 2000;
+        public const int BEHAVIOUR_EDITOR_CANVAS_SIZE = 2500;
         public const int BLACKBOARD_MARGIN = 400;
         public const int INITIAL_ARRAY_SIZE = 10;
         public const int TRIES_LIMIT = 4;

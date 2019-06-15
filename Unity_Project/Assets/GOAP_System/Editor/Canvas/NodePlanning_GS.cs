@@ -136,7 +136,7 @@ namespace GOAP_S.UI
 
                 for (int i = 0 , y = 0; y < 18 && i < _action_node_debuggers.Length; y++)
                 {
-                    for (int x = 0; x < 10 && i < _action_node_debuggers.Length; x++, i++)
+                    for (int x = 0; x < 8 && i < _action_node_debuggers.Length; x++, i++)
                     {
                         //Change window color depending of the state 
                         switch (_action_node_debuggers[i].target_action_node.action.state)
@@ -148,7 +148,7 @@ namespace GOAP_S.UI
                         }
 
                         //Show node debugger window
-                        Rect cur_window_rect = GUILayout.Window(_action_node_debuggers[i].window_uuid, new Rect(300.0f + 150.0f * x, 100.0f + 150.0f * y, 100.0f, 100.0f), _action_node_debuggers[i].DrawUI, "", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+                        Rect cur_window_rect = GUILayout.Window(_action_node_debuggers[i].window_uuid, new Rect(300.0f + 200.0f * x, 100.0f + 150.0f * y, 100.0f, 100.0f), _action_node_debuggers[i].DrawUI, "", GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
 
                         //Draw node connection
                         if (prev_middle_right != Vector2.zero)
