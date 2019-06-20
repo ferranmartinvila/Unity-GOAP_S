@@ -113,6 +113,93 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: a836270c297be5949b535841abfd4d13, type: 2}
+--- !u!1 &113245848
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 113245849}
+  - component: {fileID: 113245852}
+  - component: {fileID: 113245851}
+  - component: {fileID: 113245850}
+  m_Layer: 0
+  m_Name: RockMine (5)
+  m_TagString: RockMine
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!4 &113245849
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113245848}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 4.9, y: -0.57099986, z: -6.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1899888502}
+  m_Father: {fileID: 1476732395}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &113245850
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113245848}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &113245851
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113245848}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: 690ee7b5a4667ab4c86cfa80d6adff69, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &113245852
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 113245848}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &175920998
 GameObject:
   m_ObjectHideFlags: 0
@@ -143,7 +230,7 @@ Transform:
   m_Children:
   - {fileID: 1692428893}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 11
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &175921000
 BoxCollider:
@@ -229,7 +316,7 @@ Transform:
   m_Children:
   - {fileID: 1692275660}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &217169747
 CapsuleCollider:
@@ -357,7 +444,7 @@ Transform:
   m_Children:
   - {fileID: 1484094366}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 14
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &246791418
 BoxCollider:
@@ -530,7 +617,7 @@ Transform:
   m_Children:
   - {fileID: 754703433}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &314201942
 CapsuleCollider:
@@ -617,7 +704,7 @@ Transform:
   m_Children:
   - {fileID: 1634144522}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &361058022
 CapsuleCollider:
@@ -673,6 +760,93 @@ MeshFilter:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 361058020}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &427996632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 427996633}
+  - component: {fileID: 427996636}
+  - component: {fileID: 427996635}
+  - component: {fileID: 427996634}
+  m_Layer: 0
+  m_Name: DiamondMine (5)
+  m_TagString: DiamondMine
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!4 &427996633
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427996632}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.8, y: -0.57099986, z: -7.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1472139820}
+  m_Father: {fileID: 1476732395}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &427996634
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427996632}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &427996635
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427996632}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RenderingLayerMask: 4294967295
+  m_Materials:
+  - {fileID: 2100000, guid: a5d6bcbee73e57f4fb2ce3b3b43197c2, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!33 &427996636
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 427996632}
   m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &643561915
 GameObject:
@@ -932,7 +1106,7 @@ Transform:
   m_Children:
   - {fileID: 1880995592}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 13
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &827632635
 BoxCollider:
@@ -1059,7 +1233,7 @@ Transform:
   m_Children:
   - {fileID: 953058637}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 15
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &988986761
 BoxCollider:
@@ -1684,14 +1858,14 @@ MonoBehaviour:
   _name: un_named
   obj_refs: []
   serialized_behaviour: '{"going_for_rock":false,"going_for_diamond":false,"targeted_slot":null,"_name":"RecollectorBehaviour","$type":"RecollectorBehaviour"}'
-  serialized_action_nodes: '[{"_window_rect":{"xMin":2060.261,"yMin":1832.747,"xMax":2375.261,"yMax":2167.747},"_id":"ed639693-3a37-4a56-86e2-2ea9ba75e6f0","_name":"GetRockMine","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":\"Local/rock_pos\",\"_value\":{\"_name\":\"rock_pos\",\"_object_value\":{\"x\":78.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
-    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":true,\"_name\":\"FindQuarryAction_GS\",\"_cost\":1,\"$type\":\"FindQuarryAction_GS\"}"},{"_window_rect":{"xMin":2445.994,"yMin":1835.032,"xMax":2781.403,"yMax":2170.032},"_id":"ceb7b580-335e-4224-8898-2a88c101f088","_name":"Move","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_different\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"MoveAction_GS\",\"_cost\":1,\"$type\":\"MoveAction_GS\"}"},{"_window_rect":{"xMin":2805.509,"yMin":1838.444,"xMax":3126.509,"yMax":2173.444},"_id":"b0071f91-d9b0-4c0c-bcc6-f3edcef472e1","_name":"MineRock","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":\"Local/rock_pos\",\"_value\":{},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/rock\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":100,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":false,\"_name\":\"MineAction_GS\",\"_cost\":1,\"$type\":\"MineAction_GS\"}"},{"_window_rect":{"xMin":3167.061,"yMin":1838.639,"xMax":3505.879,"yMax":2173.639},"_id":"29df4118-e29f-41d7-bc67-4ef1b8e1fef2","_name":"GetStore","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/zero\",\"_operator\":\"_smaller\",\"_B_key\":\"Local/resources\",\"_value\":{\"_name\":\"resources\",\"_object_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_type\":\"_int\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":\"Agent.RecollectorBehaviour.ResourcesNum\",\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
+  serialized_action_nodes: '[{"_window_rect":{"xMin":2060.261,"yMin":1832.747,"xMax":2383.75,"yMax":2167.747},"_id":"ed639693-3a37-4a56-86e2-2ea9ba75e6f0","_name":"GetRockMine","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":\"Local/rock_pos\",\"_value\":{\"_name\":\"rock_pos\",\"_object_value\":{\"x\":78.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":true,\"_name\":\"FindQuarryAction_GS\",\"_cost\":1,\"$type\":\"FindQuarryAction_GS\"}"},{"_window_rect":{"xMin":2445.994,"yMin":1835.032,"xMax":2781.403,"yMax":2170.032},"_id":"ceb7b580-335e-4224-8898-2a88c101f088","_name":"Move","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_different\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"_name\":\"MoveAction_GS\",\"_cost\":1,\"$type\":\"MoveAction_GS\"}"},{"_window_rect":{"xMin":2805.509,"yMin":1838.444,"xMax":3131.126,"yMax":2173.444},"_id":"b0071f91-d9b0-4c0c-bcc6-f3edcef472e1","_name":"MineRock","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":\"Local/rock_pos\",\"_value\":{},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/rock\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":100,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":false,\"_name\":\"MineAction_GS\",\"_cost\":1,\"$type\":\"MineAction_GS\"}"},{"_window_rect":{"xMin":3167.061,"yMin":1838.639,"xMax":3505.879,"yMax":2173.639},"_id":"29df4118-e29f-41d7-bc67-4ef1b8e1fef2","_name":"GetStore","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/zero\",\"_operator\":\"_smaller\",\"_B_key\":\"Local/resources\",\"_value\":{\"_name\":\"resources\",\"_object_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_type\":\"_int\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":\"Agent.RecollectorBehaviour.ResourcesNum\",\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":\"Local/store_pos\",\"_value\":{\"_name\":\"store_pos\",\"_object_value\":{\"x\":80.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"_name\":\"FindBarrelAction_GS\",\"_cost\":1,\"$type\":\"FindBarrelAction_GS\"}"},{"_window_rect":{"xMin":3592.745,"yMin":1827.534,"xMax":3953.018,"yMax":2250.534},"_id":"8193bb8b-9858-43c4-a537-3312941140df","_name":"Store","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":\"Local/store_pos\",\"_value\":{\"_name\":\"store_pos\",\"_object_value\":{\"x\":80.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},{\"_variable_type\":\"_int\",\"_A_key\":\"Global/current_rock\",\"_operator\":\"_plus_equal\",\"_B_key\":\"Local/rock\",\"_value\":{\"_name\":\"rock\",\"_object_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_type\":\"_int\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]\"},\"_planning_value\":1.0},{\"_variable_type\":\"_int\",\"_A_key\":\"Local/rock\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},{\"_variable_type\":\"_int\",\"_A_key\":\"Global/current_diamond\",\"_operator\":\"_plus_equal\",\"_B_key\":\"Local/diamond\",\"_value\":{\"_name\":\"diamond\",\"_object_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_type\":\"_int\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
-    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]\"},\"_planning_value\":1.0},{\"_variable_type\":\"_int\",\"_A_key\":\"Local/diamond\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"_name\":\"StoreResourcesAction_GS\",\"_cost\":1,\"$type\":\"StoreResourcesAction_GS\"}"},{"_window_rect":{"xMin":2049.0,"yMin":1467.0,"xMax":2385.0,"yMax":1802.0},"_id":"0744e405-44a6-443a-8ac0-88ce1728a00a","_name":"GetDiamondMine","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":\"Local/diamond_pos\",\"_value\":{\"_name\":\"diamond_pos\",\"_object_value\":{\"x\":90.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
-    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":true,\"rock\":false,\"_name\":\"FindQuarryAction_GS\",\"_cost\":1,\"$type\":\"FindQuarryAction_GS\"}"},{"_window_rect":{"xMin":2809.0,"yMin":1458.0,"xMax":3154.0,"yMax":1793.0},"_id":"e36f209a-e330-4e25-abf3-48a58c2d6142","_name":"MineDiamond","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":\"Local/diamond_pos\",\"_value\":{},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/diamond\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":100,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":false,\"_name\":\"MineAction_GS\",\"_cost\":1,\"$type\":\"MineAction_GS\"}"},null,null,null]'
+    mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]\"},\"_planning_value\":1.0},{\"_variable_type\":\"_int\",\"_A_key\":\"Local/diamond\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":0,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"_name\":\"StoreResourcesAction_GS\",\"_cost\":1,\"$type\":\"StoreResourcesAction_GS\"}"},{"_window_rect":{"xMin":2049.0,"yMin":1467.0,"xMax":2393.766,"yMax":1802.0},"_id":"0744e405-44a6-443a-8ac0-88ce1728a00a","_name":"GetDiamondMine","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"x\":0.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_is_equal\",\"_B_key\":null,\"_value\":{\"$content\":false,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_is_equal\",\"_B_key\":\"Local/diamond_pos\",\"_value\":{\"_name\":\"diamond_pos\",\"_object_value\":{\"x\":90.0,\"y\":0.0,\"z\":0.0,\"$type\":\"UnityEngine.Vector3\"},\"_type\":\"_vector3\",\"_planning_value\":0.0,\"_binded_field_path\":null,\"_binded_method_path\":null,\"_binded_method_input\":null,\"$type\":\"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
+    UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":true,\"rock\":false,\"_name\":\"FindQuarryAction_GS\",\"_cost\":1,\"$type\":\"FindQuarryAction_GS\"}"},{"_window_rect":{"xMin":2809.0,"yMin":1458.0,"xMax":3162.277,"yMax":1793.0},"_id":"e36f209a-e330-4e25-abf3-48a58c2d6142","_name":"MineDiamond","_description":"","_obj_refs":[],"serialized_conditions":"[{\"_variable_type\":\"_vector3\",\"_A_key\":\"Local/target_position\",\"_operator\":\"_equal_equal\",\"_B_key\":\"Local/diamond_pos\",\"_value\":{},\"_planning_value\":1.0},{\"_variable_type\":\"_bool\",\"_A_key\":\"Local/in_pos\",\"_operator\":\"_equal_equal\",\"_B_key\":null,\"_value\":{\"$content\":true,\"$type\":\"System.Boolean\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null]","serialized_effects":"[{\"_variable_type\":\"_int\",\"_A_key\":\"Local/diamond\",\"_operator\":\"_plus_equal\",\"_B_key\":null,\"_value\":{\"$content\":100,\"$type\":\"System.Int32\"},\"_planning_value\":1.0},null,null,null,null,null,null,null,null,null]","serialized_action":"{\"time\":1.0,\"diamond\":false,\"rock\":false,\"_name\":\"MineAction_GS\",\"_cost\":1,\"$type\":\"MineAction_GS\"}"},null,null,null]'
   serialized_blackboard: '{"_variables":{"rock":{"_name":"rock","_object_value":{"$content":0,"$type":"System.Int32"},"_type":"_int","_planning_value":0.0,"_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[System.Int32,
     mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]"},"target_position":{"_name":"target_position","_object_value":{"x":0.0,"y":0.0,"z":0.0,"$type":"UnityEngine.Vector3"},"_type":"_vector3","_planning_value":0.0,"_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
     UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null]]"},"rock_pos":{"_name":"rock_pos","_object_value":{"x":0.0,"y":0.0,"z":1.71,"$type":"UnityEngine.Vector3"},"_type":"_vector3","_planning_value":0.0,"_binded_field_path":null,"_binded_method_path":null,"_binded_method_input":null,"$type":"GOAP_S.Blackboard.TVariable_GS`1[[UnityEngine.Vector3,
@@ -1833,6 +2007,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot_available: 1
+--- !u!1 &1472139819
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1472139820}
+  - component: {fileID: 1472139821}
+  m_Layer: 0
+  m_Name: Slot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!4 &1472139820
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1472139819}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 427996633}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1472139821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1472139819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04cd107e14de5994b9b67d14385622d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot_available: 1
 --- !u!1 &1476732394
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,11 +2079,13 @@ Transform:
   - {fileID: 292626177}
   - {fileID: 1318550292}
   - {fileID: 2092695917}
+  - {fileID: 113245849}
   - {fileID: 314201941}
   - {fileID: 2144644050}
   - {fileID: 1779076782}
   - {fileID: 217169746}
   - {fileID: 361058021}
+  - {fileID: 427996633}
   - {fileID: 175920999}
   - {fileID: 1507228288}
   - {fileID: 827632634}
@@ -1990,7 +2207,7 @@ Transform:
   m_Children:
   - {fileID: 1019187124}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 12
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1507228289
 BoxCollider:
@@ -2274,7 +2491,7 @@ Transform:
   m_Children:
   - {fileID: 1439111328}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &1779076783
 CapsuleCollider:
@@ -2726,6 +2943,47 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slot_available: 1
+--- !u!1 &1899888501
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1899888502}
+  - component: {fileID: 1899888503}
+  m_Layer: 0
+  m_Name: Slot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 8
+  m_IsActive: 1
+--- !u!4 &1899888502
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1899888501}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.67, y: 0, z: 1.36}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 113245849}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1899888503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1899888501}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04cd107e14de5994b9b67d14385622d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slot_available: 1
 --- !u!1 &2092695916
 GameObject:
   m_ObjectHideFlags: 0
@@ -3125,7 +3383,7 @@ Transform:
   m_Children:
   - {fileID: 2128513133}
   m_Father: {fileID: 1476732395}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &2144644051
 CapsuleCollider:

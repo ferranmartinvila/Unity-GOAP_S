@@ -136,6 +136,14 @@ namespace GOAP_S.AI
                             //WHen the idle action ends we can execute the agent plan
                             if (_idle_action.state == Action_GS.ACTION_STATE.A_COMPLETE)
                             {
+                                //Avoid lag on actions planning
+                                if(Time.deltaTime > 1.0f / 30.0f)
+                                {
+                                    Debug.LogError("Performance is probably beeing afected by simultanious agents planning");
+                                    break;
+                                }
+
+
                                 //Agent state is setted to action state
                                 _state = AGENT_STATE.AG_ACTION;
 

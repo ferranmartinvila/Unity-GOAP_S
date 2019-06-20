@@ -65,4 +65,21 @@ public class FindQuarryAction_GS : Action_GS
 
         return ACTION_RESULT.A_CURRENT;
     }
+
+    public override void BlitDebugUI()
+    {
+        base.BlitDebugUI();
+
+        if (state == ACTION_STATE.A_UPDATE)
+        {
+            if (diamond)
+            {
+                GUILayout.Label("Diamond");
+            }
+            if (rock)
+            {
+                GUILayout.Label("Rock");
+            }
+        }
+    }
 }

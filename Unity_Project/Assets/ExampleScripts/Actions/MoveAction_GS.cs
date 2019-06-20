@@ -29,4 +29,16 @@ public class MoveAction_GS : Action_GS
 
         return ACTION_RESULT.A_CURRENT;
     }
+
+    public override void BlitDebugUI()
+    {
+        base.BlitDebugUI();
+
+        if (state == ACTION_STATE.A_UPDATE)
+        {
+            GUILayout.Label("Current Pos: " + agent.gameObject.transform.position);
+            GUILayout.Label("Target: " + nav_mesh_agent.destination);
+            GUILayout.Label("Distance: " + nav_mesh_agent.remainingDistance);
+        }
+    }
 }
