@@ -1,6 +1,7 @@
 # Unity GOAP_S
 ## About
 Unity GOAP_S is a Unity tool that provides an extremelly easy to use framework for the generation of goal oriented action planning agents.
+
 Author: Ferran Martín Vilà
 
 ## Guide
@@ -38,7 +39,7 @@ Action nodes define the conditions and effects of executing an action. To add ac
 To add effects/conditions to an action node pulse the "Add Effect" or "Add Condition" buttons of the action node editor. This button will display a property selection where you can choose a condition/effect operation.
 
 ### Action Scripts
-To define action scripts you simply have to create new scripts that inherit from the base "Action_GS" script. The framework will recognize them and will be displayed in the action selection dropdown. The action node editor also provides a "Create New" action button that automatically generates a new script that inherits from "Action_GS".
+To define action scripts you simply have to create new scripts that inherit from the "Action_GS" script. The framework will recognize them and will be displayed in the action selection dropdown. The action node editor also provides a "Create New" action button that automatically generates a new script that inherits from "Action_GS".
 
 Once we set the action script we can configure it by clicking the "Configure Action" button in the action node editor.
 
@@ -46,7 +47,10 @@ Once we set the action script we can configure it by clicking the "Configure Act
 In this canvas we define the agent behaviour script and the idle action. During execution we can also see the agent debug output.
 
 ### Agent behaviour
-### Behaviour script
+Behaviour scripts define the agent goals by using blackboard variables. To define a new behaviour script you have to create a new script that inherits from the "AgentBehaviour_GS" script. In this case behaviour scripts have the same workflow as action scripts. The agent behaviour editor inside the planning canvas also has a "Create New" button that automatically generates a new script that inherits from "AgentBehaviour_GS".
+
 ### Idle Action
+Idle action is setted in the planning canvas. This action will be executed when the agent action plan is empty and there are not new goals that need to be reached.
 
 ### Customizable Debug
+If our Unity project is beeing executed, the planning canvas displays the action plan of the selected agent. The "Action_GS" script has a public method named "XX" that can be overwritted. In this method we can display all the desired information about our action and that will appear in the planning canvas if the action is contained in the current agent plan. The action plan debugger also shows the actions state by changing the debug windows color depending of it.
