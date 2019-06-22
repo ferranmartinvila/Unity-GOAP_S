@@ -113,3 +113,6 @@ If our Unity project is beeing executed, the planning canvas displays the action
 In this method we can display all the desired information about our action and that will appear in the planning canvas if the action is contained in the current agent plan. The action plan debugger also shows the actions state by changing the debug windows color depending of it.
 
 ![Debug](https://github.com/ferranmartinvila/Unity-GOAP_S/blob/master/Screenshots/debug.PNG)
+
+
+**To completely understand how this tool works internally we recommend you to open the framework code and read the commentaries of the most important classes like Agent_GS, Action_GS and Behaviour_GS.**
