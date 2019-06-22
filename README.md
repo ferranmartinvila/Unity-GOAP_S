@@ -115,4 +115,4 @@ In this method we can display all the desired information about our action and t
 ![Debug](https://github.com/ferranmartinvila/Unity-GOAP_S/blob/master/Screenshots/debug.PNG)
 
 
-**To completely understand how this tool works internally we recommend you to open the framework code and read the commentaries of the most important classes like Agent_GS, Action_GS and Behaviour_GS.**
+**To completely understand how this tool works internally, we recommend you to open the framework code and read the commentaries of the most important classes like Agent_GS, Action_GS and Behaviour_GS.**
