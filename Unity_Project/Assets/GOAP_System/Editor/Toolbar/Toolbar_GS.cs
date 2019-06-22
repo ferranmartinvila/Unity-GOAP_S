@@ -20,7 +20,7 @@ namespace GOAP_S.UI
         [MenuItem("Tools / GOAP / Github")]
         static void LinkGithub()
         {
-            Application.OpenURL("https://github.com/ferranmartinvila/PRE_TFG_");
+            Application.OpenURL("https://github.com/ferranmartinvila/Unity-GOAP_S");
         }
 
         ///Selected Agent -----------------------

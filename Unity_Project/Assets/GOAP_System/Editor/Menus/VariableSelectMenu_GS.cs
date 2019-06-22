@@ -111,7 +111,7 @@ namespace GOAP_S.UI
                 //Bind variable
                 GUILayout.BeginHorizontal();
                 //Generate bind selection dropdown
-                ProTools.GenerateButtonDropdownMenu(ref _variable_dropdown_data.selected_index, _variable_dropdown_data.display_paths, "Bind", false, 90.0f, _variable_dropdown_data.dropdown_slot);
+                /*ProTools.GenerateButtonDropdownMenu(ref _variable_dropdown_data.selected_index, _variable_dropdown_data.display_paths, "Bind", false, 90.0f, _variable_dropdown_data.dropdown_slot);
                 //UnBind button
                 if (GUILayout.Button("UnBind"))
                 {
@@ -121,7 +121,7 @@ namespace GOAP_S.UI
                 GUILayout.EndHorizontal();
 
                 //Show selected bind path
-                if (_variable_dropdown_data.selected_index == -1) GUILayout.Label(bind_selected_display_path);
+                if (_variable_dropdown_data.selected_index == -1) GUILayout.Label(bind_selected_display_path);*/
 
                 GUILayout.EndVertical();
             }
