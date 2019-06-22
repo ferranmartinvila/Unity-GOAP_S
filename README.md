@@ -63,6 +63,8 @@ Action nodes define the conditions and effects of executing an action. To add ac
 
 The action node editor has a edit mode where you can change its name and description. 
 
+![ActionNodeEdit](https://github.com/ferranmartinvila/Unity-GOAP_S/blob/master/Screenshots/action_node_edit.PNG)
+
 #### Conditions and Effects
 To add effects/conditions to an action node pulse the "Add Effect" or "Add Condition" buttons of the action node editor.
 
@@ -104,6 +106,10 @@ In this case behaviour scripts have the same workflow as action scripts. The age
 Idle action is setted in the planning canvas. This action will be executed when the agent action plan is empty and there are not new goals that need to be reached.
 
 ### Customizable Debug
-If our Unity project is beeing executed, the planning canvas displays the action plan of the selected agent. The "Action_GS" script has a public method named "BlitDebugUI" that can be overwritted. In this method we can display all the desired information about our action and that will appear in the planning canvas if the action is contained in the current agent plan. The action plan debugger also shows the actions state by changing the debug windows color depending of it.
+If our Unity project is beeing executed, the planning canvas displays the action plan of the selected agent. The "Action_GS" script has a public method named "BlitDebugUI" that can be overwritted. 
+
+![DebugExample](https://github.com/ferranmartinvila/Unity-GOAP_S/blob/master/Screenshots/debug_example.PNG)
+
+In this method we can display all the desired information about our action and that will appear in the planning canvas if the action is contained in the current agent plan. The action plan debugger also shows the actions state by changing the debug windows color depending of it.
 
 ![Debug](https://github.com/ferranmartinvila/Unity-GOAP_S/blob/master/Screenshots/debug.PNG)
